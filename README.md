@@ -1,2 +1,223 @@
 # prism-themes
 Collection of prism themes.
+
+LICENSE
+
+Under orgirinal license [MIT](https://github.com/PrismJS/prism-themes/blob/master/LICENSE)
+
+---
+
+CB
+
+By . [ C. Bavota](https://bitbucket.org/cbavota/workspace/repositories/)
+
+![cb](https://raw.githubusercontent.com/PrismJS/prism-themes/master/screenshots/prism-cb.png)
+
+`HTML <head></head>`
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/cb.min.css" integrity="sha384-MzGUFxxaCuIeIxEObjdb5OqsFn5auw3cCxZauGPy19w3Pq1ZvwtgqbdiUxCC5+3K" crossorigin="anonymous">
+```
+
+`css @import`
+
+```css
+  @import url(https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/cb.min.css);
+```
+
+---
+
+Coldark Dark 
+
+By . [Armand Philippot](https://github.com/ArmandPhilippot)
+
+![cd](https://raw.githubusercontent.com/PrismJS/prism-themes/master/screenshots/prism-coldark-dark.png)
+
+`HTML <head></head>`
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/coldark-dark.min.css" integrity="sha384-KO33mYXdH2vaVXOMrwI8+1TZnkG8fxYuAORUCGOLrEsqEiDc+xeYJ/pxLABjWxKi" crossorigin="anonymous">
+```
+
+`css @import`
+
+```css
+  @import url(https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/coldark-dark.min.css);
+```
+
+---
+
+Duotone Earth
+
+By . [Simurai](https://github.com/simurai)
+
+![de](https://raw.githubusercontent.com/PrismJS/prism-themes/master/screenshots/prism-duotone-earth.png)
+
+`HTML <head></head>`
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/duotone-earth.min.css" integrity="sha384-WGNOnAZyH94ElkFIugjN4toHrmafuQAW0X4Q9/QKgk12ro7BDwHOeg7keIfA86fr" crossorigin="anonymous">
+```
+
+`css @import`
+
+```css
+  @import url(https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/duotone-earth.min.css);
+```
+
+---
+
+Duotone Forest 
+
+By . [Simurai](https://github.com/simurai)
+
+![dt](https://raw.githubusercontent.com/PrismJS/prism-themes/master/screenshots/prism-duotone-forest.png)
+
+`HTML <head></head>`
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/duotone-forest.min.css" integrity="sha384-m0p2kuu1e1LRisKuaLersC4IfkLQm/GIVV5L68lL7KKFxcPz+C9R48nHfyU7guSl" crossorigin="anonymous">
+```
+
+`css @import`
+
+```css
+  @import url(https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/duotone-forest.min.css);
+```
+
+---
+
+Duotone Light
+
+By . [Simurai](https://github.com/simurai)
+
+![dl](https://raw.githubusercontent.com/PrismJS/prism-themes/master/screenshots/prism-duotone-light.png)
+
+`HTML <head></head>`
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/duotone-light.min.css" integrity="sha384-qB6WFR28zK6AfDeTEVxWoaiRcrJmqlvs6jV9I9245T8IRmYPlWKAq1VXXyn0bJZ0" crossorigin="anonymous">
+```
+
+`css @import`
+
+```css
+  @import url(https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/duotone-light.min.css);
+```
+
+---
+
+Duotone Sea
+
+By . [Simurai](https://github.com/simurai)
+
+![dl](https://raw.githubusercontent.com/PrismJS/prism-themes/master/screenshots/prism-duotone-sea.png)
+
+`HTML <head></head>`
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/duotone-sea.min.css" integrity="sha384-6SPPcdrLTCk/fKUAwLxjsgQyhkYRV0D6OxWkKhHAmHBwbgpDcMywPOA6WyQA1z9M" crossorigin="anonymous">
+```
+
+`css @import`
+
+```css
+  @import url(https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/duotone-sea.min.css);
+```
+
+---
+
+Duotone Space 
+
+By . [Simurai](https://github.com/simurai)
+
+![dl](https://raw.githubusercontent.com/PrismJS/prism-themes/master/screenshots/prism-duotone-space.png)
+
+`HTML <head></head>`
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/duotone-space.min.css" integrity="sha384-EmnHG0fELQfxiM4fgfsZhiXb8yvkUv/I1+mGsycQqWQnnhFYZPsWH07b6ClVrKZV" crossorigin="anonymous">
+```
+
+`css @import`
+
+```css
+  @import url(https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/duotone-space.min.css);
+```
+
+---
+
+GHColors
+
+By . [Avi Aryan](https://github.com/aviaryan)
+
+![ghc](https://raw.githubusercontent.com/PrismJS/prism-themes/master/screenshots/prism-ghcolors.png)
+
+`HTML <head></head>`
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/ghcolors.min.css" integrity="sha384-rVoOtkCjrGvZEjnTPqwFdiBhWgyeQmspcEmmoQ9Ug+orpfRw2Smi/XXCGt4hQ0PR" crossorigin="anonymous">
+```
+
+`css @import`
+
+```css
+  @import url(https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/ghcolors.min.css);
+```
+
+---
+
+Gruvbox Light
+
+By . [Michael Schnerring](https://github.com/schnerring)
+
+![grl](https://raw.githubusercontent.com/PrismJS/prism-themes/master/screenshots/prism-gruvbox-light.png)
+
+`HTML <head></head>`
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/gruvbox-light.min.css" integrity="sha384-OG3wrbFDekPlVNcqjhkhDSELlPYxBv/Cat54nu4jnIcdpia7nmMjqcBeOu5h09VO" crossorigin="anonymous">
+```
+
+`css @import`
+
+```css
+  @import url(https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/gruvbox-light.min.css);
+```
+
+---
+
+Holi Theme 
+
+By . [Ayush Saini](https://github.com/AyushSaini00)
+
+![grl](https://raw.githubusercontent.com/PrismJS/prism-themes/master/screenshots/prism-holi-theme.png)
+
+`HTML <head></head>`
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/holi-theme.min.css" integrity="sha384-k93vPnTFam3dLv1wI7s/KU9yP8ncfhILuEGNIdjoC53NiMgsSfMjBlCA/YURTLlx" crossorigin="anonymous">
+```
+
+`css @import`
+
+```css
+  @import url(https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@v1/holi-theme.min.css);
+```
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
