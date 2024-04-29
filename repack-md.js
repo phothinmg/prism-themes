@@ -1,5695 +1,9367 @@
-var repackMd = (function (exports) {
-  'use strict';
-
-  var __create = Object.create;
-  var __defProp = Object.defineProperty;
-  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-  var __getOwnPropNames = Object.getOwnPropertyNames;
-  var __getProtoOf = Object.getPrototypeOf;
-  var __hasOwnProp = Object.prototype.hasOwnProperty;
-  var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
-    get: (a2, b) => (typeof require !== "undefined" ? require : a2)[b]
-  }) : x)(function(x) {
-    if (typeof require !== "undefined")
-      return require.apply(this, arguments);
-    throw Error('Dynamic require of "' + x + '" is not supported');
-  });
-  var __commonJS = (cb, mod) => function __require2() {
-    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-  };
-  var __copyProps = (to, from, except, desc) => {
-    if (from && typeof from === "object" || typeof from === "function") {
-      for (let key of __getOwnPropNames(from))
-        if (!__hasOwnProp.call(to, key) && key !== except)
-          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+"use strict";
+function _array_like_to_array(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
+    return arr2;
+}
+function _extends() {
+    _extends = Object.assign || function(target) {
+        for(var i = 1; i < arguments.length; i++){
+            var source = arguments[i];
+            for(var key in source){
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+        return target;
+    };
+    return _extends.apply(this, arguments);
+}
+function _instanceof(left, right) {
+    if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) {
+        return !!right[Symbol.hasInstance](left);
+    } else {
+        return left instanceof right;
     }
-    return to;
-  };
-  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-    // If the importer is in node compatibility mode or this is not an ESM
-    // file that has been converted to a CommonJS file using a Babel-
-    // compatible transform (i.e. "__esModule" has not been set), then set
-    // "default" to the CommonJS "module.exports" for node compatibility.
-    isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-    mod
-  ));
-
-  // node_modules/.pnpm/showdown@2.1.0/node_modules/showdown/dist/showdown.js
-  var require_showdown = __commonJS({
-    "node_modules/.pnpm/showdown@2.1.0/node_modules/showdown/dist/showdown.js"(exports, module) {
-      (function() {
-        function getDefaultOpts(simple) {
-          var defaultOptions = {
-            omitExtraWLInCodeBlocks: {
-              defaultValue: false,
-              describe: "Omit the default extra whiteline added to code blocks",
-              type: "boolean"
-            },
-            noHeaderId: {
-              defaultValue: false,
-              describe: "Turn on/off generated header id",
-              type: "boolean"
-            },
-            prefixHeaderId: {
-              defaultValue: false,
-              describe: "Add a prefix to the generated header ids. Passing a string will prefix that string to the header id. Setting to true will add a generic 'section-' prefix",
-              type: "string"
-            },
-            rawPrefixHeaderId: {
-              defaultValue: false,
-              describe: 'Setting this option to true will prevent showdown from modifying the prefix. This might result in malformed IDs (if, for instance, the " char is used in the prefix)',
-              type: "boolean"
-            },
-            ghCompatibleHeaderId: {
-              defaultValue: false,
-              describe: "Generate header ids compatible with github style (spaces are replaced with dashes, a bunch of non alphanumeric chars are removed)",
-              type: "boolean"
-            },
-            rawHeaderId: {
-              defaultValue: false,
-              describe: `Remove only spaces, ' and " from generated header ids (including prefixes), replacing them with dashes (-). WARNING: This might result in malformed ids`,
-              type: "boolean"
-            },
-            headerLevelStart: {
-              defaultValue: false,
-              describe: "The header blocks level start",
-              type: "integer"
-            },
-            parseImgDimensions: {
-              defaultValue: false,
-              describe: "Turn on/off image dimension parsing",
-              type: "boolean"
-            },
-            simplifiedAutoLink: {
-              defaultValue: false,
-              describe: "Turn on/off GFM autolink style",
-              type: "boolean"
-            },
-            excludeTrailingPunctuationFromURLs: {
-              defaultValue: false,
-              describe: "Excludes trailing punctuation from links generated with autoLinking",
-              type: "boolean"
-            },
-            literalMidWordUnderscores: {
-              defaultValue: false,
-              describe: "Parse midword underscores as literal underscores",
-              type: "boolean"
-            },
-            literalMidWordAsterisks: {
-              defaultValue: false,
-              describe: "Parse midword asterisks as literal asterisks",
-              type: "boolean"
-            },
-            strikethrough: {
-              defaultValue: false,
-              describe: "Turn on/off strikethrough support",
-              type: "boolean"
-            },
-            tables: {
-              defaultValue: false,
-              describe: "Turn on/off tables support",
-              type: "boolean"
-            },
-            tablesHeaderId: {
-              defaultValue: false,
-              describe: "Add an id to table headers",
-              type: "boolean"
-            },
-            ghCodeBlocks: {
-              defaultValue: true,
-              describe: "Turn on/off GFM fenced code blocks support",
-              type: "boolean"
-            },
-            tasklists: {
-              defaultValue: false,
-              describe: "Turn on/off GFM tasklist support",
-              type: "boolean"
-            },
-            smoothLivePreview: {
-              defaultValue: false,
-              describe: "Prevents weird effects in live previews due to incomplete input",
-              type: "boolean"
-            },
-            smartIndentationFix: {
-              defaultValue: false,
-              describe: "Tries to smartly fix indentation in es6 strings",
-              type: "boolean"
-            },
-            disableForced4SpacesIndentedSublists: {
-              defaultValue: false,
-              describe: "Disables the requirement of indenting nested sublists by 4 spaces",
-              type: "boolean"
-            },
-            simpleLineBreaks: {
-              defaultValue: false,
-              describe: "Parses simple line breaks as <br> (GFM Style)",
-              type: "boolean"
-            },
-            requireSpaceBeforeHeadingText: {
-              defaultValue: false,
-              describe: "Makes adding a space between `#` and the header text mandatory (GFM Style)",
-              type: "boolean"
-            },
-            ghMentions: {
-              defaultValue: false,
-              describe: "Enables github @mentions",
-              type: "boolean"
-            },
-            ghMentionsLink: {
-              defaultValue: "https://github.com/{u}",
-              describe: "Changes the link generated by @mentions. Only applies if ghMentions option is enabled.",
-              type: "string"
-            },
-            encodeEmails: {
-              defaultValue: true,
-              describe: "Encode e-mail addresses through the use of Character Entities, transforming ASCII e-mail addresses into its equivalent decimal entities",
-              type: "boolean"
-            },
-            openLinksInNewWindow: {
-              defaultValue: false,
-              describe: "Open all links in new windows",
-              type: "boolean"
-            },
-            backslashEscapesHTMLTags: {
-              defaultValue: false,
-              describe: "Support for HTML Tag escaping. ex: <div>foo</div>",
-              type: "boolean"
-            },
-            emoji: {
-              defaultValue: false,
-              describe: "Enable emoji support. Ex: `this is a :smile: emoji`",
-              type: "boolean"
-            },
-            underline: {
-              defaultValue: false,
-              describe: "Enable support for underline. Syntax is double or triple underscores: `__underline word__`. With this option enabled, underscores no longer parses into `<em>` and `<strong>`",
-              type: "boolean"
-            },
-            ellipsis: {
-              defaultValue: true,
-              describe: "Replaces three dots with the ellipsis unicode character",
-              type: "boolean"
-            },
-            completeHTMLDocument: {
-              defaultValue: false,
-              describe: "Outputs a complete html document, including `<html>`, `<head>` and `<body>` tags",
-              type: "boolean"
-            },
-            metadata: {
-              defaultValue: false,
-              describe: "Enable support for document metadata (defined at the top of the document between `\xAB\xAB\xAB` and `\xBB\xBB\xBB` or between `---` and `---`).",
-              type: "boolean"
-            },
-            splitAdjacentBlockquotes: {
-              defaultValue: false,
-              describe: "Split adjacent blockquote blocks",
-              type: "boolean"
+}
+function _type_of(obj) {
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
+}
+function _unsupported_iterable_to_array(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _array_like_to_array(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _array_like_to_array(o, minLen);
+}
+function _create_for_of_iterator_helper_loose(o, allowArrayLike) {
+    var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
+    if (it) return (it = it.call(o)).next.bind(it);
+    if (Array.isArray(o) || (it = _unsupported_iterable_to_array(o)) || allowArrayLike && o && typeof o.length === "number") {
+        if (it) o = it;
+        var i = 0;
+        return function() {
+            if (i >= o.length) {
+                return {
+                    done: true
+                };
             }
-          };
-          if (simple === false) {
-            return JSON.parse(JSON.stringify(defaultOptions));
-          }
-          var ret = {};
-          for (var opt in defaultOptions) {
-            if (defaultOptions.hasOwnProperty(opt)) {
-              ret[opt] = defaultOptions[opt].defaultValue;
-            }
-          }
-          return ret;
-        }
-        function allOptionsOn() {
-          var options = getDefaultOpts(true), ret = {};
-          for (var opt in options) {
-            if (options.hasOwnProperty(opt)) {
-              ret[opt] = true;
-            }
-          }
-          return ret;
-        }
-        var showdown = {}, parsers = {}, extensions = {}, globalOptions = getDefaultOpts(true), setFlavor = "vanilla", flavor = {
-          github: {
-            omitExtraWLInCodeBlocks: true,
-            simplifiedAutoLink: true,
-            excludeTrailingPunctuationFromURLs: true,
-            literalMidWordUnderscores: true,
-            strikethrough: true,
-            tables: true,
-            tablesHeaderId: true,
-            ghCodeBlocks: true,
-            tasklists: true,
-            disableForced4SpacesIndentedSublists: true,
-            simpleLineBreaks: true,
-            requireSpaceBeforeHeadingText: true,
-            ghCompatibleHeaderId: true,
-            ghMentions: true,
-            backslashEscapesHTMLTags: true,
-            emoji: true,
-            splitAdjacentBlockquotes: true
-          },
-          original: {
-            noHeaderId: true,
-            ghCodeBlocks: false
-          },
-          ghost: {
-            omitExtraWLInCodeBlocks: true,
-            parseImgDimensions: true,
-            simplifiedAutoLink: true,
-            excludeTrailingPunctuationFromURLs: true,
-            literalMidWordUnderscores: true,
-            strikethrough: true,
-            tables: true,
-            tablesHeaderId: true,
-            ghCodeBlocks: true,
-            tasklists: true,
-            smoothLivePreview: true,
-            simpleLineBreaks: true,
-            requireSpaceBeforeHeadingText: true,
-            ghMentions: false,
-            encodeEmails: true
-          },
-          vanilla: getDefaultOpts(true),
-          allOn: allOptionsOn()
-        };
-        showdown.helper = {};
-        showdown.extensions = {};
-        showdown.setOption = function(key, value) {
-          globalOptions[key] = value;
-          return this;
-        };
-        showdown.getOption = function(key) {
-          return globalOptions[key];
-        };
-        showdown.getOptions = function() {
-          return globalOptions;
-        };
-        showdown.resetOptions = function() {
-          globalOptions = getDefaultOpts(true);
-        };
-        showdown.setFlavor = function(name) {
-          if (!flavor.hasOwnProperty(name)) {
-            throw Error(name + " flavor was not found");
-          }
-          showdown.resetOptions();
-          var preset = flavor[name];
-          setFlavor = name;
-          for (var option in preset) {
-            if (preset.hasOwnProperty(option)) {
-              globalOptions[option] = preset[option];
-            }
-          }
-        };
-        showdown.getFlavor = function() {
-          return setFlavor;
-        };
-        showdown.getFlavorOptions = function(name) {
-          if (flavor.hasOwnProperty(name)) {
-            return flavor[name];
-          }
-        };
-        showdown.getDefaultOptions = function(simple) {
-          return getDefaultOpts(simple);
-        };
-        showdown.subParser = function(name, func) {
-          if (showdown.helper.isString(name)) {
-            if (typeof func !== "undefined") {
-              parsers[name] = func;
-            } else {
-              if (parsers.hasOwnProperty(name)) {
-                return parsers[name];
-              } else {
-                throw Error("SubParser named " + name + " not registered!");
-              }
-            }
-          }
-        };
-        showdown.extension = function(name, ext) {
-          if (!showdown.helper.isString(name)) {
-            throw Error("Extension 'name' must be a string");
-          }
-          name = showdown.helper.stdExtName(name);
-          if (showdown.helper.isUndefined(ext)) {
-            if (!extensions.hasOwnProperty(name)) {
-              throw Error("Extension named " + name + " is not registered!");
-            }
-            return extensions[name];
-          } else {
-            if (typeof ext === "function") {
-              ext = ext();
-            }
-            if (!showdown.helper.isArray(ext)) {
-              ext = [ext];
-            }
-            var validExtension = validate(ext, name);
-            if (validExtension.valid) {
-              extensions[name] = ext;
-            } else {
-              throw Error(validExtension.error);
-            }
-          }
-        };
-        showdown.getAllExtensions = function() {
-          return extensions;
-        };
-        showdown.removeExtension = function(name) {
-          delete extensions[name];
-        };
-        showdown.resetExtensions = function() {
-          extensions = {};
-        };
-        function validate(extension, name) {
-          var errMsg = name ? "Error in " + name + " extension->" : "Error in unnamed extension", ret = {
-            valid: true,
-            error: ""
-          };
-          if (!showdown.helper.isArray(extension)) {
-            extension = [extension];
-          }
-          for (var i3 = 0; i3 < extension.length; ++i3) {
-            var baseMsg = errMsg + " sub-extension " + i3 + ": ", ext = extension[i3];
-            if (typeof ext !== "object") {
-              ret.valid = false;
-              ret.error = baseMsg + "must be an object, but " + typeof ext + " given";
-              return ret;
-            }
-            if (!showdown.helper.isString(ext.type)) {
-              ret.valid = false;
-              ret.error = baseMsg + 'property "type" must be a string, but ' + typeof ext.type + " given";
-              return ret;
-            }
-            var type2 = ext.type = ext.type.toLowerCase();
-            if (type2 === "language") {
-              type2 = ext.type = "lang";
-            }
-            if (type2 === "html") {
-              type2 = ext.type = "output";
-            }
-            if (type2 !== "lang" && type2 !== "output" && type2 !== "listener") {
-              ret.valid = false;
-              ret.error = baseMsg + "type " + type2 + ' is not recognized. Valid values: "lang/language", "output/html" or "listener"';
-              return ret;
-            }
-            if (type2 === "listener") {
-              if (showdown.helper.isUndefined(ext.listeners)) {
-                ret.valid = false;
-                ret.error = baseMsg + '. Extensions of type "listener" must have a property called "listeners"';
-                return ret;
-              }
-            } else {
-              if (showdown.helper.isUndefined(ext.filter) && showdown.helper.isUndefined(ext.regex)) {
-                ret.valid = false;
-                ret.error = baseMsg + type2 + ' extensions must define either a "regex" property or a "filter" method';
-                return ret;
-              }
-            }
-            if (ext.listeners) {
-              if (typeof ext.listeners !== "object") {
-                ret.valid = false;
-                ret.error = baseMsg + '"listeners" property must be an object but ' + typeof ext.listeners + " given";
-                return ret;
-              }
-              for (var ln in ext.listeners) {
-                if (ext.listeners.hasOwnProperty(ln)) {
-                  if (typeof ext.listeners[ln] !== "function") {
-                    ret.valid = false;
-                    ret.error = baseMsg + '"listeners" property must be an hash of [event name]: [callback]. listeners.' + ln + " must be a function but " + typeof ext.listeners[ln] + " given";
-                    return ret;
-                  }
-                }
-              }
-            }
-            if (ext.filter) {
-              if (typeof ext.filter !== "function") {
-                ret.valid = false;
-                ret.error = baseMsg + '"filter" must be a function, but ' + typeof ext.filter + " given";
-                return ret;
-              }
-            } else if (ext.regex) {
-              if (showdown.helper.isString(ext.regex)) {
-                ext.regex = new RegExp(ext.regex, "g");
-              }
-              if (!(ext.regex instanceof RegExp)) {
-                ret.valid = false;
-                ret.error = baseMsg + '"regex" property must either be a string or a RegExp object, but ' + typeof ext.regex + " given";
-                return ret;
-              }
-              if (showdown.helper.isUndefined(ext.replace)) {
-                ret.valid = false;
-                ret.error = baseMsg + '"regex" extensions must implement a replace string or function';
-                return ret;
-              }
-            }
-          }
-          return ret;
-        }
-        showdown.validateExtension = function(ext) {
-          var validateExtension = validate(ext, null);
-          if (!validateExtension.valid) {
-            console.warn(validateExtension.error);
-            return false;
-          }
-          return true;
-        };
-        if (!showdown.hasOwnProperty("helper")) {
-          showdown.helper = {};
-        }
-        showdown.helper.isString = function(a2) {
-          return typeof a2 === "string" || a2 instanceof String;
-        };
-        showdown.helper.isFunction = function(a2) {
-          var getType = {};
-          return a2 && getType.toString.call(a2) === "[object Function]";
-        };
-        showdown.helper.isArray = function(a2) {
-          return Array.isArray(a2);
-        };
-        showdown.helper.isUndefined = function(value) {
-          return typeof value === "undefined";
-        };
-        showdown.helper.forEach = function(obj, callback) {
-          if (showdown.helper.isUndefined(obj)) {
-            throw new Error("obj param is required");
-          }
-          if (showdown.helper.isUndefined(callback)) {
-            throw new Error("callback param is required");
-          }
-          if (!showdown.helper.isFunction(callback)) {
-            throw new Error("callback param must be a function/closure");
-          }
-          if (typeof obj.forEach === "function") {
-            obj.forEach(callback);
-          } else if (showdown.helper.isArray(obj)) {
-            for (var i3 = 0; i3 < obj.length; i3++) {
-              callback(obj[i3], i3, obj);
-            }
-          } else if (typeof obj === "object") {
-            for (var prop in obj) {
-              if (obj.hasOwnProperty(prop)) {
-                callback(obj[prop], prop, obj);
-              }
-            }
-          } else {
-            throw new Error("obj does not seem to be an array or an iterable object");
-          }
-        };
-        showdown.helper.stdExtName = function(s3) {
-          return s3.replace(/[_?*+\/\\.^-]/g, "").replace(/\s/g, "").toLowerCase();
-        };
-        function escapeCharactersCallback(wholeMatch, m1) {
-          var charCodeToEscape = m1.charCodeAt(0);
-          return "\xA8E" + charCodeToEscape + "E";
-        }
-        showdown.helper.escapeCharactersCallback = escapeCharactersCallback;
-        showdown.helper.escapeCharacters = function(text, charsToEscape, afterBackslash) {
-          var regexString = "([" + charsToEscape.replace(/([\[\]\\])/g, "\\$1") + "])";
-          if (afterBackslash) {
-            regexString = "\\\\" + regexString;
-          }
-          var regex = new RegExp(regexString, "g");
-          text = text.replace(regex, escapeCharactersCallback);
-          return text;
-        };
-        showdown.helper.unescapeHTMLEntities = function(txt) {
-          return txt.replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
-        };
-        var rgxFindMatchPos = function(str2, left, right, flags) {
-          var f2 = flags || "", g = f2.indexOf("g") > -1, x = new RegExp(left + "|" + right, "g" + f2.replace(/g/g, "")), l2 = new RegExp(left, f2.replace(/g/g, "")), pos = [], t2, s3, m, start, end;
-          do {
-            t2 = 0;
-            while (m = x.exec(str2)) {
-              if (l2.test(m[0])) {
-                if (!t2++) {
-                  s3 = x.lastIndex;
-                  start = s3 - m[0].length;
-                }
-              } else if (t2) {
-                if (!--t2) {
-                  end = m.index + m[0].length;
-                  var obj = {
-                    left: { start, end: s3 },
-                    match: { start: s3, end: m.index },
-                    right: { start: m.index, end },
-                    wholeMatch: { start, end }
-                  };
-                  pos.push(obj);
-                  if (!g) {
-                    return pos;
-                  }
-                }
-              }
-            }
-          } while (t2 && (x.lastIndex = s3));
-          return pos;
-        };
-        showdown.helper.matchRecursiveRegExp = function(str2, left, right, flags) {
-          var matchPos = rgxFindMatchPos(str2, left, right, flags), results = [];
-          for (var i3 = 0; i3 < matchPos.length; ++i3) {
-            results.push([
-              str2.slice(matchPos[i3].wholeMatch.start, matchPos[i3].wholeMatch.end),
-              str2.slice(matchPos[i3].match.start, matchPos[i3].match.end),
-              str2.slice(matchPos[i3].left.start, matchPos[i3].left.end),
-              str2.slice(matchPos[i3].right.start, matchPos[i3].right.end)
-            ]);
-          }
-          return results;
-        };
-        showdown.helper.replaceRecursiveRegExp = function(str2, replacement, left, right, flags) {
-          if (!showdown.helper.isFunction(replacement)) {
-            var repStr = replacement;
-            replacement = function() {
-              return repStr;
+            return {
+                done: false,
+                value: o[i++]
             };
-          }
-          var matchPos = rgxFindMatchPos(str2, left, right, flags), finalStr = str2, lng = matchPos.length;
-          if (lng > 0) {
-            var bits = [];
-            if (matchPos[0].wholeMatch.start !== 0) {
-              bits.push(str2.slice(0, matchPos[0].wholeMatch.start));
-            }
-            for (var i3 = 0; i3 < lng; ++i3) {
-              bits.push(
-                replacement(
-                  str2.slice(matchPos[i3].wholeMatch.start, matchPos[i3].wholeMatch.end),
-                  str2.slice(matchPos[i3].match.start, matchPos[i3].match.end),
-                  str2.slice(matchPos[i3].left.start, matchPos[i3].left.end),
-                  str2.slice(matchPos[i3].right.start, matchPos[i3].right.end)
-                )
-              );
-              if (i3 < lng - 1) {
-                bits.push(str2.slice(matchPos[i3].wholeMatch.end, matchPos[i3 + 1].wholeMatch.start));
-              }
-            }
-            if (matchPos[lng - 1].wholeMatch.end < str2.length) {
-              bits.push(str2.slice(matchPos[lng - 1].wholeMatch.end));
-            }
-            finalStr = bits.join("");
-          }
-          return finalStr;
         };
-        showdown.helper.regexIndexOf = function(str2, regex, fromIndex) {
-          if (!showdown.helper.isString(str2)) {
-            throw "InvalidArgumentError: first parameter of showdown.helper.regexIndexOf function must be a string";
-          }
-          if (regex instanceof RegExp === false) {
-            throw "InvalidArgumentError: second parameter of showdown.helper.regexIndexOf function must be an instance of RegExp";
-          }
-          var indexOf = str2.substring(fromIndex || 0).search(regex);
-          return indexOf >= 0 ? indexOf + (fromIndex || 0) : indexOf;
-        };
-        showdown.helper.splitAtIndex = function(str2, index) {
-          if (!showdown.helper.isString(str2)) {
-            throw "InvalidArgumentError: first parameter of showdown.helper.regexIndexOf function must be a string";
-          }
-          return [str2.substring(0, index), str2.substring(index)];
-        };
-        showdown.helper.encodeEmailAddress = function(mail) {
-          var encode = [
-            function(ch) {
-              return "&#" + ch.charCodeAt(0) + ";";
-            },
-            function(ch) {
-              return "&#x" + ch.charCodeAt(0).toString(16) + ";";
-            },
-            function(ch) {
-              return ch;
-            }
-          ];
-          mail = mail.replace(/./g, function(ch) {
-            if (ch === "@") {
-              ch = encode[Math.floor(Math.random() * 2)](ch);
-            } else {
-              var r2 = Math.random();
-              ch = r2 > 0.9 ? encode[2](ch) : r2 > 0.45 ? encode[1](ch) : encode[0](ch);
-            }
-            return ch;
-          });
-          return mail;
-        };
-        showdown.helper.padEnd = function padEnd(str2, targetLength, padString) {
-          targetLength = targetLength >> 0;
-          padString = String(padString || " ");
-          if (str2.length > targetLength) {
-            return String(str2);
-          } else {
-            targetLength = targetLength - str2.length;
-            if (targetLength > padString.length) {
-              padString += padString.repeat(targetLength / padString.length);
-            }
-            return String(str2) + padString.slice(0, targetLength);
-          }
-        };
-        if (typeof console === "undefined") {
-          console = {
-            warn: function(msg) {
-              alert(msg);
-            },
-            log: function(msg) {
-              alert(msg);
-            },
-            error: function(msg) {
-              throw msg;
-            }
-          };
+    }
+    throw new TypeError("Invalid attempt to iterate non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+var fr = Object.create;
+var au = Object.defineProperty;
+var pr = Object.getOwnPropertyDescriptor;
+var hr = Object.getOwnPropertyNames;
+var mr = Object.getPrototypeOf, gr = Object.prototype.hasOwnProperty;
+var _e = function(e) {
+    return (typeof require === "undefined" ? "undefined" : _type_of(require)) < "u" ? require : (typeof Proxy === "undefined" ? "undefined" : _type_of(Proxy)) < "u" ? new Proxy(e, {
+        get: function(a, r) {
+            return ((typeof require === "undefined" ? "undefined" : _type_of(require)) < "u" ? require : a)[r];
         }
-        showdown.helper.regexes = {
-          asteriskDashAndColon: /([*_:~])/g
-        };
-        showdown.helper.emojis = {
-          "+1": "\u{1F44D}",
-          "-1": "\u{1F44E}",
-          "100": "\u{1F4AF}",
-          "1234": "\u{1F522}",
-          "1st_place_medal": "\u{1F947}",
-          "2nd_place_medal": "\u{1F948}",
-          "3rd_place_medal": "\u{1F949}",
-          "8ball": "\u{1F3B1}",
-          "a": "\u{1F170}\uFE0F",
-          "ab": "\u{1F18E}",
-          "abc": "\u{1F524}",
-          "abcd": "\u{1F521}",
-          "accept": "\u{1F251}",
-          "aerial_tramway": "\u{1F6A1}",
-          "airplane": "\u2708\uFE0F",
-          "alarm_clock": "\u23F0",
-          "alembic": "\u2697\uFE0F",
-          "alien": "\u{1F47D}",
-          "ambulance": "\u{1F691}",
-          "amphora": "\u{1F3FA}",
-          "anchor": "\u2693\uFE0F",
-          "angel": "\u{1F47C}",
-          "anger": "\u{1F4A2}",
-          "angry": "\u{1F620}",
-          "anguished": "\u{1F627}",
-          "ant": "\u{1F41C}",
-          "apple": "\u{1F34E}",
-          "aquarius": "\u2652\uFE0F",
-          "aries": "\u2648\uFE0F",
-          "arrow_backward": "\u25C0\uFE0F",
-          "arrow_double_down": "\u23EC",
-          "arrow_double_up": "\u23EB",
-          "arrow_down": "\u2B07\uFE0F",
-          "arrow_down_small": "\u{1F53D}",
-          "arrow_forward": "\u25B6\uFE0F",
-          "arrow_heading_down": "\u2935\uFE0F",
-          "arrow_heading_up": "\u2934\uFE0F",
-          "arrow_left": "\u2B05\uFE0F",
-          "arrow_lower_left": "\u2199\uFE0F",
-          "arrow_lower_right": "\u2198\uFE0F",
-          "arrow_right": "\u27A1\uFE0F",
-          "arrow_right_hook": "\u21AA\uFE0F",
-          "arrow_up": "\u2B06\uFE0F",
-          "arrow_up_down": "\u2195\uFE0F",
-          "arrow_up_small": "\u{1F53C}",
-          "arrow_upper_left": "\u2196\uFE0F",
-          "arrow_upper_right": "\u2197\uFE0F",
-          "arrows_clockwise": "\u{1F503}",
-          "arrows_counterclockwise": "\u{1F504}",
-          "art": "\u{1F3A8}",
-          "articulated_lorry": "\u{1F69B}",
-          "artificial_satellite": "\u{1F6F0}",
-          "astonished": "\u{1F632}",
-          "athletic_shoe": "\u{1F45F}",
-          "atm": "\u{1F3E7}",
-          "atom_symbol": "\u269B\uFE0F",
-          "avocado": "\u{1F951}",
-          "b": "\u{1F171}\uFE0F",
-          "baby": "\u{1F476}",
-          "baby_bottle": "\u{1F37C}",
-          "baby_chick": "\u{1F424}",
-          "baby_symbol": "\u{1F6BC}",
-          "back": "\u{1F519}",
-          "bacon": "\u{1F953}",
-          "badminton": "\u{1F3F8}",
-          "baggage_claim": "\u{1F6C4}",
-          "baguette_bread": "\u{1F956}",
-          "balance_scale": "\u2696\uFE0F",
-          "balloon": "\u{1F388}",
-          "ballot_box": "\u{1F5F3}",
-          "ballot_box_with_check": "\u2611\uFE0F",
-          "bamboo": "\u{1F38D}",
-          "banana": "\u{1F34C}",
-          "bangbang": "\u203C\uFE0F",
-          "bank": "\u{1F3E6}",
-          "bar_chart": "\u{1F4CA}",
-          "barber": "\u{1F488}",
-          "baseball": "\u26BE\uFE0F",
-          "basketball": "\u{1F3C0}",
-          "basketball_man": "\u26F9\uFE0F",
-          "basketball_woman": "\u26F9\uFE0F&zwj;\u2640\uFE0F",
-          "bat": "\u{1F987}",
-          "bath": "\u{1F6C0}",
-          "bathtub": "\u{1F6C1}",
-          "battery": "\u{1F50B}",
-          "beach_umbrella": "\u{1F3D6}",
-          "bear": "\u{1F43B}",
-          "bed": "\u{1F6CF}",
-          "bee": "\u{1F41D}",
-          "beer": "\u{1F37A}",
-          "beers": "\u{1F37B}",
-          "beetle": "\u{1F41E}",
-          "beginner": "\u{1F530}",
-          "bell": "\u{1F514}",
-          "bellhop_bell": "\u{1F6CE}",
-          "bento": "\u{1F371}",
-          "biking_man": "\u{1F6B4}",
-          "bike": "\u{1F6B2}",
-          "biking_woman": "\u{1F6B4}&zwj;\u2640\uFE0F",
-          "bikini": "\u{1F459}",
-          "biohazard": "\u2623\uFE0F",
-          "bird": "\u{1F426}",
-          "birthday": "\u{1F382}",
-          "black_circle": "\u26AB\uFE0F",
-          "black_flag": "\u{1F3F4}",
-          "black_heart": "\u{1F5A4}",
-          "black_joker": "\u{1F0CF}",
-          "black_large_square": "\u2B1B\uFE0F",
-          "black_medium_small_square": "\u25FE\uFE0F",
-          "black_medium_square": "\u25FC\uFE0F",
-          "black_nib": "\u2712\uFE0F",
-          "black_small_square": "\u25AA\uFE0F",
-          "black_square_button": "\u{1F532}",
-          "blonde_man": "\u{1F471}",
-          "blonde_woman": "\u{1F471}&zwj;\u2640\uFE0F",
-          "blossom": "\u{1F33C}",
-          "blowfish": "\u{1F421}",
-          "blue_book": "\u{1F4D8}",
-          "blue_car": "\u{1F699}",
-          "blue_heart": "\u{1F499}",
-          "blush": "\u{1F60A}",
-          "boar": "\u{1F417}",
-          "boat": "\u26F5\uFE0F",
-          "bomb": "\u{1F4A3}",
-          "book": "\u{1F4D6}",
-          "bookmark": "\u{1F516}",
-          "bookmark_tabs": "\u{1F4D1}",
-          "books": "\u{1F4DA}",
-          "boom": "\u{1F4A5}",
-          "boot": "\u{1F462}",
-          "bouquet": "\u{1F490}",
-          "bowing_man": "\u{1F647}",
-          "bow_and_arrow": "\u{1F3F9}",
-          "bowing_woman": "\u{1F647}&zwj;\u2640\uFE0F",
-          "bowling": "\u{1F3B3}",
-          "boxing_glove": "\u{1F94A}",
-          "boy": "\u{1F466}",
-          "bread": "\u{1F35E}",
-          "bride_with_veil": "\u{1F470}",
-          "bridge_at_night": "\u{1F309}",
-          "briefcase": "\u{1F4BC}",
-          "broken_heart": "\u{1F494}",
-          "bug": "\u{1F41B}",
-          "building_construction": "\u{1F3D7}",
-          "bulb": "\u{1F4A1}",
-          "bullettrain_front": "\u{1F685}",
-          "bullettrain_side": "\u{1F684}",
-          "burrito": "\u{1F32F}",
-          "bus": "\u{1F68C}",
-          "business_suit_levitating": "\u{1F574}",
-          "busstop": "\u{1F68F}",
-          "bust_in_silhouette": "\u{1F464}",
-          "busts_in_silhouette": "\u{1F465}",
-          "butterfly": "\u{1F98B}",
-          "cactus": "\u{1F335}",
-          "cake": "\u{1F370}",
-          "calendar": "\u{1F4C6}",
-          "call_me_hand": "\u{1F919}",
-          "calling": "\u{1F4F2}",
-          "camel": "\u{1F42B}",
-          "camera": "\u{1F4F7}",
-          "camera_flash": "\u{1F4F8}",
-          "camping": "\u{1F3D5}",
-          "cancer": "\u264B\uFE0F",
-          "candle": "\u{1F56F}",
-          "candy": "\u{1F36C}",
-          "canoe": "\u{1F6F6}",
-          "capital_abcd": "\u{1F520}",
-          "capricorn": "\u2651\uFE0F",
-          "car": "\u{1F697}",
-          "card_file_box": "\u{1F5C3}",
-          "card_index": "\u{1F4C7}",
-          "card_index_dividers": "\u{1F5C2}",
-          "carousel_horse": "\u{1F3A0}",
-          "carrot": "\u{1F955}",
-          "cat": "\u{1F431}",
-          "cat2": "\u{1F408}",
-          "cd": "\u{1F4BF}",
-          "chains": "\u26D3",
-          "champagne": "\u{1F37E}",
-          "chart": "\u{1F4B9}",
-          "chart_with_downwards_trend": "\u{1F4C9}",
-          "chart_with_upwards_trend": "\u{1F4C8}",
-          "checkered_flag": "\u{1F3C1}",
-          "cheese": "\u{1F9C0}",
-          "cherries": "\u{1F352}",
-          "cherry_blossom": "\u{1F338}",
-          "chestnut": "\u{1F330}",
-          "chicken": "\u{1F414}",
-          "children_crossing": "\u{1F6B8}",
-          "chipmunk": "\u{1F43F}",
-          "chocolate_bar": "\u{1F36B}",
-          "christmas_tree": "\u{1F384}",
-          "church": "\u26EA\uFE0F",
-          "cinema": "\u{1F3A6}",
-          "circus_tent": "\u{1F3AA}",
-          "city_sunrise": "\u{1F307}",
-          "city_sunset": "\u{1F306}",
-          "cityscape": "\u{1F3D9}",
-          "cl": "\u{1F191}",
-          "clamp": "\u{1F5DC}",
-          "clap": "\u{1F44F}",
-          "clapper": "\u{1F3AC}",
-          "classical_building": "\u{1F3DB}",
-          "clinking_glasses": "\u{1F942}",
-          "clipboard": "\u{1F4CB}",
-          "clock1": "\u{1F550}",
-          "clock10": "\u{1F559}",
-          "clock1030": "\u{1F565}",
-          "clock11": "\u{1F55A}",
-          "clock1130": "\u{1F566}",
-          "clock12": "\u{1F55B}",
-          "clock1230": "\u{1F567}",
-          "clock130": "\u{1F55C}",
-          "clock2": "\u{1F551}",
-          "clock230": "\u{1F55D}",
-          "clock3": "\u{1F552}",
-          "clock330": "\u{1F55E}",
-          "clock4": "\u{1F553}",
-          "clock430": "\u{1F55F}",
-          "clock5": "\u{1F554}",
-          "clock530": "\u{1F560}",
-          "clock6": "\u{1F555}",
-          "clock630": "\u{1F561}",
-          "clock7": "\u{1F556}",
-          "clock730": "\u{1F562}",
-          "clock8": "\u{1F557}",
-          "clock830": "\u{1F563}",
-          "clock9": "\u{1F558}",
-          "clock930": "\u{1F564}",
-          "closed_book": "\u{1F4D5}",
-          "closed_lock_with_key": "\u{1F510}",
-          "closed_umbrella": "\u{1F302}",
-          "cloud": "\u2601\uFE0F",
-          "cloud_with_lightning": "\u{1F329}",
-          "cloud_with_lightning_and_rain": "\u26C8",
-          "cloud_with_rain": "\u{1F327}",
-          "cloud_with_snow": "\u{1F328}",
-          "clown_face": "\u{1F921}",
-          "clubs": "\u2663\uFE0F",
-          "cocktail": "\u{1F378}",
-          "coffee": "\u2615\uFE0F",
-          "coffin": "\u26B0\uFE0F",
-          "cold_sweat": "\u{1F630}",
-          "comet": "\u2604\uFE0F",
-          "computer": "\u{1F4BB}",
-          "computer_mouse": "\u{1F5B1}",
-          "confetti_ball": "\u{1F38A}",
-          "confounded": "\u{1F616}",
-          "confused": "\u{1F615}",
-          "congratulations": "\u3297\uFE0F",
-          "construction": "\u{1F6A7}",
-          "construction_worker_man": "\u{1F477}",
-          "construction_worker_woman": "\u{1F477}&zwj;\u2640\uFE0F",
-          "control_knobs": "\u{1F39B}",
-          "convenience_store": "\u{1F3EA}",
-          "cookie": "\u{1F36A}",
-          "cool": "\u{1F192}",
-          "policeman": "\u{1F46E}",
-          "copyright": "\xA9\uFE0F",
-          "corn": "\u{1F33D}",
-          "couch_and_lamp": "\u{1F6CB}",
-          "couple": "\u{1F46B}",
-          "couple_with_heart_woman_man": "\u{1F491}",
-          "couple_with_heart_man_man": "\u{1F468}&zwj;\u2764\uFE0F&zwj;\u{1F468}",
-          "couple_with_heart_woman_woman": "\u{1F469}&zwj;\u2764\uFE0F&zwj;\u{1F469}",
-          "couplekiss_man_man": "\u{1F468}&zwj;\u2764\uFE0F&zwj;\u{1F48B}&zwj;\u{1F468}",
-          "couplekiss_man_woman": "\u{1F48F}",
-          "couplekiss_woman_woman": "\u{1F469}&zwj;\u2764\uFE0F&zwj;\u{1F48B}&zwj;\u{1F469}",
-          "cow": "\u{1F42E}",
-          "cow2": "\u{1F404}",
-          "cowboy_hat_face": "\u{1F920}",
-          "crab": "\u{1F980}",
-          "crayon": "\u{1F58D}",
-          "credit_card": "\u{1F4B3}",
-          "crescent_moon": "\u{1F319}",
-          "cricket": "\u{1F3CF}",
-          "crocodile": "\u{1F40A}",
-          "croissant": "\u{1F950}",
-          "crossed_fingers": "\u{1F91E}",
-          "crossed_flags": "\u{1F38C}",
-          "crossed_swords": "\u2694\uFE0F",
-          "crown": "\u{1F451}",
-          "cry": "\u{1F622}",
-          "crying_cat_face": "\u{1F63F}",
-          "crystal_ball": "\u{1F52E}",
-          "cucumber": "\u{1F952}",
-          "cupid": "\u{1F498}",
-          "curly_loop": "\u27B0",
-          "currency_exchange": "\u{1F4B1}",
-          "curry": "\u{1F35B}",
-          "custard": "\u{1F36E}",
-          "customs": "\u{1F6C3}",
-          "cyclone": "\u{1F300}",
-          "dagger": "\u{1F5E1}",
-          "dancer": "\u{1F483}",
-          "dancing_women": "\u{1F46F}",
-          "dancing_men": "\u{1F46F}&zwj;\u2642\uFE0F",
-          "dango": "\u{1F361}",
-          "dark_sunglasses": "\u{1F576}",
-          "dart": "\u{1F3AF}",
-          "dash": "\u{1F4A8}",
-          "date": "\u{1F4C5}",
-          "deciduous_tree": "\u{1F333}",
-          "deer": "\u{1F98C}",
-          "department_store": "\u{1F3EC}",
-          "derelict_house": "\u{1F3DA}",
-          "desert": "\u{1F3DC}",
-          "desert_island": "\u{1F3DD}",
-          "desktop_computer": "\u{1F5A5}",
-          "male_detective": "\u{1F575}\uFE0F",
-          "diamond_shape_with_a_dot_inside": "\u{1F4A0}",
-          "diamonds": "\u2666\uFE0F",
-          "disappointed": "\u{1F61E}",
-          "disappointed_relieved": "\u{1F625}",
-          "dizzy": "\u{1F4AB}",
-          "dizzy_face": "\u{1F635}",
-          "do_not_litter": "\u{1F6AF}",
-          "dog": "\u{1F436}",
-          "dog2": "\u{1F415}",
-          "dollar": "\u{1F4B5}",
-          "dolls": "\u{1F38E}",
-          "dolphin": "\u{1F42C}",
-          "door": "\u{1F6AA}",
-          "doughnut": "\u{1F369}",
-          "dove": "\u{1F54A}",
-          "dragon": "\u{1F409}",
-          "dragon_face": "\u{1F432}",
-          "dress": "\u{1F457}",
-          "dromedary_camel": "\u{1F42A}",
-          "drooling_face": "\u{1F924}",
-          "droplet": "\u{1F4A7}",
-          "drum": "\u{1F941}",
-          "duck": "\u{1F986}",
-          "dvd": "\u{1F4C0}",
-          "e-mail": "\u{1F4E7}",
-          "eagle": "\u{1F985}",
-          "ear": "\u{1F442}",
-          "ear_of_rice": "\u{1F33E}",
-          "earth_africa": "\u{1F30D}",
-          "earth_americas": "\u{1F30E}",
-          "earth_asia": "\u{1F30F}",
-          "egg": "\u{1F95A}",
-          "eggplant": "\u{1F346}",
-          "eight_pointed_black_star": "\u2734\uFE0F",
-          "eight_spoked_asterisk": "\u2733\uFE0F",
-          "electric_plug": "\u{1F50C}",
-          "elephant": "\u{1F418}",
-          "email": "\u2709\uFE0F",
-          "end": "\u{1F51A}",
-          "envelope_with_arrow": "\u{1F4E9}",
-          "euro": "\u{1F4B6}",
-          "european_castle": "\u{1F3F0}",
-          "european_post_office": "\u{1F3E4}",
-          "evergreen_tree": "\u{1F332}",
-          "exclamation": "\u2757\uFE0F",
-          "expressionless": "\u{1F611}",
-          "eye": "\u{1F441}",
-          "eye_speech_bubble": "\u{1F441}&zwj;\u{1F5E8}",
-          "eyeglasses": "\u{1F453}",
-          "eyes": "\u{1F440}",
-          "face_with_head_bandage": "\u{1F915}",
-          "face_with_thermometer": "\u{1F912}",
-          "fist_oncoming": "\u{1F44A}",
-          "factory": "\u{1F3ED}",
-          "fallen_leaf": "\u{1F342}",
-          "family_man_woman_boy": "\u{1F46A}",
-          "family_man_boy": "\u{1F468}&zwj;\u{1F466}",
-          "family_man_boy_boy": "\u{1F468}&zwj;\u{1F466}&zwj;\u{1F466}",
-          "family_man_girl": "\u{1F468}&zwj;\u{1F467}",
-          "family_man_girl_boy": "\u{1F468}&zwj;\u{1F467}&zwj;\u{1F466}",
-          "family_man_girl_girl": "\u{1F468}&zwj;\u{1F467}&zwj;\u{1F467}",
-          "family_man_man_boy": "\u{1F468}&zwj;\u{1F468}&zwj;\u{1F466}",
-          "family_man_man_boy_boy": "\u{1F468}&zwj;\u{1F468}&zwj;\u{1F466}&zwj;\u{1F466}",
-          "family_man_man_girl": "\u{1F468}&zwj;\u{1F468}&zwj;\u{1F467}",
-          "family_man_man_girl_boy": "\u{1F468}&zwj;\u{1F468}&zwj;\u{1F467}&zwj;\u{1F466}",
-          "family_man_man_girl_girl": "\u{1F468}&zwj;\u{1F468}&zwj;\u{1F467}&zwj;\u{1F467}",
-          "family_man_woman_boy_boy": "\u{1F468}&zwj;\u{1F469}&zwj;\u{1F466}&zwj;\u{1F466}",
-          "family_man_woman_girl": "\u{1F468}&zwj;\u{1F469}&zwj;\u{1F467}",
-          "family_man_woman_girl_boy": "\u{1F468}&zwj;\u{1F469}&zwj;\u{1F467}&zwj;\u{1F466}",
-          "family_man_woman_girl_girl": "\u{1F468}&zwj;\u{1F469}&zwj;\u{1F467}&zwj;\u{1F467}",
-          "family_woman_boy": "\u{1F469}&zwj;\u{1F466}",
-          "family_woman_boy_boy": "\u{1F469}&zwj;\u{1F466}&zwj;\u{1F466}",
-          "family_woman_girl": "\u{1F469}&zwj;\u{1F467}",
-          "family_woman_girl_boy": "\u{1F469}&zwj;\u{1F467}&zwj;\u{1F466}",
-          "family_woman_girl_girl": "\u{1F469}&zwj;\u{1F467}&zwj;\u{1F467}",
-          "family_woman_woman_boy": "\u{1F469}&zwj;\u{1F469}&zwj;\u{1F466}",
-          "family_woman_woman_boy_boy": "\u{1F469}&zwj;\u{1F469}&zwj;\u{1F466}&zwj;\u{1F466}",
-          "family_woman_woman_girl": "\u{1F469}&zwj;\u{1F469}&zwj;\u{1F467}",
-          "family_woman_woman_girl_boy": "\u{1F469}&zwj;\u{1F469}&zwj;\u{1F467}&zwj;\u{1F466}",
-          "family_woman_woman_girl_girl": "\u{1F469}&zwj;\u{1F469}&zwj;\u{1F467}&zwj;\u{1F467}",
-          "fast_forward": "\u23E9",
-          "fax": "\u{1F4E0}",
-          "fearful": "\u{1F628}",
-          "feet": "\u{1F43E}",
-          "female_detective": "\u{1F575}\uFE0F&zwj;\u2640\uFE0F",
-          "ferris_wheel": "\u{1F3A1}",
-          "ferry": "\u26F4",
-          "field_hockey": "\u{1F3D1}",
-          "file_cabinet": "\u{1F5C4}",
-          "file_folder": "\u{1F4C1}",
-          "film_projector": "\u{1F4FD}",
-          "film_strip": "\u{1F39E}",
-          "fire": "\u{1F525}",
-          "fire_engine": "\u{1F692}",
-          "fireworks": "\u{1F386}",
-          "first_quarter_moon": "\u{1F313}",
-          "first_quarter_moon_with_face": "\u{1F31B}",
-          "fish": "\u{1F41F}",
-          "fish_cake": "\u{1F365}",
-          "fishing_pole_and_fish": "\u{1F3A3}",
-          "fist_raised": "\u270A",
-          "fist_left": "\u{1F91B}",
-          "fist_right": "\u{1F91C}",
-          "flags": "\u{1F38F}",
-          "flashlight": "\u{1F526}",
-          "fleur_de_lis": "\u269C\uFE0F",
-          "flight_arrival": "\u{1F6EC}",
-          "flight_departure": "\u{1F6EB}",
-          "floppy_disk": "\u{1F4BE}",
-          "flower_playing_cards": "\u{1F3B4}",
-          "flushed": "\u{1F633}",
-          "fog": "\u{1F32B}",
-          "foggy": "\u{1F301}",
-          "football": "\u{1F3C8}",
-          "footprints": "\u{1F463}",
-          "fork_and_knife": "\u{1F374}",
-          "fountain": "\u26F2\uFE0F",
-          "fountain_pen": "\u{1F58B}",
-          "four_leaf_clover": "\u{1F340}",
-          "fox_face": "\u{1F98A}",
-          "framed_picture": "\u{1F5BC}",
-          "free": "\u{1F193}",
-          "fried_egg": "\u{1F373}",
-          "fried_shrimp": "\u{1F364}",
-          "fries": "\u{1F35F}",
-          "frog": "\u{1F438}",
-          "frowning": "\u{1F626}",
-          "frowning_face": "\u2639\uFE0F",
-          "frowning_man": "\u{1F64D}&zwj;\u2642\uFE0F",
-          "frowning_woman": "\u{1F64D}",
-          "middle_finger": "\u{1F595}",
-          "fuelpump": "\u26FD\uFE0F",
-          "full_moon": "\u{1F315}",
-          "full_moon_with_face": "\u{1F31D}",
-          "funeral_urn": "\u26B1\uFE0F",
-          "game_die": "\u{1F3B2}",
-          "gear": "\u2699\uFE0F",
-          "gem": "\u{1F48E}",
-          "gemini": "\u264A\uFE0F",
-          "ghost": "\u{1F47B}",
-          "gift": "\u{1F381}",
-          "gift_heart": "\u{1F49D}",
-          "girl": "\u{1F467}",
-          "globe_with_meridians": "\u{1F310}",
-          "goal_net": "\u{1F945}",
-          "goat": "\u{1F410}",
-          "golf": "\u26F3\uFE0F",
-          "golfing_man": "\u{1F3CC}\uFE0F",
-          "golfing_woman": "\u{1F3CC}\uFE0F&zwj;\u2640\uFE0F",
-          "gorilla": "\u{1F98D}",
-          "grapes": "\u{1F347}",
-          "green_apple": "\u{1F34F}",
-          "green_book": "\u{1F4D7}",
-          "green_heart": "\u{1F49A}",
-          "green_salad": "\u{1F957}",
-          "grey_exclamation": "\u2755",
-          "grey_question": "\u2754",
-          "grimacing": "\u{1F62C}",
-          "grin": "\u{1F601}",
-          "grinning": "\u{1F600}",
-          "guardsman": "\u{1F482}",
-          "guardswoman": "\u{1F482}&zwj;\u2640\uFE0F",
-          "guitar": "\u{1F3B8}",
-          "gun": "\u{1F52B}",
-          "haircut_woman": "\u{1F487}",
-          "haircut_man": "\u{1F487}&zwj;\u2642\uFE0F",
-          "hamburger": "\u{1F354}",
-          "hammer": "\u{1F528}",
-          "hammer_and_pick": "\u2692",
-          "hammer_and_wrench": "\u{1F6E0}",
-          "hamster": "\u{1F439}",
-          "hand": "\u270B",
-          "handbag": "\u{1F45C}",
-          "handshake": "\u{1F91D}",
-          "hankey": "\u{1F4A9}",
-          "hatched_chick": "\u{1F425}",
-          "hatching_chick": "\u{1F423}",
-          "headphones": "\u{1F3A7}",
-          "hear_no_evil": "\u{1F649}",
-          "heart": "\u2764\uFE0F",
-          "heart_decoration": "\u{1F49F}",
-          "heart_eyes": "\u{1F60D}",
-          "heart_eyes_cat": "\u{1F63B}",
-          "heartbeat": "\u{1F493}",
-          "heartpulse": "\u{1F497}",
-          "hearts": "\u2665\uFE0F",
-          "heavy_check_mark": "\u2714\uFE0F",
-          "heavy_division_sign": "\u2797",
-          "heavy_dollar_sign": "\u{1F4B2}",
-          "heavy_heart_exclamation": "\u2763\uFE0F",
-          "heavy_minus_sign": "\u2796",
-          "heavy_multiplication_x": "\u2716\uFE0F",
-          "heavy_plus_sign": "\u2795",
-          "helicopter": "\u{1F681}",
-          "herb": "\u{1F33F}",
-          "hibiscus": "\u{1F33A}",
-          "high_brightness": "\u{1F506}",
-          "high_heel": "\u{1F460}",
-          "hocho": "\u{1F52A}",
-          "hole": "\u{1F573}",
-          "honey_pot": "\u{1F36F}",
-          "horse": "\u{1F434}",
-          "horse_racing": "\u{1F3C7}",
-          "hospital": "\u{1F3E5}",
-          "hot_pepper": "\u{1F336}",
-          "hotdog": "\u{1F32D}",
-          "hotel": "\u{1F3E8}",
-          "hotsprings": "\u2668\uFE0F",
-          "hourglass": "\u231B\uFE0F",
-          "hourglass_flowing_sand": "\u23F3",
-          "house": "\u{1F3E0}",
-          "house_with_garden": "\u{1F3E1}",
-          "houses": "\u{1F3D8}",
-          "hugs": "\u{1F917}",
-          "hushed": "\u{1F62F}",
-          "ice_cream": "\u{1F368}",
-          "ice_hockey": "\u{1F3D2}",
-          "ice_skate": "\u26F8",
-          "icecream": "\u{1F366}",
-          "id": "\u{1F194}",
-          "ideograph_advantage": "\u{1F250}",
-          "imp": "\u{1F47F}",
-          "inbox_tray": "\u{1F4E5}",
-          "incoming_envelope": "\u{1F4E8}",
-          "tipping_hand_woman": "\u{1F481}",
-          "information_source": "\u2139\uFE0F",
-          "innocent": "\u{1F607}",
-          "interrobang": "\u2049\uFE0F",
-          "iphone": "\u{1F4F1}",
-          "izakaya_lantern": "\u{1F3EE}",
-          "jack_o_lantern": "\u{1F383}",
-          "japan": "\u{1F5FE}",
-          "japanese_castle": "\u{1F3EF}",
-          "japanese_goblin": "\u{1F47A}",
-          "japanese_ogre": "\u{1F479}",
-          "jeans": "\u{1F456}",
-          "joy": "\u{1F602}",
-          "joy_cat": "\u{1F639}",
-          "joystick": "\u{1F579}",
-          "kaaba": "\u{1F54B}",
-          "key": "\u{1F511}",
-          "keyboard": "\u2328\uFE0F",
-          "keycap_ten": "\u{1F51F}",
-          "kick_scooter": "\u{1F6F4}",
-          "kimono": "\u{1F458}",
-          "kiss": "\u{1F48B}",
-          "kissing": "\u{1F617}",
-          "kissing_cat": "\u{1F63D}",
-          "kissing_closed_eyes": "\u{1F61A}",
-          "kissing_heart": "\u{1F618}",
-          "kissing_smiling_eyes": "\u{1F619}",
-          "kiwi_fruit": "\u{1F95D}",
-          "koala": "\u{1F428}",
-          "koko": "\u{1F201}",
-          "label": "\u{1F3F7}",
-          "large_blue_circle": "\u{1F535}",
-          "large_blue_diamond": "\u{1F537}",
-          "large_orange_diamond": "\u{1F536}",
-          "last_quarter_moon": "\u{1F317}",
-          "last_quarter_moon_with_face": "\u{1F31C}",
-          "latin_cross": "\u271D\uFE0F",
-          "laughing": "\u{1F606}",
-          "leaves": "\u{1F343}",
-          "ledger": "\u{1F4D2}",
-          "left_luggage": "\u{1F6C5}",
-          "left_right_arrow": "\u2194\uFE0F",
-          "leftwards_arrow_with_hook": "\u21A9\uFE0F",
-          "lemon": "\u{1F34B}",
-          "leo": "\u264C\uFE0F",
-          "leopard": "\u{1F406}",
-          "level_slider": "\u{1F39A}",
-          "libra": "\u264E\uFE0F",
-          "light_rail": "\u{1F688}",
-          "link": "\u{1F517}",
-          "lion": "\u{1F981}",
-          "lips": "\u{1F444}",
-          "lipstick": "\u{1F484}",
-          "lizard": "\u{1F98E}",
-          "lock": "\u{1F512}",
-          "lock_with_ink_pen": "\u{1F50F}",
-          "lollipop": "\u{1F36D}",
-          "loop": "\u27BF",
-          "loud_sound": "\u{1F50A}",
-          "loudspeaker": "\u{1F4E2}",
-          "love_hotel": "\u{1F3E9}",
-          "love_letter": "\u{1F48C}",
-          "low_brightness": "\u{1F505}",
-          "lying_face": "\u{1F925}",
-          "m": "\u24C2\uFE0F",
-          "mag": "\u{1F50D}",
-          "mag_right": "\u{1F50E}",
-          "mahjong": "\u{1F004}\uFE0F",
-          "mailbox": "\u{1F4EB}",
-          "mailbox_closed": "\u{1F4EA}",
-          "mailbox_with_mail": "\u{1F4EC}",
-          "mailbox_with_no_mail": "\u{1F4ED}",
-          "man": "\u{1F468}",
-          "man_artist": "\u{1F468}&zwj;\u{1F3A8}",
-          "man_astronaut": "\u{1F468}&zwj;\u{1F680}",
-          "man_cartwheeling": "\u{1F938}&zwj;\u2642\uFE0F",
-          "man_cook": "\u{1F468}&zwj;\u{1F373}",
-          "man_dancing": "\u{1F57A}",
-          "man_facepalming": "\u{1F926}&zwj;\u2642\uFE0F",
-          "man_factory_worker": "\u{1F468}&zwj;\u{1F3ED}",
-          "man_farmer": "\u{1F468}&zwj;\u{1F33E}",
-          "man_firefighter": "\u{1F468}&zwj;\u{1F692}",
-          "man_health_worker": "\u{1F468}&zwj;\u2695\uFE0F",
-          "man_in_tuxedo": "\u{1F935}",
-          "man_judge": "\u{1F468}&zwj;\u2696\uFE0F",
-          "man_juggling": "\u{1F939}&zwj;\u2642\uFE0F",
-          "man_mechanic": "\u{1F468}&zwj;\u{1F527}",
-          "man_office_worker": "\u{1F468}&zwj;\u{1F4BC}",
-          "man_pilot": "\u{1F468}&zwj;\u2708\uFE0F",
-          "man_playing_handball": "\u{1F93E}&zwj;\u2642\uFE0F",
-          "man_playing_water_polo": "\u{1F93D}&zwj;\u2642\uFE0F",
-          "man_scientist": "\u{1F468}&zwj;\u{1F52C}",
-          "man_shrugging": "\u{1F937}&zwj;\u2642\uFE0F",
-          "man_singer": "\u{1F468}&zwj;\u{1F3A4}",
-          "man_student": "\u{1F468}&zwj;\u{1F393}",
-          "man_teacher": "\u{1F468}&zwj;\u{1F3EB}",
-          "man_technologist": "\u{1F468}&zwj;\u{1F4BB}",
-          "man_with_gua_pi_mao": "\u{1F472}",
-          "man_with_turban": "\u{1F473}",
-          "tangerine": "\u{1F34A}",
-          "mans_shoe": "\u{1F45E}",
-          "mantelpiece_clock": "\u{1F570}",
-          "maple_leaf": "\u{1F341}",
-          "martial_arts_uniform": "\u{1F94B}",
-          "mask": "\u{1F637}",
-          "massage_woman": "\u{1F486}",
-          "massage_man": "\u{1F486}&zwj;\u2642\uFE0F",
-          "meat_on_bone": "\u{1F356}",
-          "medal_military": "\u{1F396}",
-          "medal_sports": "\u{1F3C5}",
-          "mega": "\u{1F4E3}",
-          "melon": "\u{1F348}",
-          "memo": "\u{1F4DD}",
-          "men_wrestling": "\u{1F93C}&zwj;\u2642\uFE0F",
-          "menorah": "\u{1F54E}",
-          "mens": "\u{1F6B9}",
-          "metal": "\u{1F918}",
-          "metro": "\u{1F687}",
-          "microphone": "\u{1F3A4}",
-          "microscope": "\u{1F52C}",
-          "milk_glass": "\u{1F95B}",
-          "milky_way": "\u{1F30C}",
-          "minibus": "\u{1F690}",
-          "minidisc": "\u{1F4BD}",
-          "mobile_phone_off": "\u{1F4F4}",
-          "money_mouth_face": "\u{1F911}",
-          "money_with_wings": "\u{1F4B8}",
-          "moneybag": "\u{1F4B0}",
-          "monkey": "\u{1F412}",
-          "monkey_face": "\u{1F435}",
-          "monorail": "\u{1F69D}",
-          "moon": "\u{1F314}",
-          "mortar_board": "\u{1F393}",
-          "mosque": "\u{1F54C}",
-          "motor_boat": "\u{1F6E5}",
-          "motor_scooter": "\u{1F6F5}",
-          "motorcycle": "\u{1F3CD}",
-          "motorway": "\u{1F6E3}",
-          "mount_fuji": "\u{1F5FB}",
-          "mountain": "\u26F0",
-          "mountain_biking_man": "\u{1F6B5}",
-          "mountain_biking_woman": "\u{1F6B5}&zwj;\u2640\uFE0F",
-          "mountain_cableway": "\u{1F6A0}",
-          "mountain_railway": "\u{1F69E}",
-          "mountain_snow": "\u{1F3D4}",
-          "mouse": "\u{1F42D}",
-          "mouse2": "\u{1F401}",
-          "movie_camera": "\u{1F3A5}",
-          "moyai": "\u{1F5FF}",
-          "mrs_claus": "\u{1F936}",
-          "muscle": "\u{1F4AA}",
-          "mushroom": "\u{1F344}",
-          "musical_keyboard": "\u{1F3B9}",
-          "musical_note": "\u{1F3B5}",
-          "musical_score": "\u{1F3BC}",
-          "mute": "\u{1F507}",
-          "nail_care": "\u{1F485}",
-          "name_badge": "\u{1F4DB}",
-          "national_park": "\u{1F3DE}",
-          "nauseated_face": "\u{1F922}",
-          "necktie": "\u{1F454}",
-          "negative_squared_cross_mark": "\u274E",
-          "nerd_face": "\u{1F913}",
-          "neutral_face": "\u{1F610}",
-          "new": "\u{1F195}",
-          "new_moon": "\u{1F311}",
-          "new_moon_with_face": "\u{1F31A}",
-          "newspaper": "\u{1F4F0}",
-          "newspaper_roll": "\u{1F5DE}",
-          "next_track_button": "\u23ED",
-          "ng": "\u{1F196}",
-          "no_good_man": "\u{1F645}&zwj;\u2642\uFE0F",
-          "no_good_woman": "\u{1F645}",
-          "night_with_stars": "\u{1F303}",
-          "no_bell": "\u{1F515}",
-          "no_bicycles": "\u{1F6B3}",
-          "no_entry": "\u26D4\uFE0F",
-          "no_entry_sign": "\u{1F6AB}",
-          "no_mobile_phones": "\u{1F4F5}",
-          "no_mouth": "\u{1F636}",
-          "no_pedestrians": "\u{1F6B7}",
-          "no_smoking": "\u{1F6AD}",
-          "non-potable_water": "\u{1F6B1}",
-          "nose": "\u{1F443}",
-          "notebook": "\u{1F4D3}",
-          "notebook_with_decorative_cover": "\u{1F4D4}",
-          "notes": "\u{1F3B6}",
-          "nut_and_bolt": "\u{1F529}",
-          "o": "\u2B55\uFE0F",
-          "o2": "\u{1F17E}\uFE0F",
-          "ocean": "\u{1F30A}",
-          "octopus": "\u{1F419}",
-          "oden": "\u{1F362}",
-          "office": "\u{1F3E2}",
-          "oil_drum": "\u{1F6E2}",
-          "ok": "\u{1F197}",
-          "ok_hand": "\u{1F44C}",
-          "ok_man": "\u{1F646}&zwj;\u2642\uFE0F",
-          "ok_woman": "\u{1F646}",
-          "old_key": "\u{1F5DD}",
-          "older_man": "\u{1F474}",
-          "older_woman": "\u{1F475}",
-          "om": "\u{1F549}",
-          "on": "\u{1F51B}",
-          "oncoming_automobile": "\u{1F698}",
-          "oncoming_bus": "\u{1F68D}",
-          "oncoming_police_car": "\u{1F694}",
-          "oncoming_taxi": "\u{1F696}",
-          "open_file_folder": "\u{1F4C2}",
-          "open_hands": "\u{1F450}",
-          "open_mouth": "\u{1F62E}",
-          "open_umbrella": "\u2602\uFE0F",
-          "ophiuchus": "\u26CE",
-          "orange_book": "\u{1F4D9}",
-          "orthodox_cross": "\u2626\uFE0F",
-          "outbox_tray": "\u{1F4E4}",
-          "owl": "\u{1F989}",
-          "ox": "\u{1F402}",
-          "package": "\u{1F4E6}",
-          "page_facing_up": "\u{1F4C4}",
-          "page_with_curl": "\u{1F4C3}",
-          "pager": "\u{1F4DF}",
-          "paintbrush": "\u{1F58C}",
-          "palm_tree": "\u{1F334}",
-          "pancakes": "\u{1F95E}",
-          "panda_face": "\u{1F43C}",
-          "paperclip": "\u{1F4CE}",
-          "paperclips": "\u{1F587}",
-          "parasol_on_ground": "\u26F1",
-          "parking": "\u{1F17F}\uFE0F",
-          "part_alternation_mark": "\u303D\uFE0F",
-          "partly_sunny": "\u26C5\uFE0F",
-          "passenger_ship": "\u{1F6F3}",
-          "passport_control": "\u{1F6C2}",
-          "pause_button": "\u23F8",
-          "peace_symbol": "\u262E\uFE0F",
-          "peach": "\u{1F351}",
-          "peanuts": "\u{1F95C}",
-          "pear": "\u{1F350}",
-          "pen": "\u{1F58A}",
-          "pencil2": "\u270F\uFE0F",
-          "penguin": "\u{1F427}",
-          "pensive": "\u{1F614}",
-          "performing_arts": "\u{1F3AD}",
-          "persevere": "\u{1F623}",
-          "person_fencing": "\u{1F93A}",
-          "pouting_woman": "\u{1F64E}",
-          "phone": "\u260E\uFE0F",
-          "pick": "\u26CF",
-          "pig": "\u{1F437}",
-          "pig2": "\u{1F416}",
-          "pig_nose": "\u{1F43D}",
-          "pill": "\u{1F48A}",
-          "pineapple": "\u{1F34D}",
-          "ping_pong": "\u{1F3D3}",
-          "pisces": "\u2653\uFE0F",
-          "pizza": "\u{1F355}",
-          "place_of_worship": "\u{1F6D0}",
-          "plate_with_cutlery": "\u{1F37D}",
-          "play_or_pause_button": "\u23EF",
-          "point_down": "\u{1F447}",
-          "point_left": "\u{1F448}",
-          "point_right": "\u{1F449}",
-          "point_up": "\u261D\uFE0F",
-          "point_up_2": "\u{1F446}",
-          "police_car": "\u{1F693}",
-          "policewoman": "\u{1F46E}&zwj;\u2640\uFE0F",
-          "poodle": "\u{1F429}",
-          "popcorn": "\u{1F37F}",
-          "post_office": "\u{1F3E3}",
-          "postal_horn": "\u{1F4EF}",
-          "postbox": "\u{1F4EE}",
-          "potable_water": "\u{1F6B0}",
-          "potato": "\u{1F954}",
-          "pouch": "\u{1F45D}",
-          "poultry_leg": "\u{1F357}",
-          "pound": "\u{1F4B7}",
-          "rage": "\u{1F621}",
-          "pouting_cat": "\u{1F63E}",
-          "pouting_man": "\u{1F64E}&zwj;\u2642\uFE0F",
-          "pray": "\u{1F64F}",
-          "prayer_beads": "\u{1F4FF}",
-          "pregnant_woman": "\u{1F930}",
-          "previous_track_button": "\u23EE",
-          "prince": "\u{1F934}",
-          "princess": "\u{1F478}",
-          "printer": "\u{1F5A8}",
-          "purple_heart": "\u{1F49C}",
-          "purse": "\u{1F45B}",
-          "pushpin": "\u{1F4CC}",
-          "put_litter_in_its_place": "\u{1F6AE}",
-          "question": "\u2753",
-          "rabbit": "\u{1F430}",
-          "rabbit2": "\u{1F407}",
-          "racehorse": "\u{1F40E}",
-          "racing_car": "\u{1F3CE}",
-          "radio": "\u{1F4FB}",
-          "radio_button": "\u{1F518}",
-          "radioactive": "\u2622\uFE0F",
-          "railway_car": "\u{1F683}",
-          "railway_track": "\u{1F6E4}",
-          "rainbow": "\u{1F308}",
-          "rainbow_flag": "\u{1F3F3}\uFE0F&zwj;\u{1F308}",
-          "raised_back_of_hand": "\u{1F91A}",
-          "raised_hand_with_fingers_splayed": "\u{1F590}",
-          "raised_hands": "\u{1F64C}",
-          "raising_hand_woman": "\u{1F64B}",
-          "raising_hand_man": "\u{1F64B}&zwj;\u2642\uFE0F",
-          "ram": "\u{1F40F}",
-          "ramen": "\u{1F35C}",
-          "rat": "\u{1F400}",
-          "record_button": "\u23FA",
-          "recycle": "\u267B\uFE0F",
-          "red_circle": "\u{1F534}",
-          "registered": "\xAE\uFE0F",
-          "relaxed": "\u263A\uFE0F",
-          "relieved": "\u{1F60C}",
-          "reminder_ribbon": "\u{1F397}",
-          "repeat": "\u{1F501}",
-          "repeat_one": "\u{1F502}",
-          "rescue_worker_helmet": "\u26D1",
-          "restroom": "\u{1F6BB}",
-          "revolving_hearts": "\u{1F49E}",
-          "rewind": "\u23EA",
-          "rhinoceros": "\u{1F98F}",
-          "ribbon": "\u{1F380}",
-          "rice": "\u{1F35A}",
-          "rice_ball": "\u{1F359}",
-          "rice_cracker": "\u{1F358}",
-          "rice_scene": "\u{1F391}",
-          "right_anger_bubble": "\u{1F5EF}",
-          "ring": "\u{1F48D}",
-          "robot": "\u{1F916}",
-          "rocket": "\u{1F680}",
-          "rofl": "\u{1F923}",
-          "roll_eyes": "\u{1F644}",
-          "roller_coaster": "\u{1F3A2}",
-          "rooster": "\u{1F413}",
-          "rose": "\u{1F339}",
-          "rosette": "\u{1F3F5}",
-          "rotating_light": "\u{1F6A8}",
-          "round_pushpin": "\u{1F4CD}",
-          "rowing_man": "\u{1F6A3}",
-          "rowing_woman": "\u{1F6A3}&zwj;\u2640\uFE0F",
-          "rugby_football": "\u{1F3C9}",
-          "running_man": "\u{1F3C3}",
-          "running_shirt_with_sash": "\u{1F3BD}",
-          "running_woman": "\u{1F3C3}&zwj;\u2640\uFE0F",
-          "sa": "\u{1F202}\uFE0F",
-          "sagittarius": "\u2650\uFE0F",
-          "sake": "\u{1F376}",
-          "sandal": "\u{1F461}",
-          "santa": "\u{1F385}",
-          "satellite": "\u{1F4E1}",
-          "saxophone": "\u{1F3B7}",
-          "school": "\u{1F3EB}",
-          "school_satchel": "\u{1F392}",
-          "scissors": "\u2702\uFE0F",
-          "scorpion": "\u{1F982}",
-          "scorpius": "\u264F\uFE0F",
-          "scream": "\u{1F631}",
-          "scream_cat": "\u{1F640}",
-          "scroll": "\u{1F4DC}",
-          "seat": "\u{1F4BA}",
-          "secret": "\u3299\uFE0F",
-          "see_no_evil": "\u{1F648}",
-          "seedling": "\u{1F331}",
-          "selfie": "\u{1F933}",
-          "shallow_pan_of_food": "\u{1F958}",
-          "shamrock": "\u2618\uFE0F",
-          "shark": "\u{1F988}",
-          "shaved_ice": "\u{1F367}",
-          "sheep": "\u{1F411}",
-          "shell": "\u{1F41A}",
-          "shield": "\u{1F6E1}",
-          "shinto_shrine": "\u26E9",
-          "ship": "\u{1F6A2}",
-          "shirt": "\u{1F455}",
-          "shopping": "\u{1F6CD}",
-          "shopping_cart": "\u{1F6D2}",
-          "shower": "\u{1F6BF}",
-          "shrimp": "\u{1F990}",
-          "signal_strength": "\u{1F4F6}",
-          "six_pointed_star": "\u{1F52F}",
-          "ski": "\u{1F3BF}",
-          "skier": "\u26F7",
-          "skull": "\u{1F480}",
-          "skull_and_crossbones": "\u2620\uFE0F",
-          "sleeping": "\u{1F634}",
-          "sleeping_bed": "\u{1F6CC}",
-          "sleepy": "\u{1F62A}",
-          "slightly_frowning_face": "\u{1F641}",
-          "slightly_smiling_face": "\u{1F642}",
-          "slot_machine": "\u{1F3B0}",
-          "small_airplane": "\u{1F6E9}",
-          "small_blue_diamond": "\u{1F539}",
-          "small_orange_diamond": "\u{1F538}",
-          "small_red_triangle": "\u{1F53A}",
-          "small_red_triangle_down": "\u{1F53B}",
-          "smile": "\u{1F604}",
-          "smile_cat": "\u{1F638}",
-          "smiley": "\u{1F603}",
-          "smiley_cat": "\u{1F63A}",
-          "smiling_imp": "\u{1F608}",
-          "smirk": "\u{1F60F}",
-          "smirk_cat": "\u{1F63C}",
-          "smoking": "\u{1F6AC}",
-          "snail": "\u{1F40C}",
-          "snake": "\u{1F40D}",
-          "sneezing_face": "\u{1F927}",
-          "snowboarder": "\u{1F3C2}",
-          "snowflake": "\u2744\uFE0F",
-          "snowman": "\u26C4\uFE0F",
-          "snowman_with_snow": "\u2603\uFE0F",
-          "sob": "\u{1F62D}",
-          "soccer": "\u26BD\uFE0F",
-          "soon": "\u{1F51C}",
-          "sos": "\u{1F198}",
-          "sound": "\u{1F509}",
-          "space_invader": "\u{1F47E}",
-          "spades": "\u2660\uFE0F",
-          "spaghetti": "\u{1F35D}",
-          "sparkle": "\u2747\uFE0F",
-          "sparkler": "\u{1F387}",
-          "sparkles": "\u2728",
-          "sparkling_heart": "\u{1F496}",
-          "speak_no_evil": "\u{1F64A}",
-          "speaker": "\u{1F508}",
-          "speaking_head": "\u{1F5E3}",
-          "speech_balloon": "\u{1F4AC}",
-          "speedboat": "\u{1F6A4}",
-          "spider": "\u{1F577}",
-          "spider_web": "\u{1F578}",
-          "spiral_calendar": "\u{1F5D3}",
-          "spiral_notepad": "\u{1F5D2}",
-          "spoon": "\u{1F944}",
-          "squid": "\u{1F991}",
-          "stadium": "\u{1F3DF}",
-          "star": "\u2B50\uFE0F",
-          "star2": "\u{1F31F}",
-          "star_and_crescent": "\u262A\uFE0F",
-          "star_of_david": "\u2721\uFE0F",
-          "stars": "\u{1F320}",
-          "station": "\u{1F689}",
-          "statue_of_liberty": "\u{1F5FD}",
-          "steam_locomotive": "\u{1F682}",
-          "stew": "\u{1F372}",
-          "stop_button": "\u23F9",
-          "stop_sign": "\u{1F6D1}",
-          "stopwatch": "\u23F1",
-          "straight_ruler": "\u{1F4CF}",
-          "strawberry": "\u{1F353}",
-          "stuck_out_tongue": "\u{1F61B}",
-          "stuck_out_tongue_closed_eyes": "\u{1F61D}",
-          "stuck_out_tongue_winking_eye": "\u{1F61C}",
-          "studio_microphone": "\u{1F399}",
-          "stuffed_flatbread": "\u{1F959}",
-          "sun_behind_large_cloud": "\u{1F325}",
-          "sun_behind_rain_cloud": "\u{1F326}",
-          "sun_behind_small_cloud": "\u{1F324}",
-          "sun_with_face": "\u{1F31E}",
-          "sunflower": "\u{1F33B}",
-          "sunglasses": "\u{1F60E}",
-          "sunny": "\u2600\uFE0F",
-          "sunrise": "\u{1F305}",
-          "sunrise_over_mountains": "\u{1F304}",
-          "surfing_man": "\u{1F3C4}",
-          "surfing_woman": "\u{1F3C4}&zwj;\u2640\uFE0F",
-          "sushi": "\u{1F363}",
-          "suspension_railway": "\u{1F69F}",
-          "sweat": "\u{1F613}",
-          "sweat_drops": "\u{1F4A6}",
-          "sweat_smile": "\u{1F605}",
-          "sweet_potato": "\u{1F360}",
-          "swimming_man": "\u{1F3CA}",
-          "swimming_woman": "\u{1F3CA}&zwj;\u2640\uFE0F",
-          "symbols": "\u{1F523}",
-          "synagogue": "\u{1F54D}",
-          "syringe": "\u{1F489}",
-          "taco": "\u{1F32E}",
-          "tada": "\u{1F389}",
-          "tanabata_tree": "\u{1F38B}",
-          "taurus": "\u2649\uFE0F",
-          "taxi": "\u{1F695}",
-          "tea": "\u{1F375}",
-          "telephone_receiver": "\u{1F4DE}",
-          "telescope": "\u{1F52D}",
-          "tennis": "\u{1F3BE}",
-          "tent": "\u26FA\uFE0F",
-          "thermometer": "\u{1F321}",
-          "thinking": "\u{1F914}",
-          "thought_balloon": "\u{1F4AD}",
-          "ticket": "\u{1F3AB}",
-          "tickets": "\u{1F39F}",
-          "tiger": "\u{1F42F}",
-          "tiger2": "\u{1F405}",
-          "timer_clock": "\u23F2",
-          "tipping_hand_man": "\u{1F481}&zwj;\u2642\uFE0F",
-          "tired_face": "\u{1F62B}",
-          "tm": "\u2122\uFE0F",
-          "toilet": "\u{1F6BD}",
-          "tokyo_tower": "\u{1F5FC}",
-          "tomato": "\u{1F345}",
-          "tongue": "\u{1F445}",
-          "top": "\u{1F51D}",
-          "tophat": "\u{1F3A9}",
-          "tornado": "\u{1F32A}",
-          "trackball": "\u{1F5B2}",
-          "tractor": "\u{1F69C}",
-          "traffic_light": "\u{1F6A5}",
-          "train": "\u{1F68B}",
-          "train2": "\u{1F686}",
-          "tram": "\u{1F68A}",
-          "triangular_flag_on_post": "\u{1F6A9}",
-          "triangular_ruler": "\u{1F4D0}",
-          "trident": "\u{1F531}",
-          "triumph": "\u{1F624}",
-          "trolleybus": "\u{1F68E}",
-          "trophy": "\u{1F3C6}",
-          "tropical_drink": "\u{1F379}",
-          "tropical_fish": "\u{1F420}",
-          "truck": "\u{1F69A}",
-          "trumpet": "\u{1F3BA}",
-          "tulip": "\u{1F337}",
-          "tumbler_glass": "\u{1F943}",
-          "turkey": "\u{1F983}",
-          "turtle": "\u{1F422}",
-          "tv": "\u{1F4FA}",
-          "twisted_rightwards_arrows": "\u{1F500}",
-          "two_hearts": "\u{1F495}",
-          "two_men_holding_hands": "\u{1F46C}",
-          "two_women_holding_hands": "\u{1F46D}",
-          "u5272": "\u{1F239}",
-          "u5408": "\u{1F234}",
-          "u55b6": "\u{1F23A}",
-          "u6307": "\u{1F22F}\uFE0F",
-          "u6708": "\u{1F237}\uFE0F",
-          "u6709": "\u{1F236}",
-          "u6e80": "\u{1F235}",
-          "u7121": "\u{1F21A}\uFE0F",
-          "u7533": "\u{1F238}",
-          "u7981": "\u{1F232}",
-          "u7a7a": "\u{1F233}",
-          "umbrella": "\u2614\uFE0F",
-          "unamused": "\u{1F612}",
-          "underage": "\u{1F51E}",
-          "unicorn": "\u{1F984}",
-          "unlock": "\u{1F513}",
-          "up": "\u{1F199}",
-          "upside_down_face": "\u{1F643}",
-          "v": "\u270C\uFE0F",
-          "vertical_traffic_light": "\u{1F6A6}",
-          "vhs": "\u{1F4FC}",
-          "vibration_mode": "\u{1F4F3}",
-          "video_camera": "\u{1F4F9}",
-          "video_game": "\u{1F3AE}",
-          "violin": "\u{1F3BB}",
-          "virgo": "\u264D\uFE0F",
-          "volcano": "\u{1F30B}",
-          "volleyball": "\u{1F3D0}",
-          "vs": "\u{1F19A}",
-          "vulcan_salute": "\u{1F596}",
-          "walking_man": "\u{1F6B6}",
-          "walking_woman": "\u{1F6B6}&zwj;\u2640\uFE0F",
-          "waning_crescent_moon": "\u{1F318}",
-          "waning_gibbous_moon": "\u{1F316}",
-          "warning": "\u26A0\uFE0F",
-          "wastebasket": "\u{1F5D1}",
-          "watch": "\u231A\uFE0F",
-          "water_buffalo": "\u{1F403}",
-          "watermelon": "\u{1F349}",
-          "wave": "\u{1F44B}",
-          "wavy_dash": "\u3030\uFE0F",
-          "waxing_crescent_moon": "\u{1F312}",
-          "wc": "\u{1F6BE}",
-          "weary": "\u{1F629}",
-          "wedding": "\u{1F492}",
-          "weight_lifting_man": "\u{1F3CB}\uFE0F",
-          "weight_lifting_woman": "\u{1F3CB}\uFE0F&zwj;\u2640\uFE0F",
-          "whale": "\u{1F433}",
-          "whale2": "\u{1F40B}",
-          "wheel_of_dharma": "\u2638\uFE0F",
-          "wheelchair": "\u267F\uFE0F",
-          "white_check_mark": "\u2705",
-          "white_circle": "\u26AA\uFE0F",
-          "white_flag": "\u{1F3F3}\uFE0F",
-          "white_flower": "\u{1F4AE}",
-          "white_large_square": "\u2B1C\uFE0F",
-          "white_medium_small_square": "\u25FD\uFE0F",
-          "white_medium_square": "\u25FB\uFE0F",
-          "white_small_square": "\u25AB\uFE0F",
-          "white_square_button": "\u{1F533}",
-          "wilted_flower": "\u{1F940}",
-          "wind_chime": "\u{1F390}",
-          "wind_face": "\u{1F32C}",
-          "wine_glass": "\u{1F377}",
-          "wink": "\u{1F609}",
-          "wolf": "\u{1F43A}",
-          "woman": "\u{1F469}",
-          "woman_artist": "\u{1F469}&zwj;\u{1F3A8}",
-          "woman_astronaut": "\u{1F469}&zwj;\u{1F680}",
-          "woman_cartwheeling": "\u{1F938}&zwj;\u2640\uFE0F",
-          "woman_cook": "\u{1F469}&zwj;\u{1F373}",
-          "woman_facepalming": "\u{1F926}&zwj;\u2640\uFE0F",
-          "woman_factory_worker": "\u{1F469}&zwj;\u{1F3ED}",
-          "woman_farmer": "\u{1F469}&zwj;\u{1F33E}",
-          "woman_firefighter": "\u{1F469}&zwj;\u{1F692}",
-          "woman_health_worker": "\u{1F469}&zwj;\u2695\uFE0F",
-          "woman_judge": "\u{1F469}&zwj;\u2696\uFE0F",
-          "woman_juggling": "\u{1F939}&zwj;\u2640\uFE0F",
-          "woman_mechanic": "\u{1F469}&zwj;\u{1F527}",
-          "woman_office_worker": "\u{1F469}&zwj;\u{1F4BC}",
-          "woman_pilot": "\u{1F469}&zwj;\u2708\uFE0F",
-          "woman_playing_handball": "\u{1F93E}&zwj;\u2640\uFE0F",
-          "woman_playing_water_polo": "\u{1F93D}&zwj;\u2640\uFE0F",
-          "woman_scientist": "\u{1F469}&zwj;\u{1F52C}",
-          "woman_shrugging": "\u{1F937}&zwj;\u2640\uFE0F",
-          "woman_singer": "\u{1F469}&zwj;\u{1F3A4}",
-          "woman_student": "\u{1F469}&zwj;\u{1F393}",
-          "woman_teacher": "\u{1F469}&zwj;\u{1F3EB}",
-          "woman_technologist": "\u{1F469}&zwj;\u{1F4BB}",
-          "woman_with_turban": "\u{1F473}&zwj;\u2640\uFE0F",
-          "womans_clothes": "\u{1F45A}",
-          "womans_hat": "\u{1F452}",
-          "women_wrestling": "\u{1F93C}&zwj;\u2640\uFE0F",
-          "womens": "\u{1F6BA}",
-          "world_map": "\u{1F5FA}",
-          "worried": "\u{1F61F}",
-          "wrench": "\u{1F527}",
-          "writing_hand": "\u270D\uFE0F",
-          "x": "\u274C",
-          "yellow_heart": "\u{1F49B}",
-          "yen": "\u{1F4B4}",
-          "yin_yang": "\u262F\uFE0F",
-          "yum": "\u{1F60B}",
-          "zap": "\u26A1\uFE0F",
-          "zipper_mouth_face": "\u{1F910}",
-          "zzz": "\u{1F4A4}",
-          /* special emojis :P */
-          "octocat": '<img alt=":octocat:" height="20" width="20" align="absmiddle" src="https://assets-cdn.github.com/images/icons/emoji/octocat.png">',
-          "showdown": `<span style="font-family: 'Anonymous Pro', monospace; text-decoration: underline; text-decoration-style: dashed; text-decoration-color: #3e8b8a;text-underline-position: under;">S</span>`
-        };
-        showdown.Converter = function(converterOptions) {
-          var options = {}, langExtensions = [], outputModifiers = [], listeners = {}, setConvFlavor = setFlavor, metadata = {
-            parsed: {},
-            raw: "",
-            format: ""
-          };
-          _constructor();
-          function _constructor() {
-            converterOptions = converterOptions || {};
-            for (var gOpt in globalOptions) {
-              if (globalOptions.hasOwnProperty(gOpt)) {
-                options[gOpt] = globalOptions[gOpt];
-              }
-            }
-            if (typeof converterOptions === "object") {
-              for (var opt in converterOptions) {
-                if (converterOptions.hasOwnProperty(opt)) {
-                  options[opt] = converterOptions[opt];
+    }) : e;
+}(function(e) {
+    if ((typeof require === "undefined" ? "undefined" : _type_of(require)) < "u") return require.apply(this, arguments);
+    throw Error('Dynamic require of "' + e + '" is not supported');
+});
+var le = function(e, a) {
+    return function() {
+        return a || e((a = {
+            exports: {}
+        }).exports, a), a.exports;
+    };
+};
+var Dr = function(e, a, r, d) {
+    var _loop = function() {
+        var t = _step.value;
+        !gr.call(e, t) && t !== r && au(e, t, {
+            get: function() {
+                return a[t];
+            },
+            enumerable: !(d = pr(a, t)) || d.enumerable
+        });
+    };
+    if (a && typeof a == "object" || typeof a == "function") for(var _iterator = _create_for_of_iterator_helper_loose(hr(a)), _step; !(_step = _iterator()).done;)_loop();
+    return e;
+};
+var ie = function(e, a, r) {
+    return r = e != null ? fr(mr(e)) : {}, Dr(a || !e || !e.__esModule ? au(r, "default", {
+        value: e,
+        enumerable: !0
+    }) : r, e);
+};
+var me = le(function(nu, Ee) {
+    (function() {
+        function e(u) {
+            var i = {
+                omitExtraWLInCodeBlocks: {
+                    defaultValue: !1,
+                    describe: "Omit the default extra whiteline added to code blocks",
+                    type: "boolean"
+                },
+                noHeaderId: {
+                    defaultValue: !1,
+                    describe: "Turn on/off generated header id",
+                    type: "boolean"
+                },
+                prefixHeaderId: {
+                    defaultValue: !1,
+                    describe: "Add a prefix to the generated header ids. Passing a string will prefix that string to the header id. Setting to true will add a generic 'section-' prefix",
+                    type: "string"
+                },
+                rawPrefixHeaderId: {
+                    defaultValue: !1,
+                    describe: 'Setting this option to true will prevent showdown from modifying the prefix. This might result in malformed IDs (if, for instance, the " char is used in the prefix)',
+                    type: "boolean"
+                },
+                ghCompatibleHeaderId: {
+                    defaultValue: !1,
+                    describe: "Generate header ids compatible with github style (spaces are replaced with dashes, a bunch of non alphanumeric chars are removed)",
+                    type: "boolean"
+                },
+                rawHeaderId: {
+                    defaultValue: !1,
+                    describe: "Remove only spaces, ' and \" from generated header ids (including prefixes), replacing them with dashes (-). WARNING: This might result in malformed ids",
+                    type: "boolean"
+                },
+                headerLevelStart: {
+                    defaultValue: !1,
+                    describe: "The header blocks level start",
+                    type: "integer"
+                },
+                parseImgDimensions: {
+                    defaultValue: !1,
+                    describe: "Turn on/off image dimension parsing",
+                    type: "boolean"
+                },
+                simplifiedAutoLink: {
+                    defaultValue: !1,
+                    describe: "Turn on/off GFM autolink style",
+                    type: "boolean"
+                },
+                excludeTrailingPunctuationFromURLs: {
+                    defaultValue: !1,
+                    describe: "Excludes trailing punctuation from links generated with autoLinking",
+                    type: "boolean"
+                },
+                literalMidWordUnderscores: {
+                    defaultValue: !1,
+                    describe: "Parse midword underscores as literal underscores",
+                    type: "boolean"
+                },
+                literalMidWordAsterisks: {
+                    defaultValue: !1,
+                    describe: "Parse midword asterisks as literal asterisks",
+                    type: "boolean"
+                },
+                strikethrough: {
+                    defaultValue: !1,
+                    describe: "Turn on/off strikethrough support",
+                    type: "boolean"
+                },
+                tables: {
+                    defaultValue: !1,
+                    describe: "Turn on/off tables support",
+                    type: "boolean"
+                },
+                tablesHeaderId: {
+                    defaultValue: !1,
+                    describe: "Add an id to table headers",
+                    type: "boolean"
+                },
+                ghCodeBlocks: {
+                    defaultValue: !0,
+                    describe: "Turn on/off GFM fenced code blocks support",
+                    type: "boolean"
+                },
+                tasklists: {
+                    defaultValue: !1,
+                    describe: "Turn on/off GFM tasklist support",
+                    type: "boolean"
+                },
+                smoothLivePreview: {
+                    defaultValue: !1,
+                    describe: "Prevents weird effects in live previews due to incomplete input",
+                    type: "boolean"
+                },
+                smartIndentationFix: {
+                    defaultValue: !1,
+                    describe: "Tries to smartly fix indentation in es6 strings",
+                    type: "boolean"
+                },
+                disableForced4SpacesIndentedSublists: {
+                    defaultValue: !1,
+                    describe: "Disables the requirement of indenting nested sublists by 4 spaces",
+                    type: "boolean"
+                },
+                simpleLineBreaks: {
+                    defaultValue: !1,
+                    describe: "Parses simple line breaks as <br> (GFM Style)",
+                    type: "boolean"
+                },
+                requireSpaceBeforeHeadingText: {
+                    defaultValue: !1,
+                    describe: "Makes adding a space between `#` and the header text mandatory (GFM Style)",
+                    type: "boolean"
+                },
+                ghMentions: {
+                    defaultValue: !1,
+                    describe: "Enables github @mentions",
+                    type: "boolean"
+                },
+                ghMentionsLink: {
+                    defaultValue: "https://github.com/{u}",
+                    describe: "Changes the link generated by @mentions. Only applies if ghMentions option is enabled.",
+                    type: "string"
+                },
+                encodeEmails: {
+                    defaultValue: !0,
+                    describe: "Encode e-mail addresses through the use of Character Entities, transforming ASCII e-mail addresses into its equivalent decimal entities",
+                    type: "boolean"
+                },
+                openLinksInNewWindow: {
+                    defaultValue: !1,
+                    describe: "Open all links in new windows",
+                    type: "boolean"
+                },
+                backslashEscapesHTMLTags: {
+                    defaultValue: !1,
+                    describe: "Support for HTML Tag escaping. ex: <div>foo</div>",
+                    type: "boolean"
+                },
+                emoji: {
+                    defaultValue: !1,
+                    describe: "Enable emoji support. Ex: `this is a :smile: emoji`",
+                    type: "boolean"
+                },
+                underline: {
+                    defaultValue: !1,
+                    describe: "Enable support for underline. Syntax is double or triple underscores: `__underline word__`. With this option enabled, underscores no longer parses into `<em>` and `<strong>`",
+                    type: "boolean"
+                },
+                ellipsis: {
+                    defaultValue: !0,
+                    describe: "Replaces three dots with the ellipsis unicode character",
+                    type: "boolean"
+                },
+                completeHTMLDocument: {
+                    defaultValue: !1,
+                    describe: "Outputs a complete html document, including `<html>`, `<head>` and `<body>` tags",
+                    type: "boolean"
+                },
+                metadata: {
+                    defaultValue: !1,
+                    describe: "Enable support for document metadata (defined at the top of the document between `\xab\xab\xab` and `\xbb\xbb\xbb` or between `---` and `---`).",
+                    type: "boolean"
+                },
+                splitAdjacentBlockquotes: {
+                    defaultValue: !1,
+                    describe: "Split adjacent blockquote blocks",
+                    type: "boolean"
                 }
-              }
+            };
+            if (u === !1) return JSON.parse(JSON.stringify(i));
+            var n = {};
+            for(var o in i)i.hasOwnProperty(o) && (n[o] = i[o].defaultValue);
+            return n;
+        }
+        function a() {
+            var u = e(!0), i = {};
+            for(var n in u)u.hasOwnProperty(n) && (i[n] = !0);
+            return i;
+        }
+        var r = {}, d = {}, t = {}, p = e(!0), c = "vanilla", m = {
+            github: {
+                omitExtraWLInCodeBlocks: !0,
+                simplifiedAutoLink: !0,
+                excludeTrailingPunctuationFromURLs: !0,
+                literalMidWordUnderscores: !0,
+                strikethrough: !0,
+                tables: !0,
+                tablesHeaderId: !0,
+                ghCodeBlocks: !0,
+                tasklists: !0,
+                disableForced4SpacesIndentedSublists: !0,
+                simpleLineBreaks: !0,
+                requireSpaceBeforeHeadingText: !0,
+                ghCompatibleHeaderId: !0,
+                ghMentions: !0,
+                backslashEscapesHTMLTags: !0,
+                emoji: !0,
+                splitAdjacentBlockquotes: !0
+            },
+            original: {
+                noHeaderId: !0,
+                ghCodeBlocks: !1
+            },
+            ghost: {
+                omitExtraWLInCodeBlocks: !0,
+                parseImgDimensions: !0,
+                simplifiedAutoLink: !0,
+                excludeTrailingPunctuationFromURLs: !0,
+                literalMidWordUnderscores: !0,
+                strikethrough: !0,
+                tables: !0,
+                tablesHeaderId: !0,
+                ghCodeBlocks: !0,
+                tasklists: !0,
+                smoothLivePreview: !0,
+                simpleLineBreaks: !0,
+                requireSpaceBeforeHeadingText: !0,
+                ghMentions: !1,
+                encodeEmails: !0
+            },
+            vanilla: e(!0),
+            allOn: a()
+        };
+        r.helper = {}, r.extensions = {}, r.setOption = function(u, i) {
+            return p[u] = i, this;
+        }, r.getOption = function(u) {
+            return p[u];
+        }, r.getOptions = function() {
+            return p;
+        }, r.resetOptions = function() {
+            p = e(!0);
+        }, r.setFlavor = function(u) {
+            if (!m.hasOwnProperty(u)) throw Error(u + " flavor was not found");
+            r.resetOptions();
+            var i = m[u];
+            c = u;
+            for(var n in i)i.hasOwnProperty(n) && (p[n] = i[n]);
+        }, r.getFlavor = function() {
+            return c;
+        }, r.getFlavorOptions = function(u) {
+            if (m.hasOwnProperty(u)) return m[u];
+        }, r.getDefaultOptions = function(u) {
+            return e(u);
+        }, r.subParser = function(u, i) {
+            if (r.helper.isString(u)) if ((typeof i === "undefined" ? "undefined" : _type_of(i)) < "u") d[u] = i;
+            else {
+                if (d.hasOwnProperty(u)) return d[u];
+                throw Error("SubParser named " + u + " not registered!");
+            }
+        }, r.extension = function(u, i) {
+            if (!r.helper.isString(u)) throw Error("Extension 'name' must be a string");
+            if (u = r.helper.stdExtName(u), r.helper.isUndefined(i)) {
+                if (!t.hasOwnProperty(u)) throw Error("Extension named " + u + " is not registered!");
+                return t[u];
             } else {
-              throw Error("Converter expects the passed parameter to be an object, but " + typeof converterOptions + " was passed instead.");
+                typeof i == "function" && (i = i()), r.helper.isArray(i) || (i = [
+                    i
+                ]);
+                var n = D(i, u);
+                if (n.valid) t[u] = i;
+                else throw Error(n.error);
             }
-            if (options.extensions) {
-              showdown.helper.forEach(options.extensions, _parseExtension);
-            }
-          }
-          function _parseExtension(ext, name) {
-            name = name || null;
-            if (showdown.helper.isString(ext)) {
-              ext = showdown.helper.stdExtName(ext);
-              name = ext;
-              if (showdown.extensions[ext]) {
-                console.warn("DEPRECATION WARNING: " + ext + " is an old extension that uses a deprecated loading method.Please inform the developer that the extension should be updated!");
-                legacyExtensionLoading(showdown.extensions[ext], ext);
-                return;
-              } else if (!showdown.helper.isUndefined(extensions[ext])) {
-                ext = extensions[ext];
-              } else {
-                throw Error('Extension "' + ext + '" could not be loaded. It was either not found or is not a valid extension.');
-              }
-            }
-            if (typeof ext === "function") {
-              ext = ext();
-            }
-            if (!showdown.helper.isArray(ext)) {
-              ext = [ext];
-            }
-            var validExt = validate(ext, name);
-            if (!validExt.valid) {
-              throw Error(validExt.error);
-            }
-            for (var i3 = 0; i3 < ext.length; ++i3) {
-              switch (ext[i3].type) {
-                case "lang":
-                  langExtensions.push(ext[i3]);
-                  break;
-                case "output":
-                  outputModifiers.push(ext[i3]);
-                  break;
-              }
-              if (ext[i3].hasOwnProperty("listeners")) {
-                for (var ln in ext[i3].listeners) {
-                  if (ext[i3].listeners.hasOwnProperty(ln)) {
-                    listen(ln, ext[i3].listeners[ln]);
-                  }
+        }, r.getAllExtensions = function() {
+            return t;
+        }, r.removeExtension = function(u) {
+            delete t[u];
+        }, r.resetExtensions = function() {
+            t = {};
+        };
+        function D(u, i) {
+            var n = i ? "Error in " + i + " extension->" : "Error in unnamed extension", o = {
+                valid: !0,
+                error: ""
+            };
+            r.helper.isArray(u) || (u = [
+                u
+            ]);
+            for(var f = 0; f < u.length; ++f){
+                var h = n + " sub-extension " + f + ": ", s = u[f];
+                if (typeof s != "object") return o.valid = !1, o.error = h + "must be an object, but " + (typeof s === "undefined" ? "undefined" : _type_of(s)) + " given", o;
+                if (!r.helper.isString(s.type)) return o.valid = !1, o.error = h + 'property "type" must be a string, but ' + _type_of(s.type) + " given", o;
+                var g = s.type = s.type.toLowerCase();
+                if (g === "language" && (g = s.type = "lang"), g === "html" && (g = s.type = "output"), g !== "lang" && g !== "output" && g !== "listener") return o.valid = !1, o.error = h + "type " + g + ' is not recognized. Valid values: "lang/language", "output/html" or "listener"', o;
+                if (g === "listener") {
+                    if (r.helper.isUndefined(s.listeners)) return o.valid = !1, o.error = h + '. Extensions of type "listener" must have a property called "listeners"', o;
+                } else if (r.helper.isUndefined(s.filter) && r.helper.isUndefined(s.regex)) return o.valid = !1, o.error = h + g + ' extensions must define either a "regex" property or a "filter" method', o;
+                if (s.listeners) {
+                    if (typeof s.listeners != "object") return o.valid = !1, o.error = h + '"listeners" property must be an object but ' + _type_of(s.listeners) + " given", o;
+                    for(var B in s.listeners)if (s.listeners.hasOwnProperty(B) && typeof s.listeners[B] != "function") return o.valid = !1, o.error = h + '"listeners" property must be an hash of [event name]: [callback]. listeners.' + B + " must be a function but " + _type_of(s.listeners[B]) + " given", o;
                 }
-              }
-            }
-          }
-          function legacyExtensionLoading(ext, name) {
-            if (typeof ext === "function") {
-              ext = ext(new showdown.Converter());
-            }
-            if (!showdown.helper.isArray(ext)) {
-              ext = [ext];
-            }
-            var valid = validate(ext, name);
-            if (!valid.valid) {
-              throw Error(valid.error);
-            }
-            for (var i3 = 0; i3 < ext.length; ++i3) {
-              switch (ext[i3].type) {
-                case "lang":
-                  langExtensions.push(ext[i3]);
-                  break;
-                case "output":
-                  outputModifiers.push(ext[i3]);
-                  break;
-                default:
-                  throw Error("Extension loader error: Type unrecognized!!!");
-              }
-            }
-          }
-          function listen(name, callback) {
-            if (!showdown.helper.isString(name)) {
-              throw Error("Invalid argument in converter.listen() method: name must be a string, but " + typeof name + " given");
-            }
-            if (typeof callback !== "function") {
-              throw Error("Invalid argument in converter.listen() method: callback must be a function, but " + typeof callback + " given");
-            }
-            if (!listeners.hasOwnProperty(name)) {
-              listeners[name] = [];
-            }
-            listeners[name].push(callback);
-          }
-          function rTrimInputText(text) {
-            var rsp = text.match(/^\s*/)[0].length, rgx = new RegExp("^\\s{0," + rsp + "}", "gm");
-            return text.replace(rgx, "");
-          }
-          this._dispatch = function dispatch(evtName, text, options2, globals) {
-            if (listeners.hasOwnProperty(evtName)) {
-              for (var ei = 0; ei < listeners[evtName].length; ++ei) {
-                var nText = listeners[evtName][ei](evtName, text, this, options2, globals);
-                if (nText && typeof nText !== "undefined") {
-                  text = nText;
+                if (s.filter) {
+                    if (typeof s.filter != "function") return o.valid = !1, o.error = h + '"filter" must be a function, but ' + _type_of(s.filter) + " given", o;
+                } else if (s.regex) {
+                    if (r.helper.isString(s.regex) && (s.regex = new RegExp(s.regex, "g")), !_instanceof(s.regex, RegExp)) return o.valid = !1, o.error = h + '"regex" property must either be a string or a RegExp object, but ' + _type_of(s.regex) + " given", o;
+                    if (r.helper.isUndefined(s.replace)) return o.valid = !1, o.error = h + '"regex" extensions must implement a replace string or function', o;
                 }
-              }
             }
-            return text;
-          };
-          this.listen = function(name, callback) {
-            listen(name, callback);
-            return this;
-          };
-          this.makeHtml = function(text) {
-            if (!text) {
-              return text;
+            return o;
+        }
+        r.validateExtension = function(u) {
+            var i = D(u, null);
+            return i.valid ? !0 : (console.warn(i.error), !1);
+        }, r.hasOwnProperty("helper") || (r.helper = {}), r.helper.isString = function(u) {
+            return typeof u == "string" || _instanceof(u, String);
+        }, r.helper.isFunction = function(u) {
+            var i = {};
+            return u && i.toString.call(u) === "[object Function]";
+        }, r.helper.isArray = function(u) {
+            return Array.isArray(u);
+        }, r.helper.isUndefined = function(u) {
+            return (typeof u === "undefined" ? "undefined" : _type_of(u)) > "u";
+        }, r.helper.forEach = function(u, i) {
+            if (r.helper.isUndefined(u)) throw new Error("obj param is required");
+            if (r.helper.isUndefined(i)) throw new Error("callback param is required");
+            if (!r.helper.isFunction(i)) throw new Error("callback param must be a function/closure");
+            if (typeof u.forEach == "function") u.forEach(i);
+            else if (r.helper.isArray(u)) for(var n = 0; n < u.length; n++)i(u[n], n, u);
+            else if (typeof u == "object") for(var o in u)u.hasOwnProperty(o) && i(u[o], o, u);
+            else throw new Error("obj does not seem to be an array or an iterable object");
+        }, r.helper.stdExtName = function(u) {
+            return u.replace(/[_?*+\/\\.^-]/g, "").replace(/\s/g, "").toLowerCase();
+        };
+        function A(u, i) {
+            var n = i.charCodeAt(0);
+            return "\xa8E" + n + "E";
+        }
+        r.helper.escapeCharactersCallback = A, r.helper.escapeCharacters = function(u, i, n) {
+            var o = "([" + i.replace(/([\[\]\\])/g, "\\$1") + "])";
+            n && (o = "\\\\" + o);
+            var f = new RegExp(o, "g");
+            return u = u.replace(f, A), u;
+        }, r.helper.unescapeHTMLEntities = function(u) {
+            return u.replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+        };
+        var y = function y(u, i, n, o) {
+            var f = o || "", h = f.indexOf("g") > -1, s = new RegExp(i + "|" + n, "g" + f.replace(/g/g, "")), g = new RegExp(i, f.replace(/g/g, "")), B = [], S, x, L, l, E;
+            do for(S = 0; L = s.exec(u);)if (g.test(L[0])) S++ || (x = s.lastIndex, l = x - L[0].length);
+            else if (S && !--S) {
+                E = L.index + L[0].length;
+                var v = {
+                    left: {
+                        start: l,
+                        end: x
+                    },
+                    match: {
+                        start: x,
+                        end: L.index
+                    },
+                    right: {
+                        start: L.index,
+                        end: E
+                    },
+                    wholeMatch: {
+                        start: l,
+                        end: E
+                    }
+                };
+                if (B.push(v), !h) return B;
             }
-            var globals = {
-              gHtmlBlocks: [],
-              gHtmlMdBlocks: [],
-              gHtmlSpans: [],
-              gUrls: {},
-              gTitles: {},
-              gDimensions: {},
-              gListLevel: 0,
-              hashLinkCounts: {},
-              langExtensions,
-              outputModifiers,
-              converter: this,
-              ghCodeBlocks: [],
-              metadata: {
+            while (S && (s.lastIndex = x));
+            return B;
+        };
+        r.helper.matchRecursiveRegExp = function(u, i, n, o) {
+            for(var f = y(u, i, n, o), h = [], s = 0; s < f.length; ++s)h.push([
+                u.slice(f[s].wholeMatch.start, f[s].wholeMatch.end),
+                u.slice(f[s].match.start, f[s].match.end),
+                u.slice(f[s].left.start, f[s].left.end),
+                u.slice(f[s].right.start, f[s].right.end)
+            ]);
+            return h;
+        }, r.helper.replaceRecursiveRegExp = function(u, i, n, o, f) {
+            if (!r.helper.isFunction(i)) {
+                var h = i;
+                i = function i() {
+                    return h;
+                };
+            }
+            var s = y(u, n, o, f), g = u, B = s.length;
+            if (B > 0) {
+                var S = [];
+                s[0].wholeMatch.start !== 0 && S.push(u.slice(0, s[0].wholeMatch.start));
+                for(var x = 0; x < B; ++x)S.push(i(u.slice(s[x].wholeMatch.start, s[x].wholeMatch.end), u.slice(s[x].match.start, s[x].match.end), u.slice(s[x].left.start, s[x].left.end), u.slice(s[x].right.start, s[x].right.end))), x < B - 1 && S.push(u.slice(s[x].wholeMatch.end, s[x + 1].wholeMatch.start));
+                s[B - 1].wholeMatch.end < u.length && S.push(u.slice(s[B - 1].wholeMatch.end)), g = S.join("");
+            }
+            return g;
+        }, r.helper.regexIndexOf = function(u, i, n) {
+            if (!r.helper.isString(u)) throw "InvalidArgumentError: first parameter of showdown.helper.regexIndexOf function must be a string";
+            if (!_instanceof(i, RegExp)) throw "InvalidArgumentError: second parameter of showdown.helper.regexIndexOf function must be an instance of RegExp";
+            var o = u.substring(n || 0).search(i);
+            return o >= 0 ? o + (n || 0) : o;
+        }, r.helper.splitAtIndex = function(u, i) {
+            if (!r.helper.isString(u)) throw "InvalidArgumentError: first parameter of showdown.helper.regexIndexOf function must be a string";
+            return [
+                u.substring(0, i),
+                u.substring(i)
+            ];
+        }, r.helper.encodeEmailAddress = function(u) {
+            var i = [
+                function(n) {
+                    return "&#" + n.charCodeAt(0) + ";";
+                },
+                function(n) {
+                    return "&#x" + n.charCodeAt(0).toString(16) + ";";
+                },
+                function(n) {
+                    return n;
+                }
+            ];
+            return u = u.replace(/./g, function(n) {
+                if (n === "@") n = i[Math.floor(Math.random() * 2)](n);
+                else {
+                    var o = Math.random();
+                    n = o > .9 ? i[2](n) : o > .45 ? i[1](n) : i[0](n);
+                }
+                return n;
+            }), u;
+        }, r.helper.padEnd = function(i, n, o) {
+            return n = n >> 0, o = String(o || " "), i.length > n ? String(i) : (n = n - i.length, n > o.length && (o += o.repeat(n / o.length)), String(i) + o.slice(0, n));
+        }, (typeof console === "undefined" ? "undefined" : _type_of(console)) > "u" && (console = {
+            warn: function warn(u) {
+                alert(u);
+            },
+            log: function log(u) {
+                alert(u);
+            },
+            error: function error(u) {
+                throw u;
+            }
+        }), r.helper.regexes = {
+            asteriskDashAndColon: /([*_:~])/g
+        }, r.helper.emojis = {
+            "+1": "\uD83D\uDC4D",
+            "-1": "\uD83D\uDC4E",
+            100: "\uD83D\uDCAF",
+            1234: "\uD83D\uDD22",
+            "1st_place_medal": "\uD83E\uDD47",
+            "2nd_place_medal": "\uD83E\uDD48",
+            "3rd_place_medal": "\uD83E\uDD49",
+            "8ball": "\uD83C\uDFB1",
+            a: "\uD83C\uDD70️",
+            ab: "\uD83C\uDD8E",
+            abc: "\uD83D\uDD24",
+            abcd: "\uD83D\uDD21",
+            accept: "\uD83C\uDE51",
+            aerial_tramway: "\uD83D\uDEA1",
+            airplane: "✈️",
+            alarm_clock: "⏰",
+            alembic: "⚗️",
+            alien: "\uD83D\uDC7D",
+            ambulance: "\uD83D\uDE91",
+            amphora: "\uD83C\uDFFA",
+            anchor: "⚓️",
+            angel: "\uD83D\uDC7C",
+            anger: "\uD83D\uDCA2",
+            angry: "\uD83D\uDE20",
+            anguished: "\uD83D\uDE27",
+            ant: "\uD83D\uDC1C",
+            apple: "\uD83C\uDF4E",
+            aquarius: "♒️",
+            aries: "♈️",
+            arrow_backward: "◀️",
+            arrow_double_down: "⏬",
+            arrow_double_up: "⏫",
+            arrow_down: "⬇️",
+            arrow_down_small: "\uD83D\uDD3D",
+            arrow_forward: "▶️",
+            arrow_heading_down: "⤵️",
+            arrow_heading_up: "⤴️",
+            arrow_left: "⬅️",
+            arrow_lower_left: "↙️",
+            arrow_lower_right: "↘️",
+            arrow_right: "➡️",
+            arrow_right_hook: "↪️",
+            arrow_up: "⬆️",
+            arrow_up_down: "↕️",
+            arrow_up_small: "\uD83D\uDD3C",
+            arrow_upper_left: "↖️",
+            arrow_upper_right: "↗️",
+            arrows_clockwise: "\uD83D\uDD03",
+            arrows_counterclockwise: "\uD83D\uDD04",
+            art: "\uD83C\uDFA8",
+            articulated_lorry: "\uD83D\uDE9B",
+            artificial_satellite: "\uD83D\uDEF0",
+            astonished: "\uD83D\uDE32",
+            athletic_shoe: "\uD83D\uDC5F",
+            atm: "\uD83C\uDFE7",
+            atom_symbol: "⚛️",
+            avocado: "\uD83E\uDD51",
+            b: "\uD83C\uDD71️",
+            baby: "\uD83D\uDC76",
+            baby_bottle: "\uD83C\uDF7C",
+            baby_chick: "\uD83D\uDC24",
+            baby_symbol: "\uD83D\uDEBC",
+            back: "\uD83D\uDD19",
+            bacon: "\uD83E\uDD53",
+            badminton: "\uD83C\uDFF8",
+            baggage_claim: "\uD83D\uDEC4",
+            baguette_bread: "\uD83E\uDD56",
+            balance_scale: "⚖️",
+            balloon: "\uD83C\uDF88",
+            ballot_box: "\uD83D\uDDF3",
+            ballot_box_with_check: "☑️",
+            bamboo: "\uD83C\uDF8D",
+            banana: "\uD83C\uDF4C",
+            bangbang: "‼️",
+            bank: "\uD83C\uDFE6",
+            bar_chart: "\uD83D\uDCCA",
+            barber: "\uD83D\uDC88",
+            baseball: "⚾️",
+            basketball: "\uD83C\uDFC0",
+            basketball_man: "⛹️",
+            basketball_woman: "⛹️&zwj;♀️",
+            bat: "\uD83E\uDD87",
+            bath: "\uD83D\uDEC0",
+            bathtub: "\uD83D\uDEC1",
+            battery: "\uD83D\uDD0B",
+            beach_umbrella: "\uD83C\uDFD6",
+            bear: "\uD83D\uDC3B",
+            bed: "\uD83D\uDECF",
+            bee: "\uD83D\uDC1D",
+            beer: "\uD83C\uDF7A",
+            beers: "\uD83C\uDF7B",
+            beetle: "\uD83D\uDC1E",
+            beginner: "\uD83D\uDD30",
+            bell: "\uD83D\uDD14",
+            bellhop_bell: "\uD83D\uDECE",
+            bento: "\uD83C\uDF71",
+            biking_man: "\uD83D\uDEB4",
+            bike: "\uD83D\uDEB2",
+            biking_woman: "\uD83D\uDEB4&zwj;♀️",
+            bikini: "\uD83D\uDC59",
+            biohazard: "☣️",
+            bird: "\uD83D\uDC26",
+            birthday: "\uD83C\uDF82",
+            black_circle: "⚫️",
+            black_flag: "\uD83C\uDFF4",
+            black_heart: "\uD83D\uDDA4",
+            black_joker: "\uD83C\uDCCF",
+            black_large_square: "⬛️",
+            black_medium_small_square: "◾️",
+            black_medium_square: "◼️",
+            black_nib: "✒️",
+            black_small_square: "▪️",
+            black_square_button: "\uD83D\uDD32",
+            blonde_man: "\uD83D\uDC71",
+            blonde_woman: "\uD83D\uDC71&zwj;♀️",
+            blossom: "\uD83C\uDF3C",
+            blowfish: "\uD83D\uDC21",
+            blue_book: "\uD83D\uDCD8",
+            blue_car: "\uD83D\uDE99",
+            blue_heart: "\uD83D\uDC99",
+            blush: "\uD83D\uDE0A",
+            boar: "\uD83D\uDC17",
+            boat: "⛵️",
+            bomb: "\uD83D\uDCA3",
+            book: "\uD83D\uDCD6",
+            bookmark: "\uD83D\uDD16",
+            bookmark_tabs: "\uD83D\uDCD1",
+            books: "\uD83D\uDCDA",
+            boom: "\uD83D\uDCA5",
+            boot: "\uD83D\uDC62",
+            bouquet: "\uD83D\uDC90",
+            bowing_man: "\uD83D\uDE47",
+            bow_and_arrow: "\uD83C\uDFF9",
+            bowing_woman: "\uD83D\uDE47&zwj;♀️",
+            bowling: "\uD83C\uDFB3",
+            boxing_glove: "\uD83E\uDD4A",
+            boy: "\uD83D\uDC66",
+            bread: "\uD83C\uDF5E",
+            bride_with_veil: "\uD83D\uDC70",
+            bridge_at_night: "\uD83C\uDF09",
+            briefcase: "\uD83D\uDCBC",
+            broken_heart: "\uD83D\uDC94",
+            bug: "\uD83D\uDC1B",
+            building_construction: "\uD83C\uDFD7",
+            bulb: "\uD83D\uDCA1",
+            bullettrain_front: "\uD83D\uDE85",
+            bullettrain_side: "\uD83D\uDE84",
+            burrito: "\uD83C\uDF2F",
+            bus: "\uD83D\uDE8C",
+            business_suit_levitating: "\uD83D\uDD74",
+            busstop: "\uD83D\uDE8F",
+            bust_in_silhouette: "\uD83D\uDC64",
+            busts_in_silhouette: "\uD83D\uDC65",
+            butterfly: "\uD83E\uDD8B",
+            cactus: "\uD83C\uDF35",
+            cake: "\uD83C\uDF70",
+            calendar: "\uD83D\uDCC6",
+            call_me_hand: "\uD83E\uDD19",
+            calling: "\uD83D\uDCF2",
+            camel: "\uD83D\uDC2B",
+            camera: "\uD83D\uDCF7",
+            camera_flash: "\uD83D\uDCF8",
+            camping: "\uD83C\uDFD5",
+            cancer: "♋️",
+            candle: "\uD83D\uDD6F",
+            candy: "\uD83C\uDF6C",
+            canoe: "\uD83D\uDEF6",
+            capital_abcd: "\uD83D\uDD20",
+            capricorn: "♑️",
+            car: "\uD83D\uDE97",
+            card_file_box: "\uD83D\uDDC3",
+            card_index: "\uD83D\uDCC7",
+            card_index_dividers: "\uD83D\uDDC2",
+            carousel_horse: "\uD83C\uDFA0",
+            carrot: "\uD83E\uDD55",
+            cat: "\uD83D\uDC31",
+            cat2: "\uD83D\uDC08",
+            cd: "\uD83D\uDCBF",
+            chains: "⛓",
+            champagne: "\uD83C\uDF7E",
+            chart: "\uD83D\uDCB9",
+            chart_with_downwards_trend: "\uD83D\uDCC9",
+            chart_with_upwards_trend: "\uD83D\uDCC8",
+            checkered_flag: "\uD83C\uDFC1",
+            cheese: "\uD83E\uDDC0",
+            cherries: "\uD83C\uDF52",
+            cherry_blossom: "\uD83C\uDF38",
+            chestnut: "\uD83C\uDF30",
+            chicken: "\uD83D\uDC14",
+            children_crossing: "\uD83D\uDEB8",
+            chipmunk: "\uD83D\uDC3F",
+            chocolate_bar: "\uD83C\uDF6B",
+            christmas_tree: "\uD83C\uDF84",
+            church: "⛪️",
+            cinema: "\uD83C\uDFA6",
+            circus_tent: "\uD83C\uDFAA",
+            city_sunrise: "\uD83C\uDF07",
+            city_sunset: "\uD83C\uDF06",
+            cityscape: "\uD83C\uDFD9",
+            cl: "\uD83C\uDD91",
+            clamp: "\uD83D\uDDDC",
+            clap: "\uD83D\uDC4F",
+            clapper: "\uD83C\uDFAC",
+            classical_building: "\uD83C\uDFDB",
+            clinking_glasses: "\uD83E\uDD42",
+            clipboard: "\uD83D\uDCCB",
+            clock1: "\uD83D\uDD50",
+            clock10: "\uD83D\uDD59",
+            clock1030: "\uD83D\uDD65",
+            clock11: "\uD83D\uDD5A",
+            clock1130: "\uD83D\uDD66",
+            clock12: "\uD83D\uDD5B",
+            clock1230: "\uD83D\uDD67",
+            clock130: "\uD83D\uDD5C",
+            clock2: "\uD83D\uDD51",
+            clock230: "\uD83D\uDD5D",
+            clock3: "\uD83D\uDD52",
+            clock330: "\uD83D\uDD5E",
+            clock4: "\uD83D\uDD53",
+            clock430: "\uD83D\uDD5F",
+            clock5: "\uD83D\uDD54",
+            clock530: "\uD83D\uDD60",
+            clock6: "\uD83D\uDD55",
+            clock630: "\uD83D\uDD61",
+            clock7: "\uD83D\uDD56",
+            clock730: "\uD83D\uDD62",
+            clock8: "\uD83D\uDD57",
+            clock830: "\uD83D\uDD63",
+            clock9: "\uD83D\uDD58",
+            clock930: "\uD83D\uDD64",
+            closed_book: "\uD83D\uDCD5",
+            closed_lock_with_key: "\uD83D\uDD10",
+            closed_umbrella: "\uD83C\uDF02",
+            cloud: "☁️",
+            cloud_with_lightning: "\uD83C\uDF29",
+            cloud_with_lightning_and_rain: "⛈",
+            cloud_with_rain: "\uD83C\uDF27",
+            cloud_with_snow: "\uD83C\uDF28",
+            clown_face: "\uD83E\uDD21",
+            clubs: "♣️",
+            cocktail: "\uD83C\uDF78",
+            coffee: "☕️",
+            coffin: "⚰️",
+            cold_sweat: "\uD83D\uDE30",
+            comet: "☄️",
+            computer: "\uD83D\uDCBB",
+            computer_mouse: "\uD83D\uDDB1",
+            confetti_ball: "\uD83C\uDF8A",
+            confounded: "\uD83D\uDE16",
+            confused: "\uD83D\uDE15",
+            congratulations: "㊗️",
+            construction: "\uD83D\uDEA7",
+            construction_worker_man: "\uD83D\uDC77",
+            construction_worker_woman: "\uD83D\uDC77&zwj;♀️",
+            control_knobs: "\uD83C\uDF9B",
+            convenience_store: "\uD83C\uDFEA",
+            cookie: "\uD83C\uDF6A",
+            cool: "\uD83C\uDD92",
+            policeman: "\uD83D\uDC6E",
+            copyright: "\xa9️",
+            corn: "\uD83C\uDF3D",
+            couch_and_lamp: "\uD83D\uDECB",
+            couple: "\uD83D\uDC6B",
+            couple_with_heart_woman_man: "\uD83D\uDC91",
+            couple_with_heart_man_man: "\uD83D\uDC68&zwj;❤️&zwj;\uD83D\uDC68",
+            couple_with_heart_woman_woman: "\uD83D\uDC69&zwj;❤️&zwj;\uD83D\uDC69",
+            couplekiss_man_man: "\uD83D\uDC68&zwj;❤️&zwj;\uD83D\uDC8B&zwj;\uD83D\uDC68",
+            couplekiss_man_woman: "\uD83D\uDC8F",
+            couplekiss_woman_woman: "\uD83D\uDC69&zwj;❤️&zwj;\uD83D\uDC8B&zwj;\uD83D\uDC69",
+            cow: "\uD83D\uDC2E",
+            cow2: "\uD83D\uDC04",
+            cowboy_hat_face: "\uD83E\uDD20",
+            crab: "\uD83E\uDD80",
+            crayon: "\uD83D\uDD8D",
+            credit_card: "\uD83D\uDCB3",
+            crescent_moon: "\uD83C\uDF19",
+            cricket: "\uD83C\uDFCF",
+            crocodile: "\uD83D\uDC0A",
+            croissant: "\uD83E\uDD50",
+            crossed_fingers: "\uD83E\uDD1E",
+            crossed_flags: "\uD83C\uDF8C",
+            crossed_swords: "⚔️",
+            crown: "\uD83D\uDC51",
+            cry: "\uD83D\uDE22",
+            crying_cat_face: "\uD83D\uDE3F",
+            crystal_ball: "\uD83D\uDD2E",
+            cucumber: "\uD83E\uDD52",
+            cupid: "\uD83D\uDC98",
+            curly_loop: "➰",
+            currency_exchange: "\uD83D\uDCB1",
+            curry: "\uD83C\uDF5B",
+            custard: "\uD83C\uDF6E",
+            customs: "\uD83D\uDEC3",
+            cyclone: "\uD83C\uDF00",
+            dagger: "\uD83D\uDDE1",
+            dancer: "\uD83D\uDC83",
+            dancing_women: "\uD83D\uDC6F",
+            dancing_men: "\uD83D\uDC6F&zwj;♂️",
+            dango: "\uD83C\uDF61",
+            dark_sunglasses: "\uD83D\uDD76",
+            dart: "\uD83C\uDFAF",
+            dash: "\uD83D\uDCA8",
+            date: "\uD83D\uDCC5",
+            deciduous_tree: "\uD83C\uDF33",
+            deer: "\uD83E\uDD8C",
+            department_store: "\uD83C\uDFEC",
+            derelict_house: "\uD83C\uDFDA",
+            desert: "\uD83C\uDFDC",
+            desert_island: "\uD83C\uDFDD",
+            desktop_computer: "\uD83D\uDDA5",
+            male_detective: "\uD83D\uDD75️",
+            diamond_shape_with_a_dot_inside: "\uD83D\uDCA0",
+            diamonds: "♦️",
+            disappointed: "\uD83D\uDE1E",
+            disappointed_relieved: "\uD83D\uDE25",
+            dizzy: "\uD83D\uDCAB",
+            dizzy_face: "\uD83D\uDE35",
+            do_not_litter: "\uD83D\uDEAF",
+            dog: "\uD83D\uDC36",
+            dog2: "\uD83D\uDC15",
+            dollar: "\uD83D\uDCB5",
+            dolls: "\uD83C\uDF8E",
+            dolphin: "\uD83D\uDC2C",
+            door: "\uD83D\uDEAA",
+            doughnut: "\uD83C\uDF69",
+            dove: "\uD83D\uDD4A",
+            dragon: "\uD83D\uDC09",
+            dragon_face: "\uD83D\uDC32",
+            dress: "\uD83D\uDC57",
+            dromedary_camel: "\uD83D\uDC2A",
+            drooling_face: "\uD83E\uDD24",
+            droplet: "\uD83D\uDCA7",
+            drum: "\uD83E\uDD41",
+            duck: "\uD83E\uDD86",
+            dvd: "\uD83D\uDCC0",
+            "e-mail": "\uD83D\uDCE7",
+            eagle: "\uD83E\uDD85",
+            ear: "\uD83D\uDC42",
+            ear_of_rice: "\uD83C\uDF3E",
+            earth_africa: "\uD83C\uDF0D",
+            earth_americas: "\uD83C\uDF0E",
+            earth_asia: "\uD83C\uDF0F",
+            egg: "\uD83E\uDD5A",
+            eggplant: "\uD83C\uDF46",
+            eight_pointed_black_star: "✴️",
+            eight_spoked_asterisk: "✳️",
+            electric_plug: "\uD83D\uDD0C",
+            elephant: "\uD83D\uDC18",
+            email: "✉️",
+            end: "\uD83D\uDD1A",
+            envelope_with_arrow: "\uD83D\uDCE9",
+            euro: "\uD83D\uDCB6",
+            european_castle: "\uD83C\uDFF0",
+            european_post_office: "\uD83C\uDFE4",
+            evergreen_tree: "\uD83C\uDF32",
+            exclamation: "❗️",
+            expressionless: "\uD83D\uDE11",
+            eye: "\uD83D\uDC41",
+            eye_speech_bubble: "\uD83D\uDC41&zwj;\uD83D\uDDE8",
+            eyeglasses: "\uD83D\uDC53",
+            eyes: "\uD83D\uDC40",
+            face_with_head_bandage: "\uD83E\uDD15",
+            face_with_thermometer: "\uD83E\uDD12",
+            fist_oncoming: "\uD83D\uDC4A",
+            factory: "\uD83C\uDFED",
+            fallen_leaf: "\uD83C\uDF42",
+            family_man_woman_boy: "\uD83D\uDC6A",
+            family_man_boy: "\uD83D\uDC68&zwj;\uD83D\uDC66",
+            family_man_boy_boy: "\uD83D\uDC68&zwj;\uD83D\uDC66&zwj;\uD83D\uDC66",
+            family_man_girl: "\uD83D\uDC68&zwj;\uD83D\uDC67",
+            family_man_girl_boy: "\uD83D\uDC68&zwj;\uD83D\uDC67&zwj;\uD83D\uDC66",
+            family_man_girl_girl: "\uD83D\uDC68&zwj;\uD83D\uDC67&zwj;\uD83D\uDC67",
+            family_man_man_boy: "\uD83D\uDC68&zwj;\uD83D\uDC68&zwj;\uD83D\uDC66",
+            family_man_man_boy_boy: "\uD83D\uDC68&zwj;\uD83D\uDC68&zwj;\uD83D\uDC66&zwj;\uD83D\uDC66",
+            family_man_man_girl: "\uD83D\uDC68&zwj;\uD83D\uDC68&zwj;\uD83D\uDC67",
+            family_man_man_girl_boy: "\uD83D\uDC68&zwj;\uD83D\uDC68&zwj;\uD83D\uDC67&zwj;\uD83D\uDC66",
+            family_man_man_girl_girl: "\uD83D\uDC68&zwj;\uD83D\uDC68&zwj;\uD83D\uDC67&zwj;\uD83D\uDC67",
+            family_man_woman_boy_boy: "\uD83D\uDC68&zwj;\uD83D\uDC69&zwj;\uD83D\uDC66&zwj;\uD83D\uDC66",
+            family_man_woman_girl: "\uD83D\uDC68&zwj;\uD83D\uDC69&zwj;\uD83D\uDC67",
+            family_man_woman_girl_boy: "\uD83D\uDC68&zwj;\uD83D\uDC69&zwj;\uD83D\uDC67&zwj;\uD83D\uDC66",
+            family_man_woman_girl_girl: "\uD83D\uDC68&zwj;\uD83D\uDC69&zwj;\uD83D\uDC67&zwj;\uD83D\uDC67",
+            family_woman_boy: "\uD83D\uDC69&zwj;\uD83D\uDC66",
+            family_woman_boy_boy: "\uD83D\uDC69&zwj;\uD83D\uDC66&zwj;\uD83D\uDC66",
+            family_woman_girl: "\uD83D\uDC69&zwj;\uD83D\uDC67",
+            family_woman_girl_boy: "\uD83D\uDC69&zwj;\uD83D\uDC67&zwj;\uD83D\uDC66",
+            family_woman_girl_girl: "\uD83D\uDC69&zwj;\uD83D\uDC67&zwj;\uD83D\uDC67",
+            family_woman_woman_boy: "\uD83D\uDC69&zwj;\uD83D\uDC69&zwj;\uD83D\uDC66",
+            family_woman_woman_boy_boy: "\uD83D\uDC69&zwj;\uD83D\uDC69&zwj;\uD83D\uDC66&zwj;\uD83D\uDC66",
+            family_woman_woman_girl: "\uD83D\uDC69&zwj;\uD83D\uDC69&zwj;\uD83D\uDC67",
+            family_woman_woman_girl_boy: "\uD83D\uDC69&zwj;\uD83D\uDC69&zwj;\uD83D\uDC67&zwj;\uD83D\uDC66",
+            family_woman_woman_girl_girl: "\uD83D\uDC69&zwj;\uD83D\uDC69&zwj;\uD83D\uDC67&zwj;\uD83D\uDC67",
+            fast_forward: "⏩",
+            fax: "\uD83D\uDCE0",
+            fearful: "\uD83D\uDE28",
+            feet: "\uD83D\uDC3E",
+            female_detective: "\uD83D\uDD75️&zwj;♀️",
+            ferris_wheel: "\uD83C\uDFA1",
+            ferry: "⛴",
+            field_hockey: "\uD83C\uDFD1",
+            file_cabinet: "\uD83D\uDDC4",
+            file_folder: "\uD83D\uDCC1",
+            film_projector: "\uD83D\uDCFD",
+            film_strip: "\uD83C\uDF9E",
+            fire: "\uD83D\uDD25",
+            fire_engine: "\uD83D\uDE92",
+            fireworks: "\uD83C\uDF86",
+            first_quarter_moon: "\uD83C\uDF13",
+            first_quarter_moon_with_face: "\uD83C\uDF1B",
+            fish: "\uD83D\uDC1F",
+            fish_cake: "\uD83C\uDF65",
+            fishing_pole_and_fish: "\uD83C\uDFA3",
+            fist_raised: "✊",
+            fist_left: "\uD83E\uDD1B",
+            fist_right: "\uD83E\uDD1C",
+            flags: "\uD83C\uDF8F",
+            flashlight: "\uD83D\uDD26",
+            fleur_de_lis: "⚜️",
+            flight_arrival: "\uD83D\uDEEC",
+            flight_departure: "\uD83D\uDEEB",
+            floppy_disk: "\uD83D\uDCBE",
+            flower_playing_cards: "\uD83C\uDFB4",
+            flushed: "\uD83D\uDE33",
+            fog: "\uD83C\uDF2B",
+            foggy: "\uD83C\uDF01",
+            football: "\uD83C\uDFC8",
+            footprints: "\uD83D\uDC63",
+            fork_and_knife: "\uD83C\uDF74",
+            fountain: "⛲️",
+            fountain_pen: "\uD83D\uDD8B",
+            four_leaf_clover: "\uD83C\uDF40",
+            fox_face: "\uD83E\uDD8A",
+            framed_picture: "\uD83D\uDDBC",
+            free: "\uD83C\uDD93",
+            fried_egg: "\uD83C\uDF73",
+            fried_shrimp: "\uD83C\uDF64",
+            fries: "\uD83C\uDF5F",
+            frog: "\uD83D\uDC38",
+            frowning: "\uD83D\uDE26",
+            frowning_face: "☹️",
+            frowning_man: "\uD83D\uDE4D&zwj;♂️",
+            frowning_woman: "\uD83D\uDE4D",
+            middle_finger: "\uD83D\uDD95",
+            fuelpump: "⛽️",
+            full_moon: "\uD83C\uDF15",
+            full_moon_with_face: "\uD83C\uDF1D",
+            funeral_urn: "⚱️",
+            game_die: "\uD83C\uDFB2",
+            gear: "⚙️",
+            gem: "\uD83D\uDC8E",
+            gemini: "♊️",
+            ghost: "\uD83D\uDC7B",
+            gift: "\uD83C\uDF81",
+            gift_heart: "\uD83D\uDC9D",
+            girl: "\uD83D\uDC67",
+            globe_with_meridians: "\uD83C\uDF10",
+            goal_net: "\uD83E\uDD45",
+            goat: "\uD83D\uDC10",
+            golf: "⛳️",
+            golfing_man: "\uD83C\uDFCC️",
+            golfing_woman: "\uD83C\uDFCC️&zwj;♀️",
+            gorilla: "\uD83E\uDD8D",
+            grapes: "\uD83C\uDF47",
+            green_apple: "\uD83C\uDF4F",
+            green_book: "\uD83D\uDCD7",
+            green_heart: "\uD83D\uDC9A",
+            green_salad: "\uD83E\uDD57",
+            grey_exclamation: "❕",
+            grey_question: "❔",
+            grimacing: "\uD83D\uDE2C",
+            grin: "\uD83D\uDE01",
+            grinning: "\uD83D\uDE00",
+            guardsman: "\uD83D\uDC82",
+            guardswoman: "\uD83D\uDC82&zwj;♀️",
+            guitar: "\uD83C\uDFB8",
+            gun: "\uD83D\uDD2B",
+            haircut_woman: "\uD83D\uDC87",
+            haircut_man: "\uD83D\uDC87&zwj;♂️",
+            hamburger: "\uD83C\uDF54",
+            hammer: "\uD83D\uDD28",
+            hammer_and_pick: "⚒",
+            hammer_and_wrench: "\uD83D\uDEE0",
+            hamster: "\uD83D\uDC39",
+            hand: "✋",
+            handbag: "\uD83D\uDC5C",
+            handshake: "\uD83E\uDD1D",
+            hankey: "\uD83D\uDCA9",
+            hatched_chick: "\uD83D\uDC25",
+            hatching_chick: "\uD83D\uDC23",
+            headphones: "\uD83C\uDFA7",
+            hear_no_evil: "\uD83D\uDE49",
+            heart: "❤️",
+            heart_decoration: "\uD83D\uDC9F",
+            heart_eyes: "\uD83D\uDE0D",
+            heart_eyes_cat: "\uD83D\uDE3B",
+            heartbeat: "\uD83D\uDC93",
+            heartpulse: "\uD83D\uDC97",
+            hearts: "♥️",
+            heavy_check_mark: "✔️",
+            heavy_division_sign: "➗",
+            heavy_dollar_sign: "\uD83D\uDCB2",
+            heavy_heart_exclamation: "❣️",
+            heavy_minus_sign: "➖",
+            heavy_multiplication_x: "✖️",
+            heavy_plus_sign: "➕",
+            helicopter: "\uD83D\uDE81",
+            herb: "\uD83C\uDF3F",
+            hibiscus: "\uD83C\uDF3A",
+            high_brightness: "\uD83D\uDD06",
+            high_heel: "\uD83D\uDC60",
+            hocho: "\uD83D\uDD2A",
+            hole: "\uD83D\uDD73",
+            honey_pot: "\uD83C\uDF6F",
+            horse: "\uD83D\uDC34",
+            horse_racing: "\uD83C\uDFC7",
+            hospital: "\uD83C\uDFE5",
+            hot_pepper: "\uD83C\uDF36",
+            hotdog: "\uD83C\uDF2D",
+            hotel: "\uD83C\uDFE8",
+            hotsprings: "♨️",
+            hourglass: "⌛️",
+            hourglass_flowing_sand: "⏳",
+            house: "\uD83C\uDFE0",
+            house_with_garden: "\uD83C\uDFE1",
+            houses: "\uD83C\uDFD8",
+            hugs: "\uD83E\uDD17",
+            hushed: "\uD83D\uDE2F",
+            ice_cream: "\uD83C\uDF68",
+            ice_hockey: "\uD83C\uDFD2",
+            ice_skate: "⛸",
+            icecream: "\uD83C\uDF66",
+            id: "\uD83C\uDD94",
+            ideograph_advantage: "\uD83C\uDE50",
+            imp: "\uD83D\uDC7F",
+            inbox_tray: "\uD83D\uDCE5",
+            incoming_envelope: "\uD83D\uDCE8",
+            tipping_hand_woman: "\uD83D\uDC81",
+            information_source: "ℹ️",
+            innocent: "\uD83D\uDE07",
+            interrobang: "⁉️",
+            iphone: "\uD83D\uDCF1",
+            izakaya_lantern: "\uD83C\uDFEE",
+            jack_o_lantern: "\uD83C\uDF83",
+            japan: "\uD83D\uDDFE",
+            japanese_castle: "\uD83C\uDFEF",
+            japanese_goblin: "\uD83D\uDC7A",
+            japanese_ogre: "\uD83D\uDC79",
+            jeans: "\uD83D\uDC56",
+            joy: "\uD83D\uDE02",
+            joy_cat: "\uD83D\uDE39",
+            joystick: "\uD83D\uDD79",
+            kaaba: "\uD83D\uDD4B",
+            key: "\uD83D\uDD11",
+            keyboard: "⌨️",
+            keycap_ten: "\uD83D\uDD1F",
+            kick_scooter: "\uD83D\uDEF4",
+            kimono: "\uD83D\uDC58",
+            kiss: "\uD83D\uDC8B",
+            kissing: "\uD83D\uDE17",
+            kissing_cat: "\uD83D\uDE3D",
+            kissing_closed_eyes: "\uD83D\uDE1A",
+            kissing_heart: "\uD83D\uDE18",
+            kissing_smiling_eyes: "\uD83D\uDE19",
+            kiwi_fruit: "\uD83E\uDD5D",
+            koala: "\uD83D\uDC28",
+            koko: "\uD83C\uDE01",
+            label: "\uD83C\uDFF7",
+            large_blue_circle: "\uD83D\uDD35",
+            large_blue_diamond: "\uD83D\uDD37",
+            large_orange_diamond: "\uD83D\uDD36",
+            last_quarter_moon: "\uD83C\uDF17",
+            last_quarter_moon_with_face: "\uD83C\uDF1C",
+            latin_cross: "✝️",
+            laughing: "\uD83D\uDE06",
+            leaves: "\uD83C\uDF43",
+            ledger: "\uD83D\uDCD2",
+            left_luggage: "\uD83D\uDEC5",
+            left_right_arrow: "↔️",
+            leftwards_arrow_with_hook: "↩️",
+            lemon: "\uD83C\uDF4B",
+            leo: "♌️",
+            leopard: "\uD83D\uDC06",
+            level_slider: "\uD83C\uDF9A",
+            libra: "♎️",
+            light_rail: "\uD83D\uDE88",
+            link: "\uD83D\uDD17",
+            lion: "\uD83E\uDD81",
+            lips: "\uD83D\uDC44",
+            lipstick: "\uD83D\uDC84",
+            lizard: "\uD83E\uDD8E",
+            lock: "\uD83D\uDD12",
+            lock_with_ink_pen: "\uD83D\uDD0F",
+            lollipop: "\uD83C\uDF6D",
+            loop: "➿",
+            loud_sound: "\uD83D\uDD0A",
+            loudspeaker: "\uD83D\uDCE2",
+            love_hotel: "\uD83C\uDFE9",
+            love_letter: "\uD83D\uDC8C",
+            low_brightness: "\uD83D\uDD05",
+            lying_face: "\uD83E\uDD25",
+            m: "Ⓜ️",
+            mag: "\uD83D\uDD0D",
+            mag_right: "\uD83D\uDD0E",
+            mahjong: "\uD83C\uDC04️",
+            mailbox: "\uD83D\uDCEB",
+            mailbox_closed: "\uD83D\uDCEA",
+            mailbox_with_mail: "\uD83D\uDCEC",
+            mailbox_with_no_mail: "\uD83D\uDCED",
+            man: "\uD83D\uDC68",
+            man_artist: "\uD83D\uDC68&zwj;\uD83C\uDFA8",
+            man_astronaut: "\uD83D\uDC68&zwj;\uD83D\uDE80",
+            man_cartwheeling: "\uD83E\uDD38&zwj;♂️",
+            man_cook: "\uD83D\uDC68&zwj;\uD83C\uDF73",
+            man_dancing: "\uD83D\uDD7A",
+            man_facepalming: "\uD83E\uDD26&zwj;♂️",
+            man_factory_worker: "\uD83D\uDC68&zwj;\uD83C\uDFED",
+            man_farmer: "\uD83D\uDC68&zwj;\uD83C\uDF3E",
+            man_firefighter: "\uD83D\uDC68&zwj;\uD83D\uDE92",
+            man_health_worker: "\uD83D\uDC68&zwj;⚕️",
+            man_in_tuxedo: "\uD83E\uDD35",
+            man_judge: "\uD83D\uDC68&zwj;⚖️",
+            man_juggling: "\uD83E\uDD39&zwj;♂️",
+            man_mechanic: "\uD83D\uDC68&zwj;\uD83D\uDD27",
+            man_office_worker: "\uD83D\uDC68&zwj;\uD83D\uDCBC",
+            man_pilot: "\uD83D\uDC68&zwj;✈️",
+            man_playing_handball: "\uD83E\uDD3E&zwj;♂️",
+            man_playing_water_polo: "\uD83E\uDD3D&zwj;♂️",
+            man_scientist: "\uD83D\uDC68&zwj;\uD83D\uDD2C",
+            man_shrugging: "\uD83E\uDD37&zwj;♂️",
+            man_singer: "\uD83D\uDC68&zwj;\uD83C\uDFA4",
+            man_student: "\uD83D\uDC68&zwj;\uD83C\uDF93",
+            man_teacher: "\uD83D\uDC68&zwj;\uD83C\uDFEB",
+            man_technologist: "\uD83D\uDC68&zwj;\uD83D\uDCBB",
+            man_with_gua_pi_mao: "\uD83D\uDC72",
+            man_with_turban: "\uD83D\uDC73",
+            tangerine: "\uD83C\uDF4A",
+            mans_shoe: "\uD83D\uDC5E",
+            mantelpiece_clock: "\uD83D\uDD70",
+            maple_leaf: "\uD83C\uDF41",
+            martial_arts_uniform: "\uD83E\uDD4B",
+            mask: "\uD83D\uDE37",
+            massage_woman: "\uD83D\uDC86",
+            massage_man: "\uD83D\uDC86&zwj;♂️",
+            meat_on_bone: "\uD83C\uDF56",
+            medal_military: "\uD83C\uDF96",
+            medal_sports: "\uD83C\uDFC5",
+            mega: "\uD83D\uDCE3",
+            melon: "\uD83C\uDF48",
+            memo: "\uD83D\uDCDD",
+            men_wrestling: "\uD83E\uDD3C&zwj;♂️",
+            menorah: "\uD83D\uDD4E",
+            mens: "\uD83D\uDEB9",
+            metal: "\uD83E\uDD18",
+            metro: "\uD83D\uDE87",
+            microphone: "\uD83C\uDFA4",
+            microscope: "\uD83D\uDD2C",
+            milk_glass: "\uD83E\uDD5B",
+            milky_way: "\uD83C\uDF0C",
+            minibus: "\uD83D\uDE90",
+            minidisc: "\uD83D\uDCBD",
+            mobile_phone_off: "\uD83D\uDCF4",
+            money_mouth_face: "\uD83E\uDD11",
+            money_with_wings: "\uD83D\uDCB8",
+            moneybag: "\uD83D\uDCB0",
+            monkey: "\uD83D\uDC12",
+            monkey_face: "\uD83D\uDC35",
+            monorail: "\uD83D\uDE9D",
+            moon: "\uD83C\uDF14",
+            mortar_board: "\uD83C\uDF93",
+            mosque: "\uD83D\uDD4C",
+            motor_boat: "\uD83D\uDEE5",
+            motor_scooter: "\uD83D\uDEF5",
+            motorcycle: "\uD83C\uDFCD",
+            motorway: "\uD83D\uDEE3",
+            mount_fuji: "\uD83D\uDDFB",
+            mountain: "⛰",
+            mountain_biking_man: "\uD83D\uDEB5",
+            mountain_biking_woman: "\uD83D\uDEB5&zwj;♀️",
+            mountain_cableway: "\uD83D\uDEA0",
+            mountain_railway: "\uD83D\uDE9E",
+            mountain_snow: "\uD83C\uDFD4",
+            mouse: "\uD83D\uDC2D",
+            mouse2: "\uD83D\uDC01",
+            movie_camera: "\uD83C\uDFA5",
+            moyai: "\uD83D\uDDFF",
+            mrs_claus: "\uD83E\uDD36",
+            muscle: "\uD83D\uDCAA",
+            mushroom: "\uD83C\uDF44",
+            musical_keyboard: "\uD83C\uDFB9",
+            musical_note: "\uD83C\uDFB5",
+            musical_score: "\uD83C\uDFBC",
+            mute: "\uD83D\uDD07",
+            nail_care: "\uD83D\uDC85",
+            name_badge: "\uD83D\uDCDB",
+            national_park: "\uD83C\uDFDE",
+            nauseated_face: "\uD83E\uDD22",
+            necktie: "\uD83D\uDC54",
+            negative_squared_cross_mark: "❎",
+            nerd_face: "\uD83E\uDD13",
+            neutral_face: "\uD83D\uDE10",
+            new: "\uD83C\uDD95",
+            new_moon: "\uD83C\uDF11",
+            new_moon_with_face: "\uD83C\uDF1A",
+            newspaper: "\uD83D\uDCF0",
+            newspaper_roll: "\uD83D\uDDDE",
+            next_track_button: "⏭",
+            ng: "\uD83C\uDD96",
+            no_good_man: "\uD83D\uDE45&zwj;♂️",
+            no_good_woman: "\uD83D\uDE45",
+            night_with_stars: "\uD83C\uDF03",
+            no_bell: "\uD83D\uDD15",
+            no_bicycles: "\uD83D\uDEB3",
+            no_entry: "⛔️",
+            no_entry_sign: "\uD83D\uDEAB",
+            no_mobile_phones: "\uD83D\uDCF5",
+            no_mouth: "\uD83D\uDE36",
+            no_pedestrians: "\uD83D\uDEB7",
+            no_smoking: "\uD83D\uDEAD",
+            "non-potable_water": "\uD83D\uDEB1",
+            nose: "\uD83D\uDC43",
+            notebook: "\uD83D\uDCD3",
+            notebook_with_decorative_cover: "\uD83D\uDCD4",
+            notes: "\uD83C\uDFB6",
+            nut_and_bolt: "\uD83D\uDD29",
+            o: "⭕️",
+            o2: "\uD83C\uDD7E️",
+            ocean: "\uD83C\uDF0A",
+            octopus: "\uD83D\uDC19",
+            oden: "\uD83C\uDF62",
+            office: "\uD83C\uDFE2",
+            oil_drum: "\uD83D\uDEE2",
+            ok: "\uD83C\uDD97",
+            ok_hand: "\uD83D\uDC4C",
+            ok_man: "\uD83D\uDE46&zwj;♂️",
+            ok_woman: "\uD83D\uDE46",
+            old_key: "\uD83D\uDDDD",
+            older_man: "\uD83D\uDC74",
+            older_woman: "\uD83D\uDC75",
+            om: "\uD83D\uDD49",
+            on: "\uD83D\uDD1B",
+            oncoming_automobile: "\uD83D\uDE98",
+            oncoming_bus: "\uD83D\uDE8D",
+            oncoming_police_car: "\uD83D\uDE94",
+            oncoming_taxi: "\uD83D\uDE96",
+            open_file_folder: "\uD83D\uDCC2",
+            open_hands: "\uD83D\uDC50",
+            open_mouth: "\uD83D\uDE2E",
+            open_umbrella: "☂️",
+            ophiuchus: "⛎",
+            orange_book: "\uD83D\uDCD9",
+            orthodox_cross: "☦️",
+            outbox_tray: "\uD83D\uDCE4",
+            owl: "\uD83E\uDD89",
+            ox: "\uD83D\uDC02",
+            package: "\uD83D\uDCE6",
+            page_facing_up: "\uD83D\uDCC4",
+            page_with_curl: "\uD83D\uDCC3",
+            pager: "\uD83D\uDCDF",
+            paintbrush: "\uD83D\uDD8C",
+            palm_tree: "\uD83C\uDF34",
+            pancakes: "\uD83E\uDD5E",
+            panda_face: "\uD83D\uDC3C",
+            paperclip: "\uD83D\uDCCE",
+            paperclips: "\uD83D\uDD87",
+            parasol_on_ground: "⛱",
+            parking: "\uD83C\uDD7F️",
+            part_alternation_mark: "〽️",
+            partly_sunny: "⛅️",
+            passenger_ship: "\uD83D\uDEF3",
+            passport_control: "\uD83D\uDEC2",
+            pause_button: "⏸",
+            peace_symbol: "☮️",
+            peach: "\uD83C\uDF51",
+            peanuts: "\uD83E\uDD5C",
+            pear: "\uD83C\uDF50",
+            pen: "\uD83D\uDD8A",
+            pencil2: "✏️",
+            penguin: "\uD83D\uDC27",
+            pensive: "\uD83D\uDE14",
+            performing_arts: "\uD83C\uDFAD",
+            persevere: "\uD83D\uDE23",
+            person_fencing: "\uD83E\uDD3A",
+            pouting_woman: "\uD83D\uDE4E",
+            phone: "☎️",
+            pick: "⛏",
+            pig: "\uD83D\uDC37",
+            pig2: "\uD83D\uDC16",
+            pig_nose: "\uD83D\uDC3D",
+            pill: "\uD83D\uDC8A",
+            pineapple: "\uD83C\uDF4D",
+            ping_pong: "\uD83C\uDFD3",
+            pisces: "♓️",
+            pizza: "\uD83C\uDF55",
+            place_of_worship: "\uD83D\uDED0",
+            plate_with_cutlery: "\uD83C\uDF7D",
+            play_or_pause_button: "⏯",
+            point_down: "\uD83D\uDC47",
+            point_left: "\uD83D\uDC48",
+            point_right: "\uD83D\uDC49",
+            point_up: "☝️",
+            point_up_2: "\uD83D\uDC46",
+            police_car: "\uD83D\uDE93",
+            policewoman: "\uD83D\uDC6E&zwj;♀️",
+            poodle: "\uD83D\uDC29",
+            popcorn: "\uD83C\uDF7F",
+            post_office: "\uD83C\uDFE3",
+            postal_horn: "\uD83D\uDCEF",
+            postbox: "\uD83D\uDCEE",
+            potable_water: "\uD83D\uDEB0",
+            potato: "\uD83E\uDD54",
+            pouch: "\uD83D\uDC5D",
+            poultry_leg: "\uD83C\uDF57",
+            pound: "\uD83D\uDCB7",
+            rage: "\uD83D\uDE21",
+            pouting_cat: "\uD83D\uDE3E",
+            pouting_man: "\uD83D\uDE4E&zwj;♂️",
+            pray: "\uD83D\uDE4F",
+            prayer_beads: "\uD83D\uDCFF",
+            pregnant_woman: "\uD83E\uDD30",
+            previous_track_button: "⏮",
+            prince: "\uD83E\uDD34",
+            princess: "\uD83D\uDC78",
+            printer: "\uD83D\uDDA8",
+            purple_heart: "\uD83D\uDC9C",
+            purse: "\uD83D\uDC5B",
+            pushpin: "\uD83D\uDCCC",
+            put_litter_in_its_place: "\uD83D\uDEAE",
+            question: "❓",
+            rabbit: "\uD83D\uDC30",
+            rabbit2: "\uD83D\uDC07",
+            racehorse: "\uD83D\uDC0E",
+            racing_car: "\uD83C\uDFCE",
+            radio: "\uD83D\uDCFB",
+            radio_button: "\uD83D\uDD18",
+            radioactive: "☢️",
+            railway_car: "\uD83D\uDE83",
+            railway_track: "\uD83D\uDEE4",
+            rainbow: "\uD83C\uDF08",
+            rainbow_flag: "\uD83C\uDFF3️&zwj;\uD83C\uDF08",
+            raised_back_of_hand: "\uD83E\uDD1A",
+            raised_hand_with_fingers_splayed: "\uD83D\uDD90",
+            raised_hands: "\uD83D\uDE4C",
+            raising_hand_woman: "\uD83D\uDE4B",
+            raising_hand_man: "\uD83D\uDE4B&zwj;♂️",
+            ram: "\uD83D\uDC0F",
+            ramen: "\uD83C\uDF5C",
+            rat: "\uD83D\uDC00",
+            record_button: "⏺",
+            recycle: "♻️",
+            red_circle: "\uD83D\uDD34",
+            registered: "\xae️",
+            relaxed: "☺️",
+            relieved: "\uD83D\uDE0C",
+            reminder_ribbon: "\uD83C\uDF97",
+            repeat: "\uD83D\uDD01",
+            repeat_one: "\uD83D\uDD02",
+            rescue_worker_helmet: "⛑",
+            restroom: "\uD83D\uDEBB",
+            revolving_hearts: "\uD83D\uDC9E",
+            rewind: "⏪",
+            rhinoceros: "\uD83E\uDD8F",
+            ribbon: "\uD83C\uDF80",
+            rice: "\uD83C\uDF5A",
+            rice_ball: "\uD83C\uDF59",
+            rice_cracker: "\uD83C\uDF58",
+            rice_scene: "\uD83C\uDF91",
+            right_anger_bubble: "\uD83D\uDDEF",
+            ring: "\uD83D\uDC8D",
+            robot: "\uD83E\uDD16",
+            rocket: "\uD83D\uDE80",
+            rofl: "\uD83E\uDD23",
+            roll_eyes: "\uD83D\uDE44",
+            roller_coaster: "\uD83C\uDFA2",
+            rooster: "\uD83D\uDC13",
+            rose: "\uD83C\uDF39",
+            rosette: "\uD83C\uDFF5",
+            rotating_light: "\uD83D\uDEA8",
+            round_pushpin: "\uD83D\uDCCD",
+            rowing_man: "\uD83D\uDEA3",
+            rowing_woman: "\uD83D\uDEA3&zwj;♀️",
+            rugby_football: "\uD83C\uDFC9",
+            running_man: "\uD83C\uDFC3",
+            running_shirt_with_sash: "\uD83C\uDFBD",
+            running_woman: "\uD83C\uDFC3&zwj;♀️",
+            sa: "\uD83C\uDE02️",
+            sagittarius: "♐️",
+            sake: "\uD83C\uDF76",
+            sandal: "\uD83D\uDC61",
+            santa: "\uD83C\uDF85",
+            satellite: "\uD83D\uDCE1",
+            saxophone: "\uD83C\uDFB7",
+            school: "\uD83C\uDFEB",
+            school_satchel: "\uD83C\uDF92",
+            scissors: "✂️",
+            scorpion: "\uD83E\uDD82",
+            scorpius: "♏️",
+            scream: "\uD83D\uDE31",
+            scream_cat: "\uD83D\uDE40",
+            scroll: "\uD83D\uDCDC",
+            seat: "\uD83D\uDCBA",
+            secret: "㊙️",
+            see_no_evil: "\uD83D\uDE48",
+            seedling: "\uD83C\uDF31",
+            selfie: "\uD83E\uDD33",
+            shallow_pan_of_food: "\uD83E\uDD58",
+            shamrock: "☘️",
+            shark: "\uD83E\uDD88",
+            shaved_ice: "\uD83C\uDF67",
+            sheep: "\uD83D\uDC11",
+            shell: "\uD83D\uDC1A",
+            shield: "\uD83D\uDEE1",
+            shinto_shrine: "⛩",
+            ship: "\uD83D\uDEA2",
+            shirt: "\uD83D\uDC55",
+            shopping: "\uD83D\uDECD",
+            shopping_cart: "\uD83D\uDED2",
+            shower: "\uD83D\uDEBF",
+            shrimp: "\uD83E\uDD90",
+            signal_strength: "\uD83D\uDCF6",
+            six_pointed_star: "\uD83D\uDD2F",
+            ski: "\uD83C\uDFBF",
+            skier: "⛷",
+            skull: "\uD83D\uDC80",
+            skull_and_crossbones: "☠️",
+            sleeping: "\uD83D\uDE34",
+            sleeping_bed: "\uD83D\uDECC",
+            sleepy: "\uD83D\uDE2A",
+            slightly_frowning_face: "\uD83D\uDE41",
+            slightly_smiling_face: "\uD83D\uDE42",
+            slot_machine: "\uD83C\uDFB0",
+            small_airplane: "\uD83D\uDEE9",
+            small_blue_diamond: "\uD83D\uDD39",
+            small_orange_diamond: "\uD83D\uDD38",
+            small_red_triangle: "\uD83D\uDD3A",
+            small_red_triangle_down: "\uD83D\uDD3B",
+            smile: "\uD83D\uDE04",
+            smile_cat: "\uD83D\uDE38",
+            smiley: "\uD83D\uDE03",
+            smiley_cat: "\uD83D\uDE3A",
+            smiling_imp: "\uD83D\uDE08",
+            smirk: "\uD83D\uDE0F",
+            smirk_cat: "\uD83D\uDE3C",
+            smoking: "\uD83D\uDEAC",
+            snail: "\uD83D\uDC0C",
+            snake: "\uD83D\uDC0D",
+            sneezing_face: "\uD83E\uDD27",
+            snowboarder: "\uD83C\uDFC2",
+            snowflake: "❄️",
+            snowman: "⛄️",
+            snowman_with_snow: "☃️",
+            sob: "\uD83D\uDE2D",
+            soccer: "⚽️",
+            soon: "\uD83D\uDD1C",
+            sos: "\uD83C\uDD98",
+            sound: "\uD83D\uDD09",
+            space_invader: "\uD83D\uDC7E",
+            spades: "♠️",
+            spaghetti: "\uD83C\uDF5D",
+            sparkle: "❇️",
+            sparkler: "\uD83C\uDF87",
+            sparkles: "✨",
+            sparkling_heart: "\uD83D\uDC96",
+            speak_no_evil: "\uD83D\uDE4A",
+            speaker: "\uD83D\uDD08",
+            speaking_head: "\uD83D\uDDE3",
+            speech_balloon: "\uD83D\uDCAC",
+            speedboat: "\uD83D\uDEA4",
+            spider: "\uD83D\uDD77",
+            spider_web: "\uD83D\uDD78",
+            spiral_calendar: "\uD83D\uDDD3",
+            spiral_notepad: "\uD83D\uDDD2",
+            spoon: "\uD83E\uDD44",
+            squid: "\uD83E\uDD91",
+            stadium: "\uD83C\uDFDF",
+            star: "⭐️",
+            star2: "\uD83C\uDF1F",
+            star_and_crescent: "☪️",
+            star_of_david: "✡️",
+            stars: "\uD83C\uDF20",
+            station: "\uD83D\uDE89",
+            statue_of_liberty: "\uD83D\uDDFD",
+            steam_locomotive: "\uD83D\uDE82",
+            stew: "\uD83C\uDF72",
+            stop_button: "⏹",
+            stop_sign: "\uD83D\uDED1",
+            stopwatch: "⏱",
+            straight_ruler: "\uD83D\uDCCF",
+            strawberry: "\uD83C\uDF53",
+            stuck_out_tongue: "\uD83D\uDE1B",
+            stuck_out_tongue_closed_eyes: "\uD83D\uDE1D",
+            stuck_out_tongue_winking_eye: "\uD83D\uDE1C",
+            studio_microphone: "\uD83C\uDF99",
+            stuffed_flatbread: "\uD83E\uDD59",
+            sun_behind_large_cloud: "\uD83C\uDF25",
+            sun_behind_rain_cloud: "\uD83C\uDF26",
+            sun_behind_small_cloud: "\uD83C\uDF24",
+            sun_with_face: "\uD83C\uDF1E",
+            sunflower: "\uD83C\uDF3B",
+            sunglasses: "\uD83D\uDE0E",
+            sunny: "☀️",
+            sunrise: "\uD83C\uDF05",
+            sunrise_over_mountains: "\uD83C\uDF04",
+            surfing_man: "\uD83C\uDFC4",
+            surfing_woman: "\uD83C\uDFC4&zwj;♀️",
+            sushi: "\uD83C\uDF63",
+            suspension_railway: "\uD83D\uDE9F",
+            sweat: "\uD83D\uDE13",
+            sweat_drops: "\uD83D\uDCA6",
+            sweat_smile: "\uD83D\uDE05",
+            sweet_potato: "\uD83C\uDF60",
+            swimming_man: "\uD83C\uDFCA",
+            swimming_woman: "\uD83C\uDFCA&zwj;♀️",
+            symbols: "\uD83D\uDD23",
+            synagogue: "\uD83D\uDD4D",
+            syringe: "\uD83D\uDC89",
+            taco: "\uD83C\uDF2E",
+            tada: "\uD83C\uDF89",
+            tanabata_tree: "\uD83C\uDF8B",
+            taurus: "♉️",
+            taxi: "\uD83D\uDE95",
+            tea: "\uD83C\uDF75",
+            telephone_receiver: "\uD83D\uDCDE",
+            telescope: "\uD83D\uDD2D",
+            tennis: "\uD83C\uDFBE",
+            tent: "⛺️",
+            thermometer: "\uD83C\uDF21",
+            thinking: "\uD83E\uDD14",
+            thought_balloon: "\uD83D\uDCAD",
+            ticket: "\uD83C\uDFAB",
+            tickets: "\uD83C\uDF9F",
+            tiger: "\uD83D\uDC2F",
+            tiger2: "\uD83D\uDC05",
+            timer_clock: "⏲",
+            tipping_hand_man: "\uD83D\uDC81&zwj;♂️",
+            tired_face: "\uD83D\uDE2B",
+            tm: "™️",
+            toilet: "\uD83D\uDEBD",
+            tokyo_tower: "\uD83D\uDDFC",
+            tomato: "\uD83C\uDF45",
+            tongue: "\uD83D\uDC45",
+            top: "\uD83D\uDD1D",
+            tophat: "\uD83C\uDFA9",
+            tornado: "\uD83C\uDF2A",
+            trackball: "\uD83D\uDDB2",
+            tractor: "\uD83D\uDE9C",
+            traffic_light: "\uD83D\uDEA5",
+            train: "\uD83D\uDE8B",
+            train2: "\uD83D\uDE86",
+            tram: "\uD83D\uDE8A",
+            triangular_flag_on_post: "\uD83D\uDEA9",
+            triangular_ruler: "\uD83D\uDCD0",
+            trident: "\uD83D\uDD31",
+            triumph: "\uD83D\uDE24",
+            trolleybus: "\uD83D\uDE8E",
+            trophy: "\uD83C\uDFC6",
+            tropical_drink: "\uD83C\uDF79",
+            tropical_fish: "\uD83D\uDC20",
+            truck: "\uD83D\uDE9A",
+            trumpet: "\uD83C\uDFBA",
+            tulip: "\uD83C\uDF37",
+            tumbler_glass: "\uD83E\uDD43",
+            turkey: "\uD83E\uDD83",
+            turtle: "\uD83D\uDC22",
+            tv: "\uD83D\uDCFA",
+            twisted_rightwards_arrows: "\uD83D\uDD00",
+            two_hearts: "\uD83D\uDC95",
+            two_men_holding_hands: "\uD83D\uDC6C",
+            two_women_holding_hands: "\uD83D\uDC6D",
+            u5272: "\uD83C\uDE39",
+            u5408: "\uD83C\uDE34",
+            u55b6: "\uD83C\uDE3A",
+            u6307: "\uD83C\uDE2F️",
+            u6708: "\uD83C\uDE37️",
+            u6709: "\uD83C\uDE36",
+            u6e80: "\uD83C\uDE35",
+            u7121: "\uD83C\uDE1A️",
+            u7533: "\uD83C\uDE38",
+            u7981: "\uD83C\uDE32",
+            u7a7a: "\uD83C\uDE33",
+            umbrella: "☔️",
+            unamused: "\uD83D\uDE12",
+            underage: "\uD83D\uDD1E",
+            unicorn: "\uD83E\uDD84",
+            unlock: "\uD83D\uDD13",
+            up: "\uD83C\uDD99",
+            upside_down_face: "\uD83D\uDE43",
+            v: "✌️",
+            vertical_traffic_light: "\uD83D\uDEA6",
+            vhs: "\uD83D\uDCFC",
+            vibration_mode: "\uD83D\uDCF3",
+            video_camera: "\uD83D\uDCF9",
+            video_game: "\uD83C\uDFAE",
+            violin: "\uD83C\uDFBB",
+            virgo: "♍️",
+            volcano: "\uD83C\uDF0B",
+            volleyball: "\uD83C\uDFD0",
+            vs: "\uD83C\uDD9A",
+            vulcan_salute: "\uD83D\uDD96",
+            walking_man: "\uD83D\uDEB6",
+            walking_woman: "\uD83D\uDEB6&zwj;♀️",
+            waning_crescent_moon: "\uD83C\uDF18",
+            waning_gibbous_moon: "\uD83C\uDF16",
+            warning: "⚠️",
+            wastebasket: "\uD83D\uDDD1",
+            watch: "⌚️",
+            water_buffalo: "\uD83D\uDC03",
+            watermelon: "\uD83C\uDF49",
+            wave: "\uD83D\uDC4B",
+            wavy_dash: "〰️",
+            waxing_crescent_moon: "\uD83C\uDF12",
+            wc: "\uD83D\uDEBE",
+            weary: "\uD83D\uDE29",
+            wedding: "\uD83D\uDC92",
+            weight_lifting_man: "\uD83C\uDFCB️",
+            weight_lifting_woman: "\uD83C\uDFCB️&zwj;♀️",
+            whale: "\uD83D\uDC33",
+            whale2: "\uD83D\uDC0B",
+            wheel_of_dharma: "☸️",
+            wheelchair: "♿️",
+            white_check_mark: "✅",
+            white_circle: "⚪️",
+            white_flag: "\uD83C\uDFF3️",
+            white_flower: "\uD83D\uDCAE",
+            white_large_square: "⬜️",
+            white_medium_small_square: "◽️",
+            white_medium_square: "◻️",
+            white_small_square: "▫️",
+            white_square_button: "\uD83D\uDD33",
+            wilted_flower: "\uD83E\uDD40",
+            wind_chime: "\uD83C\uDF90",
+            wind_face: "\uD83C\uDF2C",
+            wine_glass: "\uD83C\uDF77",
+            wink: "\uD83D\uDE09",
+            wolf: "\uD83D\uDC3A",
+            woman: "\uD83D\uDC69",
+            woman_artist: "\uD83D\uDC69&zwj;\uD83C\uDFA8",
+            woman_astronaut: "\uD83D\uDC69&zwj;\uD83D\uDE80",
+            woman_cartwheeling: "\uD83E\uDD38&zwj;♀️",
+            woman_cook: "\uD83D\uDC69&zwj;\uD83C\uDF73",
+            woman_facepalming: "\uD83E\uDD26&zwj;♀️",
+            woman_factory_worker: "\uD83D\uDC69&zwj;\uD83C\uDFED",
+            woman_farmer: "\uD83D\uDC69&zwj;\uD83C\uDF3E",
+            woman_firefighter: "\uD83D\uDC69&zwj;\uD83D\uDE92",
+            woman_health_worker: "\uD83D\uDC69&zwj;⚕️",
+            woman_judge: "\uD83D\uDC69&zwj;⚖️",
+            woman_juggling: "\uD83E\uDD39&zwj;♀️",
+            woman_mechanic: "\uD83D\uDC69&zwj;\uD83D\uDD27",
+            woman_office_worker: "\uD83D\uDC69&zwj;\uD83D\uDCBC",
+            woman_pilot: "\uD83D\uDC69&zwj;✈️",
+            woman_playing_handball: "\uD83E\uDD3E&zwj;♀️",
+            woman_playing_water_polo: "\uD83E\uDD3D&zwj;♀️",
+            woman_scientist: "\uD83D\uDC69&zwj;\uD83D\uDD2C",
+            woman_shrugging: "\uD83E\uDD37&zwj;♀️",
+            woman_singer: "\uD83D\uDC69&zwj;\uD83C\uDFA4",
+            woman_student: "\uD83D\uDC69&zwj;\uD83C\uDF93",
+            woman_teacher: "\uD83D\uDC69&zwj;\uD83C\uDFEB",
+            woman_technologist: "\uD83D\uDC69&zwj;\uD83D\uDCBB",
+            woman_with_turban: "\uD83D\uDC73&zwj;♀️",
+            womans_clothes: "\uD83D\uDC5A",
+            womans_hat: "\uD83D\uDC52",
+            women_wrestling: "\uD83E\uDD3C&zwj;♀️",
+            womens: "\uD83D\uDEBA",
+            world_map: "\uD83D\uDDFA",
+            worried: "\uD83D\uDE1F",
+            wrench: "\uD83D\uDD27",
+            writing_hand: "✍️",
+            x: "❌",
+            yellow_heart: "\uD83D\uDC9B",
+            yen: "\uD83D\uDCB4",
+            yin_yang: "☯️",
+            yum: "\uD83D\uDE0B",
+            zap: "⚡️",
+            zipper_mouth_face: "\uD83E\uDD10",
+            zzz: "\uD83D\uDCA4",
+            octocat: '<img alt=":octocat:" height="20" width="20" align="absmiddle" src="https://assets-cdn.github.com/images/icons/emoji/octocat.png">',
+            showdown: "<span style=\"font-family: 'Anonymous Pro', monospace; text-decoration: underline; text-decoration-style: dashed; text-decoration-color: #3e8b8a;text-underline-position: under;\">S</span>"
+        }, r.Converter = function(u) {
+            var i = {}, n = [], o = [], f = {}, h = c, s = {
                 parsed: {},
                 raw: "",
                 format: ""
-              }
             };
-            text = text.replace(/¨/g, "\xA8T");
-            text = text.replace(/\$/g, "\xA8D");
-            text = text.replace(/\r\n/g, "\n");
-            text = text.replace(/\r/g, "\n");
-            text = text.replace(/\u00A0/g, "&nbsp;");
-            if (options.smartIndentationFix) {
-              text = rTrimInputText(text);
+            g();
+            function g() {
+                u = u || {};
+                for(var l in p)p.hasOwnProperty(l) && (i[l] = p[l]);
+                if (typeof u == "object") for(var E in u)u.hasOwnProperty(E) && (i[E] = u[E]);
+                else throw Error("Converter expects the passed parameter to be an object, but " + (typeof u === "undefined" ? "undefined" : _type_of(u)) + " was passed instead.");
+                i.extensions && r.helper.forEach(i.extensions, B);
             }
-            text = "\n\n" + text + "\n\n";
-            text = showdown.subParser("detab")(text, options, globals);
-            text = text.replace(/^[ \t]+$/mg, "");
-            showdown.helper.forEach(langExtensions, function(ext) {
-              text = showdown.subParser("runExtension")(ext, text, options, globals);
-            });
-            text = showdown.subParser("metadata")(text, options, globals);
-            text = showdown.subParser("hashPreCodeTags")(text, options, globals);
-            text = showdown.subParser("githubCodeBlocks")(text, options, globals);
-            text = showdown.subParser("hashHTMLBlocks")(text, options, globals);
-            text = showdown.subParser("hashCodeTags")(text, options, globals);
-            text = showdown.subParser("stripLinkDefinitions")(text, options, globals);
-            text = showdown.subParser("blockGamut")(text, options, globals);
-            text = showdown.subParser("unhashHTMLSpans")(text, options, globals);
-            text = showdown.subParser("unescapeSpecialChars")(text, options, globals);
-            text = text.replace(/¨D/g, "$$");
-            text = text.replace(/¨T/g, "\xA8");
-            text = showdown.subParser("completeHTMLDocument")(text, options, globals);
-            showdown.helper.forEach(outputModifiers, function(ext) {
-              text = showdown.subParser("runExtension")(ext, text, options, globals);
-            });
-            metadata = globals.metadata;
-            return text;
-          };
-          this.makeMarkdown = this.makeMd = function(src, HTMLParser) {
-            src = src.replace(/\r\n/g, "\n");
-            src = src.replace(/\r/g, "\n");
-            src = src.replace(/>[ \t]+</, ">\xA8NBSP;<");
-            if (!HTMLParser) {
-              if (window && window.document) {
-                HTMLParser = window.document;
-              } else {
-                throw new Error("HTMLParser is undefined. If in a webworker or nodejs environment, you need to provide a WHATWG DOM and HTML such as JSDOM");
-              }
-            }
-            var doc = HTMLParser.createElement("div");
-            doc.innerHTML = src;
-            var globals = {
-              preList: substitutePreCodeTags(doc)
-            };
-            clean(doc);
-            var nodes = doc.childNodes, mdDoc = "";
-            for (var i3 = 0; i3 < nodes.length; i3++) {
-              mdDoc += showdown.subParser("makeMarkdown.node")(nodes[i3], globals);
-            }
-            function clean(node) {
-              for (var n2 = 0; n2 < node.childNodes.length; ++n2) {
-                var child = node.childNodes[n2];
-                if (child.nodeType === 3) {
-                  if (!/\S/.test(child.nodeValue) && !/^[ ]+$/.test(child.nodeValue)) {
-                    node.removeChild(child);
-                    --n2;
-                  } else {
-                    child.nodeValue = child.nodeValue.split("\n").join(" ");
-                    child.nodeValue = child.nodeValue.replace(/(\s)+/g, "$1");
-                  }
-                } else if (child.nodeType === 1) {
-                  clean(child);
-                }
-              }
-            }
-            function substitutePreCodeTags(doc2) {
-              var pres = doc2.querySelectorAll("pre"), presPH = [];
-              for (var i4 = 0; i4 < pres.length; ++i4) {
-                if (pres[i4].childElementCount === 1 && pres[i4].firstChild.tagName.toLowerCase() === "code") {
-                  var content = pres[i4].firstChild.innerHTML.trim(), language = pres[i4].firstChild.getAttribute("data-language") || "";
-                  if (language === "") {
-                    var classes = pres[i4].firstChild.className.split(" ");
-                    for (var c2 = 0; c2 < classes.length; ++c2) {
-                      var matches = classes[c2].match(/^language-(.+)$/);
-                      if (matches !== null) {
-                        language = matches[1];
-                        break;
-                      }
+            function B(l, E) {
+                if (E = E || null, r.helper.isString(l)) if (l = r.helper.stdExtName(l), E = l, r.extensions[l]) {
+                    console.warn("DEPRECATION WARNING: " + l + " is an old extension that uses a deprecated loading method.Please inform the developer that the extension should be updated!"), S(r.extensions[l], l);
+                    return;
+                } else if (!r.helper.isUndefined(t[l])) l = t[l];
+                else throw Error('Extension "' + l + '" could not be loaded. It was either not found or is not a valid extension.');
+                typeof l == "function" && (l = l()), r.helper.isArray(l) || (l = [
+                    l
+                ]);
+                var v = D(l, E);
+                if (!v.valid) throw Error(v.error);
+                for(var T = 0; T < l.length; ++T){
+                    switch(l[T].type){
+                        case "lang":
+                            n.push(l[T]);
+                            break;
+                        case "output":
+                            o.push(l[T]);
+                            break;
                     }
-                  }
-                  content = showdown.helper.unescapeHTMLEntities(content);
-                  presPH.push(content);
-                  pres[i4].outerHTML = '<precode language="' + language + '" precodenum="' + i4.toString() + '"></precode>';
-                } else {
-                  presPH.push(pres[i4].innerHTML);
-                  pres[i4].innerHTML = "";
-                  pres[i4].setAttribute("prenum", i4.toString());
+                    if (l[T].hasOwnProperty("listeners")) for(var j in l[T].listeners)l[T].listeners.hasOwnProperty(j) && x(j, l[T].listeners[j]);
                 }
-              }
-              return presPH;
             }
-            return mdDoc;
-          };
-          this.setOption = function(key, value) {
-            options[key] = value;
-          };
-          this.getOption = function(key) {
-            return options[key];
-          };
-          this.getOptions = function() {
-            return options;
-          };
-          this.addExtension = function(extension, name) {
-            name = name || null;
-            _parseExtension(extension, name);
-          };
-          this.useExtension = function(extensionName) {
-            _parseExtension(extensionName);
-          };
-          this.setFlavor = function(name) {
-            if (!flavor.hasOwnProperty(name)) {
-              throw Error(name + " flavor was not found");
-            }
-            var preset = flavor[name];
-            setConvFlavor = name;
-            for (var option in preset) {
-              if (preset.hasOwnProperty(option)) {
-                options[option] = preset[option];
-              }
-            }
-          };
-          this.getFlavor = function() {
-            return setConvFlavor;
-          };
-          this.removeExtension = function(extension) {
-            if (!showdown.helper.isArray(extension)) {
-              extension = [extension];
-            }
-            for (var a2 = 0; a2 < extension.length; ++a2) {
-              var ext = extension[a2];
-              for (var i3 = 0; i3 < langExtensions.length; ++i3) {
-                if (langExtensions[i3] === ext) {
-                  langExtensions.splice(i3, 1);
+            function S(l, E) {
+                typeof l == "function" && (l = l(new r.Converter)), r.helper.isArray(l) || (l = [
+                    l
+                ]);
+                var v = D(l, E);
+                if (!v.valid) throw Error(v.error);
+                for(var T = 0; T < l.length; ++T)switch(l[T].type){
+                    case "lang":
+                        n.push(l[T]);
+                        break;
+                    case "output":
+                        o.push(l[T]);
+                        break;
+                    default:
+                        throw Error("Extension loader error: Type unrecognized!!!");
                 }
-              }
-              for (var ii = 0; ii < outputModifiers.length; ++ii) {
-                if (outputModifiers[ii] === ext) {
-                  outputModifiers.splice(ii, 1);
-                }
-              }
             }
-          };
-          this.getAllExtensions = function() {
-            return {
-              language: langExtensions,
-              output: outputModifiers
+            function x(l, E) {
+                if (!r.helper.isString(l)) throw Error("Invalid argument in converter.listen() method: name must be a string, but " + (typeof l === "undefined" ? "undefined" : _type_of(l)) + " given");
+                if (typeof E != "function") throw Error("Invalid argument in converter.listen() method: callback must be a function, but " + (typeof E === "undefined" ? "undefined" : _type_of(E)) + " given");
+                f.hasOwnProperty(l) || (f[l] = []), f[l].push(E);
+            }
+            function L(l) {
+                var E = l.match(/^\s*/)[0].length, v = new RegExp("^\\s{0," + E + "}", "gm");
+                return l.replace(v, "");
+            }
+            this._dispatch = function(E, v, T, j) {
+                if (f.hasOwnProperty(E)) for(var P = 0; P < f[E].length; ++P){
+                    var z = f[E][P](E, v, this, T, j);
+                    z && (typeof z === "undefined" ? "undefined" : _type_of(z)) < "u" && (v = z);
+                }
+                return v;
+            }, this.listen = function(l, E) {
+                return x(l, E), this;
+            }, this.makeHtml = function(l) {
+                if (!l) return l;
+                var E = {
+                    gHtmlBlocks: [],
+                    gHtmlMdBlocks: [],
+                    gHtmlSpans: [],
+                    gUrls: {},
+                    gTitles: {},
+                    gDimensions: {},
+                    gListLevel: 0,
+                    hashLinkCounts: {},
+                    langExtensions: n,
+                    outputModifiers: o,
+                    converter: this,
+                    ghCodeBlocks: [],
+                    metadata: {
+                        parsed: {},
+                        raw: "",
+                        format: ""
+                    }
+                };
+                return l = l.replace(/¨/g, "\xa8T"), l = l.replace(/\$/g, "\xa8D"), l = l.replace(/\r\n/g, "\n"), l = l.replace(/\r/g, "\n"), l = l.replace(/\u00A0/g, "&nbsp;"), i.smartIndentationFix && (l = L(l)), l = "\n\n" + l + "\n\n", l = r.subParser("detab")(l, i, E), l = l.replace(/^[ \t]+$/mg, ""), r.helper.forEach(n, function(v) {
+                    l = r.subParser("runExtension")(v, l, i, E);
+                }), l = r.subParser("metadata")(l, i, E), l = r.subParser("hashPreCodeTags")(l, i, E), l = r.subParser("githubCodeBlocks")(l, i, E), l = r.subParser("hashHTMLBlocks")(l, i, E), l = r.subParser("hashCodeTags")(l, i, E), l = r.subParser("stripLinkDefinitions")(l, i, E), l = r.subParser("blockGamut")(l, i, E), l = r.subParser("unhashHTMLSpans")(l, i, E), l = r.subParser("unescapeSpecialChars")(l, i, E), l = l.replace(/¨D/g, "$$"), l = l.replace(/¨T/g, "\xa8"), l = r.subParser("completeHTMLDocument")(l, i, E), r.helper.forEach(o, function(v) {
+                    l = r.subParser("runExtension")(v, l, i, E);
+                }), s = E.metadata, l;
+            }, this.makeMarkdown = this.makeMd = function(l, E) {
+                if (l = l.replace(/\r\n/g, "\n"), l = l.replace(/\r/g, "\n"), l = l.replace(/>[ \t]+</, ">\xa8NBSP;<"), !E) if (window && window.document) E = window.document;
+                else throw new Error("HTMLParser is undefined. If in a webworker or nodejs environment, you need to provide a WHATWG DOM and HTML such as JSDOM");
+                var v = E.createElement("div");
+                v.innerHTML = l;
+                var T = {
+                    preList: U(v)
+                };
+                H(v);
+                for(var j = v.childNodes, P = "", z = 0; z < j.length; z++)P += r.subParser("makeMarkdown.node")(j[z], T);
+                function H(O) {
+                    for(var I = 0; I < O.childNodes.length; ++I){
+                        var G = O.childNodes[I];
+                        G.nodeType === 3 ? !/\S/.test(G.nodeValue) && !/^[ ]+$/.test(G.nodeValue) ? (O.removeChild(G), --I) : (G.nodeValue = G.nodeValue.split("\n").join(" "), G.nodeValue = G.nodeValue.replace(/(\s)+/g, "$1")) : G.nodeType === 1 && H(G);
+                    }
+                }
+                function U(O) {
+                    for(var I = O.querySelectorAll("pre"), G = [], V = 0; V < I.length; ++V)if (I[V].childElementCount === 1 && I[V].firstChild.tagName.toLowerCase() === "code") {
+                        var Q = I[V].firstChild.innerHTML.trim(), ee = I[V].firstChild.getAttribute("data-language") || "";
+                        if (ee === "") for(var X = I[V].firstChild.className.split(" "), de = 0; de < X.length; ++de){
+                            var he = X[de].match(/^language-(.+)$/);
+                            if (he !== null) {
+                                ee = he[1];
+                                break;
+                            }
+                        }
+                        Q = r.helper.unescapeHTMLEntities(Q), G.push(Q), I[V].outerHTML = '<precode language="' + ee + '" precodenum="' + V.toString() + '"></precode>';
+                    } else G.push(I[V].innerHTML), I[V].innerHTML = "", I[V].setAttribute("prenum", V.toString());
+                    return G;
+                }
+                return P;
+            }, this.setOption = function(l, E) {
+                i[l] = E;
+            }, this.getOption = function(l) {
+                return i[l];
+            }, this.getOptions = function() {
+                return i;
+            }, this.addExtension = function(l, E) {
+                E = E || null, B(l, E);
+            }, this.useExtension = function(l) {
+                B(l);
+            }, this.setFlavor = function(l) {
+                if (!m.hasOwnProperty(l)) throw Error(l + " flavor was not found");
+                var E = m[l];
+                h = l;
+                for(var v in E)E.hasOwnProperty(v) && (i[v] = E[v]);
+            }, this.getFlavor = function() {
+                return h;
+            }, this.removeExtension = function(l) {
+                r.helper.isArray(l) || (l = [
+                    l
+                ]);
+                for(var E = 0; E < l.length; ++E){
+                    for(var v = l[E], T = 0; T < n.length; ++T)n[T] === v && n.splice(T, 1);
+                    for(var j = 0; j < o.length; ++j)o[j] === v && o.splice(j, 1);
+                }
+            }, this.getAllExtensions = function() {
+                return {
+                    language: n,
+                    output: o
+                };
+            }, this.getMetadata = function(l) {
+                return l ? s.raw : s.parsed;
+            }, this.getMetadataFormat = function() {
+                return s.format;
+            }, this._setMetadataPair = function(l, E) {
+                s.parsed[l] = E;
+            }, this._setMetadataFormat = function(l) {
+                s.format = l;
+            }, this._setMetadataRaw = function(l) {
+                s.raw = l;
             };
-          };
-          this.getMetadata = function(raw) {
-            if (raw) {
-              return metadata.raw;
-            } else {
-              return metadata.parsed;
-            }
-          };
-          this.getMetadataFormat = function() {
-            return metadata.format;
-          };
-          this._setMetadataPair = function(key, value) {
-            metadata.parsed[key] = value;
-          };
-          this._setMetadataFormat = function(format) {
-            metadata.format = format;
-          };
-          this._setMetadataRaw = function(raw) {
-            metadata.raw = raw;
-          };
+        }, r.subParser("anchors", function(u, i, n) {
+            u = n.converter._dispatch("anchors.before", u, i, n);
+            var o = function o(f, h, s, g, B, S, x) {
+                if (r.helper.isUndefined(x) && (x = ""), s = s.toLowerCase(), f.search(/\(<?\s*>? ?(['"].*['"])?\)$/m) > -1) g = "";
+                else if (!g) if (s || (s = h.toLowerCase().replace(/ ?\n/g, " ")), g = "#" + s, !r.helper.isUndefined(n.gUrls[s])) g = n.gUrls[s], r.helper.isUndefined(n.gTitles[s]) || (x = n.gTitles[s]);
+                else return f;
+                g = g.replace(r.helper.regexes.asteriskDashAndColon, r.helper.escapeCharactersCallback);
+                var L = '<a href="' + g + '"';
+                return x !== "" && x !== null && (x = x.replace(/"/g, "&quot;"), x = x.replace(r.helper.regexes.asteriskDashAndColon, r.helper.escapeCharactersCallback), L += ' title="' + x + '"'), i.openLinksInNewWindow && !/^#/.test(g) && (L += ' rel="noopener noreferrer" target="\xa8E95Eblank"'), L += ">" + h + "</a>", L;
+            };
+            return u = u.replace(/\[((?:\[[^\]]*]|[^\[\]])*)] ?(?:\n *)?\[(.*?)]()()()()/g, o), u = u.replace(/\[((?:\[[^\]]*]|[^\[\]])*)]()[ \t]*\([ \t]?<([^>]*)>(?:[ \t]*((["'])([^"]*?)\5))?[ \t]?\)/g, o), u = u.replace(/\[((?:\[[^\]]*]|[^\[\]])*)]()[ \t]*\([ \t]?<?([\S]+?(?:\([\S]*?\)[\S]*?)?)>?(?:[ \t]*((["'])([^"]*?)\5))?[ \t]?\)/g, o), u = u.replace(/\[([^\[\]]+)]()()()()()/g, o), i.ghMentions && (u = u.replace(/(^|\s)(\\)?(@([a-z\d]+(?:[a-z\d.-]+?[a-z\d]+)*))/gmi, function(f, h, s, g, B) {
+                if (s === "\\") return h + g;
+                if (!r.helper.isString(i.ghMentionsLink)) throw new Error("ghMentionsLink option must be a string");
+                var S = i.ghMentionsLink.replace(/\{u}/g, B), x = "";
+                return i.openLinksInNewWindow && (x = ' rel="noopener noreferrer" target="\xa8E95Eblank"'), h + '<a href="' + S + '"' + x + ">" + g + "</a>";
+            })), u = n.converter._dispatch("anchors.after", u, i, n), u;
+        });
+        var _ = /([*~_]+|\b)(((https?|ftp|dict):\/\/|www\.)[^'">\s]+?\.[^'">\s]+?)()(\1)?(?=\s|$)(?!["<>])/gi, q = /([*~_]+|\b)(((https?|ftp|dict):\/\/|www\.)[^'">\s]+\.[^'">\s]+?)([.!?,()\[\]])?(\1)?(?=\s|$)(?!["<>])/gi, F = /()<(((https?|ftp|dict):\/\/|www\.)[^'">\s]+)()>()/gi, R = /(^|\s)(?:mailto:)?([A-Za-z0-9!#$%&'*+-/=?^_`{|}~.]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)(?=$|\s)/gmi, w = /<()(?:mailto:)?([-.\w]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)>/gi, b = function b(u) {
+            return function(i, n, o, f, h, s, g) {
+                o = o.replace(r.helper.regexes.asteriskDashAndColon, r.helper.escapeCharactersCallback);
+                var B = o, S = "", x = "", L = n || "", l = g || "";
+                return /^www\./i.test(o) && (o = o.replace(/^www\./i, "http://www.")), u.excludeTrailingPunctuationFromURLs && s && (S = s), u.openLinksInNewWindow && (x = ' rel="noopener noreferrer" target="\xa8E95Eblank"'), L + '<a href="' + o + '"' + x + ">" + B + "</a>" + S + l;
+            };
+        }, k = function k(u, i) {
+            return function(n, o, f) {
+                var h = "mailto:";
+                return o = o || "", f = r.subParser("unescapeSpecialChars")(f, u, i), u.encodeEmails ? (h = r.helper.encodeEmailAddress(h + f), f = r.helper.encodeEmailAddress(f)) : h = h + f, o + '<a href="' + h + '">' + f + "</a>";
+            };
         };
-        showdown.subParser("anchors", function(text, options, globals) {
-          text = globals.converter._dispatch("anchors.before", text, options, globals);
-          var writeAnchorTag = function(wholeMatch, linkText, linkId, url, m5, m6, title) {
-            if (showdown.helper.isUndefined(title)) {
-              title = "";
-            }
-            linkId = linkId.toLowerCase();
-            if (wholeMatch.search(/\(<?\s*>? ?(['"].*['"])?\)$/m) > -1) {
-              url = "";
-            } else if (!url) {
-              if (!linkId) {
-                linkId = linkText.toLowerCase().replace(/ ?\n/g, " ");
-              }
-              url = "#" + linkId;
-              if (!showdown.helper.isUndefined(globals.gUrls[linkId])) {
-                url = globals.gUrls[linkId];
-                if (!showdown.helper.isUndefined(globals.gTitles[linkId])) {
-                  title = globals.gTitles[linkId];
-                }
-              } else {
-                return wholeMatch;
-              }
-            }
-            url = url.replace(showdown.helper.regexes.asteriskDashAndColon, showdown.helper.escapeCharactersCallback);
-            var result = '<a href="' + url + '"';
-            if (title !== "" && title !== null) {
-              title = title.replace(/"/g, "&quot;");
-              title = title.replace(showdown.helper.regexes.asteriskDashAndColon, showdown.helper.escapeCharactersCallback);
-              result += ' title="' + title + '"';
-            }
-            if (options.openLinksInNewWindow && !/^#/.test(url)) {
-              result += ' rel="noopener noreferrer" target="\xA8E95Eblank"';
-            }
-            result += ">" + linkText + "</a>";
-            return result;
-          };
-          text = text.replace(/\[((?:\[[^\]]*]|[^\[\]])*)] ?(?:\n *)?\[(.*?)]()()()()/g, writeAnchorTag);
-          text = text.replace(
-            /\[((?:\[[^\]]*]|[^\[\]])*)]()[ \t]*\([ \t]?<([^>]*)>(?:[ \t]*((["'])([^"]*?)\5))?[ \t]?\)/g,
-            writeAnchorTag
-          );
-          text = text.replace(
-            /\[((?:\[[^\]]*]|[^\[\]])*)]()[ \t]*\([ \t]?<?([\S]+?(?:\([\S]*?\)[\S]*?)?)>?(?:[ \t]*((["'])([^"]*?)\5))?[ \t]?\)/g,
-            writeAnchorTag
-          );
-          text = text.replace(/\[([^\[\]]+)]()()()()()/g, writeAnchorTag);
-          if (options.ghMentions) {
-            text = text.replace(/(^|\s)(\\)?(@([a-z\d]+(?:[a-z\d.-]+?[a-z\d]+)*))/gmi, function(wm, st, escape, mentions, username) {
-              if (escape === "\\") {
-                return st + mentions;
-              }
-              if (!showdown.helper.isString(options.ghMentionsLink)) {
-                throw new Error("ghMentionsLink option must be a string");
-              }
-              var lnk = options.ghMentionsLink.replace(/\{u}/g, username), target = "";
-              if (options.openLinksInNewWindow) {
-                target = ' rel="noopener noreferrer" target="\xA8E95Eblank"';
-              }
-              return st + '<a href="' + lnk + '"' + target + ">" + mentions + "</a>";
-            });
-          }
-          text = globals.converter._dispatch("anchors.after", text, options, globals);
-          return text;
-        });
-        var simpleURLRegex = /([*~_]+|\b)(((https?|ftp|dict):\/\/|www\.)[^'">\s]+?\.[^'">\s]+?)()(\1)?(?=\s|$)(?!["<>])/gi, simpleURLRegex2 = /([*~_]+|\b)(((https?|ftp|dict):\/\/|www\.)[^'">\s]+\.[^'">\s]+?)([.!?,()\[\]])?(\1)?(?=\s|$)(?!["<>])/gi, delimUrlRegex = /()<(((https?|ftp|dict):\/\/|www\.)[^'">\s]+)()>()/gi, simpleMailRegex = /(^|\s)(?:mailto:)?([A-Za-z0-9!#$%&'*+-/=?^_`{|}~.]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)(?=$|\s)/gmi, delimMailRegex = /<()(?:mailto:)?([-.\w]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)>/gi, replaceLink = function(options) {
-          return function(wm, leadingMagicChars, link, m2, m3, trailingPunctuation, trailingMagicChars) {
-            link = link.replace(showdown.helper.regexes.asteriskDashAndColon, showdown.helper.escapeCharactersCallback);
-            var lnkTxt = link, append = "", target = "", lmc = leadingMagicChars || "", tmc = trailingMagicChars || "";
-            if (/^www\./i.test(link)) {
-              link = link.replace(/^www\./i, "http://www.");
-            }
-            if (options.excludeTrailingPunctuationFromURLs && trailingPunctuation) {
-              append = trailingPunctuation;
-            }
-            if (options.openLinksInNewWindow) {
-              target = ' rel="noopener noreferrer" target="\xA8E95Eblank"';
-            }
-            return lmc + '<a href="' + link + '"' + target + ">" + lnkTxt + "</a>" + append + tmc;
-          };
-        }, replaceMail = function(options, globals) {
-          return function(wholeMatch, b, mail) {
-            var href = "mailto:";
-            b = b || "";
-            mail = showdown.subParser("unescapeSpecialChars")(mail, options, globals);
-            if (options.encodeEmails) {
-              href = showdown.helper.encodeEmailAddress(href + mail);
-              mail = showdown.helper.encodeEmailAddress(mail);
-            } else {
-              href = href + mail;
-            }
-            return b + '<a href="' + href + '">' + mail + "</a>";
-          };
-        };
-        showdown.subParser("autoLinks", function(text, options, globals) {
-          text = globals.converter._dispatch("autoLinks.before", text, options, globals);
-          text = text.replace(delimUrlRegex, replaceLink(options));
-          text = text.replace(delimMailRegex, replaceMail(options, globals));
-          text = globals.converter._dispatch("autoLinks.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("simplifiedAutoLinks", function(text, options, globals) {
-          if (!options.simplifiedAutoLink) {
-            return text;
-          }
-          text = globals.converter._dispatch("simplifiedAutoLinks.before", text, options, globals);
-          if (options.excludeTrailingPunctuationFromURLs) {
-            text = text.replace(simpleURLRegex2, replaceLink(options));
-          } else {
-            text = text.replace(simpleURLRegex, replaceLink(options));
-          }
-          text = text.replace(simpleMailRegex, replaceMail(options, globals));
-          text = globals.converter._dispatch("simplifiedAutoLinks.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("blockGamut", function(text, options, globals) {
-          text = globals.converter._dispatch("blockGamut.before", text, options, globals);
-          text = showdown.subParser("blockQuotes")(text, options, globals);
-          text = showdown.subParser("headers")(text, options, globals);
-          text = showdown.subParser("horizontalRule")(text, options, globals);
-          text = showdown.subParser("lists")(text, options, globals);
-          text = showdown.subParser("codeBlocks")(text, options, globals);
-          text = showdown.subParser("tables")(text, options, globals);
-          text = showdown.subParser("hashHTMLBlocks")(text, options, globals);
-          text = showdown.subParser("paragraphs")(text, options, globals);
-          text = globals.converter._dispatch("blockGamut.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("blockQuotes", function(text, options, globals) {
-          text = globals.converter._dispatch("blockQuotes.before", text, options, globals);
-          text = text + "\n\n";
-          var rgx = /(^ {0,3}>[ \t]?.+\n(.+\n)*\n*)+/gm;
-          if (options.splitAdjacentBlockquotes) {
-            rgx = /^ {0,3}>[\s\S]*?(?:\n\n)/gm;
-          }
-          text = text.replace(rgx, function(bq) {
-            bq = bq.replace(/^[ \t]*>[ \t]?/gm, "");
-            bq = bq.replace(/¨0/g, "");
-            bq = bq.replace(/^[ \t]+$/gm, "");
-            bq = showdown.subParser("githubCodeBlocks")(bq, options, globals);
-            bq = showdown.subParser("blockGamut")(bq, options, globals);
-            bq = bq.replace(/(^|\n)/g, "$1  ");
-            bq = bq.replace(/(\s*<pre>[^\r]+?<\/pre>)/gm, function(wholeMatch, m1) {
-              var pre = m1;
-              pre = pre.replace(/^  /mg, "\xA80");
-              pre = pre.replace(/¨0/g, "");
-              return pre;
-            });
-            return showdown.subParser("hashBlock")("<blockquote>\n" + bq + "\n</blockquote>", options, globals);
-          });
-          text = globals.converter._dispatch("blockQuotes.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("codeBlocks", function(text, options, globals) {
-          text = globals.converter._dispatch("codeBlocks.before", text, options, globals);
-          text += "\xA80";
-          var pattern = /(?:\n\n|^)((?:(?:[ ]{4}|\t).*\n+)+)(\n*[ ]{0,3}[^ \t\n]|(?=¨0))/g;
-          text = text.replace(pattern, function(wholeMatch, m1, m2) {
-            var codeblock = m1, nextChar = m2, end = "\n";
-            codeblock = showdown.subParser("outdent")(codeblock, options, globals);
-            codeblock = showdown.subParser("encodeCode")(codeblock, options, globals);
-            codeblock = showdown.subParser("detab")(codeblock, options, globals);
-            codeblock = codeblock.replace(/^\n+/g, "");
-            codeblock = codeblock.replace(/\n+$/g, "");
-            if (options.omitExtraWLInCodeBlocks) {
-              end = "";
-            }
-            codeblock = "<pre><code>" + codeblock + end + "</code></pre>";
-            return showdown.subParser("hashBlock")(codeblock, options, globals) + nextChar;
-          });
-          text = text.replace(/¨0/, "");
-          text = globals.converter._dispatch("codeBlocks.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("codeSpans", function(text, options, globals) {
-          text = globals.converter._dispatch("codeSpans.before", text, options, globals);
-          if (typeof text === "undefined") {
-            text = "";
-          }
-          text = text.replace(
-            /(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/gm,
-            function(wholeMatch, m1, m2, m3) {
-              var c2 = m3;
-              c2 = c2.replace(/^([ \t]*)/g, "");
-              c2 = c2.replace(/[ \t]*$/g, "");
-              c2 = showdown.subParser("encodeCode")(c2, options, globals);
-              c2 = m1 + "<code>" + c2 + "</code>";
-              c2 = showdown.subParser("hashHTMLSpans")(c2, options, globals);
-              return c2;
-            }
-          );
-          text = globals.converter._dispatch("codeSpans.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("completeHTMLDocument", function(text, options, globals) {
-          if (!options.completeHTMLDocument) {
-            return text;
-          }
-          text = globals.converter._dispatch("completeHTMLDocument.before", text, options, globals);
-          var doctype = "html", doctypeParsed = "<!DOCTYPE HTML>\n", title = "", charset = '<meta charset="utf-8">\n', lang = "", metadata = "";
-          if (typeof globals.metadata.parsed.doctype !== "undefined") {
-            doctypeParsed = "<!DOCTYPE " + globals.metadata.parsed.doctype + ">\n";
-            doctype = globals.metadata.parsed.doctype.toString().toLowerCase();
-            if (doctype === "html" || doctype === "html5") {
-              charset = '<meta charset="utf-8">';
-            }
-          }
-          for (var meta in globals.metadata.parsed) {
-            if (globals.metadata.parsed.hasOwnProperty(meta)) {
-              switch (meta.toLowerCase()) {
+        r.subParser("autoLinks", function(u, i, n) {
+            return u = n.converter._dispatch("autoLinks.before", u, i, n), u = u.replace(F, b(i)), u = u.replace(w, k(i, n)), u = n.converter._dispatch("autoLinks.after", u, i, n), u;
+        }), r.subParser("simplifiedAutoLinks", function(u, i, n) {
+            return i.simplifiedAutoLink && (u = n.converter._dispatch("simplifiedAutoLinks.before", u, i, n), i.excludeTrailingPunctuationFromURLs ? u = u.replace(q, b(i)) : u = u.replace(_, b(i)), u = u.replace(R, k(i, n)), u = n.converter._dispatch("simplifiedAutoLinks.after", u, i, n)), u;
+        }), r.subParser("blockGamut", function(u, i, n) {
+            return u = n.converter._dispatch("blockGamut.before", u, i, n), u = r.subParser("blockQuotes")(u, i, n), u = r.subParser("headers")(u, i, n), u = r.subParser("horizontalRule")(u, i, n), u = r.subParser("lists")(u, i, n), u = r.subParser("codeBlocks")(u, i, n), u = r.subParser("tables")(u, i, n), u = r.subParser("hashHTMLBlocks")(u, i, n), u = r.subParser("paragraphs")(u, i, n), u = n.converter._dispatch("blockGamut.after", u, i, n), u;
+        }), r.subParser("blockQuotes", function(u, i, n) {
+            u = n.converter._dispatch("blockQuotes.before", u, i, n), u = u + "\n\n";
+            var o = /(^ {0,3}>[ \t]?.+\n(.+\n)*\n*)+/gm;
+            return i.splitAdjacentBlockquotes && (o = /^ {0,3}>[\s\S]*?(?:\n\n)/gm), u = u.replace(o, function(f) {
+                return f = f.replace(/^[ \t]*>[ \t]?/gm, ""), f = f.replace(/¨0/g, ""), f = f.replace(/^[ \t]+$/gm, ""), f = r.subParser("githubCodeBlocks")(f, i, n), f = r.subParser("blockGamut")(f, i, n), f = f.replace(/(^|\n)/g, "$1  "), f = f.replace(/(\s*<pre>[^\r]+?<\/pre>)/gm, function(h, s) {
+                    var g = s;
+                    return g = g.replace(/^  /mg, "\xa80"), g = g.replace(/¨0/g, ""), g;
+                }), r.subParser("hashBlock")("<blockquote>\n" + f + "\n</blockquote>", i, n);
+            }), u = n.converter._dispatch("blockQuotes.after", u, i, n), u;
+        }), r.subParser("codeBlocks", function(u, i, n) {
+            u = n.converter._dispatch("codeBlocks.before", u, i, n), u += "\xa80";
+            var o = /(?:\n\n|^)((?:(?:[ ]{4}|\t).*\n+)+)(\n*[ ]{0,3}[^ \t\n]|(?=¨0))/g;
+            return u = u.replace(o, function(f, h, s) {
+                var g = h, B = s, S = "\n";
+                return g = r.subParser("outdent")(g, i, n), g = r.subParser("encodeCode")(g, i, n), g = r.subParser("detab")(g, i, n), g = g.replace(/^\n+/g, ""), g = g.replace(/\n+$/g, ""), i.omitExtraWLInCodeBlocks && (S = ""), g = "<pre><code>" + g + S + "</code></pre>", r.subParser("hashBlock")(g, i, n) + B;
+            }), u = u.replace(/¨0/, ""), u = n.converter._dispatch("codeBlocks.after", u, i, n), u;
+        }), r.subParser("codeSpans", function(u, i, n) {
+            return u = n.converter._dispatch("codeSpans.before", u, i, n), (typeof u === "undefined" ? "undefined" : _type_of(u)) > "u" && (u = ""), u = u.replace(/(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/gm, function(o, f, h, s) {
+                var g = s;
+                return g = g.replace(/^([ \t]*)/g, ""), g = g.replace(/[ \t]*$/g, ""), g = r.subParser("encodeCode")(g, i, n), g = f + "<code>" + g + "</code>", g = r.subParser("hashHTMLSpans")(g, i, n), g;
+            }), u = n.converter._dispatch("codeSpans.after", u, i, n), u;
+        }), r.subParser("completeHTMLDocument", function(u, i, n) {
+            if (!i.completeHTMLDocument) return u;
+            u = n.converter._dispatch("completeHTMLDocument.before", u, i, n);
+            var o = "html", f = "<!DOCTYPE HTML>\n", h = "", s = '<meta charset="utf-8">\n', g = "", B = "";
+            _type_of(n.metadata.parsed.doctype) < "u" && (f = "<!DOCTYPE " + n.metadata.parsed.doctype + ">\n", o = n.metadata.parsed.doctype.toString().toLowerCase(), (o === "html" || o === "html5") && (s = '<meta charset="utf-8">'));
+            for(var S in n.metadata.parsed)if (n.metadata.parsed.hasOwnProperty(S)) switch(S.toLowerCase()){
                 case "doctype":
-                  break;
+                    break;
                 case "title":
-                  title = "<title>" + globals.metadata.parsed.title + "</title>\n";
-                  break;
+                    h = "<title>" + n.metadata.parsed.title + "</title>\n";
+                    break;
                 case "charset":
-                  if (doctype === "html" || doctype === "html5") {
-                    charset = '<meta charset="' + globals.metadata.parsed.charset + '">\n';
-                  } else {
-                    charset = '<meta name="charset" content="' + globals.metadata.parsed.charset + '">\n';
-                  }
-                  break;
+                    o === "html" || o === "html5" ? s = '<meta charset="' + n.metadata.parsed.charset + '">\n' : s = '<meta name="charset" content="' + n.metadata.parsed.charset + '">\n';
+                    break;
                 case "language":
                 case "lang":
-                  lang = ' lang="' + globals.metadata.parsed[meta] + '"';
-                  metadata += '<meta name="' + meta + '" content="' + globals.metadata.parsed[meta] + '">\n';
-                  break;
-                default:
-                  metadata += '<meta name="' + meta + '" content="' + globals.metadata.parsed[meta] + '">\n';
-              }
-            }
-          }
-          text = doctypeParsed + "<html" + lang + ">\n<head>\n" + title + charset + metadata + "</head>\n<body>\n" + text.trim() + "\n</body>\n</html>";
-          text = globals.converter._dispatch("completeHTMLDocument.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("detab", function(text, options, globals) {
-          text = globals.converter._dispatch("detab.before", text, options, globals);
-          text = text.replace(/\t(?=\t)/g, "    ");
-          text = text.replace(/\t/g, "\xA8A\xA8B");
-          text = text.replace(/¨B(.+?)¨A/g, function(wholeMatch, m1) {
-            var leadingText = m1, numSpaces = 4 - leadingText.length % 4;
-            for (var i3 = 0; i3 < numSpaces; i3++) {
-              leadingText += " ";
-            }
-            return leadingText;
-          });
-          text = text.replace(/¨A/g, "    ");
-          text = text.replace(/¨B/g, "");
-          text = globals.converter._dispatch("detab.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("ellipsis", function(text, options, globals) {
-          if (!options.ellipsis) {
-            return text;
-          }
-          text = globals.converter._dispatch("ellipsis.before", text, options, globals);
-          text = text.replace(/\.\.\./g, "\u2026");
-          text = globals.converter._dispatch("ellipsis.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("emoji", function(text, options, globals) {
-          if (!options.emoji) {
-            return text;
-          }
-          text = globals.converter._dispatch("emoji.before", text, options, globals);
-          var emojiRgx = /:([\S]+?):/g;
-          text = text.replace(emojiRgx, function(wm, emojiCode) {
-            if (showdown.helper.emojis.hasOwnProperty(emojiCode)) {
-              return showdown.helper.emojis[emojiCode];
-            }
-            return wm;
-          });
-          text = globals.converter._dispatch("emoji.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("encodeAmpsAndAngles", function(text, options, globals) {
-          text = globals.converter._dispatch("encodeAmpsAndAngles.before", text, options, globals);
-          text = text.replace(/&(?!#?[xX]?(?:[0-9a-fA-F]+|\w+);)/g, "&amp;");
-          text = text.replace(/<(?![a-z\/?$!])/gi, "&lt;");
-          text = text.replace(/</g, "&lt;");
-          text = text.replace(/>/g, "&gt;");
-          text = globals.converter._dispatch("encodeAmpsAndAngles.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("encodeBackslashEscapes", function(text, options, globals) {
-          text = globals.converter._dispatch("encodeBackslashEscapes.before", text, options, globals);
-          text = text.replace(/\\(\\)/g, showdown.helper.escapeCharactersCallback);
-          text = text.replace(/\\([`*_{}\[\]()>#+.!~=|:-])/g, showdown.helper.escapeCharactersCallback);
-          text = globals.converter._dispatch("encodeBackslashEscapes.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("encodeCode", function(text, options, globals) {
-          text = globals.converter._dispatch("encodeCode.before", text, options, globals);
-          text = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/([*_{}\[\]\\=~-])/g, showdown.helper.escapeCharactersCallback);
-          text = globals.converter._dispatch("encodeCode.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("escapeSpecialCharsWithinTagAttributes", function(text, options, globals) {
-          text = globals.converter._dispatch("escapeSpecialCharsWithinTagAttributes.before", text, options, globals);
-          var tags = /<\/?[a-z\d_:-]+(?:[\s]+[\s\S]+?)?>/gi, comments = /<!(--(?:(?:[^>-]|-[^>])(?:[^-]|-[^-])*)--)>/gi;
-          text = text.replace(tags, function(wholeMatch) {
-            return wholeMatch.replace(/(.)<\/?code>(?=.)/g, "$1`").replace(/([\\`*_~=|])/g, showdown.helper.escapeCharactersCallback);
-          });
-          text = text.replace(comments, function(wholeMatch) {
-            return wholeMatch.replace(/([\\`*_~=|])/g, showdown.helper.escapeCharactersCallback);
-          });
-          text = globals.converter._dispatch("escapeSpecialCharsWithinTagAttributes.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("githubCodeBlocks", function(text, options, globals) {
-          if (!options.ghCodeBlocks) {
-            return text;
-          }
-          text = globals.converter._dispatch("githubCodeBlocks.before", text, options, globals);
-          text += "\xA80";
-          text = text.replace(/(?:^|\n)(?: {0,3})(```+|~~~+)(?: *)([^\s`~]*)\n([\s\S]*?)\n(?: {0,3})\1/g, function(wholeMatch, delim, language, codeblock) {
-            var end = options.omitExtraWLInCodeBlocks ? "" : "\n";
-            codeblock = showdown.subParser("encodeCode")(codeblock, options, globals);
-            codeblock = showdown.subParser("detab")(codeblock, options, globals);
-            codeblock = codeblock.replace(/^\n+/g, "");
-            codeblock = codeblock.replace(/\n+$/g, "");
-            codeblock = "<pre><code" + (language ? ' class="' + language + " language-" + language + '"' : "") + ">" + codeblock + end + "</code></pre>";
-            codeblock = showdown.subParser("hashBlock")(codeblock, options, globals);
-            return "\n\n\xA8G" + (globals.ghCodeBlocks.push({ text: wholeMatch, codeblock }) - 1) + "G\n\n";
-          });
-          text = text.replace(/¨0/, "");
-          return globals.converter._dispatch("githubCodeBlocks.after", text, options, globals);
-        });
-        showdown.subParser("hashBlock", function(text, options, globals) {
-          text = globals.converter._dispatch("hashBlock.before", text, options, globals);
-          text = text.replace(/(^\n+|\n+$)/g, "");
-          text = "\n\n\xA8K" + (globals.gHtmlBlocks.push(text) - 1) + "K\n\n";
-          text = globals.converter._dispatch("hashBlock.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("hashCodeTags", function(text, options, globals) {
-          text = globals.converter._dispatch("hashCodeTags.before", text, options, globals);
-          var repFunc = function(wholeMatch, match, left, right) {
-            var codeblock = left + showdown.subParser("encodeCode")(match, options, globals) + right;
-            return "\xA8C" + (globals.gHtmlSpans.push(codeblock) - 1) + "C";
-          };
-          text = showdown.helper.replaceRecursiveRegExp(text, repFunc, "<code\\b[^>]*>", "</code>", "gim");
-          text = globals.converter._dispatch("hashCodeTags.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("hashElement", function(text, options, globals) {
-          return function(wholeMatch, m1) {
-            var blockText = m1;
-            blockText = blockText.replace(/\n\n/g, "\n");
-            blockText = blockText.replace(/^\n/, "");
-            blockText = blockText.replace(/\n+$/g, "");
-            blockText = "\n\n\xA8K" + (globals.gHtmlBlocks.push(blockText) - 1) + "K\n\n";
-            return blockText;
-          };
-        });
-        showdown.subParser("hashHTMLBlocks", function(text, options, globals) {
-          text = globals.converter._dispatch("hashHTMLBlocks.before", text, options, globals);
-          var blockTags = [
-            "pre",
-            "div",
-            "h1",
-            "h2",
-            "h3",
-            "h4",
-            "h5",
-            "h6",
-            "blockquote",
-            "table",
-            "dl",
-            "ol",
-            "ul",
-            "script",
-            "noscript",
-            "form",
-            "fieldset",
-            "iframe",
-            "math",
-            "style",
-            "section",
-            "header",
-            "footer",
-            "nav",
-            "article",
-            "aside",
-            "address",
-            "audio",
-            "canvas",
-            "figure",
-            "hgroup",
-            "output",
-            "video",
-            "p"
-          ], repFunc = function(wholeMatch, match, left, right) {
-            var txt = wholeMatch;
-            if (left.search(/\bmarkdown\b/) !== -1) {
-              txt = left + globals.converter.makeHtml(match) + right;
-            }
-            return "\n\n\xA8K" + (globals.gHtmlBlocks.push(txt) - 1) + "K\n\n";
-          };
-          if (options.backslashEscapesHTMLTags) {
-            text = text.replace(/\\<(\/?[^>]+?)>/g, function(wm, inside) {
-              return "&lt;" + inside + "&gt;";
-            });
-          }
-          for (var i3 = 0; i3 < blockTags.length; ++i3) {
-            var opTagPos, rgx1 = new RegExp("^ {0,3}(<" + blockTags[i3] + "\\b[^>]*>)", "im"), patLeft = "<" + blockTags[i3] + "\\b[^>]*>", patRight = "</" + blockTags[i3] + ">";
-            while ((opTagPos = showdown.helper.regexIndexOf(text, rgx1)) !== -1) {
-              var subTexts = showdown.helper.splitAtIndex(text, opTagPos), newSubText1 = showdown.helper.replaceRecursiveRegExp(subTexts[1], repFunc, patLeft, patRight, "im");
-              if (newSubText1 === subTexts[1]) {
-                break;
-              }
-              text = subTexts[0].concat(newSubText1);
-            }
-          }
-          text = text.replace(
-            /(\n {0,3}(<(hr)\b([^<>])*?\/?>)[ \t]*(?=\n{2,}))/g,
-            showdown.subParser("hashElement")(text, options, globals)
-          );
-          text = showdown.helper.replaceRecursiveRegExp(text, function(txt) {
-            return "\n\n\xA8K" + (globals.gHtmlBlocks.push(txt) - 1) + "K\n\n";
-          }, "^ {0,3}<!--", "-->", "gm");
-          text = text.replace(
-            /(?:\n\n)( {0,3}(?:<([?%])[^\r]*?\2>)[ \t]*(?=\n{2,}))/g,
-            showdown.subParser("hashElement")(text, options, globals)
-          );
-          text = globals.converter._dispatch("hashHTMLBlocks.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("hashHTMLSpans", function(text, options, globals) {
-          text = globals.converter._dispatch("hashHTMLSpans.before", text, options, globals);
-          function hashHTMLSpan(html) {
-            return "\xA8C" + (globals.gHtmlSpans.push(html) - 1) + "C";
-          }
-          text = text.replace(/<[^>]+?\/>/gi, function(wm) {
-            return hashHTMLSpan(wm);
-          });
-          text = text.replace(/<([^>]+?)>[\s\S]*?<\/\1>/g, function(wm) {
-            return hashHTMLSpan(wm);
-          });
-          text = text.replace(/<([^>]+?)\s[^>]+?>[\s\S]*?<\/\1>/g, function(wm) {
-            return hashHTMLSpan(wm);
-          });
-          text = text.replace(/<[^>]+?>/gi, function(wm) {
-            return hashHTMLSpan(wm);
-          });
-          text = globals.converter._dispatch("hashHTMLSpans.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("unhashHTMLSpans", function(text, options, globals) {
-          text = globals.converter._dispatch("unhashHTMLSpans.before", text, options, globals);
-          for (var i3 = 0; i3 < globals.gHtmlSpans.length; ++i3) {
-            var repText = globals.gHtmlSpans[i3], limit = 0;
-            while (/¨C(\d+)C/.test(repText)) {
-              var num = RegExp.$1;
-              repText = repText.replace("\xA8C" + num + "C", globals.gHtmlSpans[num]);
-              if (limit === 10) {
-                console.error("maximum nesting of 10 spans reached!!!");
-                break;
-              }
-              ++limit;
-            }
-            text = text.replace("\xA8C" + i3 + "C", repText);
-          }
-          text = globals.converter._dispatch("unhashHTMLSpans.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("hashPreCodeTags", function(text, options, globals) {
-          text = globals.converter._dispatch("hashPreCodeTags.before", text, options, globals);
-          var repFunc = function(wholeMatch, match, left, right) {
-            var codeblock = left + showdown.subParser("encodeCode")(match, options, globals) + right;
-            return "\n\n\xA8G" + (globals.ghCodeBlocks.push({ text: wholeMatch, codeblock }) - 1) + "G\n\n";
-          };
-          text = showdown.helper.replaceRecursiveRegExp(text, repFunc, "^ {0,3}<pre\\b[^>]*>\\s*<code\\b[^>]*>", "^ {0,3}</code>\\s*</pre>", "gim");
-          text = globals.converter._dispatch("hashPreCodeTags.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("headers", function(text, options, globals) {
-          text = globals.converter._dispatch("headers.before", text, options, globals);
-          var headerLevelStart = isNaN(parseInt(options.headerLevelStart)) ? 1 : parseInt(options.headerLevelStart), setextRegexH1 = options.smoothLivePreview ? /^(.+)[ \t]*\n={2,}[ \t]*\n+/gm : /^(.+)[ \t]*\n=+[ \t]*\n+/gm, setextRegexH2 = options.smoothLivePreview ? /^(.+)[ \t]*\n-{2,}[ \t]*\n+/gm : /^(.+)[ \t]*\n-+[ \t]*\n+/gm;
-          text = text.replace(setextRegexH1, function(wholeMatch, m1) {
-            var spanGamut = showdown.subParser("spanGamut")(m1, options, globals), hID = options.noHeaderId ? "" : ' id="' + headerId(m1) + '"', hLevel = headerLevelStart, hashBlock = "<h" + hLevel + hID + ">" + spanGamut + "</h" + hLevel + ">";
-            return showdown.subParser("hashBlock")(hashBlock, options, globals);
-          });
-          text = text.replace(setextRegexH2, function(matchFound, m1) {
-            var spanGamut = showdown.subParser("spanGamut")(m1, options, globals), hID = options.noHeaderId ? "" : ' id="' + headerId(m1) + '"', hLevel = headerLevelStart + 1, hashBlock = "<h" + hLevel + hID + ">" + spanGamut + "</h" + hLevel + ">";
-            return showdown.subParser("hashBlock")(hashBlock, options, globals);
-          });
-          var atxStyle = options.requireSpaceBeforeHeadingText ? /^(#{1,6})[ \t]+(.+?)[ \t]*#*\n+/gm : /^(#{1,6})[ \t]*(.+?)[ \t]*#*\n+/gm;
-          text = text.replace(atxStyle, function(wholeMatch, m1, m2) {
-            var hText = m2;
-            if (options.customizedHeaderId) {
-              hText = m2.replace(/\s?\{([^{]+?)}\s*$/, "");
-            }
-            var span = showdown.subParser("spanGamut")(hText, options, globals), hID = options.noHeaderId ? "" : ' id="' + headerId(m2) + '"', hLevel = headerLevelStart - 1 + m1.length, header = "<h" + hLevel + hID + ">" + span + "</h" + hLevel + ">";
-            return showdown.subParser("hashBlock")(header, options, globals);
-          });
-          function headerId(m) {
-            var title, prefix;
-            if (options.customizedHeaderId) {
-              var match = m.match(/\{([^{]+?)}\s*$/);
-              if (match && match[1]) {
-                m = match[1];
-              }
-            }
-            title = m;
-            if (showdown.helper.isString(options.prefixHeaderId)) {
-              prefix = options.prefixHeaderId;
-            } else if (options.prefixHeaderId === true) {
-              prefix = "section-";
-            } else {
-              prefix = "";
-            }
-            if (!options.rawPrefixHeaderId) {
-              title = prefix + title;
-            }
-            if (options.ghCompatibleHeaderId) {
-              title = title.replace(/ /g, "-").replace(/&amp;/g, "").replace(/¨T/g, "").replace(/¨D/g, "").replace(/[&+$,\/:;=?@"#{}|^¨~\[\]`\\*)(%.!'<>]/g, "").toLowerCase();
-            } else if (options.rawHeaderId) {
-              title = title.replace(/ /g, "-").replace(/&amp;/g, "&").replace(/¨T/g, "\xA8").replace(/¨D/g, "$").replace(/["']/g, "-").toLowerCase();
-            } else {
-              title = title.replace(/[^\w]/g, "").toLowerCase();
-            }
-            if (options.rawPrefixHeaderId) {
-              title = prefix + title;
-            }
-            if (globals.hashLinkCounts[title]) {
-              title = title + "-" + globals.hashLinkCounts[title]++;
-            } else {
-              globals.hashLinkCounts[title] = 1;
-            }
-            return title;
-          }
-          text = globals.converter._dispatch("headers.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("horizontalRule", function(text, options, globals) {
-          text = globals.converter._dispatch("horizontalRule.before", text, options, globals);
-          var key = showdown.subParser("hashBlock")("<hr />", options, globals);
-          text = text.replace(/^ {0,2}( ?-){3,}[ \t]*$/gm, key);
-          text = text.replace(/^ {0,2}( ?\*){3,}[ \t]*$/gm, key);
-          text = text.replace(/^ {0,2}( ?_){3,}[ \t]*$/gm, key);
-          text = globals.converter._dispatch("horizontalRule.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("images", function(text, options, globals) {
-          text = globals.converter._dispatch("images.before", text, options, globals);
-          var inlineRegExp = /!\[([^\]]*?)][ \t]*()\([ \t]?<?([\S]+?(?:\([\S]*?\)[\S]*?)?)>?(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*(?:(["'])([^"]*?)\6)?[ \t]?\)/g, crazyRegExp = /!\[([^\]]*?)][ \t]*()\([ \t]?<([^>]*)>(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*(?:(?:(["'])([^"]*?)\6))?[ \t]?\)/g, base64RegExp = /!\[([^\]]*?)][ \t]*()\([ \t]?<?(data:.+?\/.+?;base64,[A-Za-z0-9+/=\n]+?)>?(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*(?:(["'])([^"]*?)\6)?[ \t]?\)/g, referenceRegExp = /!\[([^\]]*?)] ?(?:\n *)?\[([\s\S]*?)]()()()()()/g, refShortcutRegExp = /!\[([^\[\]]+)]()()()()()/g;
-          function writeImageTagBase64(wholeMatch, altText, linkId, url, width, height, m5, title) {
-            url = url.replace(/\s/g, "");
-            return writeImageTag(wholeMatch, altText, linkId, url, width, height, m5, title);
-          }
-          function writeImageTag(wholeMatch, altText, linkId, url, width, height, m5, title) {
-            var gUrls = globals.gUrls, gTitles = globals.gTitles, gDims = globals.gDimensions;
-            linkId = linkId.toLowerCase();
-            if (!title) {
-              title = "";
-            }
-            if (wholeMatch.search(/\(<?\s*>? ?(['"].*['"])?\)$/m) > -1) {
-              url = "";
-            } else if (url === "" || url === null) {
-              if (linkId === "" || linkId === null) {
-                linkId = altText.toLowerCase().replace(/ ?\n/g, " ");
-              }
-              url = "#" + linkId;
-              if (!showdown.helper.isUndefined(gUrls[linkId])) {
-                url = gUrls[linkId];
-                if (!showdown.helper.isUndefined(gTitles[linkId])) {
-                  title = gTitles[linkId];
-                }
-                if (!showdown.helper.isUndefined(gDims[linkId])) {
-                  width = gDims[linkId].width;
-                  height = gDims[linkId].height;
-                }
-              } else {
-                return wholeMatch;
-              }
-            }
-            altText = altText.replace(/"/g, "&quot;").replace(showdown.helper.regexes.asteriskDashAndColon, showdown.helper.escapeCharactersCallback);
-            url = url.replace(showdown.helper.regexes.asteriskDashAndColon, showdown.helper.escapeCharactersCallback);
-            var result = '<img src="' + url + '" alt="' + altText + '"';
-            if (title && showdown.helper.isString(title)) {
-              title = title.replace(/"/g, "&quot;").replace(showdown.helper.regexes.asteriskDashAndColon, showdown.helper.escapeCharactersCallback);
-              result += ' title="' + title + '"';
-            }
-            if (width && height) {
-              width = width === "*" ? "auto" : width;
-              height = height === "*" ? "auto" : height;
-              result += ' width="' + width + '"';
-              result += ' height="' + height + '"';
-            }
-            result += " />";
-            return result;
-          }
-          text = text.replace(referenceRegExp, writeImageTag);
-          text = text.replace(base64RegExp, writeImageTagBase64);
-          text = text.replace(crazyRegExp, writeImageTag);
-          text = text.replace(inlineRegExp, writeImageTag);
-          text = text.replace(refShortcutRegExp, writeImageTag);
-          text = globals.converter._dispatch("images.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("italicsAndBold", function(text, options, globals) {
-          text = globals.converter._dispatch("italicsAndBold.before", text, options, globals);
-          function parseInside(txt, left, right) {
-            return left + txt + right;
-          }
-          if (options.literalMidWordUnderscores) {
-            text = text.replace(/\b___(\S[\s\S]*?)___\b/g, function(wm, txt) {
-              return parseInside(txt, "<strong><em>", "</em></strong>");
-            });
-            text = text.replace(/\b__(\S[\s\S]*?)__\b/g, function(wm, txt) {
-              return parseInside(txt, "<strong>", "</strong>");
-            });
-            text = text.replace(/\b_(\S[\s\S]*?)_\b/g, function(wm, txt) {
-              return parseInside(txt, "<em>", "</em>");
-            });
-          } else {
-            text = text.replace(/___(\S[\s\S]*?)___/g, function(wm, m) {
-              return /\S$/.test(m) ? parseInside(m, "<strong><em>", "</em></strong>") : wm;
-            });
-            text = text.replace(/__(\S[\s\S]*?)__/g, function(wm, m) {
-              return /\S$/.test(m) ? parseInside(m, "<strong>", "</strong>") : wm;
-            });
-            text = text.replace(/_([^\s_][\s\S]*?)_/g, function(wm, m) {
-              return /\S$/.test(m) ? parseInside(m, "<em>", "</em>") : wm;
-            });
-          }
-          if (options.literalMidWordAsterisks) {
-            text = text.replace(/([^*]|^)\B\*\*\*(\S[\s\S]*?)\*\*\*\B(?!\*)/g, function(wm, lead, txt) {
-              return parseInside(txt, lead + "<strong><em>", "</em></strong>");
-            });
-            text = text.replace(/([^*]|^)\B\*\*(\S[\s\S]*?)\*\*\B(?!\*)/g, function(wm, lead, txt) {
-              return parseInside(txt, lead + "<strong>", "</strong>");
-            });
-            text = text.replace(/([^*]|^)\B\*(\S[\s\S]*?)\*\B(?!\*)/g, function(wm, lead, txt) {
-              return parseInside(txt, lead + "<em>", "</em>");
-            });
-          } else {
-            text = text.replace(/\*\*\*(\S[\s\S]*?)\*\*\*/g, function(wm, m) {
-              return /\S$/.test(m) ? parseInside(m, "<strong><em>", "</em></strong>") : wm;
-            });
-            text = text.replace(/\*\*(\S[\s\S]*?)\*\*/g, function(wm, m) {
-              return /\S$/.test(m) ? parseInside(m, "<strong>", "</strong>") : wm;
-            });
-            text = text.replace(/\*([^\s*][\s\S]*?)\*/g, function(wm, m) {
-              return /\S$/.test(m) ? parseInside(m, "<em>", "</em>") : wm;
-            });
-          }
-          text = globals.converter._dispatch("italicsAndBold.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("lists", function(text, options, globals) {
-          function processListItems(listStr, trimTrailing) {
-            globals.gListLevel++;
-            listStr = listStr.replace(/\n{2,}$/, "\n");
-            listStr += "\xA80";
-            var rgx = /(\n)?(^ {0,3})([*+-]|\d+[.])[ \t]+((\[(x|X| )?])?[ \t]*[^\r]+?(\n{1,2}))(?=\n*(¨0| {0,3}([*+-]|\d+[.])[ \t]+))/gm, isParagraphed = /\n[ \t]*\n(?!¨0)/.test(listStr);
-            if (options.disableForced4SpacesIndentedSublists) {
-              rgx = /(\n)?(^ {0,3})([*+-]|\d+[.])[ \t]+((\[(x|X| )?])?[ \t]*[^\r]+?(\n{1,2}))(?=\n*(¨0|\2([*+-]|\d+[.])[ \t]+))/gm;
-            }
-            listStr = listStr.replace(rgx, function(wholeMatch, m1, m2, m3, m4, taskbtn, checked) {
-              checked = checked && checked.trim() !== "";
-              var item = showdown.subParser("outdent")(m4, options, globals), bulletStyle = "";
-              if (taskbtn && options.tasklists) {
-                bulletStyle = ' class="task-list-item" style="list-style-type: none;"';
-                item = item.replace(/^[ \t]*\[(x|X| )?]/m, function() {
-                  var otp = '<input type="checkbox" disabled style="margin: 0px 0.35em 0.25em -1.6em; vertical-align: middle;"';
-                  if (checked) {
-                    otp += " checked";
-                  }
-                  otp += ">";
-                  return otp;
-                });
-              }
-              item = item.replace(/^([-*+]|\d\.)[ \t]+[\S\n ]*/g, function(wm2) {
-                return "\xA8A" + wm2;
-              });
-              if (m1 || item.search(/\n{2,}/) > -1) {
-                item = showdown.subParser("githubCodeBlocks")(item, options, globals);
-                item = showdown.subParser("blockGamut")(item, options, globals);
-              } else {
-                item = showdown.subParser("lists")(item, options, globals);
-                item = item.replace(/\n$/, "");
-                item = showdown.subParser("hashHTMLBlocks")(item, options, globals);
-                item = item.replace(/\n\n+/g, "\n\n");
-                if (isParagraphed) {
-                  item = showdown.subParser("paragraphs")(item, options, globals);
-                } else {
-                  item = showdown.subParser("spanGamut")(item, options, globals);
-                }
-              }
-              item = item.replace("\xA8A", "");
-              item = "<li" + bulletStyle + ">" + item + "</li>\n";
-              return item;
-            });
-            listStr = listStr.replace(/¨0/g, "");
-            globals.gListLevel--;
-            if (trimTrailing) {
-              listStr = listStr.replace(/\s+$/, "");
-            }
-            return listStr;
-          }
-          function styleStartNumber(list, listType) {
-            if (listType === "ol") {
-              var res = list.match(/^ *(\d+)\./);
-              if (res && res[1] !== "1") {
-                return ' start="' + res[1] + '"';
-              }
-            }
-            return "";
-          }
-          function parseConsecutiveLists(list, listType, trimTrailing) {
-            var olRgx = options.disableForced4SpacesIndentedSublists ? /^ ?\d+\.[ \t]/gm : /^ {0,3}\d+\.[ \t]/gm, ulRgx = options.disableForced4SpacesIndentedSublists ? /^ ?[*+-][ \t]/gm : /^ {0,3}[*+-][ \t]/gm, counterRxg = listType === "ul" ? olRgx : ulRgx, result = "";
-            if (list.search(counterRxg) !== -1) {
-              (function parseCL(txt) {
-                var pos = txt.search(counterRxg), style2 = styleStartNumber(list, listType);
-                if (pos !== -1) {
-                  result += "\n\n<" + listType + style2 + ">\n" + processListItems(txt.slice(0, pos), !!trimTrailing) + "</" + listType + ">\n";
-                  listType = listType === "ul" ? "ol" : "ul";
-                  counterRxg = listType === "ul" ? olRgx : ulRgx;
-                  parseCL(txt.slice(pos));
-                } else {
-                  result += "\n\n<" + listType + style2 + ">\n" + processListItems(txt, !!trimTrailing) + "</" + listType + ">\n";
-                }
-              })(list);
-            } else {
-              var style = styleStartNumber(list, listType);
-              result = "\n\n<" + listType + style + ">\n" + processListItems(list, !!trimTrailing) + "</" + listType + ">\n";
-            }
-            return result;
-          }
-          text = globals.converter._dispatch("lists.before", text, options, globals);
-          text += "\xA80";
-          if (globals.gListLevel) {
-            text = text.replace(
-              /^(( {0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(¨0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/gm,
-              function(wholeMatch, list, m2) {
-                var listType = m2.search(/[*+-]/g) > -1 ? "ul" : "ol";
-                return parseConsecutiveLists(list, listType, true);
-              }
-            );
-          } else {
-            text = text.replace(
-              /(\n\n|^\n?)(( {0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(¨0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/gm,
-              function(wholeMatch, m1, list, m3) {
-                var listType = m3.search(/[*+-]/g) > -1 ? "ul" : "ol";
-                return parseConsecutiveLists(list, listType, false);
-              }
-            );
-          }
-          text = text.replace(/¨0/, "");
-          text = globals.converter._dispatch("lists.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("metadata", function(text, options, globals) {
-          if (!options.metadata) {
-            return text;
-          }
-          text = globals.converter._dispatch("metadata.before", text, options, globals);
-          function parseMetadataContents(content) {
-            globals.metadata.raw = content;
-            content = content.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
-            content = content.replace(/\n {4}/g, " ");
-            content.replace(/^([\S ]+): +([\s\S]+?)$/gm, function(wm, key, value) {
-              globals.metadata.parsed[key] = value;
-              return "";
-            });
-          }
-          text = text.replace(/^\s*«««+(\S*?)\n([\s\S]+?)\n»»»+\n/, function(wholematch, format, content) {
-            parseMetadataContents(content);
-            return "\xA8M";
-          });
-          text = text.replace(/^\s*---+(\S*?)\n([\s\S]+?)\n---+\n/, function(wholematch, format, content) {
-            if (format) {
-              globals.metadata.format = format;
-            }
-            parseMetadataContents(content);
-            return "\xA8M";
-          });
-          text = text.replace(/¨M/g, "");
-          text = globals.converter._dispatch("metadata.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("outdent", function(text, options, globals) {
-          text = globals.converter._dispatch("outdent.before", text, options, globals);
-          text = text.replace(/^(\t|[ ]{1,4})/gm, "\xA80");
-          text = text.replace(/¨0/g, "");
-          text = globals.converter._dispatch("outdent.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("paragraphs", function(text, options, globals) {
-          text = globals.converter._dispatch("paragraphs.before", text, options, globals);
-          text = text.replace(/^\n+/g, "");
-          text = text.replace(/\n+$/g, "");
-          var grafs = text.split(/\n{2,}/g), grafsOut = [], end = grafs.length;
-          for (var i3 = 0; i3 < end; i3++) {
-            var str2 = grafs[i3];
-            if (str2.search(/¨(K|G)(\d+)\1/g) >= 0) {
-              grafsOut.push(str2);
-            } else if (str2.search(/\S/) >= 0) {
-              str2 = showdown.subParser("spanGamut")(str2, options, globals);
-              str2 = str2.replace(/^([ \t]*)/g, "<p>");
-              str2 += "</p>";
-              grafsOut.push(str2);
-            }
-          }
-          end = grafsOut.length;
-          for (i3 = 0; i3 < end; i3++) {
-            var blockText = "", grafsOutIt = grafsOut[i3], codeFlag = false;
-            while (/¨(K|G)(\d+)\1/.test(grafsOutIt)) {
-              var delim = RegExp.$1, num = RegExp.$2;
-              if (delim === "K") {
-                blockText = globals.gHtmlBlocks[num];
-              } else {
-                if (codeFlag) {
-                  blockText = showdown.subParser("encodeCode")(globals.ghCodeBlocks[num].text, options, globals);
-                } else {
-                  blockText = globals.ghCodeBlocks[num].codeblock;
-                }
-              }
-              blockText = blockText.replace(/\$/g, "$$$$");
-              grafsOutIt = grafsOutIt.replace(/(\n\n)?¨(K|G)\d+\2(\n\n)?/, blockText);
-              if (/^<pre\b[^>]*>\s*<code\b[^>]*>/.test(grafsOutIt)) {
-                codeFlag = true;
-              }
-            }
-            grafsOut[i3] = grafsOutIt;
-          }
-          text = grafsOut.join("\n");
-          text = text.replace(/^\n+/g, "");
-          text = text.replace(/\n+$/g, "");
-          return globals.converter._dispatch("paragraphs.after", text, options, globals);
-        });
-        showdown.subParser("runExtension", function(ext, text, options, globals) {
-          if (ext.filter) {
-            text = ext.filter(text, globals.converter, options);
-          } else if (ext.regex) {
-            var re = ext.regex;
-            if (!(re instanceof RegExp)) {
-              re = new RegExp(re, "g");
-            }
-            text = text.replace(re, ext.replace);
-          }
-          return text;
-        });
-        showdown.subParser("spanGamut", function(text, options, globals) {
-          text = globals.converter._dispatch("spanGamut.before", text, options, globals);
-          text = showdown.subParser("codeSpans")(text, options, globals);
-          text = showdown.subParser("escapeSpecialCharsWithinTagAttributes")(text, options, globals);
-          text = showdown.subParser("encodeBackslashEscapes")(text, options, globals);
-          text = showdown.subParser("images")(text, options, globals);
-          text = showdown.subParser("anchors")(text, options, globals);
-          text = showdown.subParser("autoLinks")(text, options, globals);
-          text = showdown.subParser("simplifiedAutoLinks")(text, options, globals);
-          text = showdown.subParser("emoji")(text, options, globals);
-          text = showdown.subParser("underline")(text, options, globals);
-          text = showdown.subParser("italicsAndBold")(text, options, globals);
-          text = showdown.subParser("strikethrough")(text, options, globals);
-          text = showdown.subParser("ellipsis")(text, options, globals);
-          text = showdown.subParser("hashHTMLSpans")(text, options, globals);
-          text = showdown.subParser("encodeAmpsAndAngles")(text, options, globals);
-          if (options.simpleLineBreaks) {
-            if (!/\n\n¨K/.test(text)) {
-              text = text.replace(/\n+/g, "<br />\n");
-            }
-          } else {
-            text = text.replace(/  +\n/g, "<br />\n");
-          }
-          text = globals.converter._dispatch("spanGamut.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("strikethrough", function(text, options, globals) {
-          function parseInside(txt) {
-            if (options.simplifiedAutoLink) {
-              txt = showdown.subParser("simplifiedAutoLinks")(txt, options, globals);
-            }
-            return "<del>" + txt + "</del>";
-          }
-          if (options.strikethrough) {
-            text = globals.converter._dispatch("strikethrough.before", text, options, globals);
-            text = text.replace(/(?:~){2}([\s\S]+?)(?:~){2}/g, function(wm, txt) {
-              return parseInside(txt);
-            });
-            text = globals.converter._dispatch("strikethrough.after", text, options, globals);
-          }
-          return text;
-        });
-        showdown.subParser("stripLinkDefinitions", function(text, options, globals) {
-          var regex = /^ {0,3}\[([^\]]+)]:[ \t]*\n?[ \t]*<?([^>\s]+)>?(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*\n?[ \t]*(?:(\n*)["|'(](.+?)["|')][ \t]*)?(?:\n+|(?=¨0))/gm, base64Regex = /^ {0,3}\[([^\]]+)]:[ \t]*\n?[ \t]*<?(data:.+?\/.+?;base64,[A-Za-z0-9+/=\n]+?)>?(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*\n?[ \t]*(?:(\n*)["|'(](.+?)["|')][ \t]*)?(?:\n\n|(?=¨0)|(?=\n\[))/gm;
-          text += "\xA80";
-          var replaceFunc = function(wholeMatch, linkId, url, width, height, blankLines, title) {
-            linkId = linkId.toLowerCase();
-            if (text.toLowerCase().split(linkId).length - 1 < 2) {
-              return wholeMatch;
-            }
-            if (url.match(/^data:.+?\/.+?;base64,/)) {
-              globals.gUrls[linkId] = url.replace(/\s/g, "");
-            } else {
-              globals.gUrls[linkId] = showdown.subParser("encodeAmpsAndAngles")(url, options, globals);
-            }
-            if (blankLines) {
-              return blankLines + title;
-            } else {
-              if (title) {
-                globals.gTitles[linkId] = title.replace(/"|'/g, "&quot;");
-              }
-              if (options.parseImgDimensions && width && height) {
-                globals.gDimensions[linkId] = {
-                  width,
-                  height
-                };
-              }
-            }
-            return "";
-          };
-          text = text.replace(base64Regex, replaceFunc);
-          text = text.replace(regex, replaceFunc);
-          text = text.replace(/¨0/, "");
-          return text;
-        });
-        showdown.subParser("tables", function(text, options, globals) {
-          if (!options.tables) {
-            return text;
-          }
-          var tableRgx = /^ {0,3}\|?.+\|.+\n {0,3}\|?[ \t]*:?[ \t]*(?:[-=]){2,}[ \t]*:?[ \t]*\|[ \t]*:?[ \t]*(?:[-=]){2,}[\s\S]+?(?:\n\n|¨0)/gm, singeColTblRgx = /^ {0,3}\|.+\|[ \t]*\n {0,3}\|[ \t]*:?[ \t]*(?:[-=]){2,}[ \t]*:?[ \t]*\|[ \t]*\n( {0,3}\|.+\|[ \t]*\n)*(?:\n|¨0)/gm;
-          function parseStyles(sLine) {
-            if (/^:[ \t]*--*$/.test(sLine)) {
-              return ' style="text-align:left;"';
-            } else if (/^--*[ \t]*:[ \t]*$/.test(sLine)) {
-              return ' style="text-align:right;"';
-            } else if (/^:[ \t]*--*[ \t]*:$/.test(sLine)) {
-              return ' style="text-align:center;"';
-            } else {
-              return "";
-            }
-          }
-          function parseHeaders(header, style) {
-            var id = "";
-            header = header.trim();
-            if (options.tablesHeaderId || options.tableHeaderId) {
-              id = ' id="' + header.replace(/ /g, "_").toLowerCase() + '"';
-            }
-            header = showdown.subParser("spanGamut")(header, options, globals);
-            return "<th" + id + style + ">" + header + "</th>\n";
-          }
-          function parseCells(cell, style) {
-            var subText = showdown.subParser("spanGamut")(cell, options, globals);
-            return "<td" + style + ">" + subText + "</td>\n";
-          }
-          function buildTable(headers, cells) {
-            var tb = "<table>\n<thead>\n<tr>\n", tblLgn = headers.length;
-            for (var i3 = 0; i3 < tblLgn; ++i3) {
-              tb += headers[i3];
-            }
-            tb += "</tr>\n</thead>\n<tbody>\n";
-            for (i3 = 0; i3 < cells.length; ++i3) {
-              tb += "<tr>\n";
-              for (var ii = 0; ii < tblLgn; ++ii) {
-                tb += cells[i3][ii];
-              }
-              tb += "</tr>\n";
-            }
-            tb += "</tbody>\n</table>\n";
-            return tb;
-          }
-          function parseTable(rawTable) {
-            var i3, tableLines = rawTable.split("\n");
-            for (i3 = 0; i3 < tableLines.length; ++i3) {
-              if (/^ {0,3}\|/.test(tableLines[i3])) {
-                tableLines[i3] = tableLines[i3].replace(/^ {0,3}\|/, "");
-              }
-              if (/\|[ \t]*$/.test(tableLines[i3])) {
-                tableLines[i3] = tableLines[i3].replace(/\|[ \t]*$/, "");
-              }
-              tableLines[i3] = showdown.subParser("codeSpans")(tableLines[i3], options, globals);
-            }
-            var rawHeaders = tableLines[0].split("|").map(function(s3) {
-              return s3.trim();
-            }), rawStyles = tableLines[1].split("|").map(function(s3) {
-              return s3.trim();
-            }), rawCells = [], headers = [], styles = [], cells = [];
-            tableLines.shift();
-            tableLines.shift();
-            for (i3 = 0; i3 < tableLines.length; ++i3) {
-              if (tableLines[i3].trim() === "") {
-                continue;
-              }
-              rawCells.push(
-                tableLines[i3].split("|").map(function(s3) {
-                  return s3.trim();
-                })
-              );
-            }
-            if (rawHeaders.length < rawStyles.length) {
-              return rawTable;
-            }
-            for (i3 = 0; i3 < rawStyles.length; ++i3) {
-              styles.push(parseStyles(rawStyles[i3]));
-            }
-            for (i3 = 0; i3 < rawHeaders.length; ++i3) {
-              if (showdown.helper.isUndefined(styles[i3])) {
-                styles[i3] = "";
-              }
-              headers.push(parseHeaders(rawHeaders[i3], styles[i3]));
-            }
-            for (i3 = 0; i3 < rawCells.length; ++i3) {
-              var row = [];
-              for (var ii = 0; ii < headers.length; ++ii) {
-                if (showdown.helper.isUndefined(rawCells[i3][ii])) ;
-                row.push(parseCells(rawCells[i3][ii], styles[ii]));
-              }
-              cells.push(row);
-            }
-            return buildTable(headers, cells);
-          }
-          text = globals.converter._dispatch("tables.before", text, options, globals);
-          text = text.replace(/\\(\|)/g, showdown.helper.escapeCharactersCallback);
-          text = text.replace(tableRgx, parseTable);
-          text = text.replace(singeColTblRgx, parseTable);
-          text = globals.converter._dispatch("tables.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("underline", function(text, options, globals) {
-          if (!options.underline) {
-            return text;
-          }
-          text = globals.converter._dispatch("underline.before", text, options, globals);
-          if (options.literalMidWordUnderscores) {
-            text = text.replace(/\b___(\S[\s\S]*?)___\b/g, function(wm, txt) {
-              return "<u>" + txt + "</u>";
-            });
-            text = text.replace(/\b__(\S[\s\S]*?)__\b/g, function(wm, txt) {
-              return "<u>" + txt + "</u>";
-            });
-          } else {
-            text = text.replace(/___(\S[\s\S]*?)___/g, function(wm, m) {
-              return /\S$/.test(m) ? "<u>" + m + "</u>" : wm;
-            });
-            text = text.replace(/__(\S[\s\S]*?)__/g, function(wm, m) {
-              return /\S$/.test(m) ? "<u>" + m + "</u>" : wm;
-            });
-          }
-          text = text.replace(/(_)/g, showdown.helper.escapeCharactersCallback);
-          text = globals.converter._dispatch("underline.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("unescapeSpecialChars", function(text, options, globals) {
-          text = globals.converter._dispatch("unescapeSpecialChars.before", text, options, globals);
-          text = text.replace(/¨E(\d+)E/g, function(wholeMatch, m1) {
-            var charCodeToReplace = parseInt(m1);
-            return String.fromCharCode(charCodeToReplace);
-          });
-          text = globals.converter._dispatch("unescapeSpecialChars.after", text, options, globals);
-          return text;
-        });
-        showdown.subParser("makeMarkdown.blockquote", function(node, globals) {
-          var txt = "";
-          if (node.hasChildNodes()) {
-            var children = node.childNodes, childrenLength = children.length;
-            for (var i3 = 0; i3 < childrenLength; ++i3) {
-              var innerTxt = showdown.subParser("makeMarkdown.node")(children[i3], globals);
-              if (innerTxt === "") {
-                continue;
-              }
-              txt += innerTxt;
-            }
-          }
-          txt = txt.trim();
-          txt = "> " + txt.split("\n").join("\n> ");
-          return txt;
-        });
-        showdown.subParser("makeMarkdown.codeBlock", function(node, globals) {
-          var lang = node.getAttribute("language"), num = node.getAttribute("precodenum");
-          return "```" + lang + "\n" + globals.preList[num] + "\n```";
-        });
-        showdown.subParser("makeMarkdown.codeSpan", function(node) {
-          return "`" + node.innerHTML + "`";
-        });
-        showdown.subParser("makeMarkdown.emphasis", function(node, globals) {
-          var txt = "";
-          if (node.hasChildNodes()) {
-            txt += "*";
-            var children = node.childNodes, childrenLength = children.length;
-            for (var i3 = 0; i3 < childrenLength; ++i3) {
-              txt += showdown.subParser("makeMarkdown.node")(children[i3], globals);
-            }
-            txt += "*";
-          }
-          return txt;
-        });
-        showdown.subParser("makeMarkdown.header", function(node, globals, headerLevel) {
-          var headerMark = new Array(headerLevel + 1).join("#"), txt = "";
-          if (node.hasChildNodes()) {
-            txt = headerMark + " ";
-            var children = node.childNodes, childrenLength = children.length;
-            for (var i3 = 0; i3 < childrenLength; ++i3) {
-              txt += showdown.subParser("makeMarkdown.node")(children[i3], globals);
-            }
-          }
-          return txt;
-        });
-        showdown.subParser("makeMarkdown.hr", function() {
-          return "---";
-        });
-        showdown.subParser("makeMarkdown.image", function(node) {
-          var txt = "";
-          if (node.hasAttribute("src")) {
-            txt += "![" + node.getAttribute("alt") + "](";
-            txt += "<" + node.getAttribute("src") + ">";
-            if (node.hasAttribute("width") && node.hasAttribute("height")) {
-              txt += " =" + node.getAttribute("width") + "x" + node.getAttribute("height");
-            }
-            if (node.hasAttribute("title")) {
-              txt += ' "' + node.getAttribute("title") + '"';
-            }
-            txt += ")";
-          }
-          return txt;
-        });
-        showdown.subParser("makeMarkdown.links", function(node, globals) {
-          var txt = "";
-          if (node.hasChildNodes() && node.hasAttribute("href")) {
-            var children = node.childNodes, childrenLength = children.length;
-            txt = "[";
-            for (var i3 = 0; i3 < childrenLength; ++i3) {
-              txt += showdown.subParser("makeMarkdown.node")(children[i3], globals);
-            }
-            txt += "](";
-            txt += "<" + node.getAttribute("href") + ">";
-            if (node.hasAttribute("title")) {
-              txt += ' "' + node.getAttribute("title") + '"';
-            }
-            txt += ")";
-          }
-          return txt;
-        });
-        showdown.subParser("makeMarkdown.list", function(node, globals, type2) {
-          var txt = "";
-          if (!node.hasChildNodes()) {
-            return "";
-          }
-          var listItems = node.childNodes, listItemsLenght = listItems.length, listNum = node.getAttribute("start") || 1;
-          for (var i3 = 0; i3 < listItemsLenght; ++i3) {
-            if (typeof listItems[i3].tagName === "undefined" || listItems[i3].tagName.toLowerCase() !== "li") {
-              continue;
-            }
-            var bullet = "";
-            if (type2 === "ol") {
-              bullet = listNum.toString() + ". ";
-            } else {
-              bullet = "- ";
-            }
-            txt += bullet + showdown.subParser("makeMarkdown.listItem")(listItems[i3], globals);
-            ++listNum;
-          }
-          txt += "\n<!-- -->\n";
-          return txt.trim();
-        });
-        showdown.subParser("makeMarkdown.listItem", function(node, globals) {
-          var listItemTxt = "";
-          var children = node.childNodes, childrenLenght = children.length;
-          for (var i3 = 0; i3 < childrenLenght; ++i3) {
-            listItemTxt += showdown.subParser("makeMarkdown.node")(children[i3], globals);
-          }
-          if (!/\n$/.test(listItemTxt)) {
-            listItemTxt += "\n";
-          } else {
-            listItemTxt = listItemTxt.split("\n").join("\n    ").replace(/^ {4}$/gm, "").replace(/\n\n+/g, "\n\n");
-          }
-          return listItemTxt;
-        });
-        showdown.subParser("makeMarkdown.node", function(node, globals, spansOnly) {
-          spansOnly = spansOnly || false;
-          var txt = "";
-          if (node.nodeType === 3) {
-            return showdown.subParser("makeMarkdown.txt")(node, globals);
-          }
-          if (node.nodeType === 8) {
-            return "<!--" + node.data + "-->\n\n";
-          }
-          if (node.nodeType !== 1) {
-            return "";
-          }
-          var tagName = node.tagName.toLowerCase();
-          switch (tagName) {
-            case "h1":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.header")(node, globals, 1) + "\n\n";
-              }
-              break;
-            case "h2":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.header")(node, globals, 2) + "\n\n";
-              }
-              break;
-            case "h3":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.header")(node, globals, 3) + "\n\n";
-              }
-              break;
-            case "h4":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.header")(node, globals, 4) + "\n\n";
-              }
-              break;
-            case "h5":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.header")(node, globals, 5) + "\n\n";
-              }
-              break;
-            case "h6":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.header")(node, globals, 6) + "\n\n";
-              }
-              break;
-            case "p":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.paragraph")(node, globals) + "\n\n";
-              }
-              break;
-            case "blockquote":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.blockquote")(node, globals) + "\n\n";
-              }
-              break;
-            case "hr":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.hr")(node, globals) + "\n\n";
-              }
-              break;
-            case "ol":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.list")(node, globals, "ol") + "\n\n";
-              }
-              break;
-            case "ul":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.list")(node, globals, "ul") + "\n\n";
-              }
-              break;
-            case "precode":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.codeBlock")(node, globals) + "\n\n";
-              }
-              break;
-            case "pre":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.pre")(node, globals) + "\n\n";
-              }
-              break;
-            case "table":
-              if (!spansOnly) {
-                txt = showdown.subParser("makeMarkdown.table")(node, globals) + "\n\n";
-              }
-              break;
-            case "code":
-              txt = showdown.subParser("makeMarkdown.codeSpan")(node, globals);
-              break;
-            case "em":
-            case "i":
-              txt = showdown.subParser("makeMarkdown.emphasis")(node, globals);
-              break;
-            case "strong":
-            case "b":
-              txt = showdown.subParser("makeMarkdown.strong")(node, globals);
-              break;
-            case "del":
-              txt = showdown.subParser("makeMarkdown.strikethrough")(node, globals);
-              break;
-            case "a":
-              txt = showdown.subParser("makeMarkdown.links")(node, globals);
-              break;
-            case "img":
-              txt = showdown.subParser("makeMarkdown.image")(node, globals);
-              break;
-            default:
-              txt = node.outerHTML + "\n\n";
-          }
-          return txt;
-        });
-        showdown.subParser("makeMarkdown.paragraph", function(node, globals) {
-          var txt = "";
-          if (node.hasChildNodes()) {
-            var children = node.childNodes, childrenLength = children.length;
-            for (var i3 = 0; i3 < childrenLength; ++i3) {
-              txt += showdown.subParser("makeMarkdown.node")(children[i3], globals);
-            }
-          }
-          txt = txt.trim();
-          return txt;
-        });
-        showdown.subParser("makeMarkdown.pre", function(node, globals) {
-          var num = node.getAttribute("prenum");
-          return "<pre>" + globals.preList[num] + "</pre>";
-        });
-        showdown.subParser("makeMarkdown.strikethrough", function(node, globals) {
-          var txt = "";
-          if (node.hasChildNodes()) {
-            txt += "~~";
-            var children = node.childNodes, childrenLength = children.length;
-            for (var i3 = 0; i3 < childrenLength; ++i3) {
-              txt += showdown.subParser("makeMarkdown.node")(children[i3], globals);
-            }
-            txt += "~~";
-          }
-          return txt;
-        });
-        showdown.subParser("makeMarkdown.strong", function(node, globals) {
-          var txt = "";
-          if (node.hasChildNodes()) {
-            txt += "**";
-            var children = node.childNodes, childrenLength = children.length;
-            for (var i3 = 0; i3 < childrenLength; ++i3) {
-              txt += showdown.subParser("makeMarkdown.node")(children[i3], globals);
-            }
-            txt += "**";
-          }
-          return txt;
-        });
-        showdown.subParser("makeMarkdown.table", function(node, globals) {
-          var txt = "", tableArray = [[], []], headings = node.querySelectorAll("thead>tr>th"), rows = node.querySelectorAll("tbody>tr"), i3, ii;
-          for (i3 = 0; i3 < headings.length; ++i3) {
-            var headContent = showdown.subParser("makeMarkdown.tableCell")(headings[i3], globals), allign = "---";
-            if (headings[i3].hasAttribute("style")) {
-              var style = headings[i3].getAttribute("style").toLowerCase().replace(/\s/g, "");
-              switch (style) {
-                case "text-align:left;":
-                  allign = ":---";
-                  break;
-                case "text-align:right;":
-                  allign = "---:";
-                  break;
-                case "text-align:center;":
-                  allign = ":---:";
-                  break;
-              }
-            }
-            tableArray[0][i3] = headContent.trim();
-            tableArray[1][i3] = allign;
-          }
-          for (i3 = 0; i3 < rows.length; ++i3) {
-            var r2 = tableArray.push([]) - 1, cols = rows[i3].getElementsByTagName("td");
-            for (ii = 0; ii < headings.length; ++ii) {
-              var cellContent = " ";
-              if (typeof cols[ii] !== "undefined") {
-                cellContent = showdown.subParser("makeMarkdown.tableCell")(cols[ii], globals);
-              }
-              tableArray[r2].push(cellContent);
-            }
-          }
-          var cellSpacesCount = 3;
-          for (i3 = 0; i3 < tableArray.length; ++i3) {
-            for (ii = 0; ii < tableArray[i3].length; ++ii) {
-              var strLen = tableArray[i3][ii].length;
-              if (strLen > cellSpacesCount) {
-                cellSpacesCount = strLen;
-              }
-            }
-          }
-          for (i3 = 0; i3 < tableArray.length; ++i3) {
-            for (ii = 0; ii < tableArray[i3].length; ++ii) {
-              if (i3 === 1) {
-                if (tableArray[i3][ii].slice(-1) === ":") {
-                  tableArray[i3][ii] = showdown.helper.padEnd(tableArray[i3][ii].slice(-1), cellSpacesCount - 1, "-") + ":";
-                } else {
-                  tableArray[i3][ii] = showdown.helper.padEnd(tableArray[i3][ii], cellSpacesCount, "-");
-                }
-              } else {
-                tableArray[i3][ii] = showdown.helper.padEnd(tableArray[i3][ii], cellSpacesCount);
-              }
-            }
-            txt += "| " + tableArray[i3].join(" | ") + " |\n";
-          }
-          return txt.trim();
-        });
-        showdown.subParser("makeMarkdown.tableCell", function(node, globals) {
-          var txt = "";
-          if (!node.hasChildNodes()) {
-            return "";
-          }
-          var children = node.childNodes, childrenLength = children.length;
-          for (var i3 = 0; i3 < childrenLength; ++i3) {
-            txt += showdown.subParser("makeMarkdown.node")(children[i3], globals, true);
-          }
-          return txt.trim();
-        });
-        showdown.subParser("makeMarkdown.txt", function(node) {
-          var txt = node.nodeValue;
-          txt = txt.replace(/ +/g, " ");
-          txt = txt.replace(/¨NBSP;/g, " ");
-          txt = showdown.helper.unescapeHTMLEntities(txt);
-          txt = txt.replace(/([*_~|`])/g, "\\$1");
-          txt = txt.replace(/^(\s*)>/g, "\\$1>");
-          txt = txt.replace(/^#/gm, "\\#");
-          txt = txt.replace(/^(\s*)([-=]{3,})(\s*)$/, "$1\\$2$3");
-          txt = txt.replace(/^( {0,3}\d+)\./gm, "$1\\.");
-          txt = txt.replace(/^( {0,3})([+-])/gm, "$1\\$2");
-          txt = txt.replace(/]([\s]*)\(/g, "\\]$1\\(");
-          txt = txt.replace(/^ {0,3}\[([\S \t]*?)]:/gm, "\\[$1]:");
-          return txt;
-        });
-        var root = this;
-        if (typeof define === "function" && define.amd) {
-          define(function() {
-            return showdown;
-          });
-        } else if (typeof module !== "undefined" && module.exports) {
-          module.exports = showdown;
-        } else {
-          root.showdown = showdown;
-        }
-      }).call(exports);
-    }
-  });
-
-  // node_modules/.pnpm/prismjs@1.29.0/node_modules/prismjs/components.js
-  var require_components = __commonJS({
-    "node_modules/.pnpm/prismjs@1.29.0/node_modules/prismjs/components.js"(exports, module) {
-      var components = { "core": { "meta": { "path": "components/prism-core.js", "option": "mandatory" }, "core": "Core" }, "themes": { "meta": { "path": "themes/{id}.css", "link": "index.html?theme={id}", "exclusive": true }, "prism": { "title": "Default", "option": "default" }, "prism-dark": "Dark", "prism-funky": "Funky", "prism-okaidia": { "title": "Okaidia", "owner": "ocodia" }, "prism-twilight": { "title": "Twilight", "owner": "remybach" }, "prism-coy": { "title": "Coy", "owner": "tshedor" }, "prism-solarizedlight": { "title": "Solarized Light", "owner": "hectormatos2011 " }, "prism-tomorrow": { "title": "Tomorrow Night", "owner": "Rosey" } }, "languages": { "meta": { "path": "components/prism-{id}", "noCSS": true, "examplesPath": "examples/prism-{id}", "addCheckAll": true }, "markup": { "title": "Markup", "alias": ["html", "xml", "svg", "mathml", "ssml", "atom", "rss"], "aliasTitles": { "html": "HTML", "xml": "XML", "svg": "SVG", "mathml": "MathML", "ssml": "SSML", "atom": "Atom", "rss": "RSS" }, "option": "default" }, "css": { "title": "CSS", "option": "default", "modify": "markup" }, "clike": { "title": "C-like", "option": "default" }, "javascript": { "title": "JavaScript", "require": "clike", "modify": "markup", "optional": "regex", "alias": "js", "option": "default" }, "abap": { "title": "ABAP", "owner": "dellagustin" }, "abnf": { "title": "ABNF", "owner": "RunDevelopment" }, "actionscript": { "title": "ActionScript", "require": "javascript", "modify": "markup", "owner": "Golmote" }, "ada": { "title": "Ada", "owner": "Lucretia" }, "agda": { "title": "Agda", "owner": "xy-ren" }, "al": { "title": "AL", "owner": "RunDevelopment" }, "antlr4": { "title": "ANTLR4", "alias": "g4", "owner": "RunDevelopment" }, "apacheconf": { "title": "Apache Configuration", "owner": "GuiTeK" }, "apex": { "title": "Apex", "require": ["clike", "sql"], "owner": "RunDevelopment" }, "apl": { "title": "APL", "owner": "ngn" }, "applescript": { "title": "AppleScript", "owner": "Golmote" }, "aql": { "title": "AQL", "owner": "RunDevelopment" }, "arduino": { "title": "Arduino", "require": "cpp", "alias": "ino", "owner": "dkern" }, "arff": { "title": "ARFF", "owner": "Golmote" }, "armasm": { "title": "ARM Assembly", "alias": "arm-asm", "owner": "RunDevelopment" }, "arturo": { "title": "Arturo", "alias": "art", "optional": ["bash", "css", "javascript", "markup", "markdown", "sql"], "owner": "drkameleon" }, "asciidoc": { "alias": "adoc", "title": "AsciiDoc", "owner": "Golmote" }, "aspnet": { "title": "ASP.NET (C#)", "require": ["markup", "csharp"], "owner": "nauzilus" }, "asm6502": { "title": "6502 Assembly", "owner": "kzurawel" }, "asmatmel": { "title": "Atmel AVR Assembly", "owner": "cerkit" }, "autohotkey": { "title": "AutoHotkey", "owner": "aviaryan" }, "autoit": { "title": "AutoIt", "owner": "Golmote" }, "avisynth": { "title": "AviSynth", "alias": "avs", "owner": "Zinfidel" }, "avro-idl": { "title": "Avro IDL", "alias": "avdl", "owner": "RunDevelopment" }, "awk": { "title": "AWK", "alias": "gawk", "aliasTitles": { "gawk": "GAWK" }, "owner": "RunDevelopment" }, "bash": { "title": "Bash", "alias": ["sh", "shell"], "aliasTitles": { "sh": "Shell", "shell": "Shell" }, "owner": "zeitgeist87" }, "basic": { "title": "BASIC", "owner": "Golmote" }, "batch": { "title": "Batch", "owner": "Golmote" }, "bbcode": { "title": "BBcode", "alias": "shortcode", "aliasTitles": { "shortcode": "Shortcode" }, "owner": "RunDevelopment" }, "bbj": { "title": "BBj", "owner": "hyyan" }, "bicep": { "title": "Bicep", "owner": "johnnyreilly" }, "birb": { "title": "Birb", "require": "clike", "owner": "Calamity210" }, "bison": { "title": "Bison", "require": "c", "owner": "Golmote" }, "bnf": { "title": "BNF", "alias": "rbnf", "aliasTitles": { "rbnf": "RBNF" }, "owner": "RunDevelopment" }, "bqn": { "title": "BQN", "owner": "yewscion" }, "brainfuck": { "title": "Brainfuck", "owner": "Golmote" }, "brightscript": { "title": "BrightScript", "owner": "RunDevelopment" }, "bro": { "title": "Bro", "owner": "wayward710" }, "bsl": { "title": "BSL (1C:Enterprise)", "alias": "oscript", "aliasTitles": { "oscript": "OneScript" }, "owner": "Diversus23" }, "c": { "title": "C", "require": "clike", "owner": "zeitgeist87" }, "csharp": { "title": "C#", "require": "clike", "alias": ["cs", "dotnet"], "owner": "mvalipour" }, "cpp": { "title": "C++", "require": "c", "owner": "zeitgeist87" }, "cfscript": { "title": "CFScript", "require": "clike", "alias": "cfc", "owner": "mjclemente" }, "chaiscript": { "title": "ChaiScript", "require": ["clike", "cpp"], "owner": "RunDevelopment" }, "cil": { "title": "CIL", "owner": "sbrl" }, "cilkc": { "title": "Cilk/C", "require": "c", "alias": "cilk-c", "owner": "OpenCilk" }, "cilkcpp": { "title": "Cilk/C++", "require": "cpp", "alias": ["cilk-cpp", "cilk"], "owner": "OpenCilk" }, "clojure": { "title": "Clojure", "owner": "troglotit" }, "cmake": { "title": "CMake", "owner": "mjrogozinski" }, "cobol": { "title": "COBOL", "owner": "RunDevelopment" }, "coffeescript": { "title": "CoffeeScript", "require": "javascript", "alias": "coffee", "owner": "R-osey" }, "concurnas": { "title": "Concurnas", "alias": "conc", "owner": "jasontatton" }, "csp": { "title": "Content-Security-Policy", "owner": "ScottHelme" }, "cooklang": { "title": "Cooklang", "owner": "ahue" }, "coq": { "title": "Coq", "owner": "RunDevelopment" }, "crystal": { "title": "Crystal", "require": "ruby", "owner": "MakeNowJust" }, "css-extras": { "title": "CSS Extras", "require": "css", "modify": "css", "owner": "milesj" }, "csv": { "title": "CSV", "owner": "RunDevelopment" }, "cue": { "title": "CUE", "owner": "RunDevelopment" }, "cypher": { "title": "Cypher", "owner": "RunDevelopment" }, "d": { "title": "D", "require": "clike", "owner": "Golmote" }, "dart": { "title": "Dart", "require": "clike", "owner": "Golmote" }, "dataweave": { "title": "DataWeave", "owner": "machaval" }, "dax": { "title": "DAX", "owner": "peterbud" }, "dhall": { "title": "Dhall", "owner": "RunDevelopment" }, "diff": { "title": "Diff", "owner": "uranusjr" }, "django": { "title": "Django/Jinja2", "require": "markup-templating", "alias": "jinja2", "owner": "romanvm" }, "dns-zone-file": { "title": "DNS zone file", "owner": "RunDevelopment", "alias": "dns-zone" }, "docker": { "title": "Docker", "alias": "dockerfile", "owner": "JustinBeckwith" }, "dot": { "title": "DOT (Graphviz)", "alias": "gv", "optional": "markup", "owner": "RunDevelopment" }, "ebnf": { "title": "EBNF", "owner": "RunDevelopment" }, "editorconfig": { "title": "EditorConfig", "owner": "osipxd" }, "eiffel": { "title": "Eiffel", "owner": "Conaclos" }, "ejs": { "title": "EJS", "require": ["javascript", "markup-templating"], "owner": "RunDevelopment", "alias": "eta", "aliasTitles": { "eta": "Eta" } }, "elixir": { "title": "Elixir", "owner": "Golmote" }, "elm": { "title": "Elm", "owner": "zwilias" }, "etlua": { "title": "Embedded Lua templating", "require": ["lua", "markup-templating"], "owner": "RunDevelopment" }, "erb": { "title": "ERB", "require": ["ruby", "markup-templating"], "owner": "Golmote" }, "erlang": { "title": "Erlang", "owner": "Golmote" }, "excel-formula": { "title": "Excel Formula", "alias": ["xlsx", "xls"], "owner": "RunDevelopment" }, "fsharp": { "title": "F#", "require": "clike", "owner": "simonreynolds7" }, "factor": { "title": "Factor", "owner": "catb0t" }, "false": { "title": "False", "owner": "edukisto" }, "firestore-security-rules": { "title": "Firestore security rules", "require": "clike", "owner": "RunDevelopment" }, "flow": { "title": "Flow", "require": "javascript", "owner": "Golmote" }, "fortran": { "title": "Fortran", "owner": "Golmote" }, "ftl": { "title": "FreeMarker Template Language", "require": "markup-templating", "owner": "RunDevelopment" }, "gml": { "title": "GameMaker Language", "alias": "gamemakerlanguage", "require": "clike", "owner": "LiarOnce" }, "gap": { "title": "GAP (CAS)", "owner": "RunDevelopment" }, "gcode": { "title": "G-code", "owner": "RunDevelopment" }, "gdscript": { "title": "GDScript", "owner": "RunDevelopment" }, "gedcom": { "title": "GEDCOM", "owner": "Golmote" }, "gettext": { "title": "gettext", "alias": "po", "owner": "RunDevelopment" }, "gherkin": { "title": "Gherkin", "owner": "hason" }, "git": { "title": "Git", "owner": "lgiraudel" }, "glsl": { "title": "GLSL", "require": "c", "owner": "Golmote" }, "gn": { "title": "GN", "alias": "gni", "owner": "RunDevelopment" }, "linker-script": { "title": "GNU Linker Script", "alias": "ld", "owner": "RunDevelopment" }, "go": { "title": "Go", "require": "clike", "owner": "arnehormann" }, "go-module": { "title": "Go module", "alias": "go-mod", "owner": "RunDevelopment" }, "gradle": { "title": "Gradle", "require": "clike", "owner": "zeabdelkhalek-badido18" }, "graphql": { "title": "GraphQL", "optional": "markdown", "owner": "Golmote" }, "groovy": { "title": "Groovy", "require": "clike", "owner": "robfletcher" }, "haml": { "title": "Haml", "require": "ruby", "optional": ["css", "css-extras", "coffeescript", "erb", "javascript", "less", "markdown", "scss", "textile"], "owner": "Golmote" }, "handlebars": { "title": "Handlebars", "require": "markup-templating", "alias": ["hbs", "mustache"], "aliasTitles": { "mustache": "Mustache" }, "owner": "Golmote" }, "haskell": { "title": "Haskell", "alias": "hs", "owner": "bholst" }, "haxe": { "title": "Haxe", "require": "clike", "optional": "regex", "owner": "Golmote" }, "hcl": { "title": "HCL", "owner": "outsideris" }, "hlsl": { "title": "HLSL", "require": "c", "owner": "RunDevelopment" }, "hoon": { "title": "Hoon", "owner": "matildepark" }, "http": { "title": "HTTP", "optional": ["csp", "css", "hpkp", "hsts", "javascript", "json", "markup", "uri"], "owner": "danielgtaylor" }, "hpkp": { "title": "HTTP Public-Key-Pins", "owner": "ScottHelme" }, "hsts": { "title": "HTTP Strict-Transport-Security", "owner": "ScottHelme" }, "ichigojam": { "title": "IchigoJam", "owner": "BlueCocoa" }, "icon": { "title": "Icon", "owner": "Golmote" }, "icu-message-format": { "title": "ICU Message Format", "owner": "RunDevelopment" }, "idris": { "title": "Idris", "alias": "idr", "owner": "KeenS", "require": "haskell" }, "ignore": { "title": ".ignore", "owner": "osipxd", "alias": ["gitignore", "hgignore", "npmignore"], "aliasTitles": { "gitignore": ".gitignore", "hgignore": ".hgignore", "npmignore": ".npmignore" } }, "inform7": { "title": "Inform 7", "owner": "Golmote" }, "ini": { "title": "Ini", "owner": "aviaryan" }, "io": { "title": "Io", "owner": "AlesTsurko" }, "j": { "title": "J", "owner": "Golmote" }, "java": { "title": "Java", "require": "clike", "owner": "sherblot" }, "javadoc": { "title": "JavaDoc", "require": ["markup", "java", "javadoclike"], "modify": "java", "optional": "scala", "owner": "RunDevelopment" }, "javadoclike": { "title": "JavaDoc-like", "modify": ["java", "javascript", "php"], "owner": "RunDevelopment" }, "javastacktrace": { "title": "Java stack trace", "owner": "RunDevelopment" }, "jexl": { "title": "Jexl", "owner": "czosel" }, "jolie": { "title": "Jolie", "require": "clike", "owner": "thesave" }, "jq": { "title": "JQ", "owner": "RunDevelopment" }, "jsdoc": { "title": "JSDoc", "require": ["javascript", "javadoclike", "typescript"], "modify": "javascript", "optional": ["actionscript", "coffeescript"], "owner": "RunDevelopment" }, "js-extras": { "title": "JS Extras", "require": "javascript", "modify": "javascript", "optional": ["actionscript", "coffeescript", "flow", "n4js", "typescript"], "owner": "RunDevelopment" }, "json": { "title": "JSON", "alias": "webmanifest", "aliasTitles": { "webmanifest": "Web App Manifest" }, "owner": "CupOfTea696" }, "json5": { "title": "JSON5", "require": "json", "owner": "RunDevelopment" }, "jsonp": { "title": "JSONP", "require": "json", "owner": "RunDevelopment" }, "jsstacktrace": { "title": "JS stack trace", "owner": "sbrl" }, "js-templates": { "title": "JS Templates", "require": "javascript", "modify": "javascript", "optional": ["css", "css-extras", "graphql", "markdown", "markup", "sql"], "owner": "RunDevelopment" }, "julia": { "title": "Julia", "owner": "cdagnino" }, "keepalived": { "title": "Keepalived Configure", "owner": "dev-itsheng" }, "keyman": { "title": "Keyman", "owner": "mcdurdin" }, "kotlin": { "title": "Kotlin", "alias": ["kt", "kts"], "aliasTitles": { "kts": "Kotlin Script" }, "require": "clike", "owner": "Golmote" }, "kumir": { "title": "KuMir (\u041A\u0443\u041C\u0438\u0440)", "alias": "kum", "owner": "edukisto" }, "kusto": { "title": "Kusto", "owner": "RunDevelopment" }, "latex": { "title": "LaTeX", "alias": ["tex", "context"], "aliasTitles": { "tex": "TeX", "context": "ConTeXt" }, "owner": "japborst" }, "latte": { "title": "Latte", "require": ["clike", "markup-templating", "php"], "owner": "nette" }, "less": { "title": "Less", "require": "css", "optional": "css-extras", "owner": "Golmote" }, "lilypond": { "title": "LilyPond", "require": "scheme", "alias": "ly", "owner": "RunDevelopment" }, "liquid": { "title": "Liquid", "require": "markup-templating", "owner": "cinhtau" }, "lisp": { "title": "Lisp", "alias": ["emacs", "elisp", "emacs-lisp"], "owner": "JuanCaicedo" }, "livescript": { "title": "LiveScript", "owner": "Golmote" }, "llvm": { "title": "LLVM IR", "owner": "porglezomp" }, "log": { "title": "Log file", "optional": "javastacktrace", "owner": "RunDevelopment" }, "lolcode": { "title": "LOLCODE", "owner": "Golmote" }, "lua": { "title": "Lua", "owner": "Golmote" }, "magma": { "title": "Magma (CAS)", "owner": "RunDevelopment" }, "makefile": { "title": "Makefile", "owner": "Golmote" }, "markdown": { "title": "Markdown", "require": "markup", "optional": "yaml", "alias": "md", "owner": "Golmote" }, "markup-templating": { "title": "Markup templating", "require": "markup", "owner": "Golmote" }, "mata": { "title": "Mata", "owner": "RunDevelopment" }, "matlab": { "title": "MATLAB", "owner": "Golmote" }, "maxscript": { "title": "MAXScript", "owner": "RunDevelopment" }, "mel": { "title": "MEL", "owner": "Golmote" }, "mermaid": { "title": "Mermaid", "owner": "RunDevelopment" }, "metafont": { "title": "METAFONT", "owner": "LaeriExNihilo" }, "mizar": { "title": "Mizar", "owner": "Golmote" }, "mongodb": { "title": "MongoDB", "owner": "airs0urce", "require": "javascript" }, "monkey": { "title": "Monkey", "owner": "Golmote" }, "moonscript": { "title": "MoonScript", "alias": "moon", "owner": "RunDevelopment" }, "n1ql": { "title": "N1QL", "owner": "TMWilds" }, "n4js": { "title": "N4JS", "require": "javascript", "optional": "jsdoc", "alias": "n4jsd", "owner": "bsmith-n4" }, "nand2tetris-hdl": { "title": "Nand To Tetris HDL", "owner": "stephanmax" }, "naniscript": { "title": "Naninovel Script", "owner": "Elringus", "alias": "nani" }, "nasm": { "title": "NASM", "owner": "rbmj" }, "neon": { "title": "NEON", "owner": "nette" }, "nevod": { "title": "Nevod", "owner": "nezaboodka" }, "nginx": { "title": "nginx", "owner": "volado" }, "nim": { "title": "Nim", "owner": "Golmote" }, "nix": { "title": "Nix", "owner": "Golmote" }, "nsis": { "title": "NSIS", "owner": "idleberg" }, "objectivec": { "title": "Objective-C", "require": "c", "alias": "objc", "owner": "uranusjr" }, "ocaml": { "title": "OCaml", "owner": "Golmote" }, "odin": { "title": "Odin", "owner": "edukisto" }, "opencl": { "title": "OpenCL", "require": "c", "modify": ["c", "cpp"], "owner": "Milania1" }, "openqasm": { "title": "OpenQasm", "alias": "qasm", "owner": "RunDevelopment" }, "oz": { "title": "Oz", "owner": "Golmote" }, "parigp": { "title": "PARI/GP", "owner": "Golmote" }, "parser": { "title": "Parser", "require": "markup", "owner": "Golmote" }, "pascal": { "title": "Pascal", "alias": "objectpascal", "aliasTitles": { "objectpascal": "Object Pascal" }, "owner": "Golmote" }, "pascaligo": { "title": "Pascaligo", "owner": "DefinitelyNotAGoat" }, "psl": { "title": "PATROL Scripting Language", "owner": "bertysentry" }, "pcaxis": { "title": "PC-Axis", "alias": "px", "owner": "RunDevelopment" }, "peoplecode": { "title": "PeopleCode", "alias": "pcode", "owner": "RunDevelopment" }, "perl": { "title": "Perl", "owner": "Golmote" }, "php": { "title": "PHP", "require": "markup-templating", "owner": "milesj" }, "phpdoc": { "title": "PHPDoc", "require": ["php", "javadoclike"], "modify": "php", "owner": "RunDevelopment" }, "php-extras": { "title": "PHP Extras", "require": "php", "modify": "php", "owner": "milesj" }, "plant-uml": { "title": "PlantUML", "alias": "plantuml", "owner": "RunDevelopment" }, "plsql": { "title": "PL/SQL", "require": "sql", "owner": "Golmote" }, "powerquery": { "title": "PowerQuery", "alias": ["pq", "mscript"], "owner": "peterbud" }, "powershell": { "title": "PowerShell", "owner": "nauzilus" }, "processing": { "title": "Processing", "require": "clike", "owner": "Golmote" }, "prolog": { "title": "Prolog", "owner": "Golmote" }, "promql": { "title": "PromQL", "owner": "arendjr" }, "properties": { "title": ".properties", "owner": "Golmote" }, "protobuf": { "title": "Protocol Buffers", "require": "clike", "owner": "just-boris" }, "pug": { "title": "Pug", "require": ["markup", "javascript"], "optional": ["coffeescript", "ejs", "handlebars", "less", "livescript", "markdown", "scss", "stylus", "twig"], "owner": "Golmote" }, "puppet": { "title": "Puppet", "owner": "Golmote" }, "pure": { "title": "Pure", "optional": ["c", "cpp", "fortran"], "owner": "Golmote" }, "purebasic": { "title": "PureBasic", "require": "clike", "alias": "pbfasm", "owner": "HeX0R101" }, "purescript": { "title": "PureScript", "require": "haskell", "alias": "purs", "owner": "sriharshachilakapati" }, "python": { "title": "Python", "alias": "py", "owner": "multipetros" }, "qsharp": { "title": "Q#", "require": "clike", "alias": "qs", "owner": "fedonman" }, "q": { "title": "Q (kdb+ database)", "owner": "Golmote" }, "qml": { "title": "QML", "require": "javascript", "owner": "RunDevelopment" }, "qore": { "title": "Qore", "require": "clike", "owner": "temnroegg" }, "r": { "title": "R", "owner": "Golmote" }, "racket": { "title": "Racket", "require": "scheme", "alias": "rkt", "owner": "RunDevelopment" }, "cshtml": { "title": "Razor C#", "alias": "razor", "require": ["markup", "csharp"], "optional": ["css", "css-extras", "javascript", "js-extras"], "owner": "RunDevelopment" }, "jsx": { "title": "React JSX", "require": ["markup", "javascript"], "optional": ["jsdoc", "js-extras", "js-templates"], "owner": "vkbansal" }, "tsx": { "title": "React TSX", "require": ["jsx", "typescript"] }, "reason": { "title": "Reason", "require": "clike", "owner": "Golmote" }, "regex": { "title": "Regex", "owner": "RunDevelopment" }, "rego": { "title": "Rego", "owner": "JordanSh" }, "renpy": { "title": "Ren'py", "alias": "rpy", "owner": "HyuchiaDiego" }, "rescript": { "title": "ReScript", "alias": "res", "owner": "vmarcosp" }, "rest": { "title": "reST (reStructuredText)", "owner": "Golmote" }, "rip": { "title": "Rip", "owner": "ravinggenius" }, "roboconf": { "title": "Roboconf", "owner": "Golmote" }, "robotframework": { "title": "Robot Framework", "alias": "robot", "owner": "RunDevelopment" }, "ruby": { "title": "Ruby", "require": "clike", "alias": "rb", "owner": "samflores" }, "rust": { "title": "Rust", "owner": "Golmote" }, "sas": { "title": "SAS", "optional": ["groovy", "lua", "sql"], "owner": "Golmote" }, "sass": { "title": "Sass (Sass)", "require": "css", "optional": "css-extras", "owner": "Golmote" }, "scss": { "title": "Sass (SCSS)", "require": "css", "optional": "css-extras", "owner": "MoOx" }, "scala": { "title": "Scala", "require": "java", "owner": "jozic" }, "scheme": { "title": "Scheme", "owner": "bacchus123" }, "shell-session": { "title": "Shell session", "require": "bash", "alias": ["sh-session", "shellsession"], "owner": "RunDevelopment" }, "smali": { "title": "Smali", "owner": "RunDevelopment" }, "smalltalk": { "title": "Smalltalk", "owner": "Golmote" }, "smarty": { "title": "Smarty", "require": "markup-templating", "optional": "php", "owner": "Golmote" }, "sml": { "title": "SML", "alias": "smlnj", "aliasTitles": { "smlnj": "SML/NJ" }, "owner": "RunDevelopment" }, "solidity": { "title": "Solidity (Ethereum)", "alias": "sol", "require": "clike", "owner": "glachaud" }, "solution-file": { "title": "Solution file", "alias": "sln", "owner": "RunDevelopment" }, "soy": { "title": "Soy (Closure Template)", "require": "markup-templating", "owner": "Golmote" }, "sparql": { "title": "SPARQL", "require": "turtle", "owner": "Triply-Dev", "alias": "rq" }, "splunk-spl": { "title": "Splunk SPL", "owner": "RunDevelopment" }, "sqf": { "title": "SQF: Status Quo Function (Arma 3)", "require": "clike", "owner": "RunDevelopment" }, "sql": { "title": "SQL", "owner": "multipetros" }, "squirrel": { "title": "Squirrel", "require": "clike", "owner": "RunDevelopment" }, "stan": { "title": "Stan", "owner": "RunDevelopment" }, "stata": { "title": "Stata Ado", "require": ["mata", "java", "python"], "owner": "RunDevelopment" }, "iecst": { "title": "Structured Text (IEC 61131-3)", "owner": "serhioromano" }, "stylus": { "title": "Stylus", "owner": "vkbansal" }, "supercollider": { "title": "SuperCollider", "alias": "sclang", "owner": "RunDevelopment" }, "swift": { "title": "Swift", "owner": "chrischares" }, "systemd": { "title": "Systemd configuration file", "owner": "RunDevelopment" }, "t4-templating": { "title": "T4 templating", "owner": "RunDevelopment" }, "t4-cs": { "title": "T4 Text Templates (C#)", "require": ["t4-templating", "csharp"], "alias": "t4", "owner": "RunDevelopment" }, "t4-vb": { "title": "T4 Text Templates (VB)", "require": ["t4-templating", "vbnet"], "owner": "RunDevelopment" }, "tap": { "title": "TAP", "owner": "isaacs", "require": "yaml" }, "tcl": { "title": "Tcl", "owner": "PeterChaplin" }, "tt2": { "title": "Template Toolkit 2", "require": ["clike", "markup-templating"], "owner": "gflohr" }, "textile": { "title": "Textile", "require": "markup", "optional": "css", "owner": "Golmote" }, "toml": { "title": "TOML", "owner": "RunDevelopment" }, "tremor": { "title": "Tremor", "alias": ["trickle", "troy"], "owner": "darach", "aliasTitles": { "trickle": "trickle", "troy": "troy" } }, "turtle": { "title": "Turtle", "alias": "trig", "aliasTitles": { "trig": "TriG" }, "owner": "jakubklimek" }, "twig": { "title": "Twig", "require": "markup-templating", "owner": "brandonkelly" }, "typescript": { "title": "TypeScript", "require": "javascript", "optional": "js-templates", "alias": "ts", "owner": "vkbansal" }, "typoscript": { "title": "TypoScript", "alias": "tsconfig", "aliasTitles": { "tsconfig": "TSConfig" }, "owner": "dkern" }, "unrealscript": { "title": "UnrealScript", "alias": ["uscript", "uc"], "owner": "RunDevelopment" }, "uorazor": { "title": "UO Razor Script", "owner": "jaseowns" }, "uri": { "title": "URI", "alias": "url", "aliasTitles": { "url": "URL" }, "owner": "RunDevelopment" }, "v": { "title": "V", "require": "clike", "owner": "taggon" }, "vala": { "title": "Vala", "require": "clike", "optional": "regex", "owner": "TemplarVolk" }, "vbnet": { "title": "VB.Net", "require": "basic", "owner": "Bigsby" }, "velocity": { "title": "Velocity", "require": "markup", "owner": "Golmote" }, "verilog": { "title": "Verilog", "owner": "a-rey" }, "vhdl": { "title": "VHDL", "owner": "a-rey" }, "vim": { "title": "vim", "owner": "westonganger" }, "visual-basic": { "title": "Visual Basic", "alias": ["vb", "vba"], "aliasTitles": { "vba": "VBA" }, "owner": "Golmote" }, "warpscript": { "title": "WarpScript", "owner": "RunDevelopment" }, "wasm": { "title": "WebAssembly", "owner": "Golmote" }, "web-idl": { "title": "Web IDL", "alias": "webidl", "owner": "RunDevelopment" }, "wgsl": { "title": "WGSL", "owner": "Dr4gonthree" }, "wiki": { "title": "Wiki markup", "require": "markup", "owner": "Golmote" }, "wolfram": { "title": "Wolfram language", "alias": ["mathematica", "nb", "wl"], "aliasTitles": { "mathematica": "Mathematica", "nb": "Mathematica Notebook" }, "owner": "msollami" }, "wren": { "title": "Wren", "owner": "clsource" }, "xeora": { "title": "Xeora", "require": "markup", "alias": "xeoracube", "aliasTitles": { "xeoracube": "XeoraCube" }, "owner": "freakmaxi" }, "xml-doc": { "title": "XML doc (.net)", "require": "markup", "modify": ["csharp", "fsharp", "vbnet"], "owner": "RunDevelopment" }, "xojo": { "title": "Xojo (REALbasic)", "owner": "Golmote" }, "xquery": { "title": "XQuery", "require": "markup", "owner": "Golmote" }, "yaml": { "title": "YAML", "alias": "yml", "owner": "hason" }, "yang": { "title": "YANG", "owner": "RunDevelopment" }, "zig": { "title": "Zig", "owner": "RunDevelopment" } }, "plugins": { "meta": { "path": "plugins/{id}/prism-{id}", "link": "plugins/{id}/" }, "line-highlight": { "title": "Line Highlight", "description": "Highlights specific lines and/or line ranges." }, "line-numbers": { "title": "Line Numbers", "description": "Line number at the beginning of code lines.", "owner": "kuba-kubula" }, "show-invisibles": { "title": "Show Invisibles", "description": "Show hidden characters such as tabs and line breaks.", "optional": ["autolinker", "data-uri-highlight"] }, "autolinker": { "title": "Autolinker", "description": "Converts URLs and emails in code to clickable links. Parses Markdown links in comments." }, "wpd": { "title": "WebPlatform Docs", "description": 'Makes tokens link to <a href="https://webplatform.github.io/docs/">WebPlatform.org documentation</a>. The links open in a new tab.' }, "custom-class": { "title": "Custom Class", "description": "This plugin allows you to prefix Prism's default classes (<code>.comment</code> can become <code>.namespace--comment</code>) or replace them with your defined ones (like <code>.editor__comment</code>). You can even add new classes.", "owner": "dvkndn", "noCSS": true }, "file-highlight": { "title": "File Highlight", "description": "Fetch external files and highlight them with Prism. Used on the Prism website itself.", "noCSS": true }, "show-language": { "title": "Show Language", "description": "Display the highlighted language in code blocks (inline code does not show the label).", "owner": "nauzilus", "noCSS": true, "require": "toolbar" }, "jsonp-highlight": { "title": "JSONP Highlight", "description": "Fetch content with JSONP and highlight some interesting content (e.g. GitHub/Gists or Bitbucket API).", "noCSS": true, "owner": "nauzilus" }, "highlight-keywords": { "title": "Highlight Keywords", "description": "Adds special CSS classes for each keyword for fine-grained highlighting.", "owner": "vkbansal", "noCSS": true }, "remove-initial-line-feed": { "title": "Remove initial line feed", "description": "Removes the initial line feed in code blocks.", "owner": "Golmote", "noCSS": true }, "inline-color": { "title": "Inline color", "description": "Adds a small inline preview for colors in style sheets.", "require": "css-extras", "owner": "RunDevelopment" }, "previewers": { "title": "Previewers", "description": "Previewers for angles, colors, gradients, easing and time.", "require": "css-extras", "owner": "Golmote" }, "autoloader": { "title": "Autoloader", "description": "Automatically loads the needed languages to highlight the code blocks.", "owner": "Golmote", "noCSS": true }, "keep-markup": { "title": "Keep Markup", "description": "Prevents custom markup from being dropped out during highlighting.", "owner": "Golmote", "optional": "normalize-whitespace", "noCSS": true }, "command-line": { "title": "Command Line", "description": "Display a command line with a prompt and, optionally, the output/response from the commands.", "owner": "chriswells0" }, "unescaped-markup": { "title": "Unescaped Markup", "description": "Write markup without having to escape anything." }, "normalize-whitespace": { "title": "Normalize Whitespace", "description": "Supports multiple operations to normalize whitespace in code blocks.", "owner": "zeitgeist87", "optional": "unescaped-markup", "noCSS": true }, "data-uri-highlight": { "title": "Data-URI Highlight", "description": "Highlights data-URI contents.", "owner": "Golmote", "noCSS": true }, "toolbar": { "title": "Toolbar", "description": "Attach a toolbar for plugins to easily register buttons on the top of a code block.", "owner": "mAAdhaTTah" }, "copy-to-clipboard": { "title": "Copy to Clipboard Button", "description": "Add a button that copies the code block to the clipboard when clicked.", "owner": "mAAdhaTTah", "require": "toolbar", "noCSS": true }, "download-button": { "title": "Download Button", "description": "A button in the toolbar of a code block adding a convenient way to download a code file.", "owner": "Golmote", "require": "toolbar", "noCSS": true }, "match-braces": { "title": "Match braces", "description": "Highlights matching braces.", "owner": "RunDevelopment" }, "diff-highlight": { "title": "Diff Highlight", "description": "Highlights the code inside diff blocks.", "owner": "RunDevelopment", "require": "diff" }, "filter-highlight-all": { "title": "Filter highlightAll", "description": "Filters the elements the <code>highlightAll</code> and <code>highlightAllUnder</code> methods actually highlight.", "owner": "RunDevelopment", "noCSS": true }, "treeview": { "title": "Treeview", "description": "A language with special styles to highlight file system tree structures.", "owner": "Golmote" } } };
-      if (typeof module !== "undefined" && module.exports) {
-        module.exports = components;
-      }
-    }
-  });
-
-  // node_modules/.pnpm/prismjs@1.29.0/node_modules/prismjs/dependencies.js
-  var require_dependencies = __commonJS({
-    "node_modules/.pnpm/prismjs@1.29.0/node_modules/prismjs/dependencies.js"(exports, module) {
-      var getLoader = /* @__PURE__ */ function() {
-        var noop = function() {
-        };
-        function forEach(value, callbackFn) {
-          if (Array.isArray(value)) {
-            value.forEach(callbackFn);
-          } else if (value != null) {
-            callbackFn(value, 0);
-          }
-        }
-        function toSet(array) {
-          var set2 = {};
-          for (var i3 = 0, l2 = array.length; i3 < l2; i3++) {
-            set2[array[i3]] = true;
-          }
-          return set2;
-        }
-        function createEntryMap(components) {
-          var map2 = {};
-          for (var categoryName in components) {
-            var category = components[categoryName];
-            for (var id in category) {
-              if (id != "meta") {
-                var entry = category[id];
-                map2[id] = typeof entry == "string" ? { title: entry } : entry;
-              }
-            }
-          }
-          return map2;
-        }
-        function createDependencyResolver(entryMap) {
-          var map2 = {};
-          var _stackArray = [];
-          function addToMap(id, stack) {
-            if (id in map2) {
-              return;
-            }
-            stack.push(id);
-            var firstIndex = stack.indexOf(id);
-            if (firstIndex < stack.length - 1) {
-              throw new Error("Circular dependency: " + stack.slice(firstIndex).join(" -> "));
-            }
-            var dependencies = {};
-            var entry = entryMap[id];
-            if (entry) {
-              let handleDirectDependency = function(depId) {
-                if (!(depId in entryMap)) {
-                  throw new Error(id + " depends on an unknown component " + depId);
-                }
-                if (depId in dependencies) {
-                  return;
-                }
-                addToMap(depId, stack);
-                dependencies[depId] = true;
-                for (var transitiveDepId in map2[depId]) {
-                  dependencies[transitiveDepId] = true;
-                }
-              };
-              forEach(entry.require, handleDirectDependency);
-              forEach(entry.optional, handleDirectDependency);
-              forEach(entry.modify, handleDirectDependency);
-            }
-            map2[id] = dependencies;
-            stack.pop();
-          }
-          return function(id) {
-            var deps = map2[id];
-            if (!deps) {
-              addToMap(id, _stackArray);
-              deps = map2[id];
-            }
-            return deps;
-          };
-        }
-        function createAliasResolver(entryMap) {
-          var map2;
-          return function(idOrAlias) {
-            if (idOrAlias in entryMap) {
-              return idOrAlias;
-            } else {
-              if (!map2) {
-                map2 = {};
-                for (var id in entryMap) {
-                  var entry = entryMap[id];
-                  forEach(entry && entry.alias, function(alias) {
-                    if (alias in map2) {
-                      throw new Error(alias + " cannot be alias for both " + id + " and " + map2[alias]);
-                    }
-                    if (alias in entryMap) {
-                      throw new Error(alias + " cannot be alias of " + id + " because it is a component.");
-                    }
-                    map2[alias] = id;
-                  });
-                }
-              }
-              return map2[idOrAlias] || idOrAlias;
-            }
-          };
-        }
-        function loadComponentsInOrder(dependencyResolver, ids, loadComponent, chainer) {
-          var series = chainer ? chainer.series : void 0;
-          var parallel = chainer ? chainer.parallel : noop;
-          var cache = {};
-          var ends = {};
-          function handleId(id2) {
-            if (id2 in cache) {
-              return cache[id2];
-            }
-            ends[id2] = true;
-            var dependsOn = [];
-            for (var depId in dependencyResolver(id2)) {
-              if (depId in ids) {
-                dependsOn.push(depId);
-              }
-            }
-            var value;
-            if (dependsOn.length === 0) {
-              value = loadComponent(id2);
-            } else {
-              var depsValue = parallel(dependsOn.map(function(depId2) {
-                var value2 = handleId(depId2);
-                delete ends[depId2];
-                return value2;
-              }));
-              if (series) {
-                value = series(depsValue, function() {
-                  return loadComponent(id2);
-                });
-              } else {
-                loadComponent(id2);
-              }
-            }
-            return cache[id2] = value;
-          }
-          for (var id in ids) {
-            handleId(id);
-          }
-          var endValues = [];
-          for (var endId in ends) {
-            endValues.push(cache[endId]);
-          }
-          return parallel(endValues);
-        }
-        function hasKeys(obj) {
-          for (var key in obj) {
-            return true;
-          }
-          return false;
-        }
-        function getLoader2(components, load2, loaded) {
-          var entryMap = createEntryMap(components);
-          var resolveAlias = createAliasResolver(entryMap);
-          load2 = load2.map(resolveAlias);
-          loaded = (loaded || []).map(resolveAlias);
-          var loadSet = toSet(load2);
-          var loadedSet = toSet(loaded);
-          load2.forEach(addRequirements);
-          function addRequirements(id) {
-            var entry2 = entryMap[id];
-            forEach(entry2 && entry2.require, function(reqId) {
-              if (!(reqId in loadedSet)) {
-                loadSet[reqId] = true;
-                addRequirements(reqId);
-              }
-            });
-          }
-          var dependencyResolver = createDependencyResolver(entryMap);
-          var loadAdditions = loadSet;
-          var newIds;
-          while (hasKeys(loadAdditions)) {
-            newIds = {};
-            for (var loadId in loadAdditions) {
-              var entry = entryMap[loadId];
-              forEach(entry && entry.modify, function(modId) {
-                if (modId in loadedSet) {
-                  newIds[modId] = true;
-                }
-              });
-            }
-            for (var loadedId in loadedSet) {
-              if (!(loadedId in loadSet)) {
-                for (var depId in dependencyResolver(loadedId)) {
-                  if (depId in loadSet) {
-                    newIds[loadedId] = true;
+                    g = ' lang="' + n.metadata.parsed[S] + '"', B += '<meta name="' + S + '" content="' + n.metadata.parsed[S] + '">\n';
                     break;
-                  }
-                }
-              }
-            }
-            loadAdditions = newIds;
-            for (var newId in loadAdditions) {
-              loadSet[newId] = true;
-            }
-          }
-          var loader2 = {
-            getIds: function() {
-              var ids = [];
-              loader2.load(function(id) {
-                ids.push(id);
-              });
-              return ids;
-            },
-            load: function(loadComponent, chainer) {
-              return loadComponentsInOrder(dependencyResolver, loadSet, loadComponent, chainer);
-            }
-          };
-          return loader2;
-        }
-        return getLoader2;
-      }();
-      if (typeof module !== "undefined") {
-        module.exports = getLoader;
-      }
-    }
-  });
-
-  // node_modules/.pnpm/prismjs@1.29.0/node_modules/prismjs/components/index.js
-  var require_components2 = __commonJS({
-    "node_modules/.pnpm/prismjs@1.29.0/node_modules/prismjs/components/index.js"(exports, module) {
-      var components = require_components();
-      var getLoader = require_dependencies();
-      var loadedLanguages = /* @__PURE__ */ new Set();
-      function loadLanguages(languages) {
-        if (languages === void 0) {
-          languages = Object.keys(components.languages).filter((l2) => l2 != "meta");
-        } else if (!Array.isArray(languages)) {
-          languages = [languages];
-        }
-        const loaded = [...loadedLanguages, ...Object.keys(Prism.languages)];
-        getLoader(components, languages, loaded).load((lang) => {
-          if (!(lang in components.languages)) {
-            if (!loadLanguages.silent) {
-              console.warn("Language does not exist: " + lang);
-            }
-            return;
-          }
-          const pathToLanguage = "./prism-" + lang;
-          delete __require.cache[__require.resolve(pathToLanguage)];
-          delete Prism.languages[lang];
-          __require(pathToLanguage);
-          loadedLanguages.add(lang);
-        });
-      }
-      loadLanguages.silent = false;
-      module.exports = loadLanguages;
-    }
-  });
-
-  // node_modules/.pnpm/prismjs@1.29.0/node_modules/prismjs/prism.js
-  var require_prism = __commonJS({
-    "node_modules/.pnpm/prismjs@1.29.0/node_modules/prismjs/prism.js"(exports, module) {
-      var _self = typeof window !== "undefined" ? window : typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope ? self : {};
-      var Prism2 = function(_self2) {
-        var lang = /(?:^|\s)lang(?:uage)?-([\w-]+)(?=\s|$)/i;
-        var uniqueId = 0;
-        var plainTextGrammar = {};
-        var _ = {
-          /**
-           * By default, Prism will attempt to highlight all code elements (by calling {@link Prism.highlightAll}) on the
-           * current page after the page finished loading. This might be a problem if e.g. you wanted to asynchronously load
-           * additional languages or plugins yourself.
-           *
-           * By setting this value to `true`, Prism will not automatically highlight all code elements on the page.
-           *
-           * You obviously have to change this value before the automatic highlighting started. To do this, you can add an
-           * empty Prism object into the global scope before loading the Prism script like this:
-           *
-           * ```js
-           * window.Prism = window.Prism || {};
-           * Prism.manual = true;
-           * // add a new <script> to load Prism's script
-           * ```
-           *
-           * @default false
-           * @type {boolean}
-           * @memberof Prism
-           * @public
-           */
-          manual: _self2.Prism && _self2.Prism.manual,
-          /**
-           * By default, if Prism is in a web worker, it assumes that it is in a worker it created itself, so it uses
-           * `addEventListener` to communicate with its parent instance. However, if you're using Prism manually in your
-           * own worker, you don't want it to do this.
-           *
-           * By setting this value to `true`, Prism will not add its own listeners to the worker.
-           *
-           * You obviously have to change this value before Prism executes. To do this, you can add an
-           * empty Prism object into the global scope before loading the Prism script like this:
-           *
-           * ```js
-           * window.Prism = window.Prism || {};
-           * Prism.disableWorkerMessageHandler = true;
-           * // Load Prism's script
-           * ```
-           *
-           * @default false
-           * @type {boolean}
-           * @memberof Prism
-           * @public
-           */
-          disableWorkerMessageHandler: _self2.Prism && _self2.Prism.disableWorkerMessageHandler,
-          /**
-           * A namespace for utility methods.
-           *
-           * All function in this namespace that are not explicitly marked as _public_ are for __internal use only__ and may
-           * change or disappear at any time.
-           *
-           * @namespace
-           * @memberof Prism
-           */
-          util: {
-            encode: function encode(tokens) {
-              if (tokens instanceof Token) {
-                return new Token(tokens.type, encode(tokens.content), tokens.alias);
-              } else if (Array.isArray(tokens)) {
-                return tokens.map(encode);
-              } else {
-                return tokens.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/\u00a0/g, " ");
-              }
-            },
-            /**
-             * Returns the name of the type of the given value.
-             *
-             * @param {any} o
-             * @returns {string}
-             * @example
-             * type(null)      === 'Null'
-             * type(undefined) === 'Undefined'
-             * type(123)       === 'Number'
-             * type('foo')     === 'String'
-             * type(true)      === 'Boolean'
-             * type([1, 2])    === 'Array'
-             * type({})        === 'Object'
-             * type(String)    === 'Function'
-             * type(/abc+/)    === 'RegExp'
-             */
-            type: function(o2) {
-              return Object.prototype.toString.call(o2).slice(8, -1);
-            },
-            /**
-             * Returns a unique number for the given object. Later calls will still return the same number.
-             *
-             * @param {Object} obj
-             * @returns {number}
-             */
-            objId: function(obj) {
-              if (!obj["__id"]) {
-                Object.defineProperty(obj, "__id", { value: ++uniqueId });
-              }
-              return obj["__id"];
-            },
-            /**
-             * Creates a deep clone of the given object.
-             *
-             * The main intended use of this function is to clone language definitions.
-             *
-             * @param {T} o
-             * @param {Record<number, any>} [visited]
-             * @returns {T}
-             * @template T
-             */
-            clone: function deepClone(o2, visited) {
-              visited = visited || {};
-              var clone;
-              var id;
-              switch (_.util.type(o2)) {
-                case "Object":
-                  id = _.util.objId(o2);
-                  if (visited[id]) {
-                    return visited[id];
-                  }
-                  clone = /** @type {Record<string, any>} */
-                  {};
-                  visited[id] = clone;
-                  for (var key in o2) {
-                    if (o2.hasOwnProperty(key)) {
-                      clone[key] = deepClone(o2[key], visited);
-                    }
-                  }
-                  return (
-                    /** @type {any} */
-                    clone
-                  );
-                case "Array":
-                  id = _.util.objId(o2);
-                  if (visited[id]) {
-                    return visited[id];
-                  }
-                  clone = [];
-                  visited[id] = clone;
-                  /** @type {Array} */
-                  /** @type {any} */
-                  o2.forEach(function(v, i3) {
-                    clone[i3] = deepClone(v, visited);
-                  });
-                  return (
-                    /** @type {any} */
-                    clone
-                  );
                 default:
-                  return o2;
-              }
-            },
-            /**
-             * Returns the Prism language of the given element set by a `language-xxxx` or `lang-xxxx` class.
-             *
-             * If no language is set for the element or the element is `null` or `undefined`, `none` will be returned.
-             *
-             * @param {Element} element
-             * @returns {string}
-             */
-            getLanguage: function(element) {
-              while (element) {
-                var m = lang.exec(element.className);
-                if (m) {
-                  return m[1].toLowerCase();
-                }
-                element = element.parentElement;
-              }
-              return "none";
-            },
-            /**
-             * Sets the Prism `language-xxxx` class of the given element.
-             *
-             * @param {Element} element
-             * @param {string} language
-             * @returns {void}
-             */
-            setLanguage: function(element, language) {
-              element.className = element.className.replace(RegExp(lang, "gi"), "");
-              element.classList.add("language-" + language);
-            },
-            /**
-             * Returns the script element that is currently executing.
-             *
-             * This does __not__ work for line script element.
-             *
-             * @returns {HTMLScriptElement | null}
-             */
-            currentScript: function() {
-              if (typeof document === "undefined") {
-                return null;
-              }
-              if ("currentScript" in document && 1 < 2) {
-                return (
-                  /** @type {any} */
-                  document.currentScript
-                );
-              }
-              try {
-                throw new Error();
-              } catch (err) {
-                var src = (/at [^(\r\n]*\((.*):[^:]+:[^:]+\)$/i.exec(err.stack) || [])[1];
-                if (src) {
-                  var scripts = document.getElementsByTagName("script");
-                  for (var i3 in scripts) {
-                    if (scripts[i3].src == src) {
-                      return scripts[i3];
+                    B += '<meta name="' + S + '" content="' + n.metadata.parsed[S] + '">\n';
+            }
+            return u = f + "<html" + g + ">\n<head>\n" + h + s + B + "</head>\n<body>\n" + u.trim() + "\n</body>\n</html>", u = n.converter._dispatch("completeHTMLDocument.after", u, i, n), u;
+        }), r.subParser("detab", function(u, i, n) {
+            return u = n.converter._dispatch("detab.before", u, i, n), u = u.replace(/\t(?=\t)/g, "    "), u = u.replace(/\t/g, "\xa8A\xa8B"), u = u.replace(/¨B(.+?)¨A/g, function(o, f) {
+                for(var h = f, s = 4 - h.length % 4, g = 0; g < s; g++)h += " ";
+                return h;
+            }), u = u.replace(/¨A/g, "    "), u = u.replace(/¨B/g, ""), u = n.converter._dispatch("detab.after", u, i, n), u;
+        }), r.subParser("ellipsis", function(u, i, n) {
+            return i.ellipsis && (u = n.converter._dispatch("ellipsis.before", u, i, n), u = u.replace(/\.\.\./g, "…"), u = n.converter._dispatch("ellipsis.after", u, i, n)), u;
+        }), r.subParser("emoji", function(u, i, n) {
+            if (!i.emoji) return u;
+            u = n.converter._dispatch("emoji.before", u, i, n);
+            var o = /:([\S]+?):/g;
+            return u = u.replace(o, function(f, h) {
+                return r.helper.emojis.hasOwnProperty(h) ? r.helper.emojis[h] : f;
+            }), u = n.converter._dispatch("emoji.after", u, i, n), u;
+        }), r.subParser("encodeAmpsAndAngles", function(u, i, n) {
+            return u = n.converter._dispatch("encodeAmpsAndAngles.before", u, i, n), u = u.replace(/&(?!#?[xX]?(?:[0-9a-fA-F]+|\w+);)/g, "&amp;"), u = u.replace(/<(?![a-z\/?$!])/gi, "&lt;"), u = u.replace(/</g, "&lt;"), u = u.replace(/>/g, "&gt;"), u = n.converter._dispatch("encodeAmpsAndAngles.after", u, i, n), u;
+        }), r.subParser("encodeBackslashEscapes", function(u, i, n) {
+            return u = n.converter._dispatch("encodeBackslashEscapes.before", u, i, n), u = u.replace(/\\(\\)/g, r.helper.escapeCharactersCallback), u = u.replace(/\\([`*_{}\[\]()>#+.!~=|:-])/g, r.helper.escapeCharactersCallback), u = n.converter._dispatch("encodeBackslashEscapes.after", u, i, n), u;
+        }), r.subParser("encodeCode", function(u, i, n) {
+            return u = n.converter._dispatch("encodeCode.before", u, i, n), u = u.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/([*_{}\[\]\\=~-])/g, r.helper.escapeCharactersCallback), u = n.converter._dispatch("encodeCode.after", u, i, n), u;
+        }), r.subParser("escapeSpecialCharsWithinTagAttributes", function(u, i, n) {
+            u = n.converter._dispatch("escapeSpecialCharsWithinTagAttributes.before", u, i, n);
+            var o = /<\/?[a-z\d_:-]+(?:[\s]+[\s\S]+?)?>/gi, f = /<!(--(?:(?:[^>-]|-[^>])(?:[^-]|-[^-])*)--)>/gi;
+            return u = u.replace(o, function(h) {
+                return h.replace(/(.)<\/?code>(?=.)/g, "$1`").replace(/([\\`*_~=|])/g, r.helper.escapeCharactersCallback);
+            }), u = u.replace(f, function(h) {
+                return h.replace(/([\\`*_~=|])/g, r.helper.escapeCharactersCallback);
+            }), u = n.converter._dispatch("escapeSpecialCharsWithinTagAttributes.after", u, i, n), u;
+        }), r.subParser("githubCodeBlocks", function(u, i, n) {
+            return i.ghCodeBlocks ? (u = n.converter._dispatch("githubCodeBlocks.before", u, i, n), u += "\xa80", u = u.replace(/(?:^|\n)(?: {0,3})(```+|~~~+)(?: *)([^\s`~]*)\n([\s\S]*?)\n(?: {0,3})\1/g, function(o, f, h, s) {
+                var g = i.omitExtraWLInCodeBlocks ? "" : "\n";
+                return s = r.subParser("encodeCode")(s, i, n), s = r.subParser("detab")(s, i, n), s = s.replace(/^\n+/g, ""), s = s.replace(/\n+$/g, ""), s = "<pre><code" + (h ? ' class="' + h + " language-" + h + '"' : "") + ">" + s + g + "</code></pre>", s = r.subParser("hashBlock")(s, i, n), "\n\n\xa8G" + (n.ghCodeBlocks.push({
+                    text: o,
+                    codeblock: s
+                }) - 1) + "G\n\n";
+            }), u = u.replace(/¨0/, ""), n.converter._dispatch("githubCodeBlocks.after", u, i, n)) : u;
+        }), r.subParser("hashBlock", function(u, i, n) {
+            return u = n.converter._dispatch("hashBlock.before", u, i, n), u = u.replace(/(^\n+|\n+$)/g, ""), u = "\n\n\xa8K" + (n.gHtmlBlocks.push(u) - 1) + "K\n\n", u = n.converter._dispatch("hashBlock.after", u, i, n), u;
+        }), r.subParser("hashCodeTags", function(u, i, n) {
+            u = n.converter._dispatch("hashCodeTags.before", u, i, n);
+            var o = function o(f, h, s, g) {
+                var B = s + r.subParser("encodeCode")(h, i, n) + g;
+                return "\xa8C" + (n.gHtmlSpans.push(B) - 1) + "C";
+            };
+            return u = r.helper.replaceRecursiveRegExp(u, o, "<code\\b[^>]*>", "</code>", "gim"), u = n.converter._dispatch("hashCodeTags.after", u, i, n), u;
+        }), r.subParser("hashElement", function(u, i, n) {
+            return function(o, f) {
+                var h = f;
+                return h = h.replace(/\n\n/g, "\n"), h = h.replace(/^\n/, ""), h = h.replace(/\n+$/g, ""), h = "\n\n\xa8K" + (n.gHtmlBlocks.push(h) - 1) + "K\n\n", h;
+            };
+        }), r.subParser("hashHTMLBlocks", function(u, i, n) {
+            u = n.converter._dispatch("hashHTMLBlocks.before", u, i, n);
+            var o = [
+                "pre",
+                "div",
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6",
+                "blockquote",
+                "table",
+                "dl",
+                "ol",
+                "ul",
+                "script",
+                "noscript",
+                "form",
+                "fieldset",
+                "iframe",
+                "math",
+                "style",
+                "section",
+                "header",
+                "footer",
+                "nav",
+                "article",
+                "aside",
+                "address",
+                "audio",
+                "canvas",
+                "figure",
+                "hgroup",
+                "output",
+                "video",
+                "p"
+            ], f = function f(l, E, v, T) {
+                var j = l;
+                return v.search(/\bmarkdown\b/) !== -1 && (j = v + n.converter.makeHtml(E) + T), "\n\n\xa8K" + (n.gHtmlBlocks.push(j) - 1) + "K\n\n";
+            };
+            i.backslashEscapesHTMLTags && (u = u.replace(/\\<(\/?[^>]+?)>/g, function(l, E) {
+                return "&lt;" + E + "&gt;";
+            }));
+            for(var h = 0; h < o.length; ++h)for(var s, g = new RegExp("^ {0,3}(<" + o[h] + "\\b[^>]*>)", "im"), B = "<" + o[h] + "\\b[^>]*>", S = "</" + o[h] + ">"; (s = r.helper.regexIndexOf(u, g)) !== -1;){
+                var x = r.helper.splitAtIndex(u, s), L = r.helper.replaceRecursiveRegExp(x[1], f, B, S, "im");
+                if (L === x[1]) break;
+                u = x[0].concat(L);
+            }
+            return u = u.replace(/(\n {0,3}(<(hr)\b([^<>])*?\/?>)[ \t]*(?=\n{2,}))/g, r.subParser("hashElement")(u, i, n)), u = r.helper.replaceRecursiveRegExp(u, function(l) {
+                return "\n\n\xa8K" + (n.gHtmlBlocks.push(l) - 1) + "K\n\n";
+            }, "^ {0,3}<!--", "-->", "gm"), u = u.replace(/(?:\n\n)( {0,3}(?:<([?%])[^\r]*?\2>)[ \t]*(?=\n{2,}))/g, r.subParser("hashElement")(u, i, n)), u = n.converter._dispatch("hashHTMLBlocks.after", u, i, n), u;
+        }), r.subParser("hashHTMLSpans", function(u, i, n) {
+            u = n.converter._dispatch("hashHTMLSpans.before", u, i, n);
+            function o(f) {
+                return "\xa8C" + (n.gHtmlSpans.push(f) - 1) + "C";
+            }
+            return u = u.replace(/<[^>]+?\/>/gi, function(f) {
+                return o(f);
+            }), u = u.replace(/<([^>]+?)>[\s\S]*?<\/\1>/g, function(f) {
+                return o(f);
+            }), u = u.replace(/<([^>]+?)\s[^>]+?>[\s\S]*?<\/\1>/g, function(f) {
+                return o(f);
+            }), u = u.replace(/<[^>]+?>/gi, function(f) {
+                return o(f);
+            }), u = n.converter._dispatch("hashHTMLSpans.after", u, i, n), u;
+        }), r.subParser("unhashHTMLSpans", function(u, i, n) {
+            u = n.converter._dispatch("unhashHTMLSpans.before", u, i, n);
+            for(var o = 0; o < n.gHtmlSpans.length; ++o){
+                for(var f = n.gHtmlSpans[o], h = 0; /¨C(\d+)C/.test(f);){
+                    var s = RegExp.$1;
+                    if (f = f.replace("\xa8C" + s + "C", n.gHtmlSpans[s]), h === 10) {
+                        console.error("maximum nesting of 10 spans reached!!!");
+                        break;
                     }
-                  }
+                    ++h;
                 }
-                return null;
-              }
-            },
-            /**
-             * Returns whether a given class is active for `element`.
-             *
-             * The class can be activated if `element` or one of its ancestors has the given class and it can be deactivated
-             * if `element` or one of its ancestors has the negated version of the given class. The _negated version_ of the
-             * given class is just the given class with a `no-` prefix.
-             *
-             * Whether the class is active is determined by the closest ancestor of `element` (where `element` itself is
-             * closest ancestor) that has the given class or the negated version of it. If neither `element` nor any of its
-             * ancestors have the given class or the negated version of it, then the default activation will be returned.
-             *
-             * In the paradoxical situation where the closest ancestor contains __both__ the given class and the negated
-             * version of it, the class is considered active.
-             *
-             * @param {Element} element
-             * @param {string} className
-             * @param {boolean} [defaultActivation=false]
-             * @returns {boolean}
-             */
-            isActive: function(element, className, defaultActivation) {
-              var no = "no-" + className;
-              while (element) {
-                var classList = element.classList;
-                if (classList.contains(className)) {
-                  return true;
-                }
-                if (classList.contains(no)) {
-                  return false;
-                }
-                element = element.parentElement;
-              }
-              return !!defaultActivation;
+                u = u.replace("\xa8C" + o + "C", f);
             }
-          },
-          /**
-           * This namespace contains all currently loaded languages and the some helper functions to create and modify languages.
-           *
-           * @namespace
-           * @memberof Prism
-           * @public
-           */
-          languages: {
-            /**
-             * The grammar for plain, unformatted text.
-             */
-            plain: plainTextGrammar,
-            plaintext: plainTextGrammar,
-            text: plainTextGrammar,
-            txt: plainTextGrammar,
-            /**
-             * Creates a deep copy of the language with the given id and appends the given tokens.
-             *
-             * If a token in `redef` also appears in the copied language, then the existing token in the copied language
-             * will be overwritten at its original position.
-             *
-             * ## Best practices
-             *
-             * Since the position of overwriting tokens (token in `redef` that overwrite tokens in the copied language)
-             * doesn't matter, they can technically be in any order. However, this can be confusing to others that trying to
-             * understand the language definition because, normally, the order of tokens matters in Prism grammars.
-             *
-             * Therefore, it is encouraged to order overwriting tokens according to the positions of the overwritten tokens.
-             * Furthermore, all non-overwriting tokens should be placed after the overwriting ones.
-             *
-             * @param {string} id The id of the language to extend. This has to be a key in `Prism.languages`.
-             * @param {Grammar} redef The new tokens to append.
-             * @returns {Grammar} The new language created.
-             * @public
-             * @example
-             * Prism.languages['css-with-colors'] = Prism.languages.extend('css', {
-             *     // Prism.languages.css already has a 'comment' token, so this token will overwrite CSS' 'comment' token
-             *     // at its original position
-             *     'comment': { ... },
-             *     // CSS doesn't have a 'color' token, so this token will be appended
-             *     'color': /\b(?:red|green|blue)\b/
-             * });
-             */
-            extend: function(id, redef) {
-              var lang2 = _.util.clone(_.languages[id]);
-              for (var key in redef) {
-                lang2[key] = redef[key];
-              }
-              return lang2;
-            },
-            /**
-             * Inserts tokens _before_ another token in a language definition or any other grammar.
-             *
-             * ## Usage
-             *
-             * This helper method makes it easy to modify existing languages. For example, the CSS language definition
-             * not only defines CSS highlighting for CSS documents, but also needs to define highlighting for CSS embedded
-             * in HTML through `<style>` elements. To do this, it needs to modify `Prism.languages.markup` and add the
-             * appropriate tokens. However, `Prism.languages.markup` is a regular JavaScript object literal, so if you do
-             * this:
-             *
-             * ```js
-             * Prism.languages.markup.style = {
-             *     // token
-             * };
-             * ```
-             *
-             * then the `style` token will be added (and processed) at the end. `insertBefore` allows you to insert tokens
-             * before existing tokens. For the CSS example above, you would use it like this:
-             *
-             * ```js
-             * Prism.languages.insertBefore('markup', 'cdata', {
-             *     'style': {
-             *         // token
-             *     }
-             * });
-             * ```
-             *
-             * ## Special cases
-             *
-             * If the grammars of `inside` and `insert` have tokens with the same name, the tokens in `inside`'s grammar
-             * will be ignored.
-             *
-             * This behavior can be used to insert tokens after `before`:
-             *
-             * ```js
-             * Prism.languages.insertBefore('markup', 'comment', {
-             *     'comment': Prism.languages.markup.comment,
-             *     // tokens after 'comment'
-             * });
-             * ```
-             *
-             * ## Limitations
-             *
-             * The main problem `insertBefore` has to solve is iteration order. Since ES2015, the iteration order for object
-             * properties is guaranteed to be the insertion order (except for integer keys) but some browsers behave
-             * differently when keys are deleted and re-inserted. So `insertBefore` can't be implemented by temporarily
-             * deleting properties which is necessary to insert at arbitrary positions.
-             *
-             * To solve this problem, `insertBefore` doesn't actually insert the given tokens into the target object.
-             * Instead, it will create a new object and replace all references to the target object with the new one. This
-             * can be done without temporarily deleting properties, so the iteration order is well-defined.
-             *
-             * However, only references that can be reached from `Prism.languages` or `insert` will be replaced. I.e. if
-             * you hold the target object in a variable, then the value of the variable will not change.
-             *
-             * ```js
-             * var oldMarkup = Prism.languages.markup;
-             * var newMarkup = Prism.languages.insertBefore('markup', 'comment', { ... });
-             *
-             * assert(oldMarkup !== Prism.languages.markup);
-             * assert(newMarkup === Prism.languages.markup);
-             * ```
-             *
-             * @param {string} inside The property of `root` (e.g. a language id in `Prism.languages`) that contains the
-             * object to be modified.
-             * @param {string} before The key to insert before.
-             * @param {Grammar} insert An object containing the key-value pairs to be inserted.
-             * @param {Object<string, any>} [root] The object containing `inside`, i.e. the object that contains the
-             * object to be modified.
-             *
-             * Defaults to `Prism.languages`.
-             * @returns {Grammar} The new grammar object.
-             * @public
-             */
-            insertBefore: function(inside, before, insert, root) {
-              root = root || /** @type {any} */
-              _.languages;
-              var grammar = root[inside];
-              var ret = {};
-              for (var token in grammar) {
-                if (grammar.hasOwnProperty(token)) {
-                  if (token == before) {
-                    for (var newToken in insert) {
-                      if (insert.hasOwnProperty(newToken)) {
-                        ret[newToken] = insert[newToken];
-                      }
-                    }
-                  }
-                  if (!insert.hasOwnProperty(token)) {
-                    ret[token] = grammar[token];
-                  }
-                }
-              }
-              var old = root[inside];
-              root[inside] = ret;
-              _.languages.DFS(_.languages, function(key, value) {
-                if (value === old && key != inside) {
-                  this[key] = ret;
-                }
-              });
-              return ret;
-            },
-            // Traverse a language definition with Depth First Search
-            DFS: function DFS(o2, callback, type2, visited) {
-              visited = visited || {};
-              var objId = _.util.objId;
-              for (var i3 in o2) {
-                if (o2.hasOwnProperty(i3)) {
-                  callback.call(o2, i3, o2[i3], type2 || i3);
-                  var property = o2[i3];
-                  var propertyType = _.util.type(property);
-                  if (propertyType === "Object" && !visited[objId(property)]) {
-                    visited[objId(property)] = true;
-                    DFS(property, callback, null, visited);
-                  } else if (propertyType === "Array" && !visited[objId(property)]) {
-                    visited[objId(property)] = true;
-                    DFS(property, callback, i3, visited);
-                  }
-                }
-              }
-            }
-          },
-          plugins: {},
-          /**
-           * This is the most high-level function in Prism’s API.
-           * It fetches all the elements that have a `.language-xxxx` class and then calls {@link Prism.highlightElement} on
-           * each one of them.
-           *
-           * This is equivalent to `Prism.highlightAllUnder(document, async, callback)`.
-           *
-           * @param {boolean} [async=false] Same as in {@link Prism.highlightAllUnder}.
-           * @param {HighlightCallback} [callback] Same as in {@link Prism.highlightAllUnder}.
-           * @memberof Prism
-           * @public
-           */
-          highlightAll: function(async, callback) {
-            _.highlightAllUnder(document, async, callback);
-          },
-          /**
-           * Fetches all the descendants of `container` that have a `.language-xxxx` class and then calls
-           * {@link Prism.highlightElement} on each one of them.
-           *
-           * The following hooks will be run:
-           * 1. `before-highlightall`
-           * 2. `before-all-elements-highlight`
-           * 3. All hooks of {@link Prism.highlightElement} for each element.
-           *
-           * @param {ParentNode} container The root element, whose descendants that have a `.language-xxxx` class will be highlighted.
-           * @param {boolean} [async=false] Whether each element is to be highlighted asynchronously using Web Workers.
-           * @param {HighlightCallback} [callback] An optional callback to be invoked on each element after its highlighting is done.
-           * @memberof Prism
-           * @public
-           */
-          highlightAllUnder: function(container, async, callback) {
-            var env = {
-              callback,
-              container,
-              selector: 'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'
+            return u = n.converter._dispatch("unhashHTMLSpans.after", u, i, n), u;
+        }), r.subParser("hashPreCodeTags", function(u, i, n) {
+            u = n.converter._dispatch("hashPreCodeTags.before", u, i, n);
+            var o = function o(f, h, s, g) {
+                var B = s + r.subParser("encodeCode")(h, i, n) + g;
+                return "\n\n\xa8G" + (n.ghCodeBlocks.push({
+                    text: f,
+                    codeblock: B
+                }) - 1) + "G\n\n";
             };
-            _.hooks.run("before-highlightall", env);
-            env.elements = Array.prototype.slice.apply(env.container.querySelectorAll(env.selector));
-            _.hooks.run("before-all-elements-highlight", env);
-            for (var i3 = 0, element; element = env.elements[i3++]; ) {
-              _.highlightElement(element, async === true, env.callback);
-            }
-          },
-          /**
-           * Highlights the code inside a single element.
-           *
-           * The following hooks will be run:
-           * 1. `before-sanity-check`
-           * 2. `before-highlight`
-           * 3. All hooks of {@link Prism.highlight}. These hooks will be run by an asynchronous worker if `async` is `true`.
-           * 4. `before-insert`
-           * 5. `after-highlight`
-           * 6. `complete`
-           *
-           * Some the above hooks will be skipped if the element doesn't contain any text or there is no grammar loaded for
-           * the element's language.
-           *
-           * @param {Element} element The element containing the code.
-           * It must have a class of `language-xxxx` to be processed, where `xxxx` is a valid language identifier.
-           * @param {boolean} [async=false] Whether the element is to be highlighted asynchronously using Web Workers
-           * to improve performance and avoid blocking the UI when highlighting very large chunks of code. This option is
-           * [disabled by default](https://prismjs.com/faq.html#why-is-asynchronous-highlighting-disabled-by-default).
-           *
-           * Note: All language definitions required to highlight the code must be included in the main `prism.js` file for
-           * asynchronous highlighting to work. You can build your own bundle on the
-           * [Download page](https://prismjs.com/download.html).
-           * @param {HighlightCallback} [callback] An optional callback to be invoked after the highlighting is done.
-           * Mostly useful when `async` is `true`, since in that case, the highlighting is done asynchronously.
-           * @memberof Prism
-           * @public
-           */
-          highlightElement: function(element, async, callback) {
-            var language = _.util.getLanguage(element);
-            var grammar = _.languages[language];
-            _.util.setLanguage(element, language);
-            var parent = element.parentElement;
-            if (parent && parent.nodeName.toLowerCase() === "pre") {
-              _.util.setLanguage(parent, language);
-            }
-            var code = element.textContent;
-            var env = {
-              element,
-              language,
-              grammar,
-              code
-            };
-            function insertHighlightedCode(highlightedCode) {
-              env.highlightedCode = highlightedCode;
-              _.hooks.run("before-insert", env);
-              env.element.innerHTML = env.highlightedCode;
-              _.hooks.run("after-highlight", env);
-              _.hooks.run("complete", env);
-              callback && callback.call(env.element);
-            }
-            _.hooks.run("before-sanity-check", env);
-            parent = env.element.parentElement;
-            if (parent && parent.nodeName.toLowerCase() === "pre" && !parent.hasAttribute("tabindex")) {
-              parent.setAttribute("tabindex", "0");
-            }
-            if (!env.code) {
-              _.hooks.run("complete", env);
-              callback && callback.call(env.element);
-              return;
-            }
-            _.hooks.run("before-highlight", env);
-            if (!env.grammar) {
-              insertHighlightedCode(_.util.encode(env.code));
-              return;
-            }
-            if (async && _self2.Worker) {
-              var worker = new Worker(_.filename);
-              worker.onmessage = function(evt) {
-                insertHighlightedCode(evt.data);
-              };
-              worker.postMessage(JSON.stringify({
-                language: env.language,
-                code: env.code,
-                immediateClose: true
-              }));
-            } else {
-              insertHighlightedCode(_.highlight(env.code, env.grammar, env.language));
-            }
-          },
-          /**
-           * Low-level function, only use if you know what you’re doing. It accepts a string of text as input
-           * and the language definitions to use, and returns a string with the HTML produced.
-           *
-           * The following hooks will be run:
-           * 1. `before-tokenize`
-           * 2. `after-tokenize`
-           * 3. `wrap`: On each {@link Token}.
-           *
-           * @param {string} text A string with the code to be highlighted.
-           * @param {Grammar} grammar An object containing the tokens to use.
-           *
-           * Usually a language definition like `Prism.languages.markup`.
-           * @param {string} language The name of the language definition passed to `grammar`.
-           * @returns {string} The highlighted HTML.
-           * @memberof Prism
-           * @public
-           * @example
-           * Prism.highlight('var foo = true;', Prism.languages.javascript, 'javascript');
-           */
-          highlight: function(text, grammar, language) {
-            var env = {
-              code: text,
-              grammar,
-              language
-            };
-            _.hooks.run("before-tokenize", env);
-            if (!env.grammar) {
-              throw new Error('The language "' + env.language + '" has no grammar.');
-            }
-            env.tokens = _.tokenize(env.code, env.grammar);
-            _.hooks.run("after-tokenize", env);
-            return Token.stringify(_.util.encode(env.tokens), env.language);
-          },
-          /**
-           * This is the heart of Prism, and the most low-level function you can use. It accepts a string of text as input
-           * and the language definitions to use, and returns an array with the tokenized code.
-           *
-           * When the language definition includes nested tokens, the function is called recursively on each of these tokens.
-           *
-           * This method could be useful in other contexts as well, as a very crude parser.
-           *
-           * @param {string} text A string with the code to be highlighted.
-           * @param {Grammar} grammar An object containing the tokens to use.
-           *
-           * Usually a language definition like `Prism.languages.markup`.
-           * @returns {TokenStream} An array of strings and tokens, a token stream.
-           * @memberof Prism
-           * @public
-           * @example
-           * let code = `var foo = 0;`;
-           * let tokens = Prism.tokenize(code, Prism.languages.javascript);
-           * tokens.forEach(token => {
-           *     if (token instanceof Prism.Token && token.type === 'number') {
-           *         console.log(`Found numeric literal: ${token.content}`);
-           *     }
-           * });
-           */
-          tokenize: function(text, grammar) {
-            var rest = grammar.rest;
-            if (rest) {
-              for (var token in rest) {
-                grammar[token] = rest[token];
-              }
-              delete grammar.rest;
-            }
-            var tokenList = new LinkedList();
-            addAfter(tokenList, tokenList.head, text);
-            matchGrammar(text, tokenList, grammar, tokenList.head, 0);
-            return toArray2(tokenList);
-          },
-          /**
-           * @namespace
-           * @memberof Prism
-           * @public
-           */
-          hooks: {
-            all: {},
-            /**
-             * Adds the given callback to the list of callbacks for the given hook.
-             *
-             * The callback will be invoked when the hook it is registered for is run.
-             * Hooks are usually directly run by a highlight function but you can also run hooks yourself.
-             *
-             * One callback function can be registered to multiple hooks and the same hook multiple times.
-             *
-             * @param {string} name The name of the hook.
-             * @param {HookCallback} callback The callback function which is given environment variables.
-             * @public
-             */
-            add: function(name, callback) {
-              var hooks = _.hooks.all;
-              hooks[name] = hooks[name] || [];
-              hooks[name].push(callback);
-            },
-            /**
-             * Runs a hook invoking all registered callbacks with the given environment variables.
-             *
-             * Callbacks will be invoked synchronously and in the order in which they were registered.
-             *
-             * @param {string} name The name of the hook.
-             * @param {Object<string, any>} env The environment variables of the hook passed to all callbacks registered.
-             * @public
-             */
-            run: function(name, env) {
-              var callbacks = _.hooks.all[name];
-              if (!callbacks || !callbacks.length) {
-                return;
-              }
-              for (var i3 = 0, callback; callback = callbacks[i3++]; ) {
-                callback(env);
-              }
-            }
-          },
-          Token
-        };
-        _self2.Prism = _;
-        function Token(type2, content, alias, matchedStr) {
-          this.type = type2;
-          this.content = content;
-          this.alias = alias;
-          this.length = (matchedStr || "").length | 0;
-        }
-        Token.stringify = function stringify(o2, language) {
-          if (typeof o2 == "string") {
-            return o2;
-          }
-          if (Array.isArray(o2)) {
-            var s3 = "";
-            o2.forEach(function(e) {
-              s3 += stringify(e, language);
+            return u = r.helper.replaceRecursiveRegExp(u, o, "^ {0,3}<pre\\b[^>]*>\\s*<code\\b[^>]*>", "^ {0,3}</code>\\s*</pre>", "gim"), u = n.converter._dispatch("hashPreCodeTags.after", u, i, n), u;
+        }), r.subParser("headers", function(u, i, n) {
+            u = n.converter._dispatch("headers.before", u, i, n);
+            var o = isNaN(parseInt(i.headerLevelStart)) ? 1 : parseInt(i.headerLevelStart), f = i.smoothLivePreview ? /^(.+)[ \t]*\n={2,}[ \t]*\n+/gm : /^(.+)[ \t]*\n=+[ \t]*\n+/gm, h = i.smoothLivePreview ? /^(.+)[ \t]*\n-{2,}[ \t]*\n+/gm : /^(.+)[ \t]*\n-+[ \t]*\n+/gm;
+            u = u.replace(f, function(B, S) {
+                var x = r.subParser("spanGamut")(S, i, n), L = i.noHeaderId ? "" : ' id="' + g(S) + '"', l = o, E = "<h" + l + L + ">" + x + "</h" + l + ">";
+                return r.subParser("hashBlock")(E, i, n);
+            }), u = u.replace(h, function(B, S) {
+                var x = r.subParser("spanGamut")(S, i, n), L = i.noHeaderId ? "" : ' id="' + g(S) + '"', l = o + 1, E = "<h" + l + L + ">" + x + "</h" + l + ">";
+                return r.subParser("hashBlock")(E, i, n);
             });
-            return s3;
-          }
-          var env = {
-            type: o2.type,
-            content: stringify(o2.content, language),
-            tag: "span",
-            classes: ["token", o2.type],
-            attributes: {},
-            language
-          };
-          var aliases = o2.alias;
-          if (aliases) {
-            if (Array.isArray(aliases)) {
-              Array.prototype.push.apply(env.classes, aliases);
-            } else {
-              env.classes.push(aliases);
+            var s = i.requireSpaceBeforeHeadingText ? /^(#{1,6})[ \t]+(.+?)[ \t]*#*\n+/gm : /^(#{1,6})[ \t]*(.+?)[ \t]*#*\n+/gm;
+            u = u.replace(s, function(B, S, x) {
+                var L = x;
+                i.customizedHeaderId && (L = x.replace(/\s?\{([^{]+?)}\s*$/, ""));
+                var l = r.subParser("spanGamut")(L, i, n), E = i.noHeaderId ? "" : ' id="' + g(x) + '"', v = o - 1 + S.length, T = "<h" + v + E + ">" + l + "</h" + v + ">";
+                return r.subParser("hashBlock")(T, i, n);
+            });
+            function g(B) {
+                var S, x;
+                if (i.customizedHeaderId) {
+                    var L = B.match(/\{([^{]+?)}\s*$/);
+                    L && L[1] && (B = L[1]);
+                }
+                return S = B, r.helper.isString(i.prefixHeaderId) ? x = i.prefixHeaderId : i.prefixHeaderId === !0 ? x = "section-" : x = "", i.rawPrefixHeaderId || (S = x + S), i.ghCompatibleHeaderId ? S = S.replace(/ /g, "-").replace(/&amp;/g, "").replace(/¨T/g, "").replace(/¨D/g, "").replace(/[&+$,\/:;=?@"#{}|^¨~\[\]`\\*)(%.!'<>]/g, "").toLowerCase() : i.rawHeaderId ? S = S.replace(/ /g, "-").replace(/&amp;/g, "&").replace(/¨T/g, "\xa8").replace(/¨D/g, "$").replace(/["']/g, "-").toLowerCase() : S = S.replace(/[^\w]/g, "").toLowerCase(), i.rawPrefixHeaderId && (S = x + S), n.hashLinkCounts[S] ? S = S + "-" + n.hashLinkCounts[S]++ : n.hashLinkCounts[S] = 1, S;
             }
-          }
-          _.hooks.run("wrap", env);
-          var attributes = "";
-          for (var name in env.attributes) {
-            attributes += " " + name + '="' + (env.attributes[name] || "").replace(/"/g, "&quot;") + '"';
-          }
-          return "<" + env.tag + ' class="' + env.classes.join(" ") + '"' + attributes + ">" + env.content + "</" + env.tag + ">";
-        };
-        function matchPattern(pattern, pos, text, lookbehind) {
-          pattern.lastIndex = pos;
-          var match = pattern.exec(text);
-          if (match && lookbehind && match[1]) {
-            var lookbehindLength = match[1].length;
-            match.index += lookbehindLength;
-            match[0] = match[0].slice(lookbehindLength);
-          }
-          return match;
-        }
-        function matchGrammar(text, tokenList, grammar, startNode, startPos, rematch) {
-          for (var token in grammar) {
-            if (!grammar.hasOwnProperty(token) || !grammar[token]) {
-              continue;
+            return u = n.converter._dispatch("headers.after", u, i, n), u;
+        }), r.subParser("horizontalRule", function(u, i, n) {
+            u = n.converter._dispatch("horizontalRule.before", u, i, n);
+            var o = r.subParser("hashBlock")("<hr />", i, n);
+            return u = u.replace(/^ {0,2}( ?-){3,}[ \t]*$/gm, o), u = u.replace(/^ {0,2}( ?\*){3,}[ \t]*$/gm, o), u = u.replace(/^ {0,2}( ?_){3,}[ \t]*$/gm, o), u = n.converter._dispatch("horizontalRule.after", u, i, n), u;
+        }), r.subParser("images", function(u, i, n) {
+            u = n.converter._dispatch("images.before", u, i, n);
+            var o = /!\[([^\]]*?)][ \t]*()\([ \t]?<?([\S]+?(?:\([\S]*?\)[\S]*?)?)>?(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*(?:(["'])([^"]*?)\6)?[ \t]?\)/g, f = /!\[([^\]]*?)][ \t]*()\([ \t]?<([^>]*)>(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*(?:(?:(["'])([^"]*?)\6))?[ \t]?\)/g, h = /!\[([^\]]*?)][ \t]*()\([ \t]?<?(data:.+?\/.+?;base64,[A-Za-z0-9+/=\n]+?)>?(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*(?:(["'])([^"]*?)\6)?[ \t]?\)/g, s = /!\[([^\]]*?)] ?(?:\n *)?\[([\s\S]*?)]()()()()()/g, g = /!\[([^\[\]]+)]()()()()()/g;
+            function B(x, L, l, E, v, T, j, P) {
+                return E = E.replace(/\s/g, ""), S(x, L, l, E, v, T, j, P);
             }
-            var patterns = grammar[token];
-            patterns = Array.isArray(patterns) ? patterns : [patterns];
-            for (var j = 0; j < patterns.length; ++j) {
-              if (rematch && rematch.cause == token + "," + j) {
-                return;
-              }
-              var patternObj = patterns[j];
-              var inside = patternObj.inside;
-              var lookbehind = !!patternObj.lookbehind;
-              var greedy = !!patternObj.greedy;
-              var alias = patternObj.alias;
-              if (greedy && !patternObj.pattern.global) {
-                var flags = patternObj.pattern.toString().match(/[imsuy]*$/)[0];
-                patternObj.pattern = RegExp(patternObj.pattern.source, flags + "g");
-              }
-              var pattern = patternObj.pattern || patternObj;
-              for (var currentNode = startNode.next, pos = startPos; currentNode !== tokenList.tail; pos += currentNode.value.length, currentNode = currentNode.next) {
-                if (rematch && pos >= rematch.reach) {
-                  break;
+            function S(x, L, l, E, v, T, j, P) {
+                var z = n.gUrls, H = n.gTitles, U = n.gDimensions;
+                if (l = l.toLowerCase(), P || (P = ""), x.search(/\(<?\s*>? ?(['"].*['"])?\)$/m) > -1) E = "";
+                else if (E === "" || E === null) if ((l === "" || l === null) && (l = L.toLowerCase().replace(/ ?\n/g, " ")), E = "#" + l, !r.helper.isUndefined(z[l])) E = z[l], r.helper.isUndefined(H[l]) || (P = H[l]), r.helper.isUndefined(U[l]) || (v = U[l].width, T = U[l].height);
+                else return x;
+                L = L.replace(/"/g, "&quot;").replace(r.helper.regexes.asteriskDashAndColon, r.helper.escapeCharactersCallback), E = E.replace(r.helper.regexes.asteriskDashAndColon, r.helper.escapeCharactersCallback);
+                var O = '<img src="' + E + '" alt="' + L + '"';
+                return P && r.helper.isString(P) && (P = P.replace(/"/g, "&quot;").replace(r.helper.regexes.asteriskDashAndColon, r.helper.escapeCharactersCallback), O += ' title="' + P + '"'), v && T && (v = v === "*" ? "auto" : v, T = T === "*" ? "auto" : T, O += ' width="' + v + '"', O += ' height="' + T + '"'), O += " />", O;
+            }
+            return u = u.replace(s, S), u = u.replace(h, B), u = u.replace(f, S), u = u.replace(o, S), u = u.replace(g, S), u = n.converter._dispatch("images.after", u, i, n), u;
+        }), r.subParser("italicsAndBold", function(u, i, n) {
+            u = n.converter._dispatch("italicsAndBold.before", u, i, n);
+            function o(f, h, s) {
+                return h + f + s;
+            }
+            return i.literalMidWordUnderscores ? (u = u.replace(/\b___(\S[\s\S]*?)___\b/g, function(f, h) {
+                return o(h, "<strong><em>", "</em></strong>");
+            }), u = u.replace(/\b__(\S[\s\S]*?)__\b/g, function(f, h) {
+                return o(h, "<strong>", "</strong>");
+            }), u = u.replace(/\b_(\S[\s\S]*?)_\b/g, function(f, h) {
+                return o(h, "<em>", "</em>");
+            })) : (u = u.replace(/___(\S[\s\S]*?)___/g, function(f, h) {
+                return /\S$/.test(h) ? o(h, "<strong><em>", "</em></strong>") : f;
+            }), u = u.replace(/__(\S[\s\S]*?)__/g, function(f, h) {
+                return /\S$/.test(h) ? o(h, "<strong>", "</strong>") : f;
+            }), u = u.replace(/_([^\s_][\s\S]*?)_/g, function(f, h) {
+                return /\S$/.test(h) ? o(h, "<em>", "</em>") : f;
+            })), i.literalMidWordAsterisks ? (u = u.replace(/([^*]|^)\B\*\*\*(\S[\s\S]*?)\*\*\*\B(?!\*)/g, function(f, h, s) {
+                return o(s, h + "<strong><em>", "</em></strong>");
+            }), u = u.replace(/([^*]|^)\B\*\*(\S[\s\S]*?)\*\*\B(?!\*)/g, function(f, h, s) {
+                return o(s, h + "<strong>", "</strong>");
+            }), u = u.replace(/([^*]|^)\B\*(\S[\s\S]*?)\*\B(?!\*)/g, function(f, h, s) {
+                return o(s, h + "<em>", "</em>");
+            })) : (u = u.replace(/\*\*\*(\S[\s\S]*?)\*\*\*/g, function(f, h) {
+                return /\S$/.test(h) ? o(h, "<strong><em>", "</em></strong>") : f;
+            }), u = u.replace(/\*\*(\S[\s\S]*?)\*\*/g, function(f, h) {
+                return /\S$/.test(h) ? o(h, "<strong>", "</strong>") : f;
+            }), u = u.replace(/\*([^\s*][\s\S]*?)\*/g, function(f, h) {
+                return /\S$/.test(h) ? o(h, "<em>", "</em>") : f;
+            })), u = n.converter._dispatch("italicsAndBold.after", u, i, n), u;
+        }), r.subParser("lists", function(u, i, n) {
+            function o(s, g) {
+                n.gListLevel++, s = s.replace(/\n{2,}$/, "\n"), s += "\xa80";
+                var B = /(\n)?(^ {0,3})([*+-]|\d+[.])[ \t]+((\[(x|X| )?])?[ \t]*[^\r]+?(\n{1,2}))(?=\n*(¨0| {0,3}([*+-]|\d+[.])[ \t]+))/gm, S = /\n[ \t]*\n(?!¨0)/.test(s);
+                return i.disableForced4SpacesIndentedSublists && (B = /(\n)?(^ {0,3})([*+-]|\d+[.])[ \t]+((\[(x|X| )?])?[ \t]*[^\r]+?(\n{1,2}))(?=\n*(¨0|\2([*+-]|\d+[.])[ \t]+))/gm), s = s.replace(B, function(x, L, l, E, v, T, j) {
+                    j = j && j.trim() !== "";
+                    var P = r.subParser("outdent")(v, i, n), z = "";
+                    return T && i.tasklists && (z = ' class="task-list-item" style="list-style-type: none;"', P = P.replace(/^[ \t]*\[(x|X| )?]/m, function() {
+                        var H = '<input type="checkbox" disabled style="margin: 0px 0.35em 0.25em -1.6em; vertical-align: middle;"';
+                        return j && (H += " checked"), H += ">", H;
+                    })), P = P.replace(/^([-*+]|\d\.)[ \t]+[\S\n ]*/g, function(H) {
+                        return "\xa8A" + H;
+                    }), L || P.search(/\n{2,}/) > -1 ? (P = r.subParser("githubCodeBlocks")(P, i, n), P = r.subParser("blockGamut")(P, i, n)) : (P = r.subParser("lists")(P, i, n), P = P.replace(/\n$/, ""), P = r.subParser("hashHTMLBlocks")(P, i, n), P = P.replace(/\n\n+/g, "\n\n"), S ? P = r.subParser("paragraphs")(P, i, n) : P = r.subParser("spanGamut")(P, i, n)), P = P.replace("\xa8A", ""), P = "<li" + z + ">" + P + "</li>\n", P;
+                }), s = s.replace(/¨0/g, ""), n.gListLevel--, g && (s = s.replace(/\s+$/, "")), s;
+            }
+            function f(s, g) {
+                if (g === "ol") {
+                    var B = s.match(/^ *(\d+)\./);
+                    if (B && B[1] !== "1") return ' start="' + B[1] + '"';
                 }
-                var str2 = currentNode.value;
-                if (tokenList.length > text.length) {
-                  return;
+                return "";
+            }
+            function h(s, g, B) {
+                var S = i.disableForced4SpacesIndentedSublists ? /^ ?\d+\.[ \t]/gm : /^ {0,3}\d+\.[ \t]/gm, x = i.disableForced4SpacesIndentedSublists ? /^ ?[*+-][ \t]/gm : /^ {0,3}[*+-][ \t]/gm, L = g === "ul" ? S : x, l = "";
+                if (s.search(L) !== -1) (function v(T) {
+                    var j = T.search(L), P = f(s, g);
+                    j !== -1 ? (l += "\n\n<" + g + P + ">\n" + o(T.slice(0, j), !!B) + "</" + g + ">\n", g = g === "ul" ? "ol" : "ul", L = g === "ul" ? S : x, v(T.slice(j))) : l += "\n\n<" + g + P + ">\n" + o(T, !!B) + "</" + g + ">\n";
+                })(s);
+                else {
+                    var E = f(s, g);
+                    l = "\n\n<" + g + E + ">\n" + o(s, !!B) + "</" + g + ">\n";
                 }
-                if (str2 instanceof Token) {
-                  continue;
+                return l;
+            }
+            return u = n.converter._dispatch("lists.before", u, i, n), u += "\xa80", n.gListLevel ? u = u.replace(/^(( {0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(¨0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/gm, function(s, g, B) {
+                var S = B.search(/[*+-]/g) > -1 ? "ul" : "ol";
+                return h(g, S, !0);
+            }) : u = u.replace(/(\n\n|^\n?)(( {0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(¨0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/gm, function(s, g, B, S) {
+                var x = S.search(/[*+-]/g) > -1 ? "ul" : "ol";
+                return h(B, x, !1);
+            }), u = u.replace(/¨0/, ""), u = n.converter._dispatch("lists.after", u, i, n), u;
+        }), r.subParser("metadata", function(u, i, n) {
+            if (!i.metadata) return u;
+            u = n.converter._dispatch("metadata.before", u, i, n);
+            function o(f) {
+                n.metadata.raw = f, f = f.replace(/&/g, "&amp;").replace(/"/g, "&quot;"), f = f.replace(/\n {4}/g, " "), f.replace(/^([\S ]+): +([\s\S]+?)$/gm, function(h, s, g) {
+                    return n.metadata.parsed[s] = g, "";
+                });
+            }
+            return u = u.replace(/^\s*«««+(\S*?)\n([\s\S]+?)\n»»»+\n/, function(f, h, s) {
+                return o(s), "\xa8M";
+            }), u = u.replace(/^\s*---+(\S*?)\n([\s\S]+?)\n---+\n/, function(f, h, s) {
+                return h && (n.metadata.format = h), o(s), "\xa8M";
+            }), u = u.replace(/¨M/g, ""), u = n.converter._dispatch("metadata.after", u, i, n), u;
+        }), r.subParser("outdent", function(u, i, n) {
+            return u = n.converter._dispatch("outdent.before", u, i, n), u = u.replace(/^(\t|[ ]{1,4})/gm, "\xa80"), u = u.replace(/¨0/g, ""), u = n.converter._dispatch("outdent.after", u, i, n), u;
+        }), r.subParser("paragraphs", function(u, i, n) {
+            u = n.converter._dispatch("paragraphs.before", u, i, n), u = u.replace(/^\n+/g, ""), u = u.replace(/\n+$/g, "");
+            for(var o = u.split(/\n{2,}/g), f = [], h = o.length, s = 0; s < h; s++){
+                var g = o[s];
+                g.search(/¨(K|G)(\d+)\1/g) >= 0 ? f.push(g) : g.search(/\S/) >= 0 && (g = r.subParser("spanGamut")(g, i, n), g = g.replace(/^([ \t]*)/g, "<p>"), g += "</p>", f.push(g));
+            }
+            for(h = f.length, s = 0; s < h; s++){
+                for(var B = "", S = f[s], x = !1; /¨(K|G)(\d+)\1/.test(S);){
+                    var L = RegExp.$1, l = RegExp.$2;
+                    L === "K" ? B = n.gHtmlBlocks[l] : x ? B = r.subParser("encodeCode")(n.ghCodeBlocks[l].text, i, n) : B = n.ghCodeBlocks[l].codeblock, B = B.replace(/\$/g, "$$$$"), S = S.replace(/(\n\n)?¨(K|G)\d+\2(\n\n)?/, B), /^<pre\b[^>]*>\s*<code\b[^>]*>/.test(S) && (x = !0);
                 }
-                var removeCount = 1;
-                var match;
-                if (greedy) {
-                  match = matchPattern(pattern, pos, text, lookbehind);
-                  if (!match || match.index >= text.length) {
+                f[s] = S;
+            }
+            return u = f.join("\n"), u = u.replace(/^\n+/g, ""), u = u.replace(/\n+$/g, ""), n.converter._dispatch("paragraphs.after", u, i, n);
+        }), r.subParser("runExtension", function(u, i, n, o) {
+            if (u.filter) i = u.filter(i, o.converter, n);
+            else if (u.regex) {
+                var f = u.regex;
+                _instanceof(f, RegExp) || (f = new RegExp(f, "g")), i = i.replace(f, u.replace);
+            }
+            return i;
+        }), r.subParser("spanGamut", function(u, i, n) {
+            return u = n.converter._dispatch("spanGamut.before", u, i, n), u = r.subParser("codeSpans")(u, i, n), u = r.subParser("escapeSpecialCharsWithinTagAttributes")(u, i, n), u = r.subParser("encodeBackslashEscapes")(u, i, n), u = r.subParser("images")(u, i, n), u = r.subParser("anchors")(u, i, n), u = r.subParser("autoLinks")(u, i, n), u = r.subParser("simplifiedAutoLinks")(u, i, n), u = r.subParser("emoji")(u, i, n), u = r.subParser("underline")(u, i, n), u = r.subParser("italicsAndBold")(u, i, n), u = r.subParser("strikethrough")(u, i, n), u = r.subParser("ellipsis")(u, i, n), u = r.subParser("hashHTMLSpans")(u, i, n), u = r.subParser("encodeAmpsAndAngles")(u, i, n), i.simpleLineBreaks ? /\n\n¨K/.test(u) || (u = u.replace(/\n+/g, "<br />\n")) : u = u.replace(/  +\n/g, "<br />\n"), u = n.converter._dispatch("spanGamut.after", u, i, n), u;
+        }), r.subParser("strikethrough", function(u, i, n) {
+            function o(f) {
+                return i.simplifiedAutoLink && (f = r.subParser("simplifiedAutoLinks")(f, i, n)), "<del>" + f + "</del>";
+            }
+            return i.strikethrough && (u = n.converter._dispatch("strikethrough.before", u, i, n), u = u.replace(/(?:~){2}([\s\S]+?)(?:~){2}/g, function(f, h) {
+                return o(h);
+            }), u = n.converter._dispatch("strikethrough.after", u, i, n)), u;
+        }), r.subParser("stripLinkDefinitions", function(u, i, n) {
+            var o = /^ {0,3}\[([^\]]+)]:[ \t]*\n?[ \t]*<?([^>\s]+)>?(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*\n?[ \t]*(?:(\n*)["|'(](.+?)["|')][ \t]*)?(?:\n+|(?=¨0))/gm, f = /^ {0,3}\[([^\]]+)]:[ \t]*\n?[ \t]*<?(data:.+?\/.+?;base64,[A-Za-z0-9+/=\n]+?)>?(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*\n?[ \t]*(?:(\n*)["|'(](.+?)["|')][ \t]*)?(?:\n\n|(?=¨0)|(?=\n\[))/gm;
+            u += "\xa80";
+            var h = function h(s, g, B, S, x, L, l) {
+                return g = g.toLowerCase(), u.toLowerCase().split(g).length - 1 < 2 ? s : (B.match(/^data:.+?\/.+?;base64,/) ? n.gUrls[g] = B.replace(/\s/g, "") : n.gUrls[g] = r.subParser("encodeAmpsAndAngles")(B, i, n), L ? L + l : (l && (n.gTitles[g] = l.replace(/"|'/g, "&quot;")), i.parseImgDimensions && S && x && (n.gDimensions[g] = {
+                    width: S,
+                    height: x
+                }), ""));
+            };
+            return u = u.replace(f, h), u = u.replace(o, h), u = u.replace(/¨0/, ""), u;
+        }), r.subParser("tables", function(u, i, n) {
+            if (!i.tables) return u;
+            var o = /^ {0,3}\|?.+\|.+\n {0,3}\|?[ \t]*:?[ \t]*(?:[-=]){2,}[ \t]*:?[ \t]*\|[ \t]*:?[ \t]*(?:[-=]){2,}[\s\S]+?(?:\n\n|¨0)/gm, f = /^ {0,3}\|.+\|[ \t]*\n {0,3}\|[ \t]*:?[ \t]*(?:[-=]){2,}[ \t]*:?[ \t]*\|[ \t]*\n( {0,3}\|.+\|[ \t]*\n)*(?:\n|¨0)/gm;
+            function h(x) {
+                return /^:[ \t]*--*$/.test(x) ? ' style="text-align:left;"' : /^--*[ \t]*:[ \t]*$/.test(x) ? ' style="text-align:right;"' : /^:[ \t]*--*[ \t]*:$/.test(x) ? ' style="text-align:center;"' : "";
+            }
+            function s(x, L) {
+                var l = "";
+                return x = x.trim(), (i.tablesHeaderId || i.tableHeaderId) && (l = ' id="' + x.replace(/ /g, "_").toLowerCase() + '"'), x = r.subParser("spanGamut")(x, i, n), "<th" + l + L + ">" + x + "</th>\n";
+            }
+            function g(x, L) {
+                var l = r.subParser("spanGamut")(x, i, n);
+                return "<td" + L + ">" + l + "</td>\n";
+            }
+            function B(x, L) {
+                for(var l = "<table>\n<thead>\n<tr>\n", E = x.length, v = 0; v < E; ++v)l += x[v];
+                for(l += "</tr>\n</thead>\n<tbody>\n", v = 0; v < L.length; ++v){
+                    l += "<tr>\n";
+                    for(var T = 0; T < E; ++T)l += L[v][T];
+                    l += "</tr>\n";
+                }
+                return l += "</tbody>\n</table>\n", l;
+            }
+            function S(x) {
+                var L, l = x.split("\n");
+                for(L = 0; L < l.length; ++L)/^ {0,3}\|/.test(l[L]) && (l[L] = l[L].replace(/^ {0,3}\|/, "")), /\|[ \t]*$/.test(l[L]) && (l[L] = l[L].replace(/\|[ \t]*$/, "")), l[L] = r.subParser("codeSpans")(l[L], i, n);
+                var E = l[0].split("|").map(function(O) {
+                    return O.trim();
+                }), v = l[1].split("|").map(function(O) {
+                    return O.trim();
+                }), T = [], j = [], P = [], z = [];
+                for(l.shift(), l.shift(), L = 0; L < l.length; ++L)l[L].trim() !== "" && T.push(l[L].split("|").map(function(O) {
+                    return O.trim();
+                }));
+                if (E.length < v.length) return x;
+                for(L = 0; L < v.length; ++L)P.push(h(v[L]));
+                for(L = 0; L < E.length; ++L)r.helper.isUndefined(P[L]) && (P[L] = ""), j.push(s(E[L], P[L]));
+                for(L = 0; L < T.length; ++L){
+                    for(var H = [], U = 0; U < j.length; ++U)r.helper.isUndefined(T[L][U]), H.push(g(T[L][U], P[U]));
+                    z.push(H);
+                }
+                return B(j, z);
+            }
+            return u = n.converter._dispatch("tables.before", u, i, n), u = u.replace(/\\(\|)/g, r.helper.escapeCharactersCallback), u = u.replace(o, S), u = u.replace(f, S), u = n.converter._dispatch("tables.after", u, i, n), u;
+        }), r.subParser("underline", function(u, i, n) {
+            return i.underline && (u = n.converter._dispatch("underline.before", u, i, n), i.literalMidWordUnderscores ? (u = u.replace(/\b___(\S[\s\S]*?)___\b/g, function(o, f) {
+                return "<u>" + f + "</u>";
+            }), u = u.replace(/\b__(\S[\s\S]*?)__\b/g, function(o, f) {
+                return "<u>" + f + "</u>";
+            })) : (u = u.replace(/___(\S[\s\S]*?)___/g, function(o, f) {
+                return /\S$/.test(f) ? "<u>" + f + "</u>" : o;
+            }), u = u.replace(/__(\S[\s\S]*?)__/g, function(o, f) {
+                return /\S$/.test(f) ? "<u>" + f + "</u>" : o;
+            })), u = u.replace(/(_)/g, r.helper.escapeCharactersCallback), u = n.converter._dispatch("underline.after", u, i, n)), u;
+        }), r.subParser("unescapeSpecialChars", function(u, i, n) {
+            return u = n.converter._dispatch("unescapeSpecialChars.before", u, i, n), u = u.replace(/¨E(\d+)E/g, function(o, f) {
+                var h = parseInt(f);
+                return String.fromCharCode(h);
+            }), u = n.converter._dispatch("unescapeSpecialChars.after", u, i, n), u;
+        }), r.subParser("makeMarkdown.blockquote", function(u, i) {
+            var n = "";
+            if (u.hasChildNodes()) for(var o = u.childNodes, f = o.length, h = 0; h < f; ++h){
+                var s = r.subParser("makeMarkdown.node")(o[h], i);
+                s !== "" && (n += s);
+            }
+            return n = n.trim(), n = "> " + n.split("\n").join("\n> "), n;
+        }), r.subParser("makeMarkdown.codeBlock", function(u, i) {
+            var n = u.getAttribute("language"), o = u.getAttribute("precodenum");
+            return "```" + n + "\n" + i.preList[o] + "\n```";
+        }), r.subParser("makeMarkdown.codeSpan", function(u) {
+            return "`" + u.innerHTML + "`";
+        }), r.subParser("makeMarkdown.emphasis", function(u, i) {
+            var n = "";
+            if (u.hasChildNodes()) {
+                n += "*";
+                for(var o = u.childNodes, f = o.length, h = 0; h < f; ++h)n += r.subParser("makeMarkdown.node")(o[h], i);
+                n += "*";
+            }
+            return n;
+        }), r.subParser("makeMarkdown.header", function(u, i, n) {
+            var o = new Array(n + 1).join("#"), f = "";
+            if (u.hasChildNodes()) {
+                f = o + " ";
+                for(var h = u.childNodes, s = h.length, g = 0; g < s; ++g)f += r.subParser("makeMarkdown.node")(h[g], i);
+            }
+            return f;
+        }), r.subParser("makeMarkdown.hr", function() {
+            return "---";
+        }), r.subParser("makeMarkdown.image", function(u) {
+            var i = "";
+            return u.hasAttribute("src") && (i += "![" + u.getAttribute("alt") + "](", i += "<" + u.getAttribute("src") + ">", u.hasAttribute("width") && u.hasAttribute("height") && (i += " =" + u.getAttribute("width") + "x" + u.getAttribute("height")), u.hasAttribute("title") && (i += ' "' + u.getAttribute("title") + '"'), i += ")"), i;
+        }), r.subParser("makeMarkdown.links", function(u, i) {
+            var n = "";
+            if (u.hasChildNodes() && u.hasAttribute("href")) {
+                var o = u.childNodes, f = o.length;
+                n = "[";
+                for(var h = 0; h < f; ++h)n += r.subParser("makeMarkdown.node")(o[h], i);
+                n += "](", n += "<" + u.getAttribute("href") + ">", u.hasAttribute("title") && (n += ' "' + u.getAttribute("title") + '"'), n += ")";
+            }
+            return n;
+        }), r.subParser("makeMarkdown.list", function(u, i, n) {
+            var o = "";
+            if (!u.hasChildNodes()) return "";
+            for(var f = u.childNodes, h = f.length, s = u.getAttribute("start") || 1, g = 0; g < h; ++g)if (!(_type_of(f[g].tagName) > "u" || f[g].tagName.toLowerCase() !== "li")) {
+                var B = "";
+                n === "ol" ? B = s.toString() + ". " : B = "- ", o += B + r.subParser("makeMarkdown.listItem")(f[g], i), ++s;
+            }
+            return o += "\n<!-- -->\n", o.trim();
+        }), r.subParser("makeMarkdown.listItem", function(u, i) {
+            for(var n = "", o = u.childNodes, f = o.length, h = 0; h < f; ++h)n += r.subParser("makeMarkdown.node")(o[h], i);
+            return /\n$/.test(n) ? n = n.split("\n").join("\n    ").replace(/^ {4}$/gm, "").replace(/\n\n+/g, "\n\n") : n += "\n", n;
+        }), r.subParser("makeMarkdown.node", function(u, i, n) {
+            n = n || !1;
+            var o = "";
+            if (u.nodeType === 3) return r.subParser("makeMarkdown.txt")(u, i);
+            if (u.nodeType === 8) return "<!--" + u.data + "-->\n\n";
+            if (u.nodeType !== 1) return "";
+            var f = u.tagName.toLowerCase();
+            switch(f){
+                case "h1":
+                    n || (o = r.subParser("makeMarkdown.header")(u, i, 1) + "\n\n");
                     break;
-                  }
-                  var from = match.index;
-                  var to = match.index + match[0].length;
-                  var p = pos;
-                  p += currentNode.value.length;
-                  while (from >= p) {
-                    currentNode = currentNode.next;
-                    p += currentNode.value.length;
-                  }
-                  p -= currentNode.value.length;
-                  pos = p;
-                  if (currentNode.value instanceof Token) {
-                    continue;
-                  }
-                  for (var k = currentNode; k !== tokenList.tail && (p < to || typeof k.value === "string"); k = k.next) {
-                    removeCount++;
-                    p += k.value.length;
-                  }
-                  removeCount--;
-                  str2 = text.slice(pos, p);
-                  match.index -= pos;
-                } else {
-                  match = matchPattern(pattern, 0, str2, lookbehind);
-                  if (!match) {
-                    continue;
-                  }
-                }
-                var from = match.index;
-                var matchStr = match[0];
-                var before = str2.slice(0, from);
-                var after = str2.slice(from + matchStr.length);
-                var reach = pos + str2.length;
-                if (rematch && reach > rematch.reach) {
-                  rematch.reach = reach;
-                }
-                var removeFrom = currentNode.prev;
-                if (before) {
-                  removeFrom = addAfter(tokenList, removeFrom, before);
-                  pos += before.length;
-                }
-                removeRange(tokenList, removeFrom, removeCount);
-                var wrapped = new Token(token, inside ? _.tokenize(matchStr, inside) : matchStr, alias, matchStr);
-                currentNode = addAfter(tokenList, removeFrom, wrapped);
-                if (after) {
-                  addAfter(tokenList, currentNode, after);
-                }
-                if (removeCount > 1) {
-                  var nestedRematch = {
-                    cause: token + "," + j,
-                    reach
-                  };
-                  matchGrammar(text, tokenList, grammar, currentNode.prev, pos, nestedRematch);
-                  if (rematch && nestedRematch.reach > rematch.reach) {
-                    rematch.reach = nestedRematch.reach;
-                  }
-                }
-              }
+                case "h2":
+                    n || (o = r.subParser("makeMarkdown.header")(u, i, 2) + "\n\n");
+                    break;
+                case "h3":
+                    n || (o = r.subParser("makeMarkdown.header")(u, i, 3) + "\n\n");
+                    break;
+                case "h4":
+                    n || (o = r.subParser("makeMarkdown.header")(u, i, 4) + "\n\n");
+                    break;
+                case "h5":
+                    n || (o = r.subParser("makeMarkdown.header")(u, i, 5) + "\n\n");
+                    break;
+                case "h6":
+                    n || (o = r.subParser("makeMarkdown.header")(u, i, 6) + "\n\n");
+                    break;
+                case "p":
+                    n || (o = r.subParser("makeMarkdown.paragraph")(u, i) + "\n\n");
+                    break;
+                case "blockquote":
+                    n || (o = r.subParser("makeMarkdown.blockquote")(u, i) + "\n\n");
+                    break;
+                case "hr":
+                    n || (o = r.subParser("makeMarkdown.hr")(u, i) + "\n\n");
+                    break;
+                case "ol":
+                    n || (o = r.subParser("makeMarkdown.list")(u, i, "ol") + "\n\n");
+                    break;
+                case "ul":
+                    n || (o = r.subParser("makeMarkdown.list")(u, i, "ul") + "\n\n");
+                    break;
+                case "precode":
+                    n || (o = r.subParser("makeMarkdown.codeBlock")(u, i) + "\n\n");
+                    break;
+                case "pre":
+                    n || (o = r.subParser("makeMarkdown.pre")(u, i) + "\n\n");
+                    break;
+                case "table":
+                    n || (o = r.subParser("makeMarkdown.table")(u, i) + "\n\n");
+                    break;
+                case "code":
+                    o = r.subParser("makeMarkdown.codeSpan")(u, i);
+                    break;
+                case "em":
+                case "i":
+                    o = r.subParser("makeMarkdown.emphasis")(u, i);
+                    break;
+                case "strong":
+                case "b":
+                    o = r.subParser("makeMarkdown.strong")(u, i);
+                    break;
+                case "del":
+                    o = r.subParser("makeMarkdown.strikethrough")(u, i);
+                    break;
+                case "a":
+                    o = r.subParser("makeMarkdown.links")(u, i);
+                    break;
+                case "img":
+                    o = r.subParser("makeMarkdown.image")(u, i);
+                    break;
+                default:
+                    o = u.outerHTML + "\n\n";
             }
-          }
-        }
-        function LinkedList() {
-          var head = { value: null, prev: null, next: null };
-          var tail = { value: null, prev: head, next: null };
-          head.next = tail;
-          this.head = head;
-          this.tail = tail;
-          this.length = 0;
-        }
-        function addAfter(list, node, value) {
-          var next = node.next;
-          var newNode = { value, prev: node, next };
-          node.next = newNode;
-          next.prev = newNode;
-          list.length++;
-          return newNode;
-        }
-        function removeRange(list, node, count) {
-          var next = node.next;
-          for (var i3 = 0; i3 < count && next !== list.tail; i3++) {
-            next = next.next;
-          }
-          node.next = next;
-          next.prev = node;
-          list.length -= i3;
-        }
-        function toArray2(list) {
-          var array = [];
-          var node = list.head.next;
-          while (node !== list.tail) {
-            array.push(node.value);
-            node = node.next;
-          }
-          return array;
-        }
-        if (!_self2.document) {
-          if (!_self2.addEventListener) {
-            return _;
-          }
-          if (!_.disableWorkerMessageHandler) {
-            _self2.addEventListener("message", function(evt) {
-              var message = JSON.parse(evt.data);
-              var lang2 = message.language;
-              var code = message.code;
-              var immediateClose = message.immediateClose;
-              _self2.postMessage(_.highlight(code, _.languages[lang2], lang2));
-              if (immediateClose) {
-                _self2.close();
-              }
-            }, false);
-          }
-          return _;
-        }
-        var script = _.util.currentScript();
-        if (script) {
-          _.filename = script.src;
-          if (script.hasAttribute("data-manual")) {
-            _.manual = true;
-          }
-        }
-        function highlightAutomaticallyCallback() {
-          if (!_.manual) {
-            _.highlightAll();
-          }
-        }
-        if (!_.manual) {
-          var readyState = document.readyState;
-          if (readyState === "loading" || readyState === "interactive" && script && script.defer) {
-            document.addEventListener("DOMContentLoaded", highlightAutomaticallyCallback);
-          } else {
-            if (window.requestAnimationFrame) {
-              window.requestAnimationFrame(highlightAutomaticallyCallback);
-            } else {
-              window.setTimeout(highlightAutomaticallyCallback, 16);
+            return o;
+        }), r.subParser("makeMarkdown.paragraph", function(u, i) {
+            var n = "";
+            if (u.hasChildNodes()) for(var o = u.childNodes, f = o.length, h = 0; h < f; ++h)n += r.subParser("makeMarkdown.node")(o[h], i);
+            return n = n.trim(), n;
+        }), r.subParser("makeMarkdown.pre", function(u, i) {
+            var n = u.getAttribute("prenum");
+            return "<pre>" + i.preList[n] + "</pre>";
+        }), r.subParser("makeMarkdown.strikethrough", function(u, i) {
+            var n = "";
+            if (u.hasChildNodes()) {
+                n += "~~";
+                for(var o = u.childNodes, f = o.length, h = 0; h < f; ++h)n += r.subParser("makeMarkdown.node")(o[h], i);
+                n += "~~";
             }
-          }
-        }
-        return _;
-      }(_self);
-      if (typeof module !== "undefined" && module.exports) {
-        module.exports = Prism2;
-      }
-      if (typeof global !== "undefined") {
-        global.Prism = Prism2;
-      }
-      Prism2.languages.markup = {
-        "comment": {
-          pattern: /<!--(?:(?!<!--)[\s\S])*?-->/,
-          greedy: true
-        },
-        "prolog": {
-          pattern: /<\?[\s\S]+?\?>/,
-          greedy: true
-        },
-        "doctype": {
-          // https://www.w3.org/TR/xml/#NT-doctypedecl
-          pattern: /<!DOCTYPE(?:[^>"'[\]]|"[^"]*"|'[^']*')+(?:\[(?:[^<"'\]]|"[^"]*"|'[^']*'|<(?!!--)|<!--(?:[^-]|-(?!->))*-->)*\]\s*)?>/i,
-          greedy: true,
-          inside: {
-            "internal-subset": {
-              pattern: /(^[^\[]*\[)[\s\S]+(?=\]>$)/,
-              lookbehind: true,
-              greedy: true,
-              inside: null
-              // see below
+            return n;
+        }), r.subParser("makeMarkdown.strong", function(u, i) {
+            var n = "";
+            if (u.hasChildNodes()) {
+                n += "**";
+                for(var o = u.childNodes, f = o.length, h = 0; h < f; ++h)n += r.subParser("makeMarkdown.node")(o[h], i);
+                n += "**";
+            }
+            return n;
+        }), r.subParser("makeMarkdown.table", function(u, i) {
+            var n = "", o = [
+                [],
+                []
+            ], f = u.querySelectorAll("thead>tr>th"), h = u.querySelectorAll("tbody>tr"), s, g;
+            for(s = 0; s < f.length; ++s){
+                var B = r.subParser("makeMarkdown.tableCell")(f[s], i), S = "---";
+                if (f[s].hasAttribute("style")) {
+                    var x = f[s].getAttribute("style").toLowerCase().replace(/\s/g, "");
+                    switch(x){
+                        case "text-align:left;":
+                            S = ":---";
+                            break;
+                        case "text-align:right;":
+                            S = "---:";
+                            break;
+                        case "text-align:center;":
+                            S = ":---:";
+                            break;
+                    }
+                }
+                o[0][s] = B.trim(), o[1][s] = S;
+            }
+            for(s = 0; s < h.length; ++s){
+                var L = o.push([]) - 1, l = h[s].getElementsByTagName("td");
+                for(g = 0; g < f.length; ++g){
+                    var E = " ";
+                    _type_of(l[g]) < "u" && (E = r.subParser("makeMarkdown.tableCell")(l[g], i)), o[L].push(E);
+                }
+            }
+            var v = 3;
+            for(s = 0; s < o.length; ++s)for(g = 0; g < o[s].length; ++g){
+                var T = o[s][g].length;
+                T > v && (v = T);
+            }
+            for(s = 0; s < o.length; ++s){
+                for(g = 0; g < o[s].length; ++g)s === 1 ? o[s][g].slice(-1) === ":" ? o[s][g] = r.helper.padEnd(o[s][g].slice(-1), v - 1, "-") + ":" : o[s][g] = r.helper.padEnd(o[s][g], v, "-") : o[s][g] = r.helper.padEnd(o[s][g], v);
+                n += "| " + o[s].join(" | ") + " |\n";
+            }
+            return n.trim();
+        }), r.subParser("makeMarkdown.tableCell", function(u, i) {
+            var n = "";
+            if (!u.hasChildNodes()) return "";
+            for(var o = u.childNodes, f = o.length, h = 0; h < f; ++h)n += r.subParser("makeMarkdown.node")(o[h], i, !0);
+            return n.trim();
+        }), r.subParser("makeMarkdown.txt", function(u) {
+            var i = u.nodeValue;
+            return i = i.replace(/ +/g, " "), i = i.replace(/¨NBSP;/g, " "), i = r.helper.unescapeHTMLEntities(i), i = i.replace(/([*_~|`])/g, "\\$1"), i = i.replace(/^(\s*)>/g, "\\$1>"), i = i.replace(/^#/gm, "\\#"), i = i.replace(/^(\s*)([-=]{3,})(\s*)$/, "$1\\$2$3"), i = i.replace(/^( {0,3}\d+)\./gm, "$1\\."), i = i.replace(/^( {0,3})([+-])/gm, "$1\\$2"), i = i.replace(/]([\s]*)\(/g, "\\]$1\\("), i = i.replace(/^ {0,3}\[([\S \t]*?)]:/gm, "\\[$1]:"), i;
+        });
+        var C = this;
+        typeof define == "function" && define.amd ? define(function() {
+            return r;
+        }) : (typeof Ee === "undefined" ? "undefined" : _type_of(Ee)) < "u" && Ee.exports ? Ee.exports = r : C.showdown = r;
+    }).call(nu);
+});
+var er = le(function(oi, Le) {
+    var Gn = {
+        core: {
+            meta: {
+                path: "components/prism-core.js",
+                option: "mandatory"
             },
-            "string": {
-              pattern: /"[^"]*"|'[^']*'/,
-              greedy: true
-            },
-            "punctuation": /^<!|>$|[[\]]/,
-            "doctype-tag": /^DOCTYPE/i,
-            "name": /[^\s<>'"]+/
-          }
+            core: "Core"
         },
-        "cdata": {
-          pattern: /<!\[CDATA\[[\s\S]*?\]\]>/i,
-          greedy: true
-        },
-        "tag": {
-          pattern: /<\/?(?!\d)[^\s>\/=$<%]+(?:\s(?:\s*[^\s>\/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+(?=[\s>]))|(?=[\s/>])))+)?\s*\/?>/,
-          greedy: true,
-          inside: {
-            "tag": {
-              pattern: /^<\/?[^\s>\/]+/,
-              inside: {
-                "punctuation": /^<\/?/,
-                "namespace": /^[^\s>\/:]+:/
-              }
+        themes: {
+            meta: {
+                path: "themes/{id}.css",
+                link: "index.html?theme={id}",
+                exclusive: !0
             },
-            "special-attr": [],
-            "attr-value": {
-              pattern: /=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/,
-              inside: {
-                "punctuation": [
-                  {
-                    pattern: /^=/,
-                    alias: "attr-equals"
-                  },
-                  {
-                    pattern: /^(\s*)["']|["']$/,
-                    lookbehind: true
-                  }
+            prism: {
+                title: "Default",
+                option: "default"
+            },
+            "prism-dark": "Dark",
+            "prism-funky": "Funky",
+            "prism-okaidia": {
+                title: "Okaidia",
+                owner: "ocodia"
+            },
+            "prism-twilight": {
+                title: "Twilight",
+                owner: "remybach"
+            },
+            "prism-coy": {
+                title: "Coy",
+                owner: "tshedor"
+            },
+            "prism-solarizedlight": {
+                title: "Solarized Light",
+                owner: "hectormatos2011 "
+            },
+            "prism-tomorrow": {
+                title: "Tomorrow Night",
+                owner: "Rosey"
+            }
+        },
+        languages: {
+            meta: {
+                path: "components/prism-{id}",
+                noCSS: !0,
+                examplesPath: "examples/prism-{id}",
+                addCheckAll: !0
+            },
+            markup: {
+                title: "Markup",
+                alias: [
+                    "html",
+                    "xml",
+                    "svg",
+                    "mathml",
+                    "ssml",
+                    "atom",
+                    "rss"
+                ],
+                aliasTitles: {
+                    html: "HTML",
+                    xml: "XML",
+                    svg: "SVG",
+                    mathml: "MathML",
+                    ssml: "SSML",
+                    atom: "Atom",
+                    rss: "RSS"
+                },
+                option: "default"
+            },
+            css: {
+                title: "CSS",
+                option: "default",
+                modify: "markup"
+            },
+            clike: {
+                title: "C-like",
+                option: "default"
+            },
+            javascript: {
+                title: "JavaScript",
+                require: "clike",
+                modify: "markup",
+                optional: "regex",
+                alias: "js",
+                option: "default"
+            },
+            abap: {
+                title: "ABAP",
+                owner: "dellagustin"
+            },
+            abnf: {
+                title: "ABNF",
+                owner: "RunDevelopment"
+            },
+            actionscript: {
+                title: "ActionScript",
+                require: "javascript",
+                modify: "markup",
+                owner: "Golmote"
+            },
+            ada: {
+                title: "Ada",
+                owner: "Lucretia"
+            },
+            agda: {
+                title: "Agda",
+                owner: "xy-ren"
+            },
+            al: {
+                title: "AL",
+                owner: "RunDevelopment"
+            },
+            antlr4: {
+                title: "ANTLR4",
+                alias: "g4",
+                owner: "RunDevelopment"
+            },
+            apacheconf: {
+                title: "Apache Configuration",
+                owner: "GuiTeK"
+            },
+            apex: {
+                title: "Apex",
+                require: [
+                    "clike",
+                    "sql"
+                ],
+                owner: "RunDevelopment"
+            },
+            apl: {
+                title: "APL",
+                owner: "ngn"
+            },
+            applescript: {
+                title: "AppleScript",
+                owner: "Golmote"
+            },
+            aql: {
+                title: "AQL",
+                owner: "RunDevelopment"
+            },
+            arduino: {
+                title: "Arduino",
+                require: "cpp",
+                alias: "ino",
+                owner: "dkern"
+            },
+            arff: {
+                title: "ARFF",
+                owner: "Golmote"
+            },
+            armasm: {
+                title: "ARM Assembly",
+                alias: "arm-asm",
+                owner: "RunDevelopment"
+            },
+            arturo: {
+                title: "Arturo",
+                alias: "art",
+                optional: [
+                    "bash",
+                    "css",
+                    "javascript",
+                    "markup",
+                    "markdown",
+                    "sql"
+                ],
+                owner: "drkameleon"
+            },
+            asciidoc: {
+                alias: "adoc",
+                title: "AsciiDoc",
+                owner: "Golmote"
+            },
+            aspnet: {
+                title: "ASP.NET (C#)",
+                require: [
+                    "markup",
+                    "csharp"
+                ],
+                owner: "nauzilus"
+            },
+            asm6502: {
+                title: "6502 Assembly",
+                owner: "kzurawel"
+            },
+            asmatmel: {
+                title: "Atmel AVR Assembly",
+                owner: "cerkit"
+            },
+            autohotkey: {
+                title: "AutoHotkey",
+                owner: "aviaryan"
+            },
+            autoit: {
+                title: "AutoIt",
+                owner: "Golmote"
+            },
+            avisynth: {
+                title: "AviSynth",
+                alias: "avs",
+                owner: "Zinfidel"
+            },
+            "avro-idl": {
+                title: "Avro IDL",
+                alias: "avdl",
+                owner: "RunDevelopment"
+            },
+            awk: {
+                title: "AWK",
+                alias: "gawk",
+                aliasTitles: {
+                    gawk: "GAWK"
+                },
+                owner: "RunDevelopment"
+            },
+            bash: {
+                title: "Bash",
+                alias: [
+                    "sh",
+                    "shell"
+                ],
+                aliasTitles: {
+                    sh: "Shell",
+                    shell: "Shell"
+                },
+                owner: "zeitgeist87"
+            },
+            basic: {
+                title: "BASIC",
+                owner: "Golmote"
+            },
+            batch: {
+                title: "Batch",
+                owner: "Golmote"
+            },
+            bbcode: {
+                title: "BBcode",
+                alias: "shortcode",
+                aliasTitles: {
+                    shortcode: "Shortcode"
+                },
+                owner: "RunDevelopment"
+            },
+            bbj: {
+                title: "BBj",
+                owner: "hyyan"
+            },
+            bicep: {
+                title: "Bicep",
+                owner: "johnnyreilly"
+            },
+            birb: {
+                title: "Birb",
+                require: "clike",
+                owner: "Calamity210"
+            },
+            bison: {
+                title: "Bison",
+                require: "c",
+                owner: "Golmote"
+            },
+            bnf: {
+                title: "BNF",
+                alias: "rbnf",
+                aliasTitles: {
+                    rbnf: "RBNF"
+                },
+                owner: "RunDevelopment"
+            },
+            bqn: {
+                title: "BQN",
+                owner: "yewscion"
+            },
+            brainfuck: {
+                title: "Brainfuck",
+                owner: "Golmote"
+            },
+            brightscript: {
+                title: "BrightScript",
+                owner: "RunDevelopment"
+            },
+            bro: {
+                title: "Bro",
+                owner: "wayward710"
+            },
+            bsl: {
+                title: "BSL (1C:Enterprise)",
+                alias: "oscript",
+                aliasTitles: {
+                    oscript: "OneScript"
+                },
+                owner: "Diversus23"
+            },
+            c: {
+                title: "C",
+                require: "clike",
+                owner: "zeitgeist87"
+            },
+            csharp: {
+                title: "C#",
+                require: "clike",
+                alias: [
+                    "cs",
+                    "dotnet"
+                ],
+                owner: "mvalipour"
+            },
+            cpp: {
+                title: "C++",
+                require: "c",
+                owner: "zeitgeist87"
+            },
+            cfscript: {
+                title: "CFScript",
+                require: "clike",
+                alias: "cfc",
+                owner: "mjclemente"
+            },
+            chaiscript: {
+                title: "ChaiScript",
+                require: [
+                    "clike",
+                    "cpp"
+                ],
+                owner: "RunDevelopment"
+            },
+            cil: {
+                title: "CIL",
+                owner: "sbrl"
+            },
+            cilkc: {
+                title: "Cilk/C",
+                require: "c",
+                alias: "cilk-c",
+                owner: "OpenCilk"
+            },
+            cilkcpp: {
+                title: "Cilk/C++",
+                require: "cpp",
+                alias: [
+                    "cilk-cpp",
+                    "cilk"
+                ],
+                owner: "OpenCilk"
+            },
+            clojure: {
+                title: "Clojure",
+                owner: "troglotit"
+            },
+            cmake: {
+                title: "CMake",
+                owner: "mjrogozinski"
+            },
+            cobol: {
+                title: "COBOL",
+                owner: "RunDevelopment"
+            },
+            coffeescript: {
+                title: "CoffeeScript",
+                require: "javascript",
+                alias: "coffee",
+                owner: "R-osey"
+            },
+            concurnas: {
+                title: "Concurnas",
+                alias: "conc",
+                owner: "jasontatton"
+            },
+            csp: {
+                title: "Content-Security-Policy",
+                owner: "ScottHelme"
+            },
+            cooklang: {
+                title: "Cooklang",
+                owner: "ahue"
+            },
+            coq: {
+                title: "Coq",
+                owner: "RunDevelopment"
+            },
+            crystal: {
+                title: "Crystal",
+                require: "ruby",
+                owner: "MakeNowJust"
+            },
+            "css-extras": {
+                title: "CSS Extras",
+                require: "css",
+                modify: "css",
+                owner: "milesj"
+            },
+            csv: {
+                title: "CSV",
+                owner: "RunDevelopment"
+            },
+            cue: {
+                title: "CUE",
+                owner: "RunDevelopment"
+            },
+            cypher: {
+                title: "Cypher",
+                owner: "RunDevelopment"
+            },
+            d: {
+                title: "D",
+                require: "clike",
+                owner: "Golmote"
+            },
+            dart: {
+                title: "Dart",
+                require: "clike",
+                owner: "Golmote"
+            },
+            dataweave: {
+                title: "DataWeave",
+                owner: "machaval"
+            },
+            dax: {
+                title: "DAX",
+                owner: "peterbud"
+            },
+            dhall: {
+                title: "Dhall",
+                owner: "RunDevelopment"
+            },
+            diff: {
+                title: "Diff",
+                owner: "uranusjr"
+            },
+            django: {
+                title: "Django/Jinja2",
+                require: "markup-templating",
+                alias: "jinja2",
+                owner: "romanvm"
+            },
+            "dns-zone-file": {
+                title: "DNS zone file",
+                owner: "RunDevelopment",
+                alias: "dns-zone"
+            },
+            docker: {
+                title: "Docker",
+                alias: "dockerfile",
+                owner: "JustinBeckwith"
+            },
+            dot: {
+                title: "DOT (Graphviz)",
+                alias: "gv",
+                optional: "markup",
+                owner: "RunDevelopment"
+            },
+            ebnf: {
+                title: "EBNF",
+                owner: "RunDevelopment"
+            },
+            editorconfig: {
+                title: "EditorConfig",
+                owner: "osipxd"
+            },
+            eiffel: {
+                title: "Eiffel",
+                owner: "Conaclos"
+            },
+            ejs: {
+                title: "EJS",
+                require: [
+                    "javascript",
+                    "markup-templating"
+                ],
+                owner: "RunDevelopment",
+                alias: "eta",
+                aliasTitles: {
+                    eta: "Eta"
+                }
+            },
+            elixir: {
+                title: "Elixir",
+                owner: "Golmote"
+            },
+            elm: {
+                title: "Elm",
+                owner: "zwilias"
+            },
+            etlua: {
+                title: "Embedded Lua templating",
+                require: [
+                    "lua",
+                    "markup-templating"
+                ],
+                owner: "RunDevelopment"
+            },
+            erb: {
+                title: "ERB",
+                require: [
+                    "ruby",
+                    "markup-templating"
+                ],
+                owner: "Golmote"
+            },
+            erlang: {
+                title: "Erlang",
+                owner: "Golmote"
+            },
+            "excel-formula": {
+                title: "Excel Formula",
+                alias: [
+                    "xlsx",
+                    "xls"
+                ],
+                owner: "RunDevelopment"
+            },
+            fsharp: {
+                title: "F#",
+                require: "clike",
+                owner: "simonreynolds7"
+            },
+            factor: {
+                title: "Factor",
+                owner: "catb0t"
+            },
+            false: {
+                title: "False",
+                owner: "edukisto"
+            },
+            "firestore-security-rules": {
+                title: "Firestore security rules",
+                require: "clike",
+                owner: "RunDevelopment"
+            },
+            flow: {
+                title: "Flow",
+                require: "javascript",
+                owner: "Golmote"
+            },
+            fortran: {
+                title: "Fortran",
+                owner: "Golmote"
+            },
+            ftl: {
+                title: "FreeMarker Template Language",
+                require: "markup-templating",
+                owner: "RunDevelopment"
+            },
+            gml: {
+                title: "GameMaker Language",
+                alias: "gamemakerlanguage",
+                require: "clike",
+                owner: "LiarOnce"
+            },
+            gap: {
+                title: "GAP (CAS)",
+                owner: "RunDevelopment"
+            },
+            gcode: {
+                title: "G-code",
+                owner: "RunDevelopment"
+            },
+            gdscript: {
+                title: "GDScript",
+                owner: "RunDevelopment"
+            },
+            gedcom: {
+                title: "GEDCOM",
+                owner: "Golmote"
+            },
+            gettext: {
+                title: "gettext",
+                alias: "po",
+                owner: "RunDevelopment"
+            },
+            gherkin: {
+                title: "Gherkin",
+                owner: "hason"
+            },
+            git: {
+                title: "Git",
+                owner: "lgiraudel"
+            },
+            glsl: {
+                title: "GLSL",
+                require: "c",
+                owner: "Golmote"
+            },
+            gn: {
+                title: "GN",
+                alias: "gni",
+                owner: "RunDevelopment"
+            },
+            "linker-script": {
+                title: "GNU Linker Script",
+                alias: "ld",
+                owner: "RunDevelopment"
+            },
+            go: {
+                title: "Go",
+                require: "clike",
+                owner: "arnehormann"
+            },
+            "go-module": {
+                title: "Go module",
+                alias: "go-mod",
+                owner: "RunDevelopment"
+            },
+            gradle: {
+                title: "Gradle",
+                require: "clike",
+                owner: "zeabdelkhalek-badido18"
+            },
+            graphql: {
+                title: "GraphQL",
+                optional: "markdown",
+                owner: "Golmote"
+            },
+            groovy: {
+                title: "Groovy",
+                require: "clike",
+                owner: "robfletcher"
+            },
+            haml: {
+                title: "Haml",
+                require: "ruby",
+                optional: [
+                    "css",
+                    "css-extras",
+                    "coffeescript",
+                    "erb",
+                    "javascript",
+                    "less",
+                    "markdown",
+                    "scss",
+                    "textile"
+                ],
+                owner: "Golmote"
+            },
+            handlebars: {
+                title: "Handlebars",
+                require: "markup-templating",
+                alias: [
+                    "hbs",
+                    "mustache"
+                ],
+                aliasTitles: {
+                    mustache: "Mustache"
+                },
+                owner: "Golmote"
+            },
+            haskell: {
+                title: "Haskell",
+                alias: "hs",
+                owner: "bholst"
+            },
+            haxe: {
+                title: "Haxe",
+                require: "clike",
+                optional: "regex",
+                owner: "Golmote"
+            },
+            hcl: {
+                title: "HCL",
+                owner: "outsideris"
+            },
+            hlsl: {
+                title: "HLSL",
+                require: "c",
+                owner: "RunDevelopment"
+            },
+            hoon: {
+                title: "Hoon",
+                owner: "matildepark"
+            },
+            http: {
+                title: "HTTP",
+                optional: [
+                    "csp",
+                    "css",
+                    "hpkp",
+                    "hsts",
+                    "javascript",
+                    "json",
+                    "markup",
+                    "uri"
+                ],
+                owner: "danielgtaylor"
+            },
+            hpkp: {
+                title: "HTTP Public-Key-Pins",
+                owner: "ScottHelme"
+            },
+            hsts: {
+                title: "HTTP Strict-Transport-Security",
+                owner: "ScottHelme"
+            },
+            ichigojam: {
+                title: "IchigoJam",
+                owner: "BlueCocoa"
+            },
+            icon: {
+                title: "Icon",
+                owner: "Golmote"
+            },
+            "icu-message-format": {
+                title: "ICU Message Format",
+                owner: "RunDevelopment"
+            },
+            idris: {
+                title: "Idris",
+                alias: "idr",
+                owner: "KeenS",
+                require: "haskell"
+            },
+            ignore: {
+                title: ".ignore",
+                owner: "osipxd",
+                alias: [
+                    "gitignore",
+                    "hgignore",
+                    "npmignore"
+                ],
+                aliasTitles: {
+                    gitignore: ".gitignore",
+                    hgignore: ".hgignore",
+                    npmignore: ".npmignore"
+                }
+            },
+            inform7: {
+                title: "Inform 7",
+                owner: "Golmote"
+            },
+            ini: {
+                title: "Ini",
+                owner: "aviaryan"
+            },
+            io: {
+                title: "Io",
+                owner: "AlesTsurko"
+            },
+            j: {
+                title: "J",
+                owner: "Golmote"
+            },
+            java: {
+                title: "Java",
+                require: "clike",
+                owner: "sherblot"
+            },
+            javadoc: {
+                title: "JavaDoc",
+                require: [
+                    "markup",
+                    "java",
+                    "javadoclike"
+                ],
+                modify: "java",
+                optional: "scala",
+                owner: "RunDevelopment"
+            },
+            javadoclike: {
+                title: "JavaDoc-like",
+                modify: [
+                    "java",
+                    "javascript",
+                    "php"
+                ],
+                owner: "RunDevelopment"
+            },
+            javastacktrace: {
+                title: "Java stack trace",
+                owner: "RunDevelopment"
+            },
+            jexl: {
+                title: "Jexl",
+                owner: "czosel"
+            },
+            jolie: {
+                title: "Jolie",
+                require: "clike",
+                owner: "thesave"
+            },
+            jq: {
+                title: "JQ",
+                owner: "RunDevelopment"
+            },
+            jsdoc: {
+                title: "JSDoc",
+                require: [
+                    "javascript",
+                    "javadoclike",
+                    "typescript"
+                ],
+                modify: "javascript",
+                optional: [
+                    "actionscript",
+                    "coffeescript"
+                ],
+                owner: "RunDevelopment"
+            },
+            "js-extras": {
+                title: "JS Extras",
+                require: "javascript",
+                modify: "javascript",
+                optional: [
+                    "actionscript",
+                    "coffeescript",
+                    "flow",
+                    "n4js",
+                    "typescript"
+                ],
+                owner: "RunDevelopment"
+            },
+            json: {
+                title: "JSON",
+                alias: "webmanifest",
+                aliasTitles: {
+                    webmanifest: "Web App Manifest"
+                },
+                owner: "CupOfTea696"
+            },
+            json5: {
+                title: "JSON5",
+                require: "json",
+                owner: "RunDevelopment"
+            },
+            jsonp: {
+                title: "JSONP",
+                require: "json",
+                owner: "RunDevelopment"
+            },
+            jsstacktrace: {
+                title: "JS stack trace",
+                owner: "sbrl"
+            },
+            "js-templates": {
+                title: "JS Templates",
+                require: "javascript",
+                modify: "javascript",
+                optional: [
+                    "css",
+                    "css-extras",
+                    "graphql",
+                    "markdown",
+                    "markup",
+                    "sql"
+                ],
+                owner: "RunDevelopment"
+            },
+            julia: {
+                title: "Julia",
+                owner: "cdagnino"
+            },
+            keepalived: {
+                title: "Keepalived Configure",
+                owner: "dev-itsheng"
+            },
+            keyman: {
+                title: "Keyman",
+                owner: "mcdurdin"
+            },
+            kotlin: {
+                title: "Kotlin",
+                alias: [
+                    "kt",
+                    "kts"
+                ],
+                aliasTitles: {
+                    kts: "Kotlin Script"
+                },
+                require: "clike",
+                owner: "Golmote"
+            },
+            kumir: {
+                title: "KuMir (КуМир)",
+                alias: "kum",
+                owner: "edukisto"
+            },
+            kusto: {
+                title: "Kusto",
+                owner: "RunDevelopment"
+            },
+            latex: {
+                title: "LaTeX",
+                alias: [
+                    "tex",
+                    "context"
+                ],
+                aliasTitles: {
+                    tex: "TeX",
+                    context: "ConTeXt"
+                },
+                owner: "japborst"
+            },
+            latte: {
+                title: "Latte",
+                require: [
+                    "clike",
+                    "markup-templating",
+                    "php"
+                ],
+                owner: "nette"
+            },
+            less: {
+                title: "Less",
+                require: "css",
+                optional: "css-extras",
+                owner: "Golmote"
+            },
+            lilypond: {
+                title: "LilyPond",
+                require: "scheme",
+                alias: "ly",
+                owner: "RunDevelopment"
+            },
+            liquid: {
+                title: "Liquid",
+                require: "markup-templating",
+                owner: "cinhtau"
+            },
+            lisp: {
+                title: "Lisp",
+                alias: [
+                    "emacs",
+                    "elisp",
+                    "emacs-lisp"
+                ],
+                owner: "JuanCaicedo"
+            },
+            livescript: {
+                title: "LiveScript",
+                owner: "Golmote"
+            },
+            llvm: {
+                title: "LLVM IR",
+                owner: "porglezomp"
+            },
+            log: {
+                title: "Log file",
+                optional: "javastacktrace",
+                owner: "RunDevelopment"
+            },
+            lolcode: {
+                title: "LOLCODE",
+                owner: "Golmote"
+            },
+            lua: {
+                title: "Lua",
+                owner: "Golmote"
+            },
+            magma: {
+                title: "Magma (CAS)",
+                owner: "RunDevelopment"
+            },
+            makefile: {
+                title: "Makefile",
+                owner: "Golmote"
+            },
+            markdown: {
+                title: "Markdown",
+                require: "markup",
+                optional: "yaml",
+                alias: "md",
+                owner: "Golmote"
+            },
+            "markup-templating": {
+                title: "Markup templating",
+                require: "markup",
+                owner: "Golmote"
+            },
+            mata: {
+                title: "Mata",
+                owner: "RunDevelopment"
+            },
+            matlab: {
+                title: "MATLAB",
+                owner: "Golmote"
+            },
+            maxscript: {
+                title: "MAXScript",
+                owner: "RunDevelopment"
+            },
+            mel: {
+                title: "MEL",
+                owner: "Golmote"
+            },
+            mermaid: {
+                title: "Mermaid",
+                owner: "RunDevelopment"
+            },
+            metafont: {
+                title: "METAFONT",
+                owner: "LaeriExNihilo"
+            },
+            mizar: {
+                title: "Mizar",
+                owner: "Golmote"
+            },
+            mongodb: {
+                title: "MongoDB",
+                owner: "airs0urce",
+                require: "javascript"
+            },
+            monkey: {
+                title: "Monkey",
+                owner: "Golmote"
+            },
+            moonscript: {
+                title: "MoonScript",
+                alias: "moon",
+                owner: "RunDevelopment"
+            },
+            n1ql: {
+                title: "N1QL",
+                owner: "TMWilds"
+            },
+            n4js: {
+                title: "N4JS",
+                require: "javascript",
+                optional: "jsdoc",
+                alias: "n4jsd",
+                owner: "bsmith-n4"
+            },
+            "nand2tetris-hdl": {
+                title: "Nand To Tetris HDL",
+                owner: "stephanmax"
+            },
+            naniscript: {
+                title: "Naninovel Script",
+                owner: "Elringus",
+                alias: "nani"
+            },
+            nasm: {
+                title: "NASM",
+                owner: "rbmj"
+            },
+            neon: {
+                title: "NEON",
+                owner: "nette"
+            },
+            nevod: {
+                title: "Nevod",
+                owner: "nezaboodka"
+            },
+            nginx: {
+                title: "nginx",
+                owner: "volado"
+            },
+            nim: {
+                title: "Nim",
+                owner: "Golmote"
+            },
+            nix: {
+                title: "Nix",
+                owner: "Golmote"
+            },
+            nsis: {
+                title: "NSIS",
+                owner: "idleberg"
+            },
+            objectivec: {
+                title: "Objective-C",
+                require: "c",
+                alias: "objc",
+                owner: "uranusjr"
+            },
+            ocaml: {
+                title: "OCaml",
+                owner: "Golmote"
+            },
+            odin: {
+                title: "Odin",
+                owner: "edukisto"
+            },
+            opencl: {
+                title: "OpenCL",
+                require: "c",
+                modify: [
+                    "c",
+                    "cpp"
+                ],
+                owner: "Milania1"
+            },
+            openqasm: {
+                title: "OpenQasm",
+                alias: "qasm",
+                owner: "RunDevelopment"
+            },
+            oz: {
+                title: "Oz",
+                owner: "Golmote"
+            },
+            parigp: {
+                title: "PARI/GP",
+                owner: "Golmote"
+            },
+            parser: {
+                title: "Parser",
+                require: "markup",
+                owner: "Golmote"
+            },
+            pascal: {
+                title: "Pascal",
+                alias: "objectpascal",
+                aliasTitles: {
+                    objectpascal: "Object Pascal"
+                },
+                owner: "Golmote"
+            },
+            pascaligo: {
+                title: "Pascaligo",
+                owner: "DefinitelyNotAGoat"
+            },
+            psl: {
+                title: "PATROL Scripting Language",
+                owner: "bertysentry"
+            },
+            pcaxis: {
+                title: "PC-Axis",
+                alias: "px",
+                owner: "RunDevelopment"
+            },
+            peoplecode: {
+                title: "PeopleCode",
+                alias: "pcode",
+                owner: "RunDevelopment"
+            },
+            perl: {
+                title: "Perl",
+                owner: "Golmote"
+            },
+            php: {
+                title: "PHP",
+                require: "markup-templating",
+                owner: "milesj"
+            },
+            phpdoc: {
+                title: "PHPDoc",
+                require: [
+                    "php",
+                    "javadoclike"
+                ],
+                modify: "php",
+                owner: "RunDevelopment"
+            },
+            "php-extras": {
+                title: "PHP Extras",
+                require: "php",
+                modify: "php",
+                owner: "milesj"
+            },
+            "plant-uml": {
+                title: "PlantUML",
+                alias: "plantuml",
+                owner: "RunDevelopment"
+            },
+            plsql: {
+                title: "PL/SQL",
+                require: "sql",
+                owner: "Golmote"
+            },
+            powerquery: {
+                title: "PowerQuery",
+                alias: [
+                    "pq",
+                    "mscript"
+                ],
+                owner: "peterbud"
+            },
+            powershell: {
+                title: "PowerShell",
+                owner: "nauzilus"
+            },
+            processing: {
+                title: "Processing",
+                require: "clike",
+                owner: "Golmote"
+            },
+            prolog: {
+                title: "Prolog",
+                owner: "Golmote"
+            },
+            promql: {
+                title: "PromQL",
+                owner: "arendjr"
+            },
+            properties: {
+                title: ".properties",
+                owner: "Golmote"
+            },
+            protobuf: {
+                title: "Protocol Buffers",
+                require: "clike",
+                owner: "just-boris"
+            },
+            pug: {
+                title: "Pug",
+                require: [
+                    "markup",
+                    "javascript"
+                ],
+                optional: [
+                    "coffeescript",
+                    "ejs",
+                    "handlebars",
+                    "less",
+                    "livescript",
+                    "markdown",
+                    "scss",
+                    "stylus",
+                    "twig"
+                ],
+                owner: "Golmote"
+            },
+            puppet: {
+                title: "Puppet",
+                owner: "Golmote"
+            },
+            pure: {
+                title: "Pure",
+                optional: [
+                    "c",
+                    "cpp",
+                    "fortran"
+                ],
+                owner: "Golmote"
+            },
+            purebasic: {
+                title: "PureBasic",
+                require: "clike",
+                alias: "pbfasm",
+                owner: "HeX0R101"
+            },
+            purescript: {
+                title: "PureScript",
+                require: "haskell",
+                alias: "purs",
+                owner: "sriharshachilakapati"
+            },
+            python: {
+                title: "Python",
+                alias: "py",
+                owner: "multipetros"
+            },
+            qsharp: {
+                title: "Q#",
+                require: "clike",
+                alias: "qs",
+                owner: "fedonman"
+            },
+            q: {
+                title: "Q (kdb+ database)",
+                owner: "Golmote"
+            },
+            qml: {
+                title: "QML",
+                require: "javascript",
+                owner: "RunDevelopment"
+            },
+            qore: {
+                title: "Qore",
+                require: "clike",
+                owner: "temnroegg"
+            },
+            r: {
+                title: "R",
+                owner: "Golmote"
+            },
+            racket: {
+                title: "Racket",
+                require: "scheme",
+                alias: "rkt",
+                owner: "RunDevelopment"
+            },
+            cshtml: {
+                title: "Razor C#",
+                alias: "razor",
+                require: [
+                    "markup",
+                    "csharp"
+                ],
+                optional: [
+                    "css",
+                    "css-extras",
+                    "javascript",
+                    "js-extras"
+                ],
+                owner: "RunDevelopment"
+            },
+            jsx: {
+                title: "React JSX",
+                require: [
+                    "markup",
+                    "javascript"
+                ],
+                optional: [
+                    "jsdoc",
+                    "js-extras",
+                    "js-templates"
+                ],
+                owner: "vkbansal"
+            },
+            tsx: {
+                title: "React TSX",
+                require: [
+                    "jsx",
+                    "typescript"
                 ]
-              }
             },
-            "punctuation": /\/?>/,
-            "attr-name": {
-              pattern: /[^\s>\/]+/,
-              inside: {
-                "namespace": /^[^\s>\/:]+:/
-              }
-            }
-          }
-        },
-        "entity": [
-          {
-            pattern: /&[\da-z]{1,8};/i,
-            alias: "named-entity"
-          },
-          /&#x?[\da-f]{1,8};/i
-        ]
-      };
-      Prism2.languages.markup["tag"].inside["attr-value"].inside["entity"] = Prism2.languages.markup["entity"];
-      Prism2.languages.markup["doctype"].inside["internal-subset"].inside = Prism2.languages.markup;
-      Prism2.hooks.add("wrap", function(env) {
-        if (env.type === "entity") {
-          env.attributes["title"] = env.content.replace(/&amp;/, "&");
-        }
-      });
-      Object.defineProperty(Prism2.languages.markup.tag, "addInlined", {
-        /**
-         * Adds an inlined language to markup.
-         *
-         * An example of an inlined language is CSS with `<style>` tags.
-         *
-         * @param {string} tagName The name of the tag that contains the inlined language. This name will be treated as
-         * case insensitive.
-         * @param {string} lang The language key.
-         * @example
-         * addInlined('style', 'css');
-         */
-        value: function addInlined(tagName, lang) {
-          var includedCdataInside = {};
-          includedCdataInside["language-" + lang] = {
-            pattern: /(^<!\[CDATA\[)[\s\S]+?(?=\]\]>$)/i,
-            lookbehind: true,
-            inside: Prism2.languages[lang]
-          };
-          includedCdataInside["cdata"] = /^<!\[CDATA\[|\]\]>$/i;
-          var inside = {
-            "included-cdata": {
-              pattern: /<!\[CDATA\[[\s\S]*?\]\]>/i,
-              inside: includedCdataInside
-            }
-          };
-          inside["language-" + lang] = {
-            pattern: /[\s\S]+/,
-            inside: Prism2.languages[lang]
-          };
-          var def = {};
-          def[tagName] = {
-            pattern: RegExp(/(<__[^>]*>)(?:<!\[CDATA\[(?:[^\]]|\](?!\]>))*\]\]>|(?!<!\[CDATA\[)[\s\S])*?(?=<\/__>)/.source.replace(/__/g, function() {
-              return tagName;
-            }), "i"),
-            lookbehind: true,
-            greedy: true,
-            inside
-          };
-          Prism2.languages.insertBefore("markup", "cdata", def);
-        }
-      });
-      Object.defineProperty(Prism2.languages.markup.tag, "addAttribute", {
-        /**
-         * Adds an pattern to highlight languages embedded in HTML attributes.
-         *
-         * An example of an inlined language is CSS with `style` attributes.
-         *
-         * @param {string} attrName The name of the tag that contains the inlined language. This name will be treated as
-         * case insensitive.
-         * @param {string} lang The language key.
-         * @example
-         * addAttribute('style', 'css');
-         */
-        value: function(attrName, lang) {
-          Prism2.languages.markup.tag.inside["special-attr"].push({
-            pattern: RegExp(
-              /(^|["'\s])/.source + "(?:" + attrName + ")" + /\s*=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+(?=[\s>]))/.source,
-              "i"
-            ),
-            lookbehind: true,
-            inside: {
-              "attr-name": /^[^\s=]+/,
-              "attr-value": {
-                pattern: /=[\s\S]+/,
-                inside: {
-                  "value": {
-                    pattern: /(^=\s*(["']|(?!["'])))\S[\s\S]*(?=\2$)/,
-                    lookbehind: true,
-                    alias: [lang, "language-" + lang],
-                    inside: Prism2.languages[lang]
-                  },
-                  "punctuation": [
-                    {
-                      pattern: /^=/,
-                      alias: "attr-equals"
-                    },
-                    /"|'/
-                  ]
+            reason: {
+                title: "Reason",
+                require: "clike",
+                owner: "Golmote"
+            },
+            regex: {
+                title: "Regex",
+                owner: "RunDevelopment"
+            },
+            rego: {
+                title: "Rego",
+                owner: "JordanSh"
+            },
+            renpy: {
+                title: "Ren'py",
+                alias: "rpy",
+                owner: "HyuchiaDiego"
+            },
+            rescript: {
+                title: "ReScript",
+                alias: "res",
+                owner: "vmarcosp"
+            },
+            rest: {
+                title: "reST (reStructuredText)",
+                owner: "Golmote"
+            },
+            rip: {
+                title: "Rip",
+                owner: "ravinggenius"
+            },
+            roboconf: {
+                title: "Roboconf",
+                owner: "Golmote"
+            },
+            robotframework: {
+                title: "Robot Framework",
+                alias: "robot",
+                owner: "RunDevelopment"
+            },
+            ruby: {
+                title: "Ruby",
+                require: "clike",
+                alias: "rb",
+                owner: "samflores"
+            },
+            rust: {
+                title: "Rust",
+                owner: "Golmote"
+            },
+            sas: {
+                title: "SAS",
+                optional: [
+                    "groovy",
+                    "lua",
+                    "sql"
+                ],
+                owner: "Golmote"
+            },
+            sass: {
+                title: "Sass (Sass)",
+                require: "css",
+                optional: "css-extras",
+                owner: "Golmote"
+            },
+            scss: {
+                title: "Sass (SCSS)",
+                require: "css",
+                optional: "css-extras",
+                owner: "MoOx"
+            },
+            scala: {
+                title: "Scala",
+                require: "java",
+                owner: "jozic"
+            },
+            scheme: {
+                title: "Scheme",
+                owner: "bacchus123"
+            },
+            "shell-session": {
+                title: "Shell session",
+                require: "bash",
+                alias: [
+                    "sh-session",
+                    "shellsession"
+                ],
+                owner: "RunDevelopment"
+            },
+            smali: {
+                title: "Smali",
+                owner: "RunDevelopment"
+            },
+            smalltalk: {
+                title: "Smalltalk",
+                owner: "Golmote"
+            },
+            smarty: {
+                title: "Smarty",
+                require: "markup-templating",
+                optional: "php",
+                owner: "Golmote"
+            },
+            sml: {
+                title: "SML",
+                alias: "smlnj",
+                aliasTitles: {
+                    smlnj: "SML/NJ"
+                },
+                owner: "RunDevelopment"
+            },
+            solidity: {
+                title: "Solidity (Ethereum)",
+                alias: "sol",
+                require: "clike",
+                owner: "glachaud"
+            },
+            "solution-file": {
+                title: "Solution file",
+                alias: "sln",
+                owner: "RunDevelopment"
+            },
+            soy: {
+                title: "Soy (Closure Template)",
+                require: "markup-templating",
+                owner: "Golmote"
+            },
+            sparql: {
+                title: "SPARQL",
+                require: "turtle",
+                owner: "Triply-Dev",
+                alias: "rq"
+            },
+            "splunk-spl": {
+                title: "Splunk SPL",
+                owner: "RunDevelopment"
+            },
+            sqf: {
+                title: "SQF: Status Quo Function (Arma 3)",
+                require: "clike",
+                owner: "RunDevelopment"
+            },
+            sql: {
+                title: "SQL",
+                owner: "multipetros"
+            },
+            squirrel: {
+                title: "Squirrel",
+                require: "clike",
+                owner: "RunDevelopment"
+            },
+            stan: {
+                title: "Stan",
+                owner: "RunDevelopment"
+            },
+            stata: {
+                title: "Stata Ado",
+                require: [
+                    "mata",
+                    "java",
+                    "python"
+                ],
+                owner: "RunDevelopment"
+            },
+            iecst: {
+                title: "Structured Text (IEC 61131-3)",
+                owner: "serhioromano"
+            },
+            stylus: {
+                title: "Stylus",
+                owner: "vkbansal"
+            },
+            supercollider: {
+                title: "SuperCollider",
+                alias: "sclang",
+                owner: "RunDevelopment"
+            },
+            swift: {
+                title: "Swift",
+                owner: "chrischares"
+            },
+            systemd: {
+                title: "Systemd configuration file",
+                owner: "RunDevelopment"
+            },
+            "t4-templating": {
+                title: "T4 templating",
+                owner: "RunDevelopment"
+            },
+            "t4-cs": {
+                title: "T4 Text Templates (C#)",
+                require: [
+                    "t4-templating",
+                    "csharp"
+                ],
+                alias: "t4",
+                owner: "RunDevelopment"
+            },
+            "t4-vb": {
+                title: "T4 Text Templates (VB)",
+                require: [
+                    "t4-templating",
+                    "vbnet"
+                ],
+                owner: "RunDevelopment"
+            },
+            tap: {
+                title: "TAP",
+                owner: "isaacs",
+                require: "yaml"
+            },
+            tcl: {
+                title: "Tcl",
+                owner: "PeterChaplin"
+            },
+            tt2: {
+                title: "Template Toolkit 2",
+                require: [
+                    "clike",
+                    "markup-templating"
+                ],
+                owner: "gflohr"
+            },
+            textile: {
+                title: "Textile",
+                require: "markup",
+                optional: "css",
+                owner: "Golmote"
+            },
+            toml: {
+                title: "TOML",
+                owner: "RunDevelopment"
+            },
+            tremor: {
+                title: "Tremor",
+                alias: [
+                    "trickle",
+                    "troy"
+                ],
+                owner: "darach",
+                aliasTitles: {
+                    trickle: "trickle",
+                    troy: "troy"
                 }
-              }
+            },
+            turtle: {
+                title: "Turtle",
+                alias: "trig",
+                aliasTitles: {
+                    trig: "TriG"
+                },
+                owner: "jakubklimek"
+            },
+            twig: {
+                title: "Twig",
+                require: "markup-templating",
+                owner: "brandonkelly"
+            },
+            typescript: {
+                title: "TypeScript",
+                require: "javascript",
+                optional: "js-templates",
+                alias: "ts",
+                owner: "vkbansal"
+            },
+            typoscript: {
+                title: "TypoScript",
+                alias: "tsconfig",
+                aliasTitles: {
+                    tsconfig: "TSConfig"
+                },
+                owner: "dkern"
+            },
+            unrealscript: {
+                title: "UnrealScript",
+                alias: [
+                    "uscript",
+                    "uc"
+                ],
+                owner: "RunDevelopment"
+            },
+            uorazor: {
+                title: "UO Razor Script",
+                owner: "jaseowns"
+            },
+            uri: {
+                title: "URI",
+                alias: "url",
+                aliasTitles: {
+                    url: "URL"
+                },
+                owner: "RunDevelopment"
+            },
+            v: {
+                title: "V",
+                require: "clike",
+                owner: "taggon"
+            },
+            vala: {
+                title: "Vala",
+                require: "clike",
+                optional: "regex",
+                owner: "TemplarVolk"
+            },
+            vbnet: {
+                title: "VB.Net",
+                require: "basic",
+                owner: "Bigsby"
+            },
+            velocity: {
+                title: "Velocity",
+                require: "markup",
+                owner: "Golmote"
+            },
+            verilog: {
+                title: "Verilog",
+                owner: "a-rey"
+            },
+            vhdl: {
+                title: "VHDL",
+                owner: "a-rey"
+            },
+            vim: {
+                title: "vim",
+                owner: "westonganger"
+            },
+            "visual-basic": {
+                title: "Visual Basic",
+                alias: [
+                    "vb",
+                    "vba"
+                ],
+                aliasTitles: {
+                    vba: "VBA"
+                },
+                owner: "Golmote"
+            },
+            warpscript: {
+                title: "WarpScript",
+                owner: "RunDevelopment"
+            },
+            wasm: {
+                title: "WebAssembly",
+                owner: "Golmote"
+            },
+            "web-idl": {
+                title: "Web IDL",
+                alias: "webidl",
+                owner: "RunDevelopment"
+            },
+            wgsl: {
+                title: "WGSL",
+                owner: "Dr4gonthree"
+            },
+            wiki: {
+                title: "Wiki markup",
+                require: "markup",
+                owner: "Golmote"
+            },
+            wolfram: {
+                title: "Wolfram language",
+                alias: [
+                    "mathematica",
+                    "nb",
+                    "wl"
+                ],
+                aliasTitles: {
+                    mathematica: "Mathematica",
+                    nb: "Mathematica Notebook"
+                },
+                owner: "msollami"
+            },
+            wren: {
+                title: "Wren",
+                owner: "clsource"
+            },
+            xeora: {
+                title: "Xeora",
+                require: "markup",
+                alias: "xeoracube",
+                aliasTitles: {
+                    xeoracube: "XeoraCube"
+                },
+                owner: "freakmaxi"
+            },
+            "xml-doc": {
+                title: "XML doc (.net)",
+                require: "markup",
+                modify: [
+                    "csharp",
+                    "fsharp",
+                    "vbnet"
+                ],
+                owner: "RunDevelopment"
+            },
+            xojo: {
+                title: "Xojo (REALbasic)",
+                owner: "Golmote"
+            },
+            xquery: {
+                title: "XQuery",
+                require: "markup",
+                owner: "Golmote"
+            },
+            yaml: {
+                title: "YAML",
+                alias: "yml",
+                owner: "hason"
+            },
+            yang: {
+                title: "YANG",
+                owner: "RunDevelopment"
+            },
+            zig: {
+                title: "Zig",
+                owner: "RunDevelopment"
             }
-          });
+        },
+        plugins: {
+            meta: {
+                path: "plugins/{id}/prism-{id}",
+                link: "plugins/{id}/"
+            },
+            "line-highlight": {
+                title: "Line Highlight",
+                description: "Highlights specific lines and/or line ranges."
+            },
+            "line-numbers": {
+                title: "Line Numbers",
+                description: "Line number at the beginning of code lines.",
+                owner: "kuba-kubula"
+            },
+            "show-invisibles": {
+                title: "Show Invisibles",
+                description: "Show hidden characters such as tabs and line breaks.",
+                optional: [
+                    "autolinker",
+                    "data-uri-highlight"
+                ]
+            },
+            autolinker: {
+                title: "Autolinker",
+                description: "Converts URLs and emails in code to clickable links. Parses Markdown links in comments."
+            },
+            wpd: {
+                title: "WebPlatform Docs",
+                description: 'Makes tokens link to <a href="https://webplatform.github.io/docs/">WebPlatform.org documentation</a>. The links open in a new tab.'
+            },
+            "custom-class": {
+                title: "Custom Class",
+                description: "This plugin allows you to prefix Prism's default classes (<code>.comment</code> can become <code>.namespace--comment</code>) or replace them with your defined ones (like <code>.editor__comment</code>). You can even add new classes.",
+                owner: "dvkndn",
+                noCSS: !0
+            },
+            "file-highlight": {
+                title: "File Highlight",
+                description: "Fetch external files and highlight them with Prism. Used on the Prism website itself.",
+                noCSS: !0
+            },
+            "show-language": {
+                title: "Show Language",
+                description: "Display the highlighted language in code blocks (inline code does not show the label).",
+                owner: "nauzilus",
+                noCSS: !0,
+                require: "toolbar"
+            },
+            "jsonp-highlight": {
+                title: "JSONP Highlight",
+                description: "Fetch content with JSONP and highlight some interesting content (e.g. GitHub/Gists or Bitbucket API).",
+                noCSS: !0,
+                owner: "nauzilus"
+            },
+            "highlight-keywords": {
+                title: "Highlight Keywords",
+                description: "Adds special CSS classes for each keyword for fine-grained highlighting.",
+                owner: "vkbansal",
+                noCSS: !0
+            },
+            "remove-initial-line-feed": {
+                title: "Remove initial line feed",
+                description: "Removes the initial line feed in code blocks.",
+                owner: "Golmote",
+                noCSS: !0
+            },
+            "inline-color": {
+                title: "Inline color",
+                description: "Adds a small inline preview for colors in style sheets.",
+                require: "css-extras",
+                owner: "RunDevelopment"
+            },
+            previewers: {
+                title: "Previewers",
+                description: "Previewers for angles, colors, gradients, easing and time.",
+                require: "css-extras",
+                owner: "Golmote"
+            },
+            autoloader: {
+                title: "Autoloader",
+                description: "Automatically loads the needed languages to highlight the code blocks.",
+                owner: "Golmote",
+                noCSS: !0
+            },
+            "keep-markup": {
+                title: "Keep Markup",
+                description: "Prevents custom markup from being dropped out during highlighting.",
+                owner: "Golmote",
+                optional: "normalize-whitespace",
+                noCSS: !0
+            },
+            "command-line": {
+                title: "Command Line",
+                description: "Display a command line with a prompt and, optionally, the output/response from the commands.",
+                owner: "chriswells0"
+            },
+            "unescaped-markup": {
+                title: "Unescaped Markup",
+                description: "Write markup without having to escape anything."
+            },
+            "normalize-whitespace": {
+                title: "Normalize Whitespace",
+                description: "Supports multiple operations to normalize whitespace in code blocks.",
+                owner: "zeitgeist87",
+                optional: "unescaped-markup",
+                noCSS: !0
+            },
+            "data-uri-highlight": {
+                title: "Data-URI Highlight",
+                description: "Highlights data-URI contents.",
+                owner: "Golmote",
+                noCSS: !0
+            },
+            toolbar: {
+                title: "Toolbar",
+                description: "Attach a toolbar for plugins to easily register buttons on the top of a code block.",
+                owner: "mAAdhaTTah"
+            },
+            "copy-to-clipboard": {
+                title: "Copy to Clipboard Button",
+                description: "Add a button that copies the code block to the clipboard when clicked.",
+                owner: "mAAdhaTTah",
+                require: "toolbar",
+                noCSS: !0
+            },
+            "download-button": {
+                title: "Download Button",
+                description: "A button in the toolbar of a code block adding a convenient way to download a code file.",
+                owner: "Golmote",
+                require: "toolbar",
+                noCSS: !0
+            },
+            "match-braces": {
+                title: "Match braces",
+                description: "Highlights matching braces.",
+                owner: "RunDevelopment"
+            },
+            "diff-highlight": {
+                title: "Diff Highlight",
+                description: "Highlights the code inside diff blocks.",
+                owner: "RunDevelopment",
+                require: "diff"
+            },
+            "filter-highlight-all": {
+                title: "Filter highlightAll",
+                description: "Filters the elements the <code>highlightAll</code> and <code>highlightAllUnder</code> methods actually highlight.",
+                owner: "RunDevelopment",
+                noCSS: !0
+            },
+            treeview: {
+                title: "Treeview",
+                description: "A language with special styles to highlight file system tree structures.",
+                owner: "Golmote"
+            }
         }
-      });
-      Prism2.languages.html = Prism2.languages.markup;
-      Prism2.languages.mathml = Prism2.languages.markup;
-      Prism2.languages.svg = Prism2.languages.markup;
-      Prism2.languages.xml = Prism2.languages.extend("markup", {});
-      Prism2.languages.ssml = Prism2.languages.xml;
-      Prism2.languages.atom = Prism2.languages.xml;
-      Prism2.languages.rss = Prism2.languages.xml;
-      (function(Prism3) {
-        var string = /(?:"(?:\\(?:\r\n|[\s\S])|[^"\\\r\n])*"|'(?:\\(?:\r\n|[\s\S])|[^'\\\r\n])*')/;
-        Prism3.languages.css = {
-          "comment": /\/\*[\s\S]*?\*\//,
-          "atrule": {
-            pattern: RegExp("@[\\w-](?:" + /[^;{\s"']|\s+(?!\s)/.source + "|" + string.source + ")*?" + /(?:;|(?=\s*\{))/.source),
-            inside: {
-              "rule": /^@[\w-]+/,
-              "selector-function-argument": {
-                pattern: /(\bselector\s*\(\s*(?![\s)]))(?:[^()\s]|\s+(?![\s)])|\((?:[^()]|\([^()]*\))*\))+(?=\s*\))/,
-                lookbehind: true,
-                alias: "selector"
-              },
-              "keyword": {
-                pattern: /(^|[^\w-])(?:and|not|only|or)(?![\w-])/,
-                lookbehind: true
-              }
-              // See rest below
+    };
+    (typeof Le === "undefined" ? "undefined" : _type_of(Le)) < "u" && Le.exports && (Le.exports = Gn);
+});
+var ur = le(function(di, Je) {
+    var Un = function() {
+        var e = function e() {};
+        function a(A, y) {
+            Array.isArray(A) ? A.forEach(y) : A != null && y(A, 0);
+        }
+        function r(A) {
+            for(var y = {}, _ = 0, q = A.length; _ < q; _++)y[A[_]] = !0;
+            return y;
+        }
+        function d(A) {
+            var y = {};
+            for(var _ in A){
+                var q = A[_];
+                for(var F in q)if (F != "meta") {
+                    var R = q[F];
+                    y[F] = typeof R == "string" ? {
+                        title: R
+                    } : R;
+                }
             }
-          },
-          "url": {
-            // https://drafts.csswg.org/css-values-3/#urls
-            pattern: RegExp("\\burl\\((?:" + string.source + "|" + /(?:[^\\\r\n()"']|\\[\s\S])*/.source + ")\\)", "i"),
-            greedy: true,
-            inside: {
-              "function": /^url/i,
-              "punctuation": /^\(|\)$/,
-              "string": {
-                pattern: RegExp("^" + string.source + "$"),
-                alias: "url"
-              }
+            return y;
+        }
+        function t(A) {
+            var y = {}, _ = [];
+            function q(F, R) {
+                if (!(F in y)) {
+                    R.push(F);
+                    var w = R.indexOf(F);
+                    if (w < R.length - 1) throw new Error("Circular dependency: " + R.slice(w).join(" -> "));
+                    var b = {}, k = A[F];
+                    if (k) {
+                        var C = function C(u) {
+                            if (!(u in A)) throw new Error(F + " depends on an unknown component " + u);
+                            if (!(u in b)) {
+                                q(u, R), b[u] = !0;
+                                for(var i in y[u])b[i] = !0;
+                            }
+                        };
+                        a(k.require, C), a(k.optional, C), a(k.modify, C);
+                    }
+                    y[F] = b, R.pop();
+                }
             }
-          },
-          "selector": {
-            pattern: RegExp(`(^|[{}\\s])[^{}\\s](?:[^{};"'\\s]|\\s+(?![\\s{])|` + string.source + ")*(?=\\s*\\{)"),
-            lookbehind: true
-          },
-          "string": {
-            pattern: string,
-            greedy: true
-          },
-          "property": {
-            pattern: /(^|[^-\w\xA0-\uFFFF])(?!\s)[-_a-z\xA0-\uFFFF](?:(?!\s)[-\w\xA0-\uFFFF])*(?=\s*:)/i,
-            lookbehind: true
-          },
-          "important": /!important\b/i,
-          "function": {
-            pattern: /(^|[^-a-z0-9])[-a-z0-9]+(?=\()/i,
-            lookbehind: true
-          },
-          "punctuation": /[(){};:,]/
+            return function(F) {
+                var R = y[F];
+                return R || (q(F, _), R = y[F]), R;
+            };
+        }
+        function p(A) {
+            var y;
+            return function(_) {
+                if (_ in A) return _;
+                if (!y) {
+                    y = {};
+                    for(var q in A){
+                        var F = A[q];
+                        a(F && F.alias, function(R) {
+                            if (R in y) throw new Error(R + " cannot be alias for both " + q + " and " + y[R]);
+                            if (R in A) throw new Error(R + " cannot be alias of " + q + " because it is a component.");
+                            y[R] = q;
+                        });
+                    }
+                }
+                return y[_] || _;
+            };
+        }
+        function c(A, y, _, q) {
+            var F = q ? q.series : void 0, R = q ? q.parallel : e, w = {}, b = {};
+            function k(n) {
+                if (n in w) return w[n];
+                b[n] = !0;
+                var o = [];
+                for(var f in A(n))f in y && o.push(f);
+                var h;
+                if (o.length === 0) h = _(n);
+                else {
+                    var s = R(o.map(function(g) {
+                        var B = k(g);
+                        return delete b[g], B;
+                    }));
+                    F ? h = F(s, function() {
+                        return _(n);
+                    }) : _(n);
+                }
+                return w[n] = h;
+            }
+            for(var C in y)k(C);
+            var u = [];
+            for(var i in b)u.push(w[i]);
+            return R(u);
+        }
+        function m(A) {
+            for(var y in A)return !0;
+            return !1;
+        }
+        function D(A, y, _) {
+            var q = d(A), F = p(q);
+            y = y.map(F), _ = (_ || []).map(F);
+            var R = r(y), w = r(_);
+            y.forEach(b);
+            function b(g) {
+                var B = q[g];
+                a(B && B.require, function(S) {
+                    S in w || (R[S] = !0, b(S));
+                });
+            }
+            for(var k = t(q), C = R, u; m(C);){
+                u = {};
+                for(var i in C){
+                    var n = q[i];
+                    a(n && n.modify, function(g) {
+                        g in w && (u[g] = !0);
+                    });
+                }
+                for(var o in w)if (!(o in R)) {
+                    for(var f in k(o))if (f in R) {
+                        u[o] = !0;
+                        break;
+                    }
+                }
+                C = u;
+                for(var h in C)R[h] = !0;
+            }
+            var s = {
+                getIds: function getIds() {
+                    var g = [];
+                    return s.load(function(B) {
+                        g.push(B);
+                    }), g;
+                },
+                load: function load(g, B) {
+                    return c(k, R, g, B);
+                }
+            };
+            return s;
+        }
+        return D;
+    }();
+    (typeof Je === "undefined" ? "undefined" : _type_of(Je)) < "u" && (Je.exports = Un);
+});
+var nr = le(function(li, ar) {
+    var Ze = er(), Vn = ur(), rr = new Set;
+    function Qe(e) {
+        e === void 0 ? e = Object.keys(Ze.languages).filter(function(r) {
+            return r != "meta";
+        }) : Array.isArray(e) || (e = [
+            e
+        ]);
+        var a = [].concat(rr, Object.keys(Prism.languages));
+        Vn(Ze, e, a).load(function(r) {
+            if (!(r in Ze.languages)) {
+                Qe.silent || console.warn("Language does not exist: " + r);
+                return;
+            }
+            var d = "./prism-" + r;
+            delete _e.cache[_e.resolve(d)], delete Prism.languages[r], _e(d), rr.add(r);
+        });
+    }
+    Qe.silent = !1;
+    ar.exports = Qe;
+});
+var ir = le(function(si, Te) {
+    var $n = (typeof window === "undefined" ? "undefined" : _type_of(window)) < "u" ? window : (typeof WorkerGlobalScope === "undefined" ? "undefined" : _type_of(WorkerGlobalScope)) < "u" && _instanceof(self, WorkerGlobalScope) ? self : {};
+    var N = function(e) {
+        var a = /(?:^|\s)lang(?:uage)?-([\w-]+)(?=\s|$)/i, r = 0, d = {}, t = {
+            manual: e.Prism && e.Prism.manual,
+            disableWorkerMessageHandler: e.Prism && e.Prism.disableWorkerMessageHandler,
+            util: {
+                encode: function w(b) {
+                    return _instanceof(b, p) ? new p(b.type, w(b.content), b.alias) : Array.isArray(b) ? b.map(w) : b.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/\u00a0/g, " ");
+                },
+                type: function type(w) {
+                    return Object.prototype.toString.call(w).slice(8, -1);
+                },
+                objId: function objId(w) {
+                    return w.__id || Object.defineProperty(w, "__id", {
+                        value: ++r
+                    }), w.__id;
+                },
+                clone: function w(b, k) {
+                    k = k || {};
+                    var C, u;
+                    switch(t.util.type(b)){
+                        case "Object":
+                            if (u = t.util.objId(b), k[u]) return k[u];
+                            C = {}, k[u] = C;
+                            for(var i in b)b.hasOwnProperty(i) && (C[i] = w(b[i], k));
+                            return C;
+                        case "Array":
+                            return u = t.util.objId(b), k[u] ? k[u] : (C = [], k[u] = C, b.forEach(function(n, o) {
+                                C[o] = w(n, k);
+                            }), C);
+                        default:
+                            return b;
+                    }
+                },
+                getLanguage: function getLanguage(w) {
+                    for(; w;){
+                        var b = a.exec(w.className);
+                        if (b) return b[1].toLowerCase();
+                        w = w.parentElement;
+                    }
+                    return "none";
+                },
+                setLanguage: function setLanguage(w, b) {
+                    w.className = w.className.replace(RegExp(a, "gi"), ""), w.classList.add("language-" + b);
+                },
+                currentScript: function currentScript() {
+                    if ((typeof document === "undefined" ? "undefined" : _type_of(document)) > "u") return null;
+                    if ("currentScript" in document && 1 < 2) return document.currentScript;
+                    try {
+                        throw new Error;
+                    } catch (C) {
+                        var w = (/at [^(\r\n]*\((.*):[^:]+:[^:]+\)$/i.exec(C.stack) || [])[1];
+                        if (w) {
+                            var b = document.getElementsByTagName("script");
+                            for(var k in b)if (b[k].src == w) return b[k];
+                        }
+                        return null;
+                    }
+                },
+                isActive: function isActive(w, b, k) {
+                    for(var C = "no-" + b; w;){
+                        var u = w.classList;
+                        if (u.contains(b)) return !0;
+                        if (u.contains(C)) return !1;
+                        w = w.parentElement;
+                    }
+                    return !!k;
+                }
+            },
+            languages: {
+                plain: d,
+                plaintext: d,
+                text: d,
+                txt: d,
+                extend: function extend(w, b) {
+                    var k = t.util.clone(t.languages[w]);
+                    for(var C in b)k[C] = b[C];
+                    return k;
+                },
+                insertBefore: function insertBefore(w, b, k, C) {
+                    C = C || t.languages;
+                    var u = C[w], i = {};
+                    for(var n in u)if (u.hasOwnProperty(n)) {
+                        if (n == b) for(var o in k)k.hasOwnProperty(o) && (i[o] = k[o]);
+                        k.hasOwnProperty(n) || (i[n] = u[n]);
+                    }
+                    var f = C[w];
+                    return C[w] = i, t.languages.DFS(t.languages, function(h, s) {
+                        s === f && h != w && (this[h] = i);
+                    }), i;
+                },
+                DFS: function w(b, k, C, u) {
+                    u = u || {};
+                    var i = t.util.objId;
+                    for(var n in b)if (b.hasOwnProperty(n)) {
+                        k.call(b, n, b[n], C || n);
+                        var o = b[n], f = t.util.type(o);
+                        f === "Object" && !u[i(o)] ? (u[i(o)] = !0, w(o, k, null, u)) : f === "Array" && !u[i(o)] && (u[i(o)] = !0, w(o, k, n, u));
+                    }
+                }
+            },
+            plugins: {},
+            highlightAll: function highlightAll(w, b) {
+                t.highlightAllUnder(document, w, b);
+            },
+            highlightAllUnder: function highlightAllUnder(w, b, k) {
+                var C = {
+                    callback: k,
+                    container: w,
+                    selector: 'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'
+                };
+                t.hooks.run("before-highlightall", C), C.elements = Array.prototype.slice.apply(C.container.querySelectorAll(C.selector)), t.hooks.run("before-all-elements-highlight", C);
+                for(var u = 0, i; i = C.elements[u++];)t.highlightElement(i, b === !0, C.callback);
+            },
+            highlightElement: function highlightElement(w, b, k) {
+                var C = t.util.getLanguage(w), u = t.languages[C];
+                t.util.setLanguage(w, C);
+                var i = w.parentElement;
+                i && i.nodeName.toLowerCase() === "pre" && t.util.setLanguage(i, C);
+                var n = w.textContent, o = {
+                    element: w,
+                    language: C,
+                    grammar: u,
+                    code: n
+                };
+                function f(s) {
+                    o.highlightedCode = s, t.hooks.run("before-insert", o), o.element.innerHTML = o.highlightedCode, t.hooks.run("after-highlight", o), t.hooks.run("complete", o), k && k.call(o.element);
+                }
+                if (t.hooks.run("before-sanity-check", o), i = o.element.parentElement, i && i.nodeName.toLowerCase() === "pre" && !i.hasAttribute("tabindex") && i.setAttribute("tabindex", "0"), !o.code) {
+                    t.hooks.run("complete", o), k && k.call(o.element);
+                    return;
+                }
+                if (t.hooks.run("before-highlight", o), !o.grammar) {
+                    f(t.util.encode(o.code));
+                    return;
+                }
+                if (b && e.Worker) {
+                    var h = new Worker(t.filename);
+                    h.onmessage = function(s) {
+                        f(s.data);
+                    }, h.postMessage(JSON.stringify({
+                        language: o.language,
+                        code: o.code,
+                        immediateClose: !0
+                    }));
+                } else f(t.highlight(o.code, o.grammar, o.language));
+            },
+            highlight: function highlight(w, b, k) {
+                var C = {
+                    code: w,
+                    grammar: b,
+                    language: k
+                };
+                if (t.hooks.run("before-tokenize", C), !C.grammar) throw new Error('The language "' + C.language + '" has no grammar.');
+                return C.tokens = t.tokenize(C.code, C.grammar), t.hooks.run("after-tokenize", C), p.stringify(t.util.encode(C.tokens), C.language);
+            },
+            tokenize: function tokenize(w, b) {
+                var k = b.rest;
+                if (k) {
+                    for(var C in k)b[C] = k[C];
+                    delete b.rest;
+                }
+                var u = new D;
+                return A(u, u.head, w), m(w, u, b, u.head, 0), _(u);
+            },
+            hooks: {
+                all: {},
+                add: function add(w, b) {
+                    var k = t.hooks.all;
+                    k[w] = k[w] || [], k[w].push(b);
+                },
+                run: function run(w, b) {
+                    var k = t.hooks.all[w];
+                    if (!(!k || !k.length)) for(var C = 0, u; u = k[C++];)u(b);
+                }
+            },
+            Token: p
         };
-        Prism3.languages.css["atrule"].inside.rest = Prism3.languages.css;
-        var markup = Prism3.languages.markup;
-        if (markup) {
-          markup.tag.addInlined("style", "css");
-          markup.tag.addAttribute("style", "css");
+        e.Prism = t;
+        function p(w, b, k, C) {
+            this.type = w, this.content = b, this.alias = k, this.length = (C || "").length | 0;
         }
-      })(Prism2);
-      Prism2.languages.clike = {
-        "comment": [
-          {
-            pattern: /(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,
-            lookbehind: true,
-            greedy: true
-          },
-          {
-            pattern: /(^|[^\\:])\/\/.*/,
-            lookbehind: true,
-            greedy: true
-          }
+        p.stringify = function w(b, k) {
+            if (typeof b == "string") return b;
+            if (Array.isArray(b)) {
+                var C = "";
+                return b.forEach(function(f) {
+                    C += w(f, k);
+                }), C;
+            }
+            var u = {
+                type: b.type,
+                content: w(b.content, k),
+                tag: "span",
+                classes: [
+                    "token",
+                    b.type
+                ],
+                attributes: {},
+                language: k
+            }, i = b.alias;
+            i && (Array.isArray(i) ? Array.prototype.push.apply(u.classes, i) : u.classes.push(i)), t.hooks.run("wrap", u);
+            var n = "";
+            for(var o in u.attributes)n += " " + o + '="' + (u.attributes[o] || "").replace(/"/g, "&quot;") + '"';
+            return "<" + u.tag + ' class="' + u.classes.join(" ") + '"' + n + ">" + u.content + "</" + u.tag + ">";
+        };
+        function c(w, b, k, C) {
+            w.lastIndex = b;
+            var u = w.exec(k);
+            if (u && C && u[1]) {
+                var i = u[1].length;
+                u.index += i, u[0] = u[0].slice(i);
+            }
+            return u;
+        }
+        function m(w, b, k, C, u, i) {
+            for(var n in k)if (!(!k.hasOwnProperty(n) || !k[n])) {
+                var o = k[n];
+                o = Array.isArray(o) ? o : [
+                    o
+                ];
+                for(var f = 0; f < o.length; ++f){
+                    if (i && i.cause == n + "," + f) return;
+                    var h = o[f], s = h.inside, g = !!h.lookbehind, B = !!h.greedy, S = h.alias;
+                    if (B && !h.pattern.global) {
+                        var x = h.pattern.toString().match(/[imsuy]*$/)[0];
+                        h.pattern = RegExp(h.pattern.source, x + "g");
+                    }
+                    for(var L = h.pattern || h, l = C.next, E = u; l !== b.tail && !(i && E >= i.reach); E += l.value.length, l = l.next){
+                        var v = l.value;
+                        if (b.length > w.length) return;
+                        if (!_instanceof(v, p)) {
+                            var T = 1, j;
+                            if (B) {
+                                if (j = c(L, E, w, g), !j || j.index >= w.length) break;
+                                var U = j.index, P = j.index + j[0].length, z = E;
+                                for(z += l.value.length; U >= z;)l = l.next, z += l.value.length;
+                                if (z -= l.value.length, E = z, _instanceof(l.value, p)) continue;
+                                for(var H = l; H !== b.tail && (z < P || typeof H.value == "string"); H = H.next)T++, z += H.value.length;
+                                T--, v = w.slice(E, z), j.index -= E;
+                            } else if (j = c(L, 0, v, g), !j) continue;
+                            var U = j.index, O = j[0], I = v.slice(0, U), G = v.slice(U + O.length), V = E + v.length;
+                            i && V > i.reach && (i.reach = V);
+                            var Q = l.prev;
+                            I && (Q = A(b, Q, I), E += I.length), y(b, Q, T);
+                            var ee = new p(n, s ? t.tokenize(O, s) : O, S, O);
+                            if (l = A(b, Q, ee), G && A(b, l, G), T > 1) {
+                                var X = {
+                                    cause: n + "," + f,
+                                    reach: V
+                                };
+                                m(w, b, k, l.prev, E, X), i && X.reach > i.reach && (i.reach = X.reach);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        function D() {
+            var w = {
+                value: null,
+                prev: null,
+                next: null
+            }, b = {
+                value: null,
+                prev: w,
+                next: null
+            };
+            w.next = b, this.head = w, this.tail = b, this.length = 0;
+        }
+        function A(w, b, k) {
+            var C = b.next, u = {
+                value: k,
+                prev: b,
+                next: C
+            };
+            return b.next = u, C.prev = u, w.length++, u;
+        }
+        function y(w, b, k) {
+            for(var C = b.next, u = 0; u < k && C !== w.tail; u++)C = C.next;
+            b.next = C, C.prev = b, w.length -= u;
+        }
+        function _(w) {
+            for(var b = [], k = w.head.next; k !== w.tail;)b.push(k.value), k = k.next;
+            return b;
+        }
+        if (!e.document) return e.addEventListener && (t.disableWorkerMessageHandler || e.addEventListener("message", function(w) {
+            var b = JSON.parse(w.data), k = b.language, C = b.code, u = b.immediateClose;
+            e.postMessage(t.highlight(C, t.languages[k], k)), u && e.close();
+        }, !1)), t;
+        var q = t.util.currentScript();
+        q && (t.filename = q.src, q.hasAttribute("data-manual") && (t.manual = !0));
+        function F() {
+            t.manual || t.highlightAll();
+        }
+        if (!t.manual) {
+            var R = document.readyState;
+            R === "loading" || R === "interactive" && q && q.defer ? document.addEventListener("DOMContentLoaded", F) : window.requestAnimationFrame ? window.requestAnimationFrame(F) : window.setTimeout(F, 16);
+        }
+        return t;
+    }($n);
+    (typeof Te === "undefined" ? "undefined" : _type_of(Te)) < "u" && Te.exports && (Te.exports = N);
+    (typeof global === "undefined" ? "undefined" : _type_of(global)) < "u" && (global.Prism = N);
+    N.languages.markup = {
+        comment: {
+            pattern: /<!--(?:(?!<!--)[\s\S])*?-->/,
+            greedy: !0
+        },
+        prolog: {
+            pattern: /<\?[\s\S]+?\?>/,
+            greedy: !0
+        },
+        doctype: {
+            pattern: /<!DOCTYPE(?:[^>"'[\]]|"[^"]*"|'[^']*')+(?:\[(?:[^<"'\]]|"[^"]*"|'[^']*'|<(?!!--)|<!--(?:[^-]|-(?!->))*-->)*\]\s*)?>/i,
+            greedy: !0,
+            inside: {
+                "internal-subset": {
+                    pattern: /(^[^\[]*\[)[\s\S]+(?=\]>$)/,
+                    lookbehind: !0,
+                    greedy: !0,
+                    inside: null
+                },
+                string: {
+                    pattern: /"[^"]*"|'[^']*'/,
+                    greedy: !0
+                },
+                punctuation: /^<!|>$|[[\]]/,
+                "doctype-tag": /^DOCTYPE/i,
+                name: /[^\s<>'"]+/
+            }
+        },
+        cdata: {
+            pattern: /<!\[CDATA\[[\s\S]*?\]\]>/i,
+            greedy: !0
+        },
+        tag: {
+            pattern: /<\/?(?!\d)[^\s>\/=$<%]+(?:\s(?:\s*[^\s>\/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+(?=[\s>]))|(?=[\s/>])))+)?\s*\/?>/,
+            greedy: !0,
+            inside: {
+                tag: {
+                    pattern: /^<\/?[^\s>\/]+/,
+                    inside: {
+                        punctuation: /^<\/?/,
+                        namespace: /^[^\s>\/:]+:/
+                    }
+                },
+                "special-attr": [],
+                "attr-value": {
+                    pattern: /=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/,
+                    inside: {
+                        punctuation: [
+                            {
+                                pattern: /^=/,
+                                alias: "attr-equals"
+                            },
+                            {
+                                pattern: /^(\s*)["']|["']$/,
+                                lookbehind: !0
+                            }
+                        ]
+                    }
+                },
+                punctuation: /\/?>/,
+                "attr-name": {
+                    pattern: /[^\s>\/]+/,
+                    inside: {
+                        namespace: /^[^\s>\/:]+:/
+                    }
+                }
+            }
+        },
+        entity: [
+            {
+                pattern: /&[\da-z]{1,8};/i,
+                alias: "named-entity"
+            },
+            /&#x?[\da-f]{1,8};/i
+        ]
+    };
+    N.languages.markup.tag.inside["attr-value"].inside.entity = N.languages.markup.entity;
+    N.languages.markup.doctype.inside["internal-subset"].inside = N.languages.markup;
+    N.hooks.add("wrap", function(e) {
+        e.type === "entity" && (e.attributes.title = e.content.replace(/&amp;/, "&"));
+    });
+    Object.defineProperty(N.languages.markup.tag, "addInlined", {
+        value: function value(a, r) {
+            var d = {};
+            d["language-" + r] = {
+                pattern: /(^<!\[CDATA\[)[\s\S]+?(?=\]\]>$)/i,
+                lookbehind: !0,
+                inside: N.languages[r]
+            }, d.cdata = /^<!\[CDATA\[|\]\]>$/i;
+            var t = {
+                "included-cdata": {
+                    pattern: /<!\[CDATA\[[\s\S]*?\]\]>/i,
+                    inside: d
+                }
+            };
+            t["language-" + r] = {
+                pattern: /[\s\S]+/,
+                inside: N.languages[r]
+            };
+            var p = {};
+            p[a] = {
+                pattern: RegExp(/(<__[^>]*>)(?:<!\[CDATA\[(?:[^\]]|\](?!\]>))*\]\]>|(?!<!\[CDATA\[)[\s\S])*?(?=<\/__>)/.source.replace(/__/g, function() {
+                    return a;
+                }), "i"),
+                lookbehind: !0,
+                greedy: !0,
+                inside: t
+            }, N.languages.insertBefore("markup", "cdata", p);
+        }
+    });
+    Object.defineProperty(N.languages.markup.tag, "addAttribute", {
+        value: function value(e, a) {
+            N.languages.markup.tag.inside["special-attr"].push({
+                pattern: RegExp(/(^|["'\s])/.source + "(?:" + e + ")" + /\s*=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+(?=[\s>]))/.source, "i"),
+                lookbehind: !0,
+                inside: {
+                    "attr-name": /^[^\s=]+/,
+                    "attr-value": {
+                        pattern: /=[\s\S]+/,
+                        inside: {
+                            value: {
+                                pattern: /(^=\s*(["']|(?!["'])))\S[\s\S]*(?=\2$)/,
+                                lookbehind: !0,
+                                alias: [
+                                    a,
+                                    "language-" + a
+                                ],
+                                inside: N.languages[a]
+                            },
+                            punctuation: [
+                                {
+                                    pattern: /^=/,
+                                    alias: "attr-equals"
+                                },
+                                /"|'/
+                            ]
+                        }
+                    }
+                }
+            });
+        }
+    });
+    N.languages.html = N.languages.markup;
+    N.languages.mathml = N.languages.markup;
+    N.languages.svg = N.languages.markup;
+    N.languages.xml = N.languages.extend("markup", {});
+    N.languages.ssml = N.languages.xml;
+    N.languages.atom = N.languages.xml;
+    N.languages.rss = N.languages.xml;
+    (function(e) {
+        var a = /(?:"(?:\\(?:\r\n|[\s\S])|[^"\\\r\n])*"|'(?:\\(?:\r\n|[\s\S])|[^'\\\r\n])*')/;
+        e.languages.css = {
+            comment: /\/\*[\s\S]*?\*\//,
+            atrule: {
+                pattern: RegExp("@[\\w-](?:" + /[^;{\s"']|\s+(?!\s)/.source + "|" + a.source + ")*?" + /(?:;|(?=\s*\{))/.source),
+                inside: {
+                    rule: /^@[\w-]+/,
+                    "selector-function-argument": {
+                        pattern: /(\bselector\s*\(\s*(?![\s)]))(?:[^()\s]|\s+(?![\s)])|\((?:[^()]|\([^()]*\))*\))+(?=\s*\))/,
+                        lookbehind: !0,
+                        alias: "selector"
+                    },
+                    keyword: {
+                        pattern: /(^|[^\w-])(?:and|not|only|or)(?![\w-])/,
+                        lookbehind: !0
+                    }
+                }
+            },
+            url: {
+                pattern: RegExp("\\burl\\((?:" + a.source + "|" + /(?:[^\\\r\n()"']|\\[\s\S])*/.source + ")\\)", "i"),
+                greedy: !0,
+                inside: {
+                    function: /^url/i,
+                    punctuation: /^\(|\)$/,
+                    string: {
+                        pattern: RegExp("^" + a.source + "$"),
+                        alias: "url"
+                    }
+                }
+            },
+            selector: {
+                pattern: RegExp("(^|[{}\\s])[^{}\\s](?:[^{};\"'\\s]|\\s+(?![\\s{])|" + a.source + ")*(?=\\s*\\{)"),
+                lookbehind: !0
+            },
+            string: {
+                pattern: a,
+                greedy: !0
+            },
+            property: {
+                pattern: /(^|[^-\w\xA0-\uFFFF])(?!\s)[-_a-z\xA0-\uFFFF](?:(?!\s)[-\w\xA0-\uFFFF])*(?=\s*:)/i,
+                lookbehind: !0
+            },
+            important: /!important\b/i,
+            function: {
+                pattern: /(^|[^-a-z0-9])[-a-z0-9]+(?=\()/i,
+                lookbehind: !0
+            },
+            punctuation: /[(){};:,]/
+        }, e.languages.css.atrule.inside.rest = e.languages.css;
+        var r = e.languages.markup;
+        r && (r.tag.addInlined("style", "css"), r.tag.addAttribute("style", "css"));
+    })(N);
+    N.languages.clike = {
+        comment: [
+            {
+                pattern: /(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,
+                lookbehind: !0,
+                greedy: !0
+            },
+            {
+                pattern: /(^|[^\\:])\/\/.*/,
+                lookbehind: !0,
+                greedy: !0
+            }
         ],
-        "string": {
-          pattern: /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
-          greedy: true
+        string: {
+            pattern: /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
+            greedy: !0
         },
         "class-name": {
-          pattern: /(\b(?:class|extends|implements|instanceof|interface|new|trait)\s+|\bcatch\s+\()[\w.\\]+/i,
-          lookbehind: true,
-          inside: {
-            "punctuation": /[.\\]/
-          }
+            pattern: /(\b(?:class|extends|implements|instanceof|interface|new|trait)\s+|\bcatch\s+\()[\w.\\]+/i,
+            lookbehind: !0,
+            inside: {
+                punctuation: /[.\\]/
+            }
         },
-        "keyword": /\b(?:break|catch|continue|do|else|finally|for|function|if|in|instanceof|new|null|return|throw|try|while)\b/,
-        "boolean": /\b(?:false|true)\b/,
-        "function": /\b\w+(?=\()/,
-        "number": /\b0x[\da-f]+\b|(?:\b\d+(?:\.\d*)?|\B\.\d+)(?:e[+-]?\d+)?/i,
-        "operator": /[<>]=?|[!=]=?=?|--?|\+\+?|&&?|\|\|?|[?*/~^%]/,
-        "punctuation": /[{}[\];(),.:]/
-      };
-      Prism2.languages.javascript = Prism2.languages.extend("clike", {
+        keyword: /\b(?:break|catch|continue|do|else|finally|for|function|if|in|instanceof|new|null|return|throw|try|while)\b/,
+        boolean: /\b(?:false|true)\b/,
+        function: /\b\w+(?=\()/,
+        number: /\b0x[\da-f]+\b|(?:\b\d+(?:\.\d*)?|\B\.\d+)(?:e[+-]?\d+)?/i,
+        operator: /[<>]=?|[!=]=?=?|--?|\+\+?|&&?|\|\|?|[?*/~^%]/,
+        punctuation: /[{}[\];(),.:]/
+    };
+    N.languages.javascript = N.languages.extend("clike", {
         "class-name": [
-          Prism2.languages.clike["class-name"],
-          {
-            pattern: /(^|[^$\w\xA0-\uFFFF])(?!\s)[_$A-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\.(?:constructor|prototype))/,
-            lookbehind: true
-          }
+            N.languages.clike["class-name"],
+            {
+                pattern: /(^|[^$\w\xA0-\uFFFF])(?!\s)[_$A-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\.(?:constructor|prototype))/,
+                lookbehind: !0
+            }
         ],
-        "keyword": [
-          {
-            pattern: /((?:^|\})\s*)catch\b/,
-            lookbehind: true
-          },
-          {
-            pattern: /(^|[^.]|\.\.\.\s*)\b(?:as|assert(?=\s*\{)|async(?=\s*(?:function\b|\(|[$\w\xA0-\uFFFF]|$))|await|break|case|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally(?=\s*(?:\{|$))|for|from(?=\s*(?:['"]|$))|function|(?:get|set)(?=\s*(?:[#\[$\w\xA0-\uFFFF]|$))|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)\b/,
-            lookbehind: true
-          }
-        ],
-        // Allow for all non-ASCII characters (See http://stackoverflow.com/a/2008444)
-        "function": /#?(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*(?:\.\s*(?:apply|bind|call)\s*)?\()/,
-        "number": {
-          pattern: RegExp(
-            /(^|[^\w$])/.source + "(?:" + // constant
-            (/NaN|Infinity/.source + "|" + // binary integer
-            /0[bB][01]+(?:_[01]+)*n?/.source + "|" + // octal integer
-            /0[oO][0-7]+(?:_[0-7]+)*n?/.source + "|" + // hexadecimal integer
-            /0[xX][\dA-Fa-f]+(?:_[\dA-Fa-f]+)*n?/.source + "|" + // decimal bigint
-            /\d+(?:_\d+)*n/.source + "|" + // decimal number (integer or float) but no bigint
-            /(?:\d+(?:_\d+)*(?:\.(?:\d+(?:_\d+)*)?)?|\.\d+(?:_\d+)*)(?:[Ee][+-]?\d+(?:_\d+)*)?/.source) + ")" + /(?![\w$])/.source
-          ),
-          lookbehind: true
-        },
-        "operator": /--|\+\+|\*\*=?|=>|&&=?|\|\|=?|[!=]==|<<=?|>>>?=?|[-+*/%&|^!=<>]=?|\.{3}|\?\?=?|\?\.?|[~:]/
-      });
-      Prism2.languages.javascript["class-name"][0].pattern = /(\b(?:class|extends|implements|instanceof|interface|new)\s+)[\w.\\]+/;
-      Prism2.languages.insertBefore("javascript", "keyword", {
-        "regex": {
-          pattern: RegExp(
-            // lookbehind
-            // eslint-disable-next-line regexp/no-dupe-characters-character-class
-            /((?:^|[^$\w\xA0-\uFFFF."'\])\s]|\b(?:return|yield))\s*)/.source + // Regex pattern:
-            // There are 2 regex patterns here. The RegExp set notation proposal added support for nested character
-            // classes if the `v` flag is present. Unfortunately, nested CCs are both context-free and incompatible
-            // with the only syntax, so we have to define 2 different regex patterns.
-            /\//.source + "(?:" + /(?:\[(?:[^\]\\\r\n]|\\.)*\]|\\.|[^/\\\[\r\n])+\/[dgimyus]{0,7}/.source + "|" + // `v` flag syntax. This supports 3 levels of nested character classes.
-            /(?:\[(?:[^[\]\\\r\n]|\\.|\[(?:[^[\]\\\r\n]|\\.|\[(?:[^[\]\\\r\n]|\\.)*\])*\])*\]|\\.|[^/\\\[\r\n])+\/[dgimyus]{0,7}v[dgimyus]{0,7}/.source + ")" + // lookahead
-            /(?=(?:\s|\/\*(?:[^*]|\*(?!\/))*\*\/)*(?:$|[\r\n,.;:})\]]|\/\/))/.source
-          ),
-          lookbehind: true,
-          greedy: true,
-          inside: {
-            "regex-source": {
-              pattern: /^(\/)[\s\S]+(?=\/[a-z]*$)/,
-              lookbehind: true,
-              alias: "language-regex",
-              inside: Prism2.languages.regex
+        keyword: [
+            {
+                pattern: /((?:^|\})\s*)catch\b/,
+                lookbehind: !0
             },
-            "regex-delimiter": /^\/|\/$/,
-            "regex-flags": /^[a-z]+$/
-          }
-        },
-        // This must be declared before keyword because we use "function" inside the look-forward
-        "function-variable": {
-          pattern: /#?(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*[=:]\s*(?:async\s*)?(?:\bfunction\b|(?:\((?:[^()]|\([^()]*\))*\)|(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*)\s*=>))/,
-          alias: "function"
-        },
-        "parameter": [
-          {
-            pattern: /(function(?:\s+(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*)?\s*\(\s*)(?!\s)(?:[^()\s]|\s+(?![\s)])|\([^()]*\))+(?=\s*\))/,
-            lookbehind: true,
-            inside: Prism2.languages.javascript
-          },
-          {
-            pattern: /(^|[^$\w\xA0-\uFFFF])(?!\s)[_$a-z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*=>)/i,
-            lookbehind: true,
-            inside: Prism2.languages.javascript
-          },
-          {
-            pattern: /(\(\s*)(?!\s)(?:[^()\s]|\s+(?![\s)])|\([^()]*\))+(?=\s*\)\s*=>)/,
-            lookbehind: true,
-            inside: Prism2.languages.javascript
-          },
-          {
-            pattern: /((?:\b|\s|^)(?!(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)(?![$\w\xA0-\uFFFF]))(?:(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*\s*)\(\s*|\]\s*\(\s*)(?!\s)(?:[^()\s]|\s+(?![\s)])|\([^()]*\))+(?=\s*\)\s*\{)/,
-            lookbehind: true,
-            inside: Prism2.languages.javascript
-          }
+            {
+                pattern: /(^|[^.]|\.\.\.\s*)\b(?:as|assert(?=\s*\{)|async(?=\s*(?:function\b|\(|[$\w\xA0-\uFFFF]|$))|await|break|case|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally(?=\s*(?:\{|$))|for|from(?=\s*(?:['"]|$))|function|(?:get|set)(?=\s*(?:[#\[$\w\xA0-\uFFFF]|$))|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)\b/,
+                lookbehind: !0
+            }
         ],
-        "constant": /\b[A-Z](?:[A-Z_]|\dx?)*\b/
-      });
-      Prism2.languages.insertBefore("javascript", "string", {
-        "hashbang": {
-          pattern: /^#!.*/,
-          greedy: true,
-          alias: "comment"
+        function: /#?(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*(?:\.\s*(?:apply|bind|call)\s*)?\()/,
+        number: {
+            pattern: RegExp(/(^|[^\w$])/.source + "(?:" + (/NaN|Infinity/.source + "|" + /0[bB][01]+(?:_[01]+)*n?/.source + "|" + /0[oO][0-7]+(?:_[0-7]+)*n?/.source + "|" + /0[xX][\dA-Fa-f]+(?:_[\dA-Fa-f]+)*n?/.source + "|" + /\d+(?:_\d+)*n/.source + "|" + /(?:\d+(?:_\d+)*(?:\.(?:\d+(?:_\d+)*)?)?|\.\d+(?:_\d+)*)(?:[Ee][+-]?\d+(?:_\d+)*)?/.source) + ")" + /(?![\w$])/.source),
+            lookbehind: !0
+        },
+        operator: /--|\+\+|\*\*=?|=>|&&=?|\|\|=?|[!=]==|<<=?|>>>?=?|[-+*/%&|^!=<>]=?|\.{3}|\?\?=?|\?\.?|[~:]/
+    });
+    N.languages.javascript["class-name"][0].pattern = /(\b(?:class|extends|implements|instanceof|interface|new)\s+)[\w.\\]+/;
+    N.languages.insertBefore("javascript", "keyword", {
+        regex: {
+            pattern: RegExp(/((?:^|[^$\w\xA0-\uFFFF."'\])\s]|\b(?:return|yield))\s*)/.source + /\//.source + "(?:" + /(?:\[(?:[^\]\\\r\n]|\\.)*\]|\\.|[^/\\\[\r\n])+\/[dgimyus]{0,7}/.source + "|" + /(?:\[(?:[^[\]\\\r\n]|\\.|\[(?:[^[\]\\\r\n]|\\.|\[(?:[^[\]\\\r\n]|\\.)*\])*\])*\]|\\.|[^/\\\[\r\n])+\/[dgimyus]{0,7}v[dgimyus]{0,7}/.source + ")" + /(?=(?:\s|\/\*(?:[^*]|\*(?!\/))*\*\/)*(?:$|[\r\n,.;:})\]]|\/\/))/.source),
+            lookbehind: !0,
+            greedy: !0,
+            inside: {
+                "regex-source": {
+                    pattern: /^(\/)[\s\S]+(?=\/[a-z]*$)/,
+                    lookbehind: !0,
+                    alias: "language-regex",
+                    inside: N.languages.regex
+                },
+                "regex-delimiter": /^\/|\/$/,
+                "regex-flags": /^[a-z]+$/
+            }
+        },
+        "function-variable": {
+            pattern: /#?(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*[=:]\s*(?:async\s*)?(?:\bfunction\b|(?:\((?:[^()]|\([^()]*\))*\)|(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*)\s*=>))/,
+            alias: "function"
+        },
+        parameter: [
+            {
+                pattern: /(function(?:\s+(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*)?\s*\(\s*)(?!\s)(?:[^()\s]|\s+(?![\s)])|\([^()]*\))+(?=\s*\))/,
+                lookbehind: !0,
+                inside: N.languages.javascript
+            },
+            {
+                pattern: /(^|[^$\w\xA0-\uFFFF])(?!\s)[_$a-z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*=>)/i,
+                lookbehind: !0,
+                inside: N.languages.javascript
+            },
+            {
+                pattern: /(\(\s*)(?!\s)(?:[^()\s]|\s+(?![\s)])|\([^()]*\))+(?=\s*\)\s*=>)/,
+                lookbehind: !0,
+                inside: N.languages.javascript
+            },
+            {
+                pattern: /((?:\b|\s|^)(?!(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)(?![$\w\xA0-\uFFFF]))(?:(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*\s*)\(\s*|\]\s*\(\s*)(?!\s)(?:[^()\s]|\s+(?![\s)])|\([^()]*\))+(?=\s*\)\s*\{)/,
+                lookbehind: !0,
+                inside: N.languages.javascript
+            }
+        ],
+        constant: /\b[A-Z](?:[A-Z_]|\dx?)*\b/
+    });
+    N.languages.insertBefore("javascript", "string", {
+        hashbang: {
+            pattern: /^#!.*/,
+            greedy: !0,
+            alias: "comment"
         },
         "template-string": {
-          pattern: /`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})+\}|(?!\$\{)[^\\`])*`/,
-          greedy: true,
-          inside: {
-            "template-punctuation": {
-              pattern: /^`|`$/,
-              alias: "string"
-            },
-            "interpolation": {
-              pattern: /((?:^|[^\\])(?:\\{2})*)\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})+\}/,
-              lookbehind: true,
-              inside: {
-                "interpolation-punctuation": {
-                  pattern: /^\$\{|\}$/,
-                  alias: "punctuation"
+            pattern: /`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})+\}|(?!\$\{)[^\\`])*`/,
+            greedy: !0,
+            inside: {
+                "template-punctuation": {
+                    pattern: /^`|`$/,
+                    alias: "string"
                 },
-                rest: Prism2.languages.javascript
-              }
-            },
-            "string": /[\s\S]+/
-          }
+                interpolation: {
+                    pattern: /((?:^|[^\\])(?:\\{2})*)\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})+\}/,
+                    lookbehind: !0,
+                    inside: {
+                        "interpolation-punctuation": {
+                            pattern: /^\$\{|\}$/,
+                            alias: "punctuation"
+                        },
+                        rest: N.languages.javascript
+                    }
+                },
+                string: /[\s\S]+/
+            }
         },
         "string-property": {
-          pattern: /((?:^|[,{])[ \t]*)(["'])(?:\\(?:\r\n|[\s\S])|(?!\2)[^\\\r\n])*\2(?=\s*:)/m,
-          lookbehind: true,
-          greedy: true,
-          alias: "property"
+            pattern: /((?:^|[,{])[ \t]*)(["'])(?:\\(?:\r\n|[\s\S])|(?!\2)[^\\\r\n])*\2(?=\s*:)/m,
+            lookbehind: !0,
+            greedy: !0,
+            alias: "property"
         }
-      });
-      Prism2.languages.insertBefore("javascript", "operator", {
+    });
+    N.languages.insertBefore("javascript", "operator", {
         "literal-property": {
-          pattern: /((?:^|[,{])[ \t]*)(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*:)/m,
-          lookbehind: true,
-          alias: "property"
+            pattern: /((?:^|[,{])[ \t]*)(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*:)/m,
+            lookbehind: !0,
+            alias: "property"
         }
-      });
-      if (Prism2.languages.markup) {
-        Prism2.languages.markup.tag.addInlined("script", "javascript");
-        Prism2.languages.markup.tag.addAttribute(
-          /on(?:abort|blur|change|click|composition(?:end|start|update)|dblclick|error|focus(?:in|out)?|key(?:down|up)|load|mouse(?:down|enter|leave|move|out|over|up)|reset|resize|scroll|select|slotchange|submit|unload|wheel)/.source,
-          "javascript"
-        );
-      }
-      Prism2.languages.js = Prism2.languages.javascript;
-      (function() {
-        if (typeof Prism2 === "undefined" || typeof document === "undefined") {
-          return;
+    });
+    N.languages.markup && (N.languages.markup.tag.addInlined("script", "javascript"), N.languages.markup.tag.addAttribute(/on(?:abort|blur|change|click|composition(?:end|start|update)|dblclick|error|focus(?:in|out)?|key(?:down|up)|load|mouse(?:down|enter|leave|move|out|over|up)|reset|resize|scroll|select|slotchange|submit|unload|wheel)/.source, "javascript"));
+    N.languages.js = N.languages.javascript;
+    (function() {
+        if ((typeof N === "undefined" ? "undefined" : _type_of(N)) > "u" || (typeof document === "undefined" ? "undefined" : _type_of(document)) > "u") return;
+        Element.prototype.matches || (Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector);
+        var e = "Loading…", a = function a(q, F) {
+            return "✖ Error " + q + " while fetching file: " + F;
+        }, r = "✖ Error: File does not exist or is empty", d = {
+            js: "javascript",
+            py: "python",
+            rb: "ruby",
+            ps1: "powershell",
+            psm1: "powershell",
+            sh: "bash",
+            bat: "batch",
+            h: "c",
+            tex: "latex"
+        }, t = "data-src-status", p = "loading", c = "loaded", m = "failed", D = "pre[data-src]:not([" + t + '="' + c + '"]):not([' + t + '="' + p + '"])';
+        function A(q, F, R) {
+            var w = new XMLHttpRequest;
+            w.open("GET", q, !0), w.onreadystatechange = function() {
+                w.readyState == 4 && (w.status < 400 && w.responseText ? F(w.responseText) : w.status >= 400 ? R(a(w.status, w.statusText)) : R(r));
+            }, w.send(null);
         }
-        if (!Element.prototype.matches) {
-          Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+        function y(q) {
+            var F = /^\s*(\d+)\s*(?:(,)\s*(?:(\d+)\s*)?)?$/.exec(q || "");
+            if (F) {
+                var R = Number(F[1]), w = F[2], b = F[3];
+                return w ? b ? [
+                    R,
+                    Number(b)
+                ] : [
+                    R,
+                    void 0
+                ] : [
+                    R,
+                    R
+                ];
+            }
         }
-        var LOADING_MESSAGE = "Loading\u2026";
-        var FAILURE_MESSAGE = function(status, message) {
-          return "\u2716 Error " + status + " while fetching file: " + message;
-        };
-        var FAILURE_EMPTY_MESSAGE = "\u2716 Error: File does not exist or is empty";
-        var EXTENSIONS = {
-          "js": "javascript",
-          "py": "python",
-          "rb": "ruby",
-          "ps1": "powershell",
-          "psm1": "powershell",
-          "sh": "bash",
-          "bat": "batch",
-          "h": "c",
-          "tex": "latex"
-        };
-        var STATUS_ATTR = "data-src-status";
-        var STATUS_LOADING = "loading";
-        var STATUS_LOADED = "loaded";
-        var STATUS_FAILED = "failed";
-        var SELECTOR = "pre[data-src]:not([" + STATUS_ATTR + '="' + STATUS_LOADED + '"]):not([' + STATUS_ATTR + '="' + STATUS_LOADING + '"])';
-        function loadFile(src, success, error) {
-          var xhr = new XMLHttpRequest();
-          xhr.open("GET", src, true);
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-              if (xhr.status < 400 && xhr.responseText) {
-                success(xhr.responseText);
-              } else {
-                if (xhr.status >= 400) {
-                  error(FAILURE_MESSAGE(xhr.status, xhr.statusText));
-                } else {
-                  error(FAILURE_EMPTY_MESSAGE);
+        N.hooks.add("before-highlightall", function(q) {
+            q.selector += ", " + D;
+        }), N.hooks.add("before-sanity-check", function(q) {
+            var F = q.element;
+            if (F.matches(D)) {
+                q.code = "", F.setAttribute(t, p);
+                var R = F.appendChild(document.createElement("CODE"));
+                R.textContent = e;
+                var w = F.getAttribute("data-src"), b = q.language;
+                if (b === "none") {
+                    var k = (/\.(\w+)$/.exec(w) || [
+                        ,
+                        "none"
+                    ])[1];
+                    b = d[k] || k;
                 }
-              }
+                N.util.setLanguage(R, b), N.util.setLanguage(F, b);
+                var C = N.plugins.autoloader;
+                C && C.loadLanguages(b), A(w, function(u) {
+                    F.setAttribute(t, c);
+                    var i = y(F.getAttribute("data-range"));
+                    if (i) {
+                        var n = u.split(/\r\n?|\n/g), o = i[0], f = i[1] == null ? n.length : i[1];
+                        o < 0 && (o += n.length), o = Math.max(0, Math.min(o - 1, n.length)), f < 0 && (f += n.length), f = Math.max(0, Math.min(f, n.length)), u = n.slice(o, f).join("\n"), F.hasAttribute("data-start") || F.setAttribute("data-start", String(o + 1));
+                    }
+                    R.textContent = u, N.highlightElement(R);
+                }, function(u) {
+                    F.setAttribute(t, m), R.textContent = u;
+                });
             }
-          };
-          xhr.send(null);
-        }
-        function parseRange(range) {
-          var m = /^\s*(\d+)\s*(?:(,)\s*(?:(\d+)\s*)?)?$/.exec(range || "");
-          if (m) {
-            var start = Number(m[1]);
-            var comma = m[2];
-            var end = m[3];
-            if (!comma) {
-              return [start, start];
+        }), N.plugins.fileHighlight = {
+            highlight: function highlight(F) {
+                for(var R = (F || document).querySelectorAll(D), w = 0, b; b = R[w++];)N.highlightElement(b);
             }
-            if (!end) {
-              return [start, void 0];
-            }
-            return [start, Number(end)];
-          }
-          return void 0;
-        }
-        Prism2.hooks.add("before-highlightall", function(env) {
-          env.selector += ", " + SELECTOR;
-        });
-        Prism2.hooks.add("before-sanity-check", function(env) {
-          var pre = (
-            /** @type {HTMLPreElement} */
-            env.element
-          );
-          if (pre.matches(SELECTOR)) {
-            env.code = "";
-            pre.setAttribute(STATUS_ATTR, STATUS_LOADING);
-            var code = pre.appendChild(document.createElement("CODE"));
-            code.textContent = LOADING_MESSAGE;
-            var src = pre.getAttribute("data-src");
-            var language = env.language;
-            if (language === "none") {
-              var extension = (/\.(\w+)$/.exec(src) || [, "none"])[1];
-              language = EXTENSIONS[extension] || extension;
-            }
-            Prism2.util.setLanguage(code, language);
-            Prism2.util.setLanguage(pre, language);
-            var autoloader = Prism2.plugins.autoloader;
-            if (autoloader) {
-              autoloader.loadLanguages(language);
-            }
-            loadFile(
-              src,
-              function(text) {
-                pre.setAttribute(STATUS_ATTR, STATUS_LOADED);
-                var range = parseRange(pre.getAttribute("data-range"));
-                if (range) {
-                  var lines = text.split(/\r\n?|\n/g);
-                  var start = range[0];
-                  var end = range[1] == null ? lines.length : range[1];
-                  if (start < 0) {
-                    start += lines.length;
-                  }
-                  start = Math.max(0, Math.min(start - 1, lines.length));
-                  if (end < 0) {
-                    end += lines.length;
-                  }
-                  end = Math.max(0, Math.min(end, lines.length));
-                  text = lines.slice(start, end).join("\n");
-                  if (!pre.hasAttribute("data-start")) {
-                    pre.setAttribute("data-start", String(start + 1));
-                  }
-                }
-                code.textContent = text;
-                Prism2.highlightElement(code);
-              },
-              function(error) {
-                pre.setAttribute(STATUS_ATTR, STATUS_FAILED);
-                code.textContent = error;
-              }
-            );
-          }
-        });
-        Prism2.plugins.fileHighlight = {
-          /**
-           * Executes the File Highlight plugin for all matching `pre` elements under the given container.
-           *
-           * Note: Elements which are already loaded or currently loading will not be touched by this method.
-           *
-           * @param {ParentNode} [container=document]
-           */
-          highlight: function highlight(container) {
-            var elements = (container || document).querySelectorAll(SELECTOR);
-            for (var i3 = 0, element; element = elements[i3++]; ) {
-              Prism2.highlightElement(element);
-            }
-          }
         };
-        var logged = false;
-        Prism2.fileHighlight = function() {
-          if (!logged) {
-            console.warn("Prism.fileHighlight is deprecated. Use `Prism.plugins.fileHighlight.highlight` instead.");
-            logged = true;
-          }
-          Prism2.plugins.fileHighlight.highlight.apply(this, arguments);
+        var _ = !1;
+        N.fileHighlight = function() {
+            _ || (console.warn("Prism.fileHighlight is deprecated. Use `Prism.plugins.fileHighlight.highlight` instead."), _ = !0), N.plugins.fileHighlight.highlight.apply(this, arguments);
         };
-      })();
-    }
-  });
-
-  // node_modules/.pnpm/he@1.2.0/node_modules/he/he.js
-  var require_he = __commonJS({
-    "node_modules/.pnpm/he@1.2.0/node_modules/he/he.js"(exports, module) {
-      (function(root) {
-        var freeExports = typeof exports == "object" && exports;
-        var freeModule = typeof module == "object" && module && module.exports == freeExports && module;
-        var freeGlobal = typeof global == "object" && global;
-        if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal) {
-          root = freeGlobal;
-        }
-        var regexAstralSymbols = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
-        var regexAsciiWhitelist = /[\x01-\x7F]/g;
-        var regexBmpWhitelist = /[\x01-\t\x0B\f\x0E-\x1F\x7F\x81\x8D\x8F\x90\x9D\xA0-\uFFFF]/g;
-        var regexEncodeNonAscii = /<\u20D2|=\u20E5|>\u20D2|\u205F\u200A|\u219D\u0338|\u2202\u0338|\u2220\u20D2|\u2229\uFE00|\u222A\uFE00|\u223C\u20D2|\u223D\u0331|\u223E\u0333|\u2242\u0338|\u224B\u0338|\u224D\u20D2|\u224E\u0338|\u224F\u0338|\u2250\u0338|\u2261\u20E5|\u2264\u20D2|\u2265\u20D2|\u2266\u0338|\u2267\u0338|\u2268\uFE00|\u2269\uFE00|\u226A\u0338|\u226A\u20D2|\u226B\u0338|\u226B\u20D2|\u227F\u0338|\u2282\u20D2|\u2283\u20D2|\u228A\uFE00|\u228B\uFE00|\u228F\u0338|\u2290\u0338|\u2293\uFE00|\u2294\uFE00|\u22B4\u20D2|\u22B5\u20D2|\u22D8\u0338|\u22D9\u0338|\u22DA\uFE00|\u22DB\uFE00|\u22F5\u0338|\u22F9\u0338|\u2933\u0338|\u29CF\u0338|\u29D0\u0338|\u2A6D\u0338|\u2A70\u0338|\u2A7D\u0338|\u2A7E\u0338|\u2AA1\u0338|\u2AA2\u0338|\u2AAC\uFE00|\u2AAD\uFE00|\u2AAF\u0338|\u2AB0\u0338|\u2AC5\u0338|\u2AC6\u0338|\u2ACB\uFE00|\u2ACC\uFE00|\u2AFD\u20E5|[\xA0-\u0113\u0116-\u0122\u0124-\u012B\u012E-\u014D\u0150-\u017E\u0192\u01B5\u01F5\u0237\u02C6\u02C7\u02D8-\u02DD\u0311\u0391-\u03A1\u03A3-\u03A9\u03B1-\u03C9\u03D1\u03D2\u03D5\u03D6\u03DC\u03DD\u03F0\u03F1\u03F5\u03F6\u0401-\u040C\u040E-\u044F\u0451-\u045C\u045E\u045F\u2002-\u2005\u2007-\u2010\u2013-\u2016\u2018-\u201A\u201C-\u201E\u2020-\u2022\u2025\u2026\u2030-\u2035\u2039\u203A\u203E\u2041\u2043\u2044\u204F\u2057\u205F-\u2063\u20AC\u20DB\u20DC\u2102\u2105\u210A-\u2113\u2115-\u211E\u2122\u2124\u2127-\u2129\u212C\u212D\u212F-\u2131\u2133-\u2138\u2145-\u2148\u2153-\u215E\u2190-\u219B\u219D-\u21A7\u21A9-\u21AE\u21B0-\u21B3\u21B5-\u21B7\u21BA-\u21DB\u21DD\u21E4\u21E5\u21F5\u21FD-\u2205\u2207-\u2209\u220B\u220C\u220F-\u2214\u2216-\u2218\u221A\u221D-\u2238\u223A-\u2257\u2259\u225A\u225C\u225F-\u2262\u2264-\u228B\u228D-\u229B\u229D-\u22A5\u22A7-\u22B0\u22B2-\u22BB\u22BD-\u22DB\u22DE-\u22E3\u22E6-\u22F7\u22F9-\u22FE\u2305\u2306\u2308-\u2310\u2312\u2313\u2315\u2316\u231C-\u231F\u2322\u2323\u232D\u232E\u2336\u233D\u233F\u237C\u23B0\u23B1\u23B4-\u23B6\u23DC-\u23DF\u23E2\u23E7\u2423\u24C8\u2500\u2502\u250C\u2510\u2514\u2518\u251C\u2524\u252C\u2534\u253C\u2550-\u256C\u2580\u2584\u2588\u2591-\u2593\u25A1\u25AA\u25AB\u25AD\u25AE\u25B1\u25B3-\u25B5\u25B8\u25B9\u25BD-\u25BF\u25C2\u25C3\u25CA\u25CB\u25EC\u25EF\u25F8-\u25FC\u2605\u2606\u260E\u2640\u2642\u2660\u2663\u2665\u2666\u266A\u266D-\u266F\u2713\u2717\u2720\u2736\u2758\u2772\u2773\u27C8\u27C9\u27E6-\u27ED\u27F5-\u27FA\u27FC\u27FF\u2902-\u2905\u290C-\u2913\u2916\u2919-\u2920\u2923-\u292A\u2933\u2935-\u2939\u293C\u293D\u2945\u2948-\u294B\u294E-\u2976\u2978\u2979\u297B-\u297F\u2985\u2986\u298B-\u2996\u299A\u299C\u299D\u29A4-\u29B7\u29B9\u29BB\u29BC\u29BE-\u29C5\u29C9\u29CD-\u29D0\u29DC-\u29DE\u29E3-\u29E5\u29EB\u29F4\u29F6\u2A00-\u2A02\u2A04\u2A06\u2A0C\u2A0D\u2A10-\u2A17\u2A22-\u2A27\u2A29\u2A2A\u2A2D-\u2A31\u2A33-\u2A3C\u2A3F\u2A40\u2A42-\u2A4D\u2A50\u2A53-\u2A58\u2A5A-\u2A5D\u2A5F\u2A66\u2A6A\u2A6D-\u2A75\u2A77-\u2A9A\u2A9D-\u2AA2\u2AA4-\u2AB0\u2AB3-\u2AC8\u2ACB\u2ACC\u2ACF-\u2ADB\u2AE4\u2AE6-\u2AE9\u2AEB-\u2AF3\u2AFD\uFB00-\uFB04]|\uD835[\uDC9C\uDC9E\uDC9F\uDCA2\uDCA5\uDCA6\uDCA9-\uDCAC\uDCAE-\uDCB9\uDCBB\uDCBD-\uDCC3\uDCC5-\uDCCF\uDD04\uDD05\uDD07-\uDD0A\uDD0D-\uDD14\uDD16-\uDD1C\uDD1E-\uDD39\uDD3B-\uDD3E\uDD40-\uDD44\uDD46\uDD4A-\uDD50\uDD52-\uDD6B]/g;
-        var encodeMap = { "\xAD": "shy", "\u200C": "zwnj", "\u200D": "zwj", "\u200E": "lrm", "\u2063": "ic", "\u2062": "it", "\u2061": "af", "\u200F": "rlm", "\u200B": "ZeroWidthSpace", "\u2060": "NoBreak", "\u0311": "DownBreve", "\u20DB": "tdot", "\u20DC": "DotDot", "	": "Tab", "\n": "NewLine", "\u2008": "puncsp", "\u205F": "MediumSpace", "\u2009": "thinsp", "\u200A": "hairsp", "\u2004": "emsp13", "\u2002": "ensp", "\u2005": "emsp14", "\u2003": "emsp", "\u2007": "numsp", "\xA0": "nbsp", "\u205F\u200A": "ThickSpace", "\u203E": "oline", "_": "lowbar", "\u2010": "dash", "\u2013": "ndash", "\u2014": "mdash", "\u2015": "horbar", ",": "comma", ";": "semi", "\u204F": "bsemi", ":": "colon", "\u2A74": "Colone", "!": "excl", "\xA1": "iexcl", "?": "quest", "\xBF": "iquest", ".": "period", "\u2025": "nldr", "\u2026": "mldr", "\xB7": "middot", "'": "apos", "\u2018": "lsquo", "\u2019": "rsquo", "\u201A": "sbquo", "\u2039": "lsaquo", "\u203A": "rsaquo", '"': "quot", "\u201C": "ldquo", "\u201D": "rdquo", "\u201E": "bdquo", "\xAB": "laquo", "\xBB": "raquo", "(": "lpar", ")": "rpar", "[": "lsqb", "]": "rsqb", "{": "lcub", "}": "rcub", "\u2308": "lceil", "\u2309": "rceil", "\u230A": "lfloor", "\u230B": "rfloor", "\u2985": "lopar", "\u2986": "ropar", "\u298B": "lbrke", "\u298C": "rbrke", "\u298D": "lbrkslu", "\u298E": "rbrksld", "\u298F": "lbrksld", "\u2990": "rbrkslu", "\u2991": "langd", "\u2992": "rangd", "\u2993": "lparlt", "\u2994": "rpargt", "\u2995": "gtlPar", "\u2996": "ltrPar", "\u27E6": "lobrk", "\u27E7": "robrk", "\u27E8": "lang", "\u27E9": "rang", "\u27EA": "Lang", "\u27EB": "Rang", "\u27EC": "loang", "\u27ED": "roang", "\u2772": "lbbrk", "\u2773": "rbbrk", "\u2016": "Vert", "\xA7": "sect", "\xB6": "para", "@": "commat", "*": "ast", "/": "sol", "undefined": null, "&": "amp", "#": "num", "%": "percnt", "\u2030": "permil", "\u2031": "pertenk", "\u2020": "dagger", "\u2021": "Dagger", "\u2022": "bull", "\u2043": "hybull", "\u2032": "prime", "\u2033": "Prime", "\u2034": "tprime", "\u2057": "qprime", "\u2035": "bprime", "\u2041": "caret", "`": "grave", "\xB4": "acute", "\u02DC": "tilde", "^": "Hat", "\xAF": "macr", "\u02D8": "breve", "\u02D9": "dot", "\xA8": "die", "\u02DA": "ring", "\u02DD": "dblac", "\xB8": "cedil", "\u02DB": "ogon", "\u02C6": "circ", "\u02C7": "caron", "\xB0": "deg", "\xA9": "copy", "\xAE": "reg", "\u2117": "copysr", "\u2118": "wp", "\u211E": "rx", "\u2127": "mho", "\u2129": "iiota", "\u2190": "larr", "\u219A": "nlarr", "\u2192": "rarr", "\u219B": "nrarr", "\u2191": "uarr", "\u2193": "darr", "\u2194": "harr", "\u21AE": "nharr", "\u2195": "varr", "\u2196": "nwarr", "\u2197": "nearr", "\u2198": "searr", "\u2199": "swarr", "\u219D": "rarrw", "\u219D\u0338": "nrarrw", "\u219E": "Larr", "\u219F": "Uarr", "\u21A0": "Rarr", "\u21A1": "Darr", "\u21A2": "larrtl", "\u21A3": "rarrtl", "\u21A4": "mapstoleft", "\u21A5": "mapstoup", "\u21A6": "map", "\u21A7": "mapstodown", "\u21A9": "larrhk", "\u21AA": "rarrhk", "\u21AB": "larrlp", "\u21AC": "rarrlp", "\u21AD": "harrw", "\u21B0": "lsh", "\u21B1": "rsh", "\u21B2": "ldsh", "\u21B3": "rdsh", "\u21B5": "crarr", "\u21B6": "cularr", "\u21B7": "curarr", "\u21BA": "olarr", "\u21BB": "orarr", "\u21BC": "lharu", "\u21BD": "lhard", "\u21BE": "uharr", "\u21BF": "uharl", "\u21C0": "rharu", "\u21C1": "rhard", "\u21C2": "dharr", "\u21C3": "dharl", "\u21C4": "rlarr", "\u21C5": "udarr", "\u21C6": "lrarr", "\u21C7": "llarr", "\u21C8": "uuarr", "\u21C9": "rrarr", "\u21CA": "ddarr", "\u21CB": "lrhar", "\u21CC": "rlhar", "\u21D0": "lArr", "\u21CD": "nlArr", "\u21D1": "uArr", "\u21D2": "rArr", "\u21CF": "nrArr", "\u21D3": "dArr", "\u21D4": "iff", "\u21CE": "nhArr", "\u21D5": "vArr", "\u21D6": "nwArr", "\u21D7": "neArr", "\u21D8": "seArr", "\u21D9": "swArr", "\u21DA": "lAarr", "\u21DB": "rAarr", "\u21DD": "zigrarr", "\u21E4": "larrb", "\u21E5": "rarrb", "\u21F5": "duarr", "\u21FD": "loarr", "\u21FE": "roarr", "\u21FF": "hoarr", "\u2200": "forall", "\u2201": "comp", "\u2202": "part", "\u2202\u0338": "npart", "\u2203": "exist", "\u2204": "nexist", "\u2205": "empty", "\u2207": "Del", "\u2208": "in", "\u2209": "notin", "\u220B": "ni", "\u220C": "notni", "\u03F6": "bepsi", "\u220F": "prod", "\u2210": "coprod", "\u2211": "sum", "+": "plus", "\xB1": "pm", "\xF7": "div", "\xD7": "times", "<": "lt", "\u226E": "nlt", "<\u20D2": "nvlt", "=": "equals", "\u2260": "ne", "=\u20E5": "bne", "\u2A75": "Equal", ">": "gt", "\u226F": "ngt", ">\u20D2": "nvgt", "\xAC": "not", "|": "vert", "\xA6": "brvbar", "\u2212": "minus", "\u2213": "mp", "\u2214": "plusdo", "\u2044": "frasl", "\u2216": "setmn", "\u2217": "lowast", "\u2218": "compfn", "\u221A": "Sqrt", "\u221D": "prop", "\u221E": "infin", "\u221F": "angrt", "\u2220": "ang", "\u2220\u20D2": "nang", "\u2221": "angmsd", "\u2222": "angsph", "\u2223": "mid", "\u2224": "nmid", "\u2225": "par", "\u2226": "npar", "\u2227": "and", "\u2228": "or", "\u2229": "cap", "\u2229\uFE00": "caps", "\u222A": "cup", "\u222A\uFE00": "cups", "\u222B": "int", "\u222C": "Int", "\u222D": "tint", "\u2A0C": "qint", "\u222E": "oint", "\u222F": "Conint", "\u2230": "Cconint", "\u2231": "cwint", "\u2232": "cwconint", "\u2233": "awconint", "\u2234": "there4", "\u2235": "becaus", "\u2236": "ratio", "\u2237": "Colon", "\u2238": "minusd", "\u223A": "mDDot", "\u223B": "homtht", "\u223C": "sim", "\u2241": "nsim", "\u223C\u20D2": "nvsim", "\u223D": "bsim", "\u223D\u0331": "race", "\u223E": "ac", "\u223E\u0333": "acE", "\u223F": "acd", "\u2240": "wr", "\u2242": "esim", "\u2242\u0338": "nesim", "\u2243": "sime", "\u2244": "nsime", "\u2245": "cong", "\u2247": "ncong", "\u2246": "simne", "\u2248": "ap", "\u2249": "nap", "\u224A": "ape", "\u224B": "apid", "\u224B\u0338": "napid", "\u224C": "bcong", "\u224D": "CupCap", "\u226D": "NotCupCap", "\u224D\u20D2": "nvap", "\u224E": "bump", "\u224E\u0338": "nbump", "\u224F": "bumpe", "\u224F\u0338": "nbumpe", "\u2250": "doteq", "\u2250\u0338": "nedot", "\u2251": "eDot", "\u2252": "efDot", "\u2253": "erDot", "\u2254": "colone", "\u2255": "ecolon", "\u2256": "ecir", "\u2257": "cire", "\u2259": "wedgeq", "\u225A": "veeeq", "\u225C": "trie", "\u225F": "equest", "\u2261": "equiv", "\u2262": "nequiv", "\u2261\u20E5": "bnequiv", "\u2264": "le", "\u2270": "nle", "\u2264\u20D2": "nvle", "\u2265": "ge", "\u2271": "nge", "\u2265\u20D2": "nvge", "\u2266": "lE", "\u2266\u0338": "nlE", "\u2267": "gE", "\u2267\u0338": "ngE", "\u2268\uFE00": "lvnE", "\u2268": "lnE", "\u2269": "gnE", "\u2269\uFE00": "gvnE", "\u226A": "ll", "\u226A\u0338": "nLtv", "\u226A\u20D2": "nLt", "\u226B": "gg", "\u226B\u0338": "nGtv", "\u226B\u20D2": "nGt", "\u226C": "twixt", "\u2272": "lsim", "\u2274": "nlsim", "\u2273": "gsim", "\u2275": "ngsim", "\u2276": "lg", "\u2278": "ntlg", "\u2277": "gl", "\u2279": "ntgl", "\u227A": "pr", "\u2280": "npr", "\u227B": "sc", "\u2281": "nsc", "\u227C": "prcue", "\u22E0": "nprcue", "\u227D": "sccue", "\u22E1": "nsccue", "\u227E": "prsim", "\u227F": "scsim", "\u227F\u0338": "NotSucceedsTilde", "\u2282": "sub", "\u2284": "nsub", "\u2282\u20D2": "vnsub", "\u2283": "sup", "\u2285": "nsup", "\u2283\u20D2": "vnsup", "\u2286": "sube", "\u2288": "nsube", "\u2287": "supe", "\u2289": "nsupe", "\u228A\uFE00": "vsubne", "\u228A": "subne", "\u228B\uFE00": "vsupne", "\u228B": "supne", "\u228D": "cupdot", "\u228E": "uplus", "\u228F": "sqsub", "\u228F\u0338": "NotSquareSubset", "\u2290": "sqsup", "\u2290\u0338": "NotSquareSuperset", "\u2291": "sqsube", "\u22E2": "nsqsube", "\u2292": "sqsupe", "\u22E3": "nsqsupe", "\u2293": "sqcap", "\u2293\uFE00": "sqcaps", "\u2294": "sqcup", "\u2294\uFE00": "sqcups", "\u2295": "oplus", "\u2296": "ominus", "\u2297": "otimes", "\u2298": "osol", "\u2299": "odot", "\u229A": "ocir", "\u229B": "oast", "\u229D": "odash", "\u229E": "plusb", "\u229F": "minusb", "\u22A0": "timesb", "\u22A1": "sdotb", "\u22A2": "vdash", "\u22AC": "nvdash", "\u22A3": "dashv", "\u22A4": "top", "\u22A5": "bot", "\u22A7": "models", "\u22A8": "vDash", "\u22AD": "nvDash", "\u22A9": "Vdash", "\u22AE": "nVdash", "\u22AA": "Vvdash", "\u22AB": "VDash", "\u22AF": "nVDash", "\u22B0": "prurel", "\u22B2": "vltri", "\u22EA": "nltri", "\u22B3": "vrtri", "\u22EB": "nrtri", "\u22B4": "ltrie", "\u22EC": "nltrie", "\u22B4\u20D2": "nvltrie", "\u22B5": "rtrie", "\u22ED": "nrtrie", "\u22B5\u20D2": "nvrtrie", "\u22B6": "origof", "\u22B7": "imof", "\u22B8": "mumap", "\u22B9": "hercon", "\u22BA": "intcal", "\u22BB": "veebar", "\u22BD": "barvee", "\u22BE": "angrtvb", "\u22BF": "lrtri", "\u22C0": "Wedge", "\u22C1": "Vee", "\u22C2": "xcap", "\u22C3": "xcup", "\u22C4": "diam", "\u22C5": "sdot", "\u22C6": "Star", "\u22C7": "divonx", "\u22C8": "bowtie", "\u22C9": "ltimes", "\u22CA": "rtimes", "\u22CB": "lthree", "\u22CC": "rthree", "\u22CD": "bsime", "\u22CE": "cuvee", "\u22CF": "cuwed", "\u22D0": "Sub", "\u22D1": "Sup", "\u22D2": "Cap", "\u22D3": "Cup", "\u22D4": "fork", "\u22D5": "epar", "\u22D6": "ltdot", "\u22D7": "gtdot", "\u22D8": "Ll", "\u22D8\u0338": "nLl", "\u22D9": "Gg", "\u22D9\u0338": "nGg", "\u22DA\uFE00": "lesg", "\u22DA": "leg", "\u22DB": "gel", "\u22DB\uFE00": "gesl", "\u22DE": "cuepr", "\u22DF": "cuesc", "\u22E6": "lnsim", "\u22E7": "gnsim", "\u22E8": "prnsim", "\u22E9": "scnsim", "\u22EE": "vellip", "\u22EF": "ctdot", "\u22F0": "utdot", "\u22F1": "dtdot", "\u22F2": "disin", "\u22F3": "isinsv", "\u22F4": "isins", "\u22F5": "isindot", "\u22F5\u0338": "notindot", "\u22F6": "notinvc", "\u22F7": "notinvb", "\u22F9": "isinE", "\u22F9\u0338": "notinE", "\u22FA": "nisd", "\u22FB": "xnis", "\u22FC": "nis", "\u22FD": "notnivc", "\u22FE": "notnivb", "\u2305": "barwed", "\u2306": "Barwed", "\u230C": "drcrop", "\u230D": "dlcrop", "\u230E": "urcrop", "\u230F": "ulcrop", "\u2310": "bnot", "\u2312": "profline", "\u2313": "profsurf", "\u2315": "telrec", "\u2316": "target", "\u231C": "ulcorn", "\u231D": "urcorn", "\u231E": "dlcorn", "\u231F": "drcorn", "\u2322": "frown", "\u2323": "smile", "\u232D": "cylcty", "\u232E": "profalar", "\u2336": "topbot", "\u233D": "ovbar", "\u233F": "solbar", "\u237C": "angzarr", "\u23B0": "lmoust", "\u23B1": "rmoust", "\u23B4": "tbrk", "\u23B5": "bbrk", "\u23B6": "bbrktbrk", "\u23DC": "OverParenthesis", "\u23DD": "UnderParenthesis", "\u23DE": "OverBrace", "\u23DF": "UnderBrace", "\u23E2": "trpezium", "\u23E7": "elinters", "\u2423": "blank", "\u2500": "boxh", "\u2502": "boxv", "\u250C": "boxdr", "\u2510": "boxdl", "\u2514": "boxur", "\u2518": "boxul", "\u251C": "boxvr", "\u2524": "boxvl", "\u252C": "boxhd", "\u2534": "boxhu", "\u253C": "boxvh", "\u2550": "boxH", "\u2551": "boxV", "\u2552": "boxdR", "\u2553": "boxDr", "\u2554": "boxDR", "\u2555": "boxdL", "\u2556": "boxDl", "\u2557": "boxDL", "\u2558": "boxuR", "\u2559": "boxUr", "\u255A": "boxUR", "\u255B": "boxuL", "\u255C": "boxUl", "\u255D": "boxUL", "\u255E": "boxvR", "\u255F": "boxVr", "\u2560": "boxVR", "\u2561": "boxvL", "\u2562": "boxVl", "\u2563": "boxVL", "\u2564": "boxHd", "\u2565": "boxhD", "\u2566": "boxHD", "\u2567": "boxHu", "\u2568": "boxhU", "\u2569": "boxHU", "\u256A": "boxvH", "\u256B": "boxVh", "\u256C": "boxVH", "\u2580": "uhblk", "\u2584": "lhblk", "\u2588": "block", "\u2591": "blk14", "\u2592": "blk12", "\u2593": "blk34", "\u25A1": "squ", "\u25AA": "squf", "\u25AB": "EmptyVerySmallSquare", "\u25AD": "rect", "\u25AE": "marker", "\u25B1": "fltns", "\u25B3": "xutri", "\u25B4": "utrif", "\u25B5": "utri", "\u25B8": "rtrif", "\u25B9": "rtri", "\u25BD": "xdtri", "\u25BE": "dtrif", "\u25BF": "dtri", "\u25C2": "ltrif", "\u25C3": "ltri", "\u25CA": "loz", "\u25CB": "cir", "\u25EC": "tridot", "\u25EF": "xcirc", "\u25F8": "ultri", "\u25F9": "urtri", "\u25FA": "lltri", "\u25FB": "EmptySmallSquare", "\u25FC": "FilledSmallSquare", "\u2605": "starf", "\u2606": "star", "\u260E": "phone", "\u2640": "female", "\u2642": "male", "\u2660": "spades", "\u2663": "clubs", "\u2665": "hearts", "\u2666": "diams", "\u266A": "sung", "\u2713": "check", "\u2717": "cross", "\u2720": "malt", "\u2736": "sext", "\u2758": "VerticalSeparator", "\u27C8": "bsolhsub", "\u27C9": "suphsol", "\u27F5": "xlarr", "\u27F6": "xrarr", "\u27F7": "xharr", "\u27F8": "xlArr", "\u27F9": "xrArr", "\u27FA": "xhArr", "\u27FC": "xmap", "\u27FF": "dzigrarr", "\u2902": "nvlArr", "\u2903": "nvrArr", "\u2904": "nvHarr", "\u2905": "Map", "\u290C": "lbarr", "\u290D": "rbarr", "\u290E": "lBarr", "\u290F": "rBarr", "\u2910": "RBarr", "\u2911": "DDotrahd", "\u2912": "UpArrowBar", "\u2913": "DownArrowBar", "\u2916": "Rarrtl", "\u2919": "latail", "\u291A": "ratail", "\u291B": "lAtail", "\u291C": "rAtail", "\u291D": "larrfs", "\u291E": "rarrfs", "\u291F": "larrbfs", "\u2920": "rarrbfs", "\u2923": "nwarhk", "\u2924": "nearhk", "\u2925": "searhk", "\u2926": "swarhk", "\u2927": "nwnear", "\u2928": "toea", "\u2929": "tosa", "\u292A": "swnwar", "\u2933": "rarrc", "\u2933\u0338": "nrarrc", "\u2935": "cudarrr", "\u2936": "ldca", "\u2937": "rdca", "\u2938": "cudarrl", "\u2939": "larrpl", "\u293C": "curarrm", "\u293D": "cularrp", "\u2945": "rarrpl", "\u2948": "harrcir", "\u2949": "Uarrocir", "\u294A": "lurdshar", "\u294B": "ldrushar", "\u294E": "LeftRightVector", "\u294F": "RightUpDownVector", "\u2950": "DownLeftRightVector", "\u2951": "LeftUpDownVector", "\u2952": "LeftVectorBar", "\u2953": "RightVectorBar", "\u2954": "RightUpVectorBar", "\u2955": "RightDownVectorBar", "\u2956": "DownLeftVectorBar", "\u2957": "DownRightVectorBar", "\u2958": "LeftUpVectorBar", "\u2959": "LeftDownVectorBar", "\u295A": "LeftTeeVector", "\u295B": "RightTeeVector", "\u295C": "RightUpTeeVector", "\u295D": "RightDownTeeVector", "\u295E": "DownLeftTeeVector", "\u295F": "DownRightTeeVector", "\u2960": "LeftUpTeeVector", "\u2961": "LeftDownTeeVector", "\u2962": "lHar", "\u2963": "uHar", "\u2964": "rHar", "\u2965": "dHar", "\u2966": "luruhar", "\u2967": "ldrdhar", "\u2968": "ruluhar", "\u2969": "rdldhar", "\u296A": "lharul", "\u296B": "llhard", "\u296C": "rharul", "\u296D": "lrhard", "\u296E": "udhar", "\u296F": "duhar", "\u2970": "RoundImplies", "\u2971": "erarr", "\u2972": "simrarr", "\u2973": "larrsim", "\u2974": "rarrsim", "\u2975": "rarrap", "\u2976": "ltlarr", "\u2978": "gtrarr", "\u2979": "subrarr", "\u297B": "suplarr", "\u297C": "lfisht", "\u297D": "rfisht", "\u297E": "ufisht", "\u297F": "dfisht", "\u299A": "vzigzag", "\u299C": "vangrt", "\u299D": "angrtvbd", "\u29A4": "ange", "\u29A5": "range", "\u29A6": "dwangle", "\u29A7": "uwangle", "\u29A8": "angmsdaa", "\u29A9": "angmsdab", "\u29AA": "angmsdac", "\u29AB": "angmsdad", "\u29AC": "angmsdae", "\u29AD": "angmsdaf", "\u29AE": "angmsdag", "\u29AF": "angmsdah", "\u29B0": "bemptyv", "\u29B1": "demptyv", "\u29B2": "cemptyv", "\u29B3": "raemptyv", "\u29B4": "laemptyv", "\u29B5": "ohbar", "\u29B6": "omid", "\u29B7": "opar", "\u29B9": "operp", "\u29BB": "olcross", "\u29BC": "odsold", "\u29BE": "olcir", "\u29BF": "ofcir", "\u29C0": "olt", "\u29C1": "ogt", "\u29C2": "cirscir", "\u29C3": "cirE", "\u29C4": "solb", "\u29C5": "bsolb", "\u29C9": "boxbox", "\u29CD": "trisb", "\u29CE": "rtriltri", "\u29CF": "LeftTriangleBar", "\u29CF\u0338": "NotLeftTriangleBar", "\u29D0": "RightTriangleBar", "\u29D0\u0338": "NotRightTriangleBar", "\u29DC": "iinfin", "\u29DD": "infintie", "\u29DE": "nvinfin", "\u29E3": "eparsl", "\u29E4": "smeparsl", "\u29E5": "eqvparsl", "\u29EB": "lozf", "\u29F4": "RuleDelayed", "\u29F6": "dsol", "\u2A00": "xodot", "\u2A01": "xoplus", "\u2A02": "xotime", "\u2A04": "xuplus", "\u2A06": "xsqcup", "\u2A0D": "fpartint", "\u2A10": "cirfnint", "\u2A11": "awint", "\u2A12": "rppolint", "\u2A13": "scpolint", "\u2A14": "npolint", "\u2A15": "pointint", "\u2A16": "quatint", "\u2A17": "intlarhk", "\u2A22": "pluscir", "\u2A23": "plusacir", "\u2A24": "simplus", "\u2A25": "plusdu", "\u2A26": "plussim", "\u2A27": "plustwo", "\u2A29": "mcomma", "\u2A2A": "minusdu", "\u2A2D": "loplus", "\u2A2E": "roplus", "\u2A2F": "Cross", "\u2A30": "timesd", "\u2A31": "timesbar", "\u2A33": "smashp", "\u2A34": "lotimes", "\u2A35": "rotimes", "\u2A36": "otimesas", "\u2A37": "Otimes", "\u2A38": "odiv", "\u2A39": "triplus", "\u2A3A": "triminus", "\u2A3B": "tritime", "\u2A3C": "iprod", "\u2A3F": "amalg", "\u2A40": "capdot", "\u2A42": "ncup", "\u2A43": "ncap", "\u2A44": "capand", "\u2A45": "cupor", "\u2A46": "cupcap", "\u2A47": "capcup", "\u2A48": "cupbrcap", "\u2A49": "capbrcup", "\u2A4A": "cupcup", "\u2A4B": "capcap", "\u2A4C": "ccups", "\u2A4D": "ccaps", "\u2A50": "ccupssm", "\u2A53": "And", "\u2A54": "Or", "\u2A55": "andand", "\u2A56": "oror", "\u2A57": "orslope", "\u2A58": "andslope", "\u2A5A": "andv", "\u2A5B": "orv", "\u2A5C": "andd", "\u2A5D": "ord", "\u2A5F": "wedbar", "\u2A66": "sdote", "\u2A6A": "simdot", "\u2A6D": "congdot", "\u2A6D\u0338": "ncongdot", "\u2A6E": "easter", "\u2A6F": "apacir", "\u2A70": "apE", "\u2A70\u0338": "napE", "\u2A71": "eplus", "\u2A72": "pluse", "\u2A73": "Esim", "\u2A77": "eDDot", "\u2A78": "equivDD", "\u2A79": "ltcir", "\u2A7A": "gtcir", "\u2A7B": "ltquest", "\u2A7C": "gtquest", "\u2A7D": "les", "\u2A7D\u0338": "nles", "\u2A7E": "ges", "\u2A7E\u0338": "nges", "\u2A7F": "lesdot", "\u2A80": "gesdot", "\u2A81": "lesdoto", "\u2A82": "gesdoto", "\u2A83": "lesdotor", "\u2A84": "gesdotol", "\u2A85": "lap", "\u2A86": "gap", "\u2A87": "lne", "\u2A88": "gne", "\u2A89": "lnap", "\u2A8A": "gnap", "\u2A8B": "lEg", "\u2A8C": "gEl", "\u2A8D": "lsime", "\u2A8E": "gsime", "\u2A8F": "lsimg", "\u2A90": "gsiml", "\u2A91": "lgE", "\u2A92": "glE", "\u2A93": "lesges", "\u2A94": "gesles", "\u2A95": "els", "\u2A96": "egs", "\u2A97": "elsdot", "\u2A98": "egsdot", "\u2A99": "el", "\u2A9A": "eg", "\u2A9D": "siml", "\u2A9E": "simg", "\u2A9F": "simlE", "\u2AA0": "simgE", "\u2AA1": "LessLess", "\u2AA1\u0338": "NotNestedLessLess", "\u2AA2": "GreaterGreater", "\u2AA2\u0338": "NotNestedGreaterGreater", "\u2AA4": "glj", "\u2AA5": "gla", "\u2AA6": "ltcc", "\u2AA7": "gtcc", "\u2AA8": "lescc", "\u2AA9": "gescc", "\u2AAA": "smt", "\u2AAB": "lat", "\u2AAC": "smte", "\u2AAC\uFE00": "smtes", "\u2AAD": "late", "\u2AAD\uFE00": "lates", "\u2AAE": "bumpE", "\u2AAF": "pre", "\u2AAF\u0338": "npre", "\u2AB0": "sce", "\u2AB0\u0338": "nsce", "\u2AB3": "prE", "\u2AB4": "scE", "\u2AB5": "prnE", "\u2AB6": "scnE", "\u2AB7": "prap", "\u2AB8": "scap", "\u2AB9": "prnap", "\u2ABA": "scnap", "\u2ABB": "Pr", "\u2ABC": "Sc", "\u2ABD": "subdot", "\u2ABE": "supdot", "\u2ABF": "subplus", "\u2AC0": "supplus", "\u2AC1": "submult", "\u2AC2": "supmult", "\u2AC3": "subedot", "\u2AC4": "supedot", "\u2AC5": "subE", "\u2AC5\u0338": "nsubE", "\u2AC6": "supE", "\u2AC6\u0338": "nsupE", "\u2AC7": "subsim", "\u2AC8": "supsim", "\u2ACB\uFE00": "vsubnE", "\u2ACB": "subnE", "\u2ACC\uFE00": "vsupnE", "\u2ACC": "supnE", "\u2ACF": "csub", "\u2AD0": "csup", "\u2AD1": "csube", "\u2AD2": "csupe", "\u2AD3": "subsup", "\u2AD4": "supsub", "\u2AD5": "subsub", "\u2AD6": "supsup", "\u2AD7": "suphsub", "\u2AD8": "supdsub", "\u2AD9": "forkv", "\u2ADA": "topfork", "\u2ADB": "mlcp", "\u2AE4": "Dashv", "\u2AE6": "Vdashl", "\u2AE7": "Barv", "\u2AE8": "vBar", "\u2AE9": "vBarv", "\u2AEB": "Vbar", "\u2AEC": "Not", "\u2AED": "bNot", "\u2AEE": "rnmid", "\u2AEF": "cirmid", "\u2AF0": "midcir", "\u2AF1": "topcir", "\u2AF2": "nhpar", "\u2AF3": "parsim", "\u2AFD": "parsl", "\u2AFD\u20E5": "nparsl", "\u266D": "flat", "\u266E": "natur", "\u266F": "sharp", "\xA4": "curren", "\xA2": "cent", "$": "dollar", "\xA3": "pound", "\xA5": "yen", "\u20AC": "euro", "\xB9": "sup1", "\xBD": "half", "\u2153": "frac13", "\xBC": "frac14", "\u2155": "frac15", "\u2159": "frac16", "\u215B": "frac18", "\xB2": "sup2", "\u2154": "frac23", "\u2156": "frac25", "\xB3": "sup3", "\xBE": "frac34", "\u2157": "frac35", "\u215C": "frac38", "\u2158": "frac45", "\u215A": "frac56", "\u215D": "frac58", "\u215E": "frac78", "\u{1D4B6}": "ascr", "\u{1D552}": "aopf", "\u{1D51E}": "afr", "\u{1D538}": "Aopf", "\u{1D504}": "Afr", "\u{1D49C}": "Ascr", "\xAA": "ordf", "\xE1": "aacute", "\xC1": "Aacute", "\xE0": "agrave", "\xC0": "Agrave", "\u0103": "abreve", "\u0102": "Abreve", "\xE2": "acirc", "\xC2": "Acirc", "\xE5": "aring", "\xC5": "angst", "\xE4": "auml", "\xC4": "Auml", "\xE3": "atilde", "\xC3": "Atilde", "\u0105": "aogon", "\u0104": "Aogon", "\u0101": "amacr", "\u0100": "Amacr", "\xE6": "aelig", "\xC6": "AElig", "\u{1D4B7}": "bscr", "\u{1D553}": "bopf", "\u{1D51F}": "bfr", "\u{1D539}": "Bopf", "\u212C": "Bscr", "\u{1D505}": "Bfr", "\u{1D520}": "cfr", "\u{1D4B8}": "cscr", "\u{1D554}": "copf", "\u212D": "Cfr", "\u{1D49E}": "Cscr", "\u2102": "Copf", "\u0107": "cacute", "\u0106": "Cacute", "\u0109": "ccirc", "\u0108": "Ccirc", "\u010D": "ccaron", "\u010C": "Ccaron", "\u010B": "cdot", "\u010A": "Cdot", "\xE7": "ccedil", "\xC7": "Ccedil", "\u2105": "incare", "\u{1D521}": "dfr", "\u2146": "dd", "\u{1D555}": "dopf", "\u{1D4B9}": "dscr", "\u{1D49F}": "Dscr", "\u{1D507}": "Dfr", "\u2145": "DD", "\u{1D53B}": "Dopf", "\u010F": "dcaron", "\u010E": "Dcaron", "\u0111": "dstrok", "\u0110": "Dstrok", "\xF0": "eth", "\xD0": "ETH", "\u2147": "ee", "\u212F": "escr", "\u{1D522}": "efr", "\u{1D556}": "eopf", "\u2130": "Escr", "\u{1D508}": "Efr", "\u{1D53C}": "Eopf", "\xE9": "eacute", "\xC9": "Eacute", "\xE8": "egrave", "\xC8": "Egrave", "\xEA": "ecirc", "\xCA": "Ecirc", "\u011B": "ecaron", "\u011A": "Ecaron", "\xEB": "euml", "\xCB": "Euml", "\u0117": "edot", "\u0116": "Edot", "\u0119": "eogon", "\u0118": "Eogon", "\u0113": "emacr", "\u0112": "Emacr", "\u{1D523}": "ffr", "\u{1D557}": "fopf", "\u{1D4BB}": "fscr", "\u{1D509}": "Ffr", "\u{1D53D}": "Fopf", "\u2131": "Fscr", "\uFB00": "fflig", "\uFB03": "ffilig", "\uFB04": "ffllig", "\uFB01": "filig", "fj": "fjlig", "\uFB02": "fllig", "\u0192": "fnof", "\u210A": "gscr", "\u{1D558}": "gopf", "\u{1D524}": "gfr", "\u{1D4A2}": "Gscr", "\u{1D53E}": "Gopf", "\u{1D50A}": "Gfr", "\u01F5": "gacute", "\u011F": "gbreve", "\u011E": "Gbreve", "\u011D": "gcirc", "\u011C": "Gcirc", "\u0121": "gdot", "\u0120": "Gdot", "\u0122": "Gcedil", "\u{1D525}": "hfr", "\u210E": "planckh", "\u{1D4BD}": "hscr", "\u{1D559}": "hopf", "\u210B": "Hscr", "\u210C": "Hfr", "\u210D": "Hopf", "\u0125": "hcirc", "\u0124": "Hcirc", "\u210F": "hbar", "\u0127": "hstrok", "\u0126": "Hstrok", "\u{1D55A}": "iopf", "\u{1D526}": "ifr", "\u{1D4BE}": "iscr", "\u2148": "ii", "\u{1D540}": "Iopf", "\u2110": "Iscr", "\u2111": "Im", "\xED": "iacute", "\xCD": "Iacute", "\xEC": "igrave", "\xCC": "Igrave", "\xEE": "icirc", "\xCE": "Icirc", "\xEF": "iuml", "\xCF": "Iuml", "\u0129": "itilde", "\u0128": "Itilde", "\u0130": "Idot", "\u012F": "iogon", "\u012E": "Iogon", "\u012B": "imacr", "\u012A": "Imacr", "\u0133": "ijlig", "\u0132": "IJlig", "\u0131": "imath", "\u{1D4BF}": "jscr", "\u{1D55B}": "jopf", "\u{1D527}": "jfr", "\u{1D4A5}": "Jscr", "\u{1D50D}": "Jfr", "\u{1D541}": "Jopf", "\u0135": "jcirc", "\u0134": "Jcirc", "\u0237": "jmath", "\u{1D55C}": "kopf", "\u{1D4C0}": "kscr", "\u{1D528}": "kfr", "\u{1D4A6}": "Kscr", "\u{1D542}": "Kopf", "\u{1D50E}": "Kfr", "\u0137": "kcedil", "\u0136": "Kcedil", "\u{1D529}": "lfr", "\u{1D4C1}": "lscr", "\u2113": "ell", "\u{1D55D}": "lopf", "\u2112": "Lscr", "\u{1D50F}": "Lfr", "\u{1D543}": "Lopf", "\u013A": "lacute", "\u0139": "Lacute", "\u013E": "lcaron", "\u013D": "Lcaron", "\u013C": "lcedil", "\u013B": "Lcedil", "\u0142": "lstrok", "\u0141": "Lstrok", "\u0140": "lmidot", "\u013F": "Lmidot", "\u{1D52A}": "mfr", "\u{1D55E}": "mopf", "\u{1D4C2}": "mscr", "\u{1D510}": "Mfr", "\u{1D544}": "Mopf", "\u2133": "Mscr", "\u{1D52B}": "nfr", "\u{1D55F}": "nopf", "\u{1D4C3}": "nscr", "\u2115": "Nopf", "\u{1D4A9}": "Nscr", "\u{1D511}": "Nfr", "\u0144": "nacute", "\u0143": "Nacute", "\u0148": "ncaron", "\u0147": "Ncaron", "\xF1": "ntilde", "\xD1": "Ntilde", "\u0146": "ncedil", "\u0145": "Ncedil", "\u2116": "numero", "\u014B": "eng", "\u014A": "ENG", "\u{1D560}": "oopf", "\u{1D52C}": "ofr", "\u2134": "oscr", "\u{1D4AA}": "Oscr", "\u{1D512}": "Ofr", "\u{1D546}": "Oopf", "\xBA": "ordm", "\xF3": "oacute", "\xD3": "Oacute", "\xF2": "ograve", "\xD2": "Ograve", "\xF4": "ocirc", "\xD4": "Ocirc", "\xF6": "ouml", "\xD6": "Ouml", "\u0151": "odblac", "\u0150": "Odblac", "\xF5": "otilde", "\xD5": "Otilde", "\xF8": "oslash", "\xD8": "Oslash", "\u014D": "omacr", "\u014C": "Omacr", "\u0153": "oelig", "\u0152": "OElig", "\u{1D52D}": "pfr", "\u{1D4C5}": "pscr", "\u{1D561}": "popf", "\u2119": "Popf", "\u{1D513}": "Pfr", "\u{1D4AB}": "Pscr", "\u{1D562}": "qopf", "\u{1D52E}": "qfr", "\u{1D4C6}": "qscr", "\u{1D4AC}": "Qscr", "\u{1D514}": "Qfr", "\u211A": "Qopf", "\u0138": "kgreen", "\u{1D52F}": "rfr", "\u{1D563}": "ropf", "\u{1D4C7}": "rscr", "\u211B": "Rscr", "\u211C": "Re", "\u211D": "Ropf", "\u0155": "racute", "\u0154": "Racute", "\u0159": "rcaron", "\u0158": "Rcaron", "\u0157": "rcedil", "\u0156": "Rcedil", "\u{1D564}": "sopf", "\u{1D4C8}": "sscr", "\u{1D530}": "sfr", "\u{1D54A}": "Sopf", "\u{1D516}": "Sfr", "\u{1D4AE}": "Sscr", "\u24C8": "oS", "\u015B": "sacute", "\u015A": "Sacute", "\u015D": "scirc", "\u015C": "Scirc", "\u0161": "scaron", "\u0160": "Scaron", "\u015F": "scedil", "\u015E": "Scedil", "\xDF": "szlig", "\u{1D531}": "tfr", "\u{1D4C9}": "tscr", "\u{1D565}": "topf", "\u{1D4AF}": "Tscr", "\u{1D517}": "Tfr", "\u{1D54B}": "Topf", "\u0165": "tcaron", "\u0164": "Tcaron", "\u0163": "tcedil", "\u0162": "Tcedil", "\u2122": "trade", "\u0167": "tstrok", "\u0166": "Tstrok", "\u{1D4CA}": "uscr", "\u{1D566}": "uopf", "\u{1D532}": "ufr", "\u{1D54C}": "Uopf", "\u{1D518}": "Ufr", "\u{1D4B0}": "Uscr", "\xFA": "uacute", "\xDA": "Uacute", "\xF9": "ugrave", "\xD9": "Ugrave", "\u016D": "ubreve", "\u016C": "Ubreve", "\xFB": "ucirc", "\xDB": "Ucirc", "\u016F": "uring", "\u016E": "Uring", "\xFC": "uuml", "\xDC": "Uuml", "\u0171": "udblac", "\u0170": "Udblac", "\u0169": "utilde", "\u0168": "Utilde", "\u0173": "uogon", "\u0172": "Uogon", "\u016B": "umacr", "\u016A": "Umacr", "\u{1D533}": "vfr", "\u{1D567}": "vopf", "\u{1D4CB}": "vscr", "\u{1D519}": "Vfr", "\u{1D54D}": "Vopf", "\u{1D4B1}": "Vscr", "\u{1D568}": "wopf", "\u{1D4CC}": "wscr", "\u{1D534}": "wfr", "\u{1D4B2}": "Wscr", "\u{1D54E}": "Wopf", "\u{1D51A}": "Wfr", "\u0175": "wcirc", "\u0174": "Wcirc", "\u{1D535}": "xfr", "\u{1D4CD}": "xscr", "\u{1D569}": "xopf", "\u{1D54F}": "Xopf", "\u{1D51B}": "Xfr", "\u{1D4B3}": "Xscr", "\u{1D536}": "yfr", "\u{1D4CE}": "yscr", "\u{1D56A}": "yopf", "\u{1D4B4}": "Yscr", "\u{1D51C}": "Yfr", "\u{1D550}": "Yopf", "\xFD": "yacute", "\xDD": "Yacute", "\u0177": "ycirc", "\u0176": "Ycirc", "\xFF": "yuml", "\u0178": "Yuml", "\u{1D4CF}": "zscr", "\u{1D537}": "zfr", "\u{1D56B}": "zopf", "\u2128": "Zfr", "\u2124": "Zopf", "\u{1D4B5}": "Zscr", "\u017A": "zacute", "\u0179": "Zacute", "\u017E": "zcaron", "\u017D": "Zcaron", "\u017C": "zdot", "\u017B": "Zdot", "\u01B5": "imped", "\xFE": "thorn", "\xDE": "THORN", "\u0149": "napos", "\u03B1": "alpha", "\u0391": "Alpha", "\u03B2": "beta", "\u0392": "Beta", "\u03B3": "gamma", "\u0393": "Gamma", "\u03B4": "delta", "\u0394": "Delta", "\u03B5": "epsi", "\u03F5": "epsiv", "\u0395": "Epsilon", "\u03DD": "gammad", "\u03DC": "Gammad", "\u03B6": "zeta", "\u0396": "Zeta", "\u03B7": "eta", "\u0397": "Eta", "\u03B8": "theta", "\u03D1": "thetav", "\u0398": "Theta", "\u03B9": "iota", "\u0399": "Iota", "\u03BA": "kappa", "\u03F0": "kappav", "\u039A": "Kappa", "\u03BB": "lambda", "\u039B": "Lambda", "\u03BC": "mu", "\xB5": "micro", "\u039C": "Mu", "\u03BD": "nu", "\u039D": "Nu", "\u03BE": "xi", "\u039E": "Xi", "\u03BF": "omicron", "\u039F": "Omicron", "\u03C0": "pi", "\u03D6": "piv", "\u03A0": "Pi", "\u03C1": "rho", "\u03F1": "rhov", "\u03A1": "Rho", "\u03C3": "sigma", "\u03A3": "Sigma", "\u03C2": "sigmaf", "\u03C4": "tau", "\u03A4": "Tau", "\u03C5": "upsi", "\u03A5": "Upsilon", "\u03D2": "Upsi", "\u03C6": "phi", "\u03D5": "phiv", "\u03A6": "Phi", "\u03C7": "chi", "\u03A7": "Chi", "\u03C8": "psi", "\u03A8": "Psi", "\u03C9": "omega", "\u03A9": "ohm", "\u0430": "acy", "\u0410": "Acy", "\u0431": "bcy", "\u0411": "Bcy", "\u0432": "vcy", "\u0412": "Vcy", "\u0433": "gcy", "\u0413": "Gcy", "\u0453": "gjcy", "\u0403": "GJcy", "\u0434": "dcy", "\u0414": "Dcy", "\u0452": "djcy", "\u0402": "DJcy", "\u0435": "iecy", "\u0415": "IEcy", "\u0451": "iocy", "\u0401": "IOcy", "\u0454": "jukcy", "\u0404": "Jukcy", "\u0436": "zhcy", "\u0416": "ZHcy", "\u0437": "zcy", "\u0417": "Zcy", "\u0455": "dscy", "\u0405": "DScy", "\u0438": "icy", "\u0418": "Icy", "\u0456": "iukcy", "\u0406": "Iukcy", "\u0457": "yicy", "\u0407": "YIcy", "\u0439": "jcy", "\u0419": "Jcy", "\u0458": "jsercy", "\u0408": "Jsercy", "\u043A": "kcy", "\u041A": "Kcy", "\u045C": "kjcy", "\u040C": "KJcy", "\u043B": "lcy", "\u041B": "Lcy", "\u0459": "ljcy", "\u0409": "LJcy", "\u043C": "mcy", "\u041C": "Mcy", "\u043D": "ncy", "\u041D": "Ncy", "\u045A": "njcy", "\u040A": "NJcy", "\u043E": "ocy", "\u041E": "Ocy", "\u043F": "pcy", "\u041F": "Pcy", "\u0440": "rcy", "\u0420": "Rcy", "\u0441": "scy", "\u0421": "Scy", "\u0442": "tcy", "\u0422": "Tcy", "\u045B": "tshcy", "\u040B": "TSHcy", "\u0443": "ucy", "\u0423": "Ucy", "\u045E": "ubrcy", "\u040E": "Ubrcy", "\u0444": "fcy", "\u0424": "Fcy", "\u0445": "khcy", "\u0425": "KHcy", "\u0446": "tscy", "\u0426": "TScy", "\u0447": "chcy", "\u0427": "CHcy", "\u045F": "dzcy", "\u040F": "DZcy", "\u0448": "shcy", "\u0428": "SHcy", "\u0449": "shchcy", "\u0429": "SHCHcy", "\u044A": "hardcy", "\u042A": "HARDcy", "\u044B": "ycy", "\u042B": "Ycy", "\u044C": "softcy", "\u042C": "SOFTcy", "\u044D": "ecy", "\u042D": "Ecy", "\u044E": "yucy", "\u042E": "YUcy", "\u044F": "yacy", "\u042F": "YAcy", "\u2135": "aleph", "\u2136": "beth", "\u2137": "gimel", "\u2138": "daleth" };
-        var regexEscape = /["&'<>`]/g;
-        var escapeMap = {
-          '"': "&quot;",
-          "&": "&amp;",
-          "'": "&#x27;",
-          "<": "&lt;",
-          // See https://mathiasbynens.be/notes/ambiguous-ampersands: in HTML, the
-          // following is not strictly necessary unless it’s part of a tag or an
-          // unquoted attribute value. We’re only escaping it to support those
-          // situations, and for XML support.
-          ">": "&gt;",
-          // In Internet Explorer ≤ 8, the backtick character can be used
-          // to break out of (un)quoted attribute values or HTML comments.
-          // See http://html5sec.org/#102, http://html5sec.org/#108, and
-          // http://html5sec.org/#133.
-          "`": "&#x60;"
+    })();
+});
+var tr = le(function(Re, ve) {
+    (function(e) {
+        var a = typeof Re == "object" && Re, r = typeof ve == "object" && ve && ve.exports == a && ve, d = typeof global == "object" && global;
+        (d.global === d || d.window === d) && (e = d);
+        var t = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g, p = /[\x01-\x7F]/g, c = /[\x01-\t\x0B\f\x0E-\x1F\x7F\x81\x8D\x8F\x90\x9D\xA0-\uFFFF]/g, m = /<\u20D2|=\u20E5|>\u20D2|\u205F\u200A|\u219D\u0338|\u2202\u0338|\u2220\u20D2|\u2229\uFE00|\u222A\uFE00|\u223C\u20D2|\u223D\u0331|\u223E\u0333|\u2242\u0338|\u224B\u0338|\u224D\u20D2|\u224E\u0338|\u224F\u0338|\u2250\u0338|\u2261\u20E5|\u2264\u20D2|\u2265\u20D2|\u2266\u0338|\u2267\u0338|\u2268\uFE00|\u2269\uFE00|\u226A\u0338|\u226A\u20D2|\u226B\u0338|\u226B\u20D2|\u227F\u0338|\u2282\u20D2|\u2283\u20D2|\u228A\uFE00|\u228B\uFE00|\u228F\u0338|\u2290\u0338|\u2293\uFE00|\u2294\uFE00|\u22B4\u20D2|\u22B5\u20D2|\u22D8\u0338|\u22D9\u0338|\u22DA\uFE00|\u22DB\uFE00|\u22F5\u0338|\u22F9\u0338|\u2933\u0338|\u29CF\u0338|\u29D0\u0338|\u2A6D\u0338|\u2A70\u0338|\u2A7D\u0338|\u2A7E\u0338|\u2AA1\u0338|\u2AA2\u0338|\u2AAC\uFE00|\u2AAD\uFE00|\u2AAF\u0338|\u2AB0\u0338|\u2AC5\u0338|\u2AC6\u0338|\u2ACB\uFE00|\u2ACC\uFE00|\u2AFD\u20E5|[\xA0-\u0113\u0116-\u0122\u0124-\u012B\u012E-\u014D\u0150-\u017E\u0192\u01B5\u01F5\u0237\u02C6\u02C7\u02D8-\u02DD\u0311\u0391-\u03A1\u03A3-\u03A9\u03B1-\u03C9\u03D1\u03D2\u03D5\u03D6\u03DC\u03DD\u03F0\u03F1\u03F5\u03F6\u0401-\u040C\u040E-\u044F\u0451-\u045C\u045E\u045F\u2002-\u2005\u2007-\u2010\u2013-\u2016\u2018-\u201A\u201C-\u201E\u2020-\u2022\u2025\u2026\u2030-\u2035\u2039\u203A\u203E\u2041\u2043\u2044\u204F\u2057\u205F-\u2063\u20AC\u20DB\u20DC\u2102\u2105\u210A-\u2113\u2115-\u211E\u2122\u2124\u2127-\u2129\u212C\u212D\u212F-\u2131\u2133-\u2138\u2145-\u2148\u2153-\u215E\u2190-\u219B\u219D-\u21A7\u21A9-\u21AE\u21B0-\u21B3\u21B5-\u21B7\u21BA-\u21DB\u21DD\u21E4\u21E5\u21F5\u21FD-\u2205\u2207-\u2209\u220B\u220C\u220F-\u2214\u2216-\u2218\u221A\u221D-\u2238\u223A-\u2257\u2259\u225A\u225C\u225F-\u2262\u2264-\u228B\u228D-\u229B\u229D-\u22A5\u22A7-\u22B0\u22B2-\u22BB\u22BD-\u22DB\u22DE-\u22E3\u22E6-\u22F7\u22F9-\u22FE\u2305\u2306\u2308-\u2310\u2312\u2313\u2315\u2316\u231C-\u231F\u2322\u2323\u232D\u232E\u2336\u233D\u233F\u237C\u23B0\u23B1\u23B4-\u23B6\u23DC-\u23DF\u23E2\u23E7\u2423\u24C8\u2500\u2502\u250C\u2510\u2514\u2518\u251C\u2524\u252C\u2534\u253C\u2550-\u256C\u2580\u2584\u2588\u2591-\u2593\u25A1\u25AA\u25AB\u25AD\u25AE\u25B1\u25B3-\u25B5\u25B8\u25B9\u25BD-\u25BF\u25C2\u25C3\u25CA\u25CB\u25EC\u25EF\u25F8-\u25FC\u2605\u2606\u260E\u2640\u2642\u2660\u2663\u2665\u2666\u266A\u266D-\u266F\u2713\u2717\u2720\u2736\u2758\u2772\u2773\u27C8\u27C9\u27E6-\u27ED\u27F5-\u27FA\u27FC\u27FF\u2902-\u2905\u290C-\u2913\u2916\u2919-\u2920\u2923-\u292A\u2933\u2935-\u2939\u293C\u293D\u2945\u2948-\u294B\u294E-\u2976\u2978\u2979\u297B-\u297F\u2985\u2986\u298B-\u2996\u299A\u299C\u299D\u29A4-\u29B7\u29B9\u29BB\u29BC\u29BE-\u29C5\u29C9\u29CD-\u29D0\u29DC-\u29DE\u29E3-\u29E5\u29EB\u29F4\u29F6\u2A00-\u2A02\u2A04\u2A06\u2A0C\u2A0D\u2A10-\u2A17\u2A22-\u2A27\u2A29\u2A2A\u2A2D-\u2A31\u2A33-\u2A3C\u2A3F\u2A40\u2A42-\u2A4D\u2A50\u2A53-\u2A58\u2A5A-\u2A5D\u2A5F\u2A66\u2A6A\u2A6D-\u2A75\u2A77-\u2A9A\u2A9D-\u2AA2\u2AA4-\u2AB0\u2AB3-\u2AC8\u2ACB\u2ACC\u2ACF-\u2ADB\u2AE4\u2AE6-\u2AE9\u2AEB-\u2AF3\u2AFD\uFB00-\uFB04]|\uD835[\uDC9C\uDC9E\uDC9F\uDCA2\uDCA5\uDCA6\uDCA9-\uDCAC\uDCAE-\uDCB9\uDCBB\uDCBD-\uDCC3\uDCC5-\uDCCF\uDD04\uDD05\uDD07-\uDD0A\uDD0D-\uDD14\uDD16-\uDD1C\uDD1E-\uDD39\uDD3B-\uDD3E\uDD40-\uDD44\uDD46\uDD4A-\uDD50\uDD52-\uDD6B]/g, D = {
+            "\xad": "shy",
+            "‌": "zwnj",
+            "‍": "zwj",
+            "‎": "lrm",
+            "⁣": "ic",
+            "⁢": "it",
+            "⁡": "af",
+            "‏": "rlm",
+            "​": "ZeroWidthSpace",
+            "⁠": "NoBreak",
+            "̑": "DownBreve",
+            "⃛": "tdot",
+            "⃜": "DotDot",
+            "	": "Tab",
+            "\n": "NewLine",
+            " ": "puncsp",
+            " ": "MediumSpace",
+            " ": "thinsp",
+            " ": "hairsp",
+            " ": "emsp13",
+            " ": "ensp",
+            " ": "emsp14",
+            " ": "emsp",
+            " ": "numsp",
+            "\xa0": "nbsp",
+            "  ": "ThickSpace",
+            "‾": "oline",
+            _: "lowbar",
+            "‐": "dash",
+            "–": "ndash",
+            "—": "mdash",
+            "―": "horbar",
+            ",": "comma",
+            ";": "semi",
+            "⁏": "bsemi",
+            ":": "colon",
+            "⩴": "Colone",
+            "!": "excl",
+            "\xa1": "iexcl",
+            "?": "quest",
+            "\xbf": "iquest",
+            ".": "period",
+            "‥": "nldr",
+            "…": "mldr",
+            "\xb7": "middot",
+            "'": "apos",
+            "‘": "lsquo",
+            "’": "rsquo",
+            "‚": "sbquo",
+            "‹": "lsaquo",
+            "›": "rsaquo",
+            '"': "quot",
+            "“": "ldquo",
+            "”": "rdquo",
+            "„": "bdquo",
+            "\xab": "laquo",
+            "\xbb": "raquo",
+            "(": "lpar",
+            ")": "rpar",
+            "[": "lsqb",
+            "]": "rsqb",
+            "{": "lcub",
+            "}": "rcub",
+            "⌈": "lceil",
+            "⌉": "rceil",
+            "⌊": "lfloor",
+            "⌋": "rfloor",
+            "⦅": "lopar",
+            "⦆": "ropar",
+            "⦋": "lbrke",
+            "⦌": "rbrke",
+            "⦍": "lbrkslu",
+            "⦎": "rbrksld",
+            "⦏": "lbrksld",
+            "⦐": "rbrkslu",
+            "⦑": "langd",
+            "⦒": "rangd",
+            "⦓": "lparlt",
+            "⦔": "rpargt",
+            "⦕": "gtlPar",
+            "⦖": "ltrPar",
+            "⟦": "lobrk",
+            "⟧": "robrk",
+            "⟨": "lang",
+            "⟩": "rang",
+            "⟪": "Lang",
+            "⟫": "Rang",
+            "⟬": "loang",
+            "⟭": "roang",
+            "❲": "lbbrk",
+            "❳": "rbbrk",
+            "‖": "Vert",
+            "\xa7": "sect",
+            "\xb6": "para",
+            "@": "commat",
+            "*": "ast",
+            "/": "sol",
+            undefined: null,
+            "&": "amp",
+            "#": "num",
+            "%": "percnt",
+            "‰": "permil",
+            "‱": "pertenk",
+            "†": "dagger",
+            "‡": "Dagger",
+            "•": "bull",
+            "⁃": "hybull",
+            "′": "prime",
+            "″": "Prime",
+            "‴": "tprime",
+            "⁗": "qprime",
+            "‵": "bprime",
+            "⁁": "caret",
+            "`": "grave",
+            "\xb4": "acute",
+            "˜": "tilde",
+            "^": "Hat",
+            "\xaf": "macr",
+            "˘": "breve",
+            "˙": "dot",
+            "\xa8": "die",
+            "˚": "ring",
+            "˝": "dblac",
+            "\xb8": "cedil",
+            "˛": "ogon",
+            "ˆ": "circ",
+            "ˇ": "caron",
+            "\xb0": "deg",
+            "\xa9": "copy",
+            "\xae": "reg",
+            "℗": "copysr",
+            "℘": "wp",
+            "℞": "rx",
+            "℧": "mho",
+            "℩": "iiota",
+            "←": "larr",
+            "↚": "nlarr",
+            "→": "rarr",
+            "↛": "nrarr",
+            "↑": "uarr",
+            "↓": "darr",
+            "↔": "harr",
+            "↮": "nharr",
+            "↕": "varr",
+            "↖": "nwarr",
+            "↗": "nearr",
+            "↘": "searr",
+            "↙": "swarr",
+            "↝": "rarrw",
+            "↝̸": "nrarrw",
+            "↞": "Larr",
+            "↟": "Uarr",
+            "↠": "Rarr",
+            "↡": "Darr",
+            "↢": "larrtl",
+            "↣": "rarrtl",
+            "↤": "mapstoleft",
+            "↥": "mapstoup",
+            "↦": "map",
+            "↧": "mapstodown",
+            "↩": "larrhk",
+            "↪": "rarrhk",
+            "↫": "larrlp",
+            "↬": "rarrlp",
+            "↭": "harrw",
+            "↰": "lsh",
+            "↱": "rsh",
+            "↲": "ldsh",
+            "↳": "rdsh",
+            "↵": "crarr",
+            "↶": "cularr",
+            "↷": "curarr",
+            "↺": "olarr",
+            "↻": "orarr",
+            "↼": "lharu",
+            "↽": "lhard",
+            "↾": "uharr",
+            "↿": "uharl",
+            "⇀": "rharu",
+            "⇁": "rhard",
+            "⇂": "dharr",
+            "⇃": "dharl",
+            "⇄": "rlarr",
+            "⇅": "udarr",
+            "⇆": "lrarr",
+            "⇇": "llarr",
+            "⇈": "uuarr",
+            "⇉": "rrarr",
+            "⇊": "ddarr",
+            "⇋": "lrhar",
+            "⇌": "rlhar",
+            "⇐": "lArr",
+            "⇍": "nlArr",
+            "⇑": "uArr",
+            "⇒": "rArr",
+            "⇏": "nrArr",
+            "⇓": "dArr",
+            "⇔": "iff",
+            "⇎": "nhArr",
+            "⇕": "vArr",
+            "⇖": "nwArr",
+            "⇗": "neArr",
+            "⇘": "seArr",
+            "⇙": "swArr",
+            "⇚": "lAarr",
+            "⇛": "rAarr",
+            "⇝": "zigrarr",
+            "⇤": "larrb",
+            "⇥": "rarrb",
+            "⇵": "duarr",
+            "⇽": "loarr",
+            "⇾": "roarr",
+            "⇿": "hoarr",
+            "∀": "forall",
+            "∁": "comp",
+            "∂": "part",
+            "∂̸": "npart",
+            "∃": "exist",
+            "∄": "nexist",
+            "∅": "empty",
+            "∇": "Del",
+            "∈": "in",
+            "∉": "notin",
+            "∋": "ni",
+            "∌": "notni",
+            "϶": "bepsi",
+            "∏": "prod",
+            "∐": "coprod",
+            "∑": "sum",
+            "+": "plus",
+            "\xb1": "pm",
+            "\xf7": "div",
+            "\xd7": "times",
+            "<": "lt",
+            "≮": "nlt",
+            "<⃒": "nvlt",
+            "=": "equals",
+            "≠": "ne",
+            "=⃥": "bne",
+            "⩵": "Equal",
+            ">": "gt",
+            "≯": "ngt",
+            ">⃒": "nvgt",
+            "\xac": "not",
+            "|": "vert",
+            "\xa6": "brvbar",
+            "−": "minus",
+            "∓": "mp",
+            "∔": "plusdo",
+            "⁄": "frasl",
+            "∖": "setmn",
+            "∗": "lowast",
+            "∘": "compfn",
+            "√": "Sqrt",
+            "∝": "prop",
+            "∞": "infin",
+            "∟": "angrt",
+            "∠": "ang",
+            "∠⃒": "nang",
+            "∡": "angmsd",
+            "∢": "angsph",
+            "∣": "mid",
+            "∤": "nmid",
+            "∥": "par",
+            "∦": "npar",
+            "∧": "and",
+            "∨": "or",
+            "∩": "cap",
+            "∩︀": "caps",
+            "∪": "cup",
+            "∪︀": "cups",
+            "∫": "int",
+            "∬": "Int",
+            "∭": "tint",
+            "⨌": "qint",
+            "∮": "oint",
+            "∯": "Conint",
+            "∰": "Cconint",
+            "∱": "cwint",
+            "∲": "cwconint",
+            "∳": "awconint",
+            "∴": "there4",
+            "∵": "becaus",
+            "∶": "ratio",
+            "∷": "Colon",
+            "∸": "minusd",
+            "∺": "mDDot",
+            "∻": "homtht",
+            "∼": "sim",
+            "≁": "nsim",
+            "∼⃒": "nvsim",
+            "∽": "bsim",
+            "∽̱": "race",
+            "∾": "ac",
+            "∾̳": "acE",
+            "∿": "acd",
+            "≀": "wr",
+            "≂": "esim",
+            "≂̸": "nesim",
+            "≃": "sime",
+            "≄": "nsime",
+            "≅": "cong",
+            "≇": "ncong",
+            "≆": "simne",
+            "≈": "ap",
+            "≉": "nap",
+            "≊": "ape",
+            "≋": "apid",
+            "≋̸": "napid",
+            "≌": "bcong",
+            "≍": "CupCap",
+            "≭": "NotCupCap",
+            "≍⃒": "nvap",
+            "≎": "bump",
+            "≎̸": "nbump",
+            "≏": "bumpe",
+            "≏̸": "nbumpe",
+            "≐": "doteq",
+            "≐̸": "nedot",
+            "≑": "eDot",
+            "≒": "efDot",
+            "≓": "erDot",
+            "≔": "colone",
+            "≕": "ecolon",
+            "≖": "ecir",
+            "≗": "cire",
+            "≙": "wedgeq",
+            "≚": "veeeq",
+            "≜": "trie",
+            "≟": "equest",
+            "≡": "equiv",
+            "≢": "nequiv",
+            "≡⃥": "bnequiv",
+            "≤": "le",
+            "≰": "nle",
+            "≤⃒": "nvle",
+            "≥": "ge",
+            "≱": "nge",
+            "≥⃒": "nvge",
+            "≦": "lE",
+            "≦̸": "nlE",
+            "≧": "gE",
+            "≧̸": "ngE",
+            "≨︀": "lvnE",
+            "≨": "lnE",
+            "≩": "gnE",
+            "≩︀": "gvnE",
+            "≪": "ll",
+            "≪̸": "nLtv",
+            "≪⃒": "nLt",
+            "≫": "gg",
+            "≫̸": "nGtv",
+            "≫⃒": "nGt",
+            "≬": "twixt",
+            "≲": "lsim",
+            "≴": "nlsim",
+            "≳": "gsim",
+            "≵": "ngsim",
+            "≶": "lg",
+            "≸": "ntlg",
+            "≷": "gl",
+            "≹": "ntgl",
+            "≺": "pr",
+            "⊀": "npr",
+            "≻": "sc",
+            "⊁": "nsc",
+            "≼": "prcue",
+            "⋠": "nprcue",
+            "≽": "sccue",
+            "⋡": "nsccue",
+            "≾": "prsim",
+            "≿": "scsim",
+            "≿̸": "NotSucceedsTilde",
+            "⊂": "sub",
+            "⊄": "nsub",
+            "⊂⃒": "vnsub",
+            "⊃": "sup",
+            "⊅": "nsup",
+            "⊃⃒": "vnsup",
+            "⊆": "sube",
+            "⊈": "nsube",
+            "⊇": "supe",
+            "⊉": "nsupe",
+            "⊊︀": "vsubne",
+            "⊊": "subne",
+            "⊋︀": "vsupne",
+            "⊋": "supne",
+            "⊍": "cupdot",
+            "⊎": "uplus",
+            "⊏": "sqsub",
+            "⊏̸": "NotSquareSubset",
+            "⊐": "sqsup",
+            "⊐̸": "NotSquareSuperset",
+            "⊑": "sqsube",
+            "⋢": "nsqsube",
+            "⊒": "sqsupe",
+            "⋣": "nsqsupe",
+            "⊓": "sqcap",
+            "⊓︀": "sqcaps",
+            "⊔": "sqcup",
+            "⊔︀": "sqcups",
+            "⊕": "oplus",
+            "⊖": "ominus",
+            "⊗": "otimes",
+            "⊘": "osol",
+            "⊙": "odot",
+            "⊚": "ocir",
+            "⊛": "oast",
+            "⊝": "odash",
+            "⊞": "plusb",
+            "⊟": "minusb",
+            "⊠": "timesb",
+            "⊡": "sdotb",
+            "⊢": "vdash",
+            "⊬": "nvdash",
+            "⊣": "dashv",
+            "⊤": "top",
+            "⊥": "bot",
+            "⊧": "models",
+            "⊨": "vDash",
+            "⊭": "nvDash",
+            "⊩": "Vdash",
+            "⊮": "nVdash",
+            "⊪": "Vvdash",
+            "⊫": "VDash",
+            "⊯": "nVDash",
+            "⊰": "prurel",
+            "⊲": "vltri",
+            "⋪": "nltri",
+            "⊳": "vrtri",
+            "⋫": "nrtri",
+            "⊴": "ltrie",
+            "⋬": "nltrie",
+            "⊴⃒": "nvltrie",
+            "⊵": "rtrie",
+            "⋭": "nrtrie",
+            "⊵⃒": "nvrtrie",
+            "⊶": "origof",
+            "⊷": "imof",
+            "⊸": "mumap",
+            "⊹": "hercon",
+            "⊺": "intcal",
+            "⊻": "veebar",
+            "⊽": "barvee",
+            "⊾": "angrtvb",
+            "⊿": "lrtri",
+            "⋀": "Wedge",
+            "⋁": "Vee",
+            "⋂": "xcap",
+            "⋃": "xcup",
+            "⋄": "diam",
+            "⋅": "sdot",
+            "⋆": "Star",
+            "⋇": "divonx",
+            "⋈": "bowtie",
+            "⋉": "ltimes",
+            "⋊": "rtimes",
+            "⋋": "lthree",
+            "⋌": "rthree",
+            "⋍": "bsime",
+            "⋎": "cuvee",
+            "⋏": "cuwed",
+            "⋐": "Sub",
+            "⋑": "Sup",
+            "⋒": "Cap",
+            "⋓": "Cup",
+            "⋔": "fork",
+            "⋕": "epar",
+            "⋖": "ltdot",
+            "⋗": "gtdot",
+            "⋘": "Ll",
+            "⋘̸": "nLl",
+            "⋙": "Gg",
+            "⋙̸": "nGg",
+            "⋚︀": "lesg",
+            "⋚": "leg",
+            "⋛": "gel",
+            "⋛︀": "gesl",
+            "⋞": "cuepr",
+            "⋟": "cuesc",
+            "⋦": "lnsim",
+            "⋧": "gnsim",
+            "⋨": "prnsim",
+            "⋩": "scnsim",
+            "⋮": "vellip",
+            "⋯": "ctdot",
+            "⋰": "utdot",
+            "⋱": "dtdot",
+            "⋲": "disin",
+            "⋳": "isinsv",
+            "⋴": "isins",
+            "⋵": "isindot",
+            "⋵̸": "notindot",
+            "⋶": "notinvc",
+            "⋷": "notinvb",
+            "⋹": "isinE",
+            "⋹̸": "notinE",
+            "⋺": "nisd",
+            "⋻": "xnis",
+            "⋼": "nis",
+            "⋽": "notnivc",
+            "⋾": "notnivb",
+            "⌅": "barwed",
+            "⌆": "Barwed",
+            "⌌": "drcrop",
+            "⌍": "dlcrop",
+            "⌎": "urcrop",
+            "⌏": "ulcrop",
+            "⌐": "bnot",
+            "⌒": "profline",
+            "⌓": "profsurf",
+            "⌕": "telrec",
+            "⌖": "target",
+            "⌜": "ulcorn",
+            "⌝": "urcorn",
+            "⌞": "dlcorn",
+            "⌟": "drcorn",
+            "⌢": "frown",
+            "⌣": "smile",
+            "⌭": "cylcty",
+            "⌮": "profalar",
+            "⌶": "topbot",
+            "⌽": "ovbar",
+            "⌿": "solbar",
+            "⍼": "angzarr",
+            "⎰": "lmoust",
+            "⎱": "rmoust",
+            "⎴": "tbrk",
+            "⎵": "bbrk",
+            "⎶": "bbrktbrk",
+            "⏜": "OverParenthesis",
+            "⏝": "UnderParenthesis",
+            "⏞": "OverBrace",
+            "⏟": "UnderBrace",
+            "⏢": "trpezium",
+            "⏧": "elinters",
+            "␣": "blank",
+            "─": "boxh",
+            "│": "boxv",
+            "┌": "boxdr",
+            "┐": "boxdl",
+            "└": "boxur",
+            "┘": "boxul",
+            "├": "boxvr",
+            "┤": "boxvl",
+            "┬": "boxhd",
+            "┴": "boxhu",
+            "┼": "boxvh",
+            "═": "boxH",
+            "║": "boxV",
+            "╒": "boxdR",
+            "╓": "boxDr",
+            "╔": "boxDR",
+            "╕": "boxdL",
+            "╖": "boxDl",
+            "╗": "boxDL",
+            "╘": "boxuR",
+            "╙": "boxUr",
+            "╚": "boxUR",
+            "╛": "boxuL",
+            "╜": "boxUl",
+            "╝": "boxUL",
+            "╞": "boxvR",
+            "╟": "boxVr",
+            "╠": "boxVR",
+            "╡": "boxvL",
+            "╢": "boxVl",
+            "╣": "boxVL",
+            "╤": "boxHd",
+            "╥": "boxhD",
+            "╦": "boxHD",
+            "╧": "boxHu",
+            "╨": "boxhU",
+            "╩": "boxHU",
+            "╪": "boxvH",
+            "╫": "boxVh",
+            "╬": "boxVH",
+            "▀": "uhblk",
+            "▄": "lhblk",
+            "█": "block",
+            "░": "blk14",
+            "▒": "blk12",
+            "▓": "blk34",
+            "□": "squ",
+            "▪": "squf",
+            "▫": "EmptyVerySmallSquare",
+            "▭": "rect",
+            "▮": "marker",
+            "▱": "fltns",
+            "△": "xutri",
+            "▴": "utrif",
+            "▵": "utri",
+            "▸": "rtrif",
+            "▹": "rtri",
+            "▽": "xdtri",
+            "▾": "dtrif",
+            "▿": "dtri",
+            "◂": "ltrif",
+            "◃": "ltri",
+            "◊": "loz",
+            "○": "cir",
+            "◬": "tridot",
+            "◯": "xcirc",
+            "◸": "ultri",
+            "◹": "urtri",
+            "◺": "lltri",
+            "◻": "EmptySmallSquare",
+            "◼": "FilledSmallSquare",
+            "★": "starf",
+            "☆": "star",
+            "☎": "phone",
+            "♀": "female",
+            "♂": "male",
+            "♠": "spades",
+            "♣": "clubs",
+            "♥": "hearts",
+            "♦": "diams",
+            "♪": "sung",
+            "✓": "check",
+            "✗": "cross",
+            "✠": "malt",
+            "✶": "sext",
+            "❘": "VerticalSeparator",
+            "⟈": "bsolhsub",
+            "⟉": "suphsol",
+            "⟵": "xlarr",
+            "⟶": "xrarr",
+            "⟷": "xharr",
+            "⟸": "xlArr",
+            "⟹": "xrArr",
+            "⟺": "xhArr",
+            "⟼": "xmap",
+            "⟿": "dzigrarr",
+            "⤂": "nvlArr",
+            "⤃": "nvrArr",
+            "⤄": "nvHarr",
+            "⤅": "Map",
+            "⤌": "lbarr",
+            "⤍": "rbarr",
+            "⤎": "lBarr",
+            "⤏": "rBarr",
+            "⤐": "RBarr",
+            "⤑": "DDotrahd",
+            "⤒": "UpArrowBar",
+            "⤓": "DownArrowBar",
+            "⤖": "Rarrtl",
+            "⤙": "latail",
+            "⤚": "ratail",
+            "⤛": "lAtail",
+            "⤜": "rAtail",
+            "⤝": "larrfs",
+            "⤞": "rarrfs",
+            "⤟": "larrbfs",
+            "⤠": "rarrbfs",
+            "⤣": "nwarhk",
+            "⤤": "nearhk",
+            "⤥": "searhk",
+            "⤦": "swarhk",
+            "⤧": "nwnear",
+            "⤨": "toea",
+            "⤩": "tosa",
+            "⤪": "swnwar",
+            "⤳": "rarrc",
+            "⤳̸": "nrarrc",
+            "⤵": "cudarrr",
+            "⤶": "ldca",
+            "⤷": "rdca",
+            "⤸": "cudarrl",
+            "⤹": "larrpl",
+            "⤼": "curarrm",
+            "⤽": "cularrp",
+            "⥅": "rarrpl",
+            "⥈": "harrcir",
+            "⥉": "Uarrocir",
+            "⥊": "lurdshar",
+            "⥋": "ldrushar",
+            "⥎": "LeftRightVector",
+            "⥏": "RightUpDownVector",
+            "⥐": "DownLeftRightVector",
+            "⥑": "LeftUpDownVector",
+            "⥒": "LeftVectorBar",
+            "⥓": "RightVectorBar",
+            "⥔": "RightUpVectorBar",
+            "⥕": "RightDownVectorBar",
+            "⥖": "DownLeftVectorBar",
+            "⥗": "DownRightVectorBar",
+            "⥘": "LeftUpVectorBar",
+            "⥙": "LeftDownVectorBar",
+            "⥚": "LeftTeeVector",
+            "⥛": "RightTeeVector",
+            "⥜": "RightUpTeeVector",
+            "⥝": "RightDownTeeVector",
+            "⥞": "DownLeftTeeVector",
+            "⥟": "DownRightTeeVector",
+            "⥠": "LeftUpTeeVector",
+            "⥡": "LeftDownTeeVector",
+            "⥢": "lHar",
+            "⥣": "uHar",
+            "⥤": "rHar",
+            "⥥": "dHar",
+            "⥦": "luruhar",
+            "⥧": "ldrdhar",
+            "⥨": "ruluhar",
+            "⥩": "rdldhar",
+            "⥪": "lharul",
+            "⥫": "llhard",
+            "⥬": "rharul",
+            "⥭": "lrhard",
+            "⥮": "udhar",
+            "⥯": "duhar",
+            "⥰": "RoundImplies",
+            "⥱": "erarr",
+            "⥲": "simrarr",
+            "⥳": "larrsim",
+            "⥴": "rarrsim",
+            "⥵": "rarrap",
+            "⥶": "ltlarr",
+            "⥸": "gtrarr",
+            "⥹": "subrarr",
+            "⥻": "suplarr",
+            "⥼": "lfisht",
+            "⥽": "rfisht",
+            "⥾": "ufisht",
+            "⥿": "dfisht",
+            "⦚": "vzigzag",
+            "⦜": "vangrt",
+            "⦝": "angrtvbd",
+            "⦤": "ange",
+            "⦥": "range",
+            "⦦": "dwangle",
+            "⦧": "uwangle",
+            "⦨": "angmsdaa",
+            "⦩": "angmsdab",
+            "⦪": "angmsdac",
+            "⦫": "angmsdad",
+            "⦬": "angmsdae",
+            "⦭": "angmsdaf",
+            "⦮": "angmsdag",
+            "⦯": "angmsdah",
+            "⦰": "bemptyv",
+            "⦱": "demptyv",
+            "⦲": "cemptyv",
+            "⦳": "raemptyv",
+            "⦴": "laemptyv",
+            "⦵": "ohbar",
+            "⦶": "omid",
+            "⦷": "opar",
+            "⦹": "operp",
+            "⦻": "olcross",
+            "⦼": "odsold",
+            "⦾": "olcir",
+            "⦿": "ofcir",
+            "⧀": "olt",
+            "⧁": "ogt",
+            "⧂": "cirscir",
+            "⧃": "cirE",
+            "⧄": "solb",
+            "⧅": "bsolb",
+            "⧉": "boxbox",
+            "⧍": "trisb",
+            "⧎": "rtriltri",
+            "⧏": "LeftTriangleBar",
+            "⧏̸": "NotLeftTriangleBar",
+            "⧐": "RightTriangleBar",
+            "⧐̸": "NotRightTriangleBar",
+            "⧜": "iinfin",
+            "⧝": "infintie",
+            "⧞": "nvinfin",
+            "⧣": "eparsl",
+            "⧤": "smeparsl",
+            "⧥": "eqvparsl",
+            "⧫": "lozf",
+            "⧴": "RuleDelayed",
+            "⧶": "dsol",
+            "⨀": "xodot",
+            "⨁": "xoplus",
+            "⨂": "xotime",
+            "⨄": "xuplus",
+            "⨆": "xsqcup",
+            "⨍": "fpartint",
+            "⨐": "cirfnint",
+            "⨑": "awint",
+            "⨒": "rppolint",
+            "⨓": "scpolint",
+            "⨔": "npolint",
+            "⨕": "pointint",
+            "⨖": "quatint",
+            "⨗": "intlarhk",
+            "⨢": "pluscir",
+            "⨣": "plusacir",
+            "⨤": "simplus",
+            "⨥": "plusdu",
+            "⨦": "plussim",
+            "⨧": "plustwo",
+            "⨩": "mcomma",
+            "⨪": "minusdu",
+            "⨭": "loplus",
+            "⨮": "roplus",
+            "⨯": "Cross",
+            "⨰": "timesd",
+            "⨱": "timesbar",
+            "⨳": "smashp",
+            "⨴": "lotimes",
+            "⨵": "rotimes",
+            "⨶": "otimesas",
+            "⨷": "Otimes",
+            "⨸": "odiv",
+            "⨹": "triplus",
+            "⨺": "triminus",
+            "⨻": "tritime",
+            "⨼": "iprod",
+            "⨿": "amalg",
+            "⩀": "capdot",
+            "⩂": "ncup",
+            "⩃": "ncap",
+            "⩄": "capand",
+            "⩅": "cupor",
+            "⩆": "cupcap",
+            "⩇": "capcup",
+            "⩈": "cupbrcap",
+            "⩉": "capbrcup",
+            "⩊": "cupcup",
+            "⩋": "capcap",
+            "⩌": "ccups",
+            "⩍": "ccaps",
+            "⩐": "ccupssm",
+            "⩓": "And",
+            "⩔": "Or",
+            "⩕": "andand",
+            "⩖": "oror",
+            "⩗": "orslope",
+            "⩘": "andslope",
+            "⩚": "andv",
+            "⩛": "orv",
+            "⩜": "andd",
+            "⩝": "ord",
+            "⩟": "wedbar",
+            "⩦": "sdote",
+            "⩪": "simdot",
+            "⩭": "congdot",
+            "⩭̸": "ncongdot",
+            "⩮": "easter",
+            "⩯": "apacir",
+            "⩰": "apE",
+            "⩰̸": "napE",
+            "⩱": "eplus",
+            "⩲": "pluse",
+            "⩳": "Esim",
+            "⩷": "eDDot",
+            "⩸": "equivDD",
+            "⩹": "ltcir",
+            "⩺": "gtcir",
+            "⩻": "ltquest",
+            "⩼": "gtquest",
+            "⩽": "les",
+            "⩽̸": "nles",
+            "⩾": "ges",
+            "⩾̸": "nges",
+            "⩿": "lesdot",
+            "⪀": "gesdot",
+            "⪁": "lesdoto",
+            "⪂": "gesdoto",
+            "⪃": "lesdotor",
+            "⪄": "gesdotol",
+            "⪅": "lap",
+            "⪆": "gap",
+            "⪇": "lne",
+            "⪈": "gne",
+            "⪉": "lnap",
+            "⪊": "gnap",
+            "⪋": "lEg",
+            "⪌": "gEl",
+            "⪍": "lsime",
+            "⪎": "gsime",
+            "⪏": "lsimg",
+            "⪐": "gsiml",
+            "⪑": "lgE",
+            "⪒": "glE",
+            "⪓": "lesges",
+            "⪔": "gesles",
+            "⪕": "els",
+            "⪖": "egs",
+            "⪗": "elsdot",
+            "⪘": "egsdot",
+            "⪙": "el",
+            "⪚": "eg",
+            "⪝": "siml",
+            "⪞": "simg",
+            "⪟": "simlE",
+            "⪠": "simgE",
+            "⪡": "LessLess",
+            "⪡̸": "NotNestedLessLess",
+            "⪢": "GreaterGreater",
+            "⪢̸": "NotNestedGreaterGreater",
+            "⪤": "glj",
+            "⪥": "gla",
+            "⪦": "ltcc",
+            "⪧": "gtcc",
+            "⪨": "lescc",
+            "⪩": "gescc",
+            "⪪": "smt",
+            "⪫": "lat",
+            "⪬": "smte",
+            "⪬︀": "smtes",
+            "⪭": "late",
+            "⪭︀": "lates",
+            "⪮": "bumpE",
+            "⪯": "pre",
+            "⪯̸": "npre",
+            "⪰": "sce",
+            "⪰̸": "nsce",
+            "⪳": "prE",
+            "⪴": "scE",
+            "⪵": "prnE",
+            "⪶": "scnE",
+            "⪷": "prap",
+            "⪸": "scap",
+            "⪹": "prnap",
+            "⪺": "scnap",
+            "⪻": "Pr",
+            "⪼": "Sc",
+            "⪽": "subdot",
+            "⪾": "supdot",
+            "⪿": "subplus",
+            "⫀": "supplus",
+            "⫁": "submult",
+            "⫂": "supmult",
+            "⫃": "subedot",
+            "⫄": "supedot",
+            "⫅": "subE",
+            "⫅̸": "nsubE",
+            "⫆": "supE",
+            "⫆̸": "nsupE",
+            "⫇": "subsim",
+            "⫈": "supsim",
+            "⫋︀": "vsubnE",
+            "⫋": "subnE",
+            "⫌︀": "vsupnE",
+            "⫌": "supnE",
+            "⫏": "csub",
+            "⫐": "csup",
+            "⫑": "csube",
+            "⫒": "csupe",
+            "⫓": "subsup",
+            "⫔": "supsub",
+            "⫕": "subsub",
+            "⫖": "supsup",
+            "⫗": "suphsub",
+            "⫘": "supdsub",
+            "⫙": "forkv",
+            "⫚": "topfork",
+            "⫛": "mlcp",
+            "⫤": "Dashv",
+            "⫦": "Vdashl",
+            "⫧": "Barv",
+            "⫨": "vBar",
+            "⫩": "vBarv",
+            "⫫": "Vbar",
+            "⫬": "Not",
+            "⫭": "bNot",
+            "⫮": "rnmid",
+            "⫯": "cirmid",
+            "⫰": "midcir",
+            "⫱": "topcir",
+            "⫲": "nhpar",
+            "⫳": "parsim",
+            "⫽": "parsl",
+            "⫽⃥": "nparsl",
+            "♭": "flat",
+            "♮": "natur",
+            "♯": "sharp",
+            "\xa4": "curren",
+            "\xa2": "cent",
+            $: "dollar",
+            "\xa3": "pound",
+            "\xa5": "yen",
+            "€": "euro",
+            "\xb9": "sup1",
+            "\xbd": "half",
+            "⅓": "frac13",
+            "\xbc": "frac14",
+            "⅕": "frac15",
+            "⅙": "frac16",
+            "⅛": "frac18",
+            "\xb2": "sup2",
+            "⅔": "frac23",
+            "⅖": "frac25",
+            "\xb3": "sup3",
+            "\xbe": "frac34",
+            "⅗": "frac35",
+            "⅜": "frac38",
+            "⅘": "frac45",
+            "⅚": "frac56",
+            "⅝": "frac58",
+            "⅞": "frac78",
+            "\uD835\uDCB6": "ascr",
+            "\uD835\uDD52": "aopf",
+            "\uD835\uDD1E": "afr",
+            "\uD835\uDD38": "Aopf",
+            "\uD835\uDD04": "Afr",
+            "\uD835\uDC9C": "Ascr",
+            ª: "ordf",
+            á: "aacute",
+            Á: "Aacute",
+            à: "agrave",
+            À: "Agrave",
+            ă: "abreve",
+            Ă: "Abreve",
+            â: "acirc",
+            Â: "Acirc",
+            å: "aring",
+            Å: "angst",
+            ä: "auml",
+            Ä: "Auml",
+            ã: "atilde",
+            Ã: "Atilde",
+            ą: "aogon",
+            Ą: "Aogon",
+            ā: "amacr",
+            Ā: "Amacr",
+            æ: "aelig",
+            Æ: "AElig",
+            "\uD835\uDCB7": "bscr",
+            "\uD835\uDD53": "bopf",
+            "\uD835\uDD1F": "bfr",
+            "\uD835\uDD39": "Bopf",
+            ℬ: "Bscr",
+            "\uD835\uDD05": "Bfr",
+            "\uD835\uDD20": "cfr",
+            "\uD835\uDCB8": "cscr",
+            "\uD835\uDD54": "copf",
+            ℭ: "Cfr",
+            "\uD835\uDC9E": "Cscr",
+            ℂ: "Copf",
+            ć: "cacute",
+            Ć: "Cacute",
+            ĉ: "ccirc",
+            Ĉ: "Ccirc",
+            č: "ccaron",
+            Č: "Ccaron",
+            ċ: "cdot",
+            Ċ: "Cdot",
+            ç: "ccedil",
+            Ç: "Ccedil",
+            "℅": "incare",
+            "\uD835\uDD21": "dfr",
+            "ⅆ": "dd",
+            "\uD835\uDD55": "dopf",
+            "\uD835\uDCB9": "dscr",
+            "\uD835\uDC9F": "Dscr",
+            "\uD835\uDD07": "Dfr",
+            "ⅅ": "DD",
+            "\uD835\uDD3B": "Dopf",
+            ď: "dcaron",
+            Ď: "Dcaron",
+            đ: "dstrok",
+            Đ: "Dstrok",
+            ð: "eth",
+            Ð: "ETH",
+            "ⅇ": "ee",
+            ℯ: "escr",
+            "\uD835\uDD22": "efr",
+            "\uD835\uDD56": "eopf",
+            ℰ: "Escr",
+            "\uD835\uDD08": "Efr",
+            "\uD835\uDD3C": "Eopf",
+            é: "eacute",
+            É: "Eacute",
+            è: "egrave",
+            È: "Egrave",
+            ê: "ecirc",
+            Ê: "Ecirc",
+            ě: "ecaron",
+            Ě: "Ecaron",
+            ë: "euml",
+            Ë: "Euml",
+            ė: "edot",
+            Ė: "Edot",
+            ę: "eogon",
+            Ę: "Eogon",
+            ē: "emacr",
+            Ē: "Emacr",
+            "\uD835\uDD23": "ffr",
+            "\uD835\uDD57": "fopf",
+            "\uD835\uDCBB": "fscr",
+            "\uD835\uDD09": "Ffr",
+            "\uD835\uDD3D": "Fopf",
+            ℱ: "Fscr",
+            ﬀ: "fflig",
+            ﬃ: "ffilig",
+            ﬄ: "ffllig",
+            ﬁ: "filig",
+            fj: "fjlig",
+            ﬂ: "fllig",
+            ƒ: "fnof",
+            ℊ: "gscr",
+            "\uD835\uDD58": "gopf",
+            "\uD835\uDD24": "gfr",
+            "\uD835\uDCA2": "Gscr",
+            "\uD835\uDD3E": "Gopf",
+            "\uD835\uDD0A": "Gfr",
+            ǵ: "gacute",
+            ğ: "gbreve",
+            Ğ: "Gbreve",
+            ĝ: "gcirc",
+            Ĝ: "Gcirc",
+            ġ: "gdot",
+            Ġ: "Gdot",
+            Ģ: "Gcedil",
+            "\uD835\uDD25": "hfr",
+            ℎ: "planckh",
+            "\uD835\uDCBD": "hscr",
+            "\uD835\uDD59": "hopf",
+            ℋ: "Hscr",
+            ℌ: "Hfr",
+            ℍ: "Hopf",
+            ĥ: "hcirc",
+            Ĥ: "Hcirc",
+            ℏ: "hbar",
+            ħ: "hstrok",
+            Ħ: "Hstrok",
+            "\uD835\uDD5A": "iopf",
+            "\uD835\uDD26": "ifr",
+            "\uD835\uDCBE": "iscr",
+            "ⅈ": "ii",
+            "\uD835\uDD40": "Iopf",
+            ℐ: "Iscr",
+            ℑ: "Im",
+            í: "iacute",
+            Í: "Iacute",
+            ì: "igrave",
+            Ì: "Igrave",
+            î: "icirc",
+            Î: "Icirc",
+            ï: "iuml",
+            Ï: "Iuml",
+            ĩ: "itilde",
+            Ĩ: "Itilde",
+            İ: "Idot",
+            į: "iogon",
+            Į: "Iogon",
+            ī: "imacr",
+            Ī: "Imacr",
+            ĳ: "ijlig",
+            Ĳ: "IJlig",
+            ı: "imath",
+            "\uD835\uDCBF": "jscr",
+            "\uD835\uDD5B": "jopf",
+            "\uD835\uDD27": "jfr",
+            "\uD835\uDCA5": "Jscr",
+            "\uD835\uDD0D": "Jfr",
+            "\uD835\uDD41": "Jopf",
+            ĵ: "jcirc",
+            Ĵ: "Jcirc",
+            "ȷ": "jmath",
+            "\uD835\uDD5C": "kopf",
+            "\uD835\uDCC0": "kscr",
+            "\uD835\uDD28": "kfr",
+            "\uD835\uDCA6": "Kscr",
+            "\uD835\uDD42": "Kopf",
+            "\uD835\uDD0E": "Kfr",
+            ķ: "kcedil",
+            Ķ: "Kcedil",
+            "\uD835\uDD29": "lfr",
+            "\uD835\uDCC1": "lscr",
+            ℓ: "ell",
+            "\uD835\uDD5D": "lopf",
+            ℒ: "Lscr",
+            "\uD835\uDD0F": "Lfr",
+            "\uD835\uDD43": "Lopf",
+            ĺ: "lacute",
+            Ĺ: "Lacute",
+            ľ: "lcaron",
+            Ľ: "Lcaron",
+            ļ: "lcedil",
+            Ļ: "Lcedil",
+            ł: "lstrok",
+            Ł: "Lstrok",
+            ŀ: "lmidot",
+            Ŀ: "Lmidot",
+            "\uD835\uDD2A": "mfr",
+            "\uD835\uDD5E": "mopf",
+            "\uD835\uDCC2": "mscr",
+            "\uD835\uDD10": "Mfr",
+            "\uD835\uDD44": "Mopf",
+            ℳ: "Mscr",
+            "\uD835\uDD2B": "nfr",
+            "\uD835\uDD5F": "nopf",
+            "\uD835\uDCC3": "nscr",
+            ℕ: "Nopf",
+            "\uD835\uDCA9": "Nscr",
+            "\uD835\uDD11": "Nfr",
+            ń: "nacute",
+            Ń: "Nacute",
+            ň: "ncaron",
+            Ň: "Ncaron",
+            ñ: "ntilde",
+            Ñ: "Ntilde",
+            ņ: "ncedil",
+            Ņ: "Ncedil",
+            "№": "numero",
+            ŋ: "eng",
+            Ŋ: "ENG",
+            "\uD835\uDD60": "oopf",
+            "\uD835\uDD2C": "ofr",
+            ℴ: "oscr",
+            "\uD835\uDCAA": "Oscr",
+            "\uD835\uDD12": "Ofr",
+            "\uD835\uDD46": "Oopf",
+            º: "ordm",
+            ó: "oacute",
+            Ó: "Oacute",
+            ò: "ograve",
+            Ò: "Ograve",
+            ô: "ocirc",
+            Ô: "Ocirc",
+            ö: "ouml",
+            Ö: "Ouml",
+            ő: "odblac",
+            Ő: "Odblac",
+            õ: "otilde",
+            Õ: "Otilde",
+            ø: "oslash",
+            Ø: "Oslash",
+            ō: "omacr",
+            Ō: "Omacr",
+            œ: "oelig",
+            Œ: "OElig",
+            "\uD835\uDD2D": "pfr",
+            "\uD835\uDCC5": "pscr",
+            "\uD835\uDD61": "popf",
+            ℙ: "Popf",
+            "\uD835\uDD13": "Pfr",
+            "\uD835\uDCAB": "Pscr",
+            "\uD835\uDD62": "qopf",
+            "\uD835\uDD2E": "qfr",
+            "\uD835\uDCC6": "qscr",
+            "\uD835\uDCAC": "Qscr",
+            "\uD835\uDD14": "Qfr",
+            ℚ: "Qopf",
+            ĸ: "kgreen",
+            "\uD835\uDD2F": "rfr",
+            "\uD835\uDD63": "ropf",
+            "\uD835\uDCC7": "rscr",
+            ℛ: "Rscr",
+            ℜ: "Re",
+            ℝ: "Ropf",
+            ŕ: "racute",
+            Ŕ: "Racute",
+            ř: "rcaron",
+            Ř: "Rcaron",
+            ŗ: "rcedil",
+            Ŗ: "Rcedil",
+            "\uD835\uDD64": "sopf",
+            "\uD835\uDCC8": "sscr",
+            "\uD835\uDD30": "sfr",
+            "\uD835\uDD4A": "Sopf",
+            "\uD835\uDD16": "Sfr",
+            "\uD835\uDCAE": "Sscr",
+            "Ⓢ": "oS",
+            ś: "sacute",
+            Ś: "Sacute",
+            ŝ: "scirc",
+            Ŝ: "Scirc",
+            š: "scaron",
+            Š: "Scaron",
+            ş: "scedil",
+            Ş: "Scedil",
+            ß: "szlig",
+            "\uD835\uDD31": "tfr",
+            "\uD835\uDCC9": "tscr",
+            "\uD835\uDD65": "topf",
+            "\uD835\uDCAF": "Tscr",
+            "\uD835\uDD17": "Tfr",
+            "\uD835\uDD4B": "Topf",
+            ť: "tcaron",
+            Ť: "Tcaron",
+            ţ: "tcedil",
+            Ţ: "Tcedil",
+            "™": "trade",
+            ŧ: "tstrok",
+            Ŧ: "Tstrok",
+            "\uD835\uDCCA": "uscr",
+            "\uD835\uDD66": "uopf",
+            "\uD835\uDD32": "ufr",
+            "\uD835\uDD4C": "Uopf",
+            "\uD835\uDD18": "Ufr",
+            "\uD835\uDCB0": "Uscr",
+            ú: "uacute",
+            Ú: "Uacute",
+            ù: "ugrave",
+            Ù: "Ugrave",
+            ŭ: "ubreve",
+            Ŭ: "Ubreve",
+            û: "ucirc",
+            Û: "Ucirc",
+            ů: "uring",
+            Ů: "Uring",
+            ü: "uuml",
+            Ü: "Uuml",
+            ű: "udblac",
+            Ű: "Udblac",
+            ũ: "utilde",
+            Ũ: "Utilde",
+            ų: "uogon",
+            Ų: "Uogon",
+            ū: "umacr",
+            Ū: "Umacr",
+            "\uD835\uDD33": "vfr",
+            "\uD835\uDD67": "vopf",
+            "\uD835\uDCCB": "vscr",
+            "\uD835\uDD19": "Vfr",
+            "\uD835\uDD4D": "Vopf",
+            "\uD835\uDCB1": "Vscr",
+            "\uD835\uDD68": "wopf",
+            "\uD835\uDCCC": "wscr",
+            "\uD835\uDD34": "wfr",
+            "\uD835\uDCB2": "Wscr",
+            "\uD835\uDD4E": "Wopf",
+            "\uD835\uDD1A": "Wfr",
+            ŵ: "wcirc",
+            Ŵ: "Wcirc",
+            "\uD835\uDD35": "xfr",
+            "\uD835\uDCCD": "xscr",
+            "\uD835\uDD69": "xopf",
+            "\uD835\uDD4F": "Xopf",
+            "\uD835\uDD1B": "Xfr",
+            "\uD835\uDCB3": "Xscr",
+            "\uD835\uDD36": "yfr",
+            "\uD835\uDCCE": "yscr",
+            "\uD835\uDD6A": "yopf",
+            "\uD835\uDCB4": "Yscr",
+            "\uD835\uDD1C": "Yfr",
+            "\uD835\uDD50": "Yopf",
+            ý: "yacute",
+            Ý: "Yacute",
+            ŷ: "ycirc",
+            Ŷ: "Ycirc",
+            ÿ: "yuml",
+            Ÿ: "Yuml",
+            "\uD835\uDCCF": "zscr",
+            "\uD835\uDD37": "zfr",
+            "\uD835\uDD6B": "zopf",
+            ℨ: "Zfr",
+            ℤ: "Zopf",
+            "\uD835\uDCB5": "Zscr",
+            ź: "zacute",
+            Ź: "Zacute",
+            ž: "zcaron",
+            Ž: "Zcaron",
+            ż: "zdot",
+            Ż: "Zdot",
+            Ƶ: "imped",
+            þ: "thorn",
+            Þ: "THORN",
+            ŉ: "napos",
+            α: "alpha",
+            Α: "Alpha",
+            β: "beta",
+            Β: "Beta",
+            γ: "gamma",
+            Γ: "Gamma",
+            δ: "delta",
+            Δ: "Delta",
+            ε: "epsi",
+            "ϵ": "epsiv",
+            Ε: "Epsilon",
+            ϝ: "gammad",
+            Ϝ: "Gammad",
+            ζ: "zeta",
+            Ζ: "Zeta",
+            η: "eta",
+            Η: "Eta",
+            θ: "theta",
+            ϑ: "thetav",
+            Θ: "Theta",
+            ι: "iota",
+            Ι: "Iota",
+            κ: "kappa",
+            ϰ: "kappav",
+            Κ: "Kappa",
+            λ: "lambda",
+            Λ: "Lambda",
+            μ: "mu",
+            µ: "micro",
+            Μ: "Mu",
+            ν: "nu",
+            Ν: "Nu",
+            ξ: "xi",
+            Ξ: "Xi",
+            ο: "omicron",
+            Ο: "Omicron",
+            π: "pi",
+            ϖ: "piv",
+            Π: "Pi",
+            ρ: "rho",
+            ϱ: "rhov",
+            Ρ: "Rho",
+            σ: "sigma",
+            Σ: "Sigma",
+            ς: "sigmaf",
+            τ: "tau",
+            Τ: "Tau",
+            υ: "upsi",
+            Υ: "Upsilon",
+            ϒ: "Upsi",
+            φ: "phi",
+            ϕ: "phiv",
+            Φ: "Phi",
+            χ: "chi",
+            Χ: "Chi",
+            ψ: "psi",
+            Ψ: "Psi",
+            ω: "omega",
+            Ω: "ohm",
+            а: "acy",
+            А: "Acy",
+            б: "bcy",
+            Б: "Bcy",
+            в: "vcy",
+            В: "Vcy",
+            г: "gcy",
+            Г: "Gcy",
+            ѓ: "gjcy",
+            Ѓ: "GJcy",
+            д: "dcy",
+            Д: "Dcy",
+            ђ: "djcy",
+            Ђ: "DJcy",
+            е: "iecy",
+            Е: "IEcy",
+            ё: "iocy",
+            Ё: "IOcy",
+            є: "jukcy",
+            Є: "Jukcy",
+            ж: "zhcy",
+            Ж: "ZHcy",
+            з: "zcy",
+            З: "Zcy",
+            ѕ: "dscy",
+            Ѕ: "DScy",
+            и: "icy",
+            И: "Icy",
+            і: "iukcy",
+            І: "Iukcy",
+            ї: "yicy",
+            Ї: "YIcy",
+            й: "jcy",
+            Й: "Jcy",
+            ј: "jsercy",
+            Ј: "Jsercy",
+            к: "kcy",
+            К: "Kcy",
+            ќ: "kjcy",
+            Ќ: "KJcy",
+            л: "lcy",
+            Л: "Lcy",
+            љ: "ljcy",
+            Љ: "LJcy",
+            м: "mcy",
+            М: "Mcy",
+            н: "ncy",
+            Н: "Ncy",
+            њ: "njcy",
+            Њ: "NJcy",
+            о: "ocy",
+            О: "Ocy",
+            п: "pcy",
+            П: "Pcy",
+            р: "rcy",
+            Р: "Rcy",
+            с: "scy",
+            С: "Scy",
+            т: "tcy",
+            Т: "Tcy",
+            ћ: "tshcy",
+            Ћ: "TSHcy",
+            у: "ucy",
+            У: "Ucy",
+            ў: "ubrcy",
+            Ў: "Ubrcy",
+            ф: "fcy",
+            Ф: "Fcy",
+            х: "khcy",
+            Х: "KHcy",
+            ц: "tscy",
+            Ц: "TScy",
+            ч: "chcy",
+            Ч: "CHcy",
+            џ: "dzcy",
+            Џ: "DZcy",
+            ш: "shcy",
+            Ш: "SHcy",
+            щ: "shchcy",
+            Щ: "SHCHcy",
+            ъ: "hardcy",
+            Ъ: "HARDcy",
+            ы: "ycy",
+            Ы: "Ycy",
+            ь: "softcy",
+            Ь: "SOFTcy",
+            э: "ecy",
+            Э: "Ecy",
+            ю: "yucy",
+            Ю: "YUcy",
+            я: "yacy",
+            Я: "YAcy",
+            ℵ: "aleph",
+            ℶ: "beth",
+            ℷ: "gimel",
+            ℸ: "daleth"
+        }, A = /["&'<>`]/g, y = {
+            '"': "&quot;",
+            "&": "&amp;",
+            "'": "&#x27;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "`": "&#x60;"
+        }, _ = /&#(?:[xX][^a-fA-F0-9]|[^0-9xX])/, q = /[\0-\x08\x0B\x0E-\x1F\x7F-\x9F\uFDD0-\uFDEF\uFFFE\uFFFF]|[\uD83F\uD87F\uD8BF\uD8FF\uD93F\uD97F\uD9BF\uD9FF\uDA3F\uDA7F\uDABF\uDAFF\uDB3F\uDB7F\uDBBF\uDBFF][\uDFFE\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/, F = /&(CounterClockwiseContourIntegral|DoubleLongLeftRightArrow|ClockwiseContourIntegral|NotNestedGreaterGreater|NotSquareSupersetEqual|DiacriticalDoubleAcute|NotRightTriangleEqual|NotSucceedsSlantEqual|NotPrecedesSlantEqual|CloseCurlyDoubleQuote|NegativeVeryThinSpace|DoubleContourIntegral|FilledVerySmallSquare|CapitalDifferentialD|OpenCurlyDoubleQuote|EmptyVerySmallSquare|NestedGreaterGreater|DoubleLongRightArrow|NotLeftTriangleEqual|NotGreaterSlantEqual|ReverseUpEquilibrium|DoubleLeftRightArrow|NotSquareSubsetEqual|NotDoubleVerticalBar|RightArrowLeftArrow|NotGreaterFullEqual|NotRightTriangleBar|SquareSupersetEqual|DownLeftRightVector|DoubleLongLeftArrow|leftrightsquigarrow|LeftArrowRightArrow|NegativeMediumSpace|blacktriangleright|RightDownVectorBar|PrecedesSlantEqual|RightDoubleBracket|SucceedsSlantEqual|NotLeftTriangleBar|RightTriangleEqual|SquareIntersection|RightDownTeeVector|ReverseEquilibrium|NegativeThickSpace|longleftrightarrow|Longleftrightarrow|LongLeftRightArrow|DownRightTeeVector|DownRightVectorBar|GreaterSlantEqual|SquareSubsetEqual|LeftDownVectorBar|LeftDoubleBracket|VerticalSeparator|rightleftharpoons|NotGreaterGreater|NotSquareSuperset|blacktriangleleft|blacktriangledown|NegativeThinSpace|LeftDownTeeVector|NotLessSlantEqual|leftrightharpoons|DoubleUpDownArrow|DoubleVerticalBar|LeftTriangleEqual|FilledSmallSquare|twoheadrightarrow|NotNestedLessLess|DownLeftTeeVector|DownLeftVectorBar|RightAngleBracket|NotTildeFullEqual|NotReverseElement|RightUpDownVector|DiacriticalTilde|NotSucceedsTilde|circlearrowright|NotPrecedesEqual|rightharpoondown|DoubleRightArrow|NotSucceedsEqual|NonBreakingSpace|NotRightTriangle|LessEqualGreater|RightUpTeeVector|LeftAngleBracket|GreaterFullEqual|DownArrowUpArrow|RightUpVectorBar|twoheadleftarrow|GreaterEqualLess|downharpoonright|RightTriangleBar|ntrianglerighteq|NotSupersetEqual|LeftUpDownVector|DiacriticalAcute|rightrightarrows|vartriangleright|UpArrowDownArrow|DiacriticalGrave|UnderParenthesis|EmptySmallSquare|LeftUpVectorBar|leftrightarrows|DownRightVector|downharpoonleft|trianglerighteq|ShortRightArrow|OverParenthesis|DoubleLeftArrow|DoubleDownArrow|NotSquareSubset|bigtriangledown|ntrianglelefteq|UpperRightArrow|curvearrowright|vartriangleleft|NotLeftTriangle|nleftrightarrow|LowerRightArrow|NotHumpDownHump|NotGreaterTilde|rightthreetimes|LeftUpTeeVector|NotGreaterEqual|straightepsilon|LeftTriangleBar|rightsquigarrow|ContourIntegral|rightleftarrows|CloseCurlyQuote|RightDownVector|LeftRightVector|nLeftrightarrow|leftharpoondown|circlearrowleft|SquareSuperset|OpenCurlyQuote|hookrightarrow|HorizontalLine|DiacriticalDot|NotLessGreater|ntriangleright|DoubleRightTee|InvisibleComma|InvisibleTimes|LowerLeftArrow|DownLeftVector|NotSubsetEqual|curvearrowleft|trianglelefteq|NotVerticalBar|TildeFullEqual|downdownarrows|NotGreaterLess|RightTeeVector|ZeroWidthSpace|looparrowright|LongRightArrow|doublebarwedge|ShortLeftArrow|ShortDownArrow|RightVectorBar|GreaterGreater|ReverseElement|rightharpoonup|LessSlantEqual|leftthreetimes|upharpoonright|rightarrowtail|LeftDownVector|Longrightarrow|NestedLessLess|UpperLeftArrow|nshortparallel|leftleftarrows|leftrightarrow|Leftrightarrow|LeftRightArrow|longrightarrow|upharpoonleft|RightArrowBar|ApplyFunction|LeftTeeVector|leftarrowtail|NotEqualTilde|varsubsetneqq|varsupsetneqq|RightTeeArrow|SucceedsEqual|SucceedsTilde|LeftVectorBar|SupersetEqual|hookleftarrow|DifferentialD|VerticalTilde|VeryThinSpace|blacktriangle|bigtriangleup|LessFullEqual|divideontimes|leftharpoonup|UpEquilibrium|ntriangleleft|RightTriangle|measuredangle|shortparallel|longleftarrow|Longleftarrow|LongLeftArrow|DoubleLeftTee|Poincareplane|PrecedesEqual|triangleright|DoubleUpArrow|RightUpVector|fallingdotseq|looparrowleft|PrecedesTilde|NotTildeEqual|NotTildeTilde|smallsetminus|Proportional|triangleleft|triangledown|UnderBracket|NotHumpEqual|exponentiale|ExponentialE|NotLessTilde|HilbertSpace|RightCeiling|blacklozenge|varsupsetneq|HumpDownHump|GreaterEqual|VerticalLine|LeftTeeArrow|NotLessEqual|DownTeeArrow|LeftTriangle|varsubsetneq|Intersection|NotCongruent|DownArrowBar|LeftUpVector|LeftArrowBar|risingdotseq|GreaterTilde|RoundImplies|SquareSubset|ShortUpArrow|NotSuperset|quaternions|precnapprox|backepsilon|preccurlyeq|OverBracket|blacksquare|MediumSpace|VerticalBar|circledcirc|circleddash|CircleMinus|CircleTimes|LessGreater|curlyeqprec|curlyeqsucc|diamondsuit|UpDownArrow|Updownarrow|RuleDelayed|Rrightarrow|updownarrow|RightVector|nRightarrow|nrightarrow|eqslantless|LeftCeiling|Equilibrium|SmallCircle|expectation|NotSucceeds|thickapprox|GreaterLess|SquareUnion|NotPrecedes|NotLessLess|straightphi|succnapprox|succcurlyeq|SubsetEqual|sqsupseteq|Proportion|Laplacetrf|ImaginaryI|supsetneqq|NotGreater|gtreqqless|NotElement|ThickSpace|TildeEqual|TildeTilde|Fouriertrf|rmoustache|EqualTilde|eqslantgtr|UnderBrace|LeftVector|UpArrowBar|nLeftarrow|nsubseteqq|subsetneqq|nsupseteqq|nleftarrow|succapprox|lessapprox|UpTeeArrow|upuparrows|curlywedge|lesseqqgtr|varepsilon|varnothing|RightFloor|complement|CirclePlus|sqsubseteq|Lleftarrow|circledast|RightArrow|Rightarrow|rightarrow|lmoustache|Bernoullis|precapprox|mapstoleft|mapstodown|longmapsto|dotsquare|downarrow|DoubleDot|nsubseteq|supsetneq|leftarrow|nsupseteq|subsetneq|ThinSpace|ngeqslant|subseteqq|HumpEqual|NotSubset|triangleq|NotCupCap|lesseqgtr|heartsuit|TripleDot|Leftarrow|Coproduct|Congruent|varpropto|complexes|gvertneqq|LeftArrow|LessTilde|supseteqq|MinusPlus|CircleDot|nleqslant|NotExists|gtreqless|nparallel|UnionPlus|LeftFloor|checkmark|CenterDot|centerdot|Mellintrf|gtrapprox|bigotimes|OverBrace|spadesuit|therefore|pitchfork|rationals|PlusMinus|Backslash|Therefore|DownBreve|backsimeq|backprime|DownArrow|nshortmid|Downarrow|lvertneqq|eqvparsl|imagline|imagpart|infintie|integers|Integral|intercal|LessLess|Uarrocir|intlarhk|sqsupset|angmsdaf|sqsubset|llcorner|vartheta|cupbrcap|lnapprox|Superset|SuchThat|succnsim|succneqq|angmsdag|biguplus|curlyvee|trpezium|Succeeds|NotTilde|bigwedge|angmsdah|angrtvbd|triminus|cwconint|fpartint|lrcorner|smeparsl|subseteq|urcorner|lurdshar|laemptyv|DDotrahd|approxeq|ldrushar|awconint|mapstoup|backcong|shortmid|triangle|geqslant|gesdotol|timesbar|circledR|circledS|setminus|multimap|naturals|scpolint|ncongdot|RightTee|boxminus|gnapprox|boxtimes|andslope|thicksim|angmsdaa|varsigma|cirfnint|rtriltri|angmsdab|rppolint|angmsdac|barwedge|drbkarow|clubsuit|thetasym|bsolhsub|capbrcup|dzigrarr|doteqdot|DotEqual|dotminus|UnderBar|NotEqual|realpart|otimesas|ulcorner|hksearow|hkswarow|parallel|PartialD|elinters|emptyset|plusacir|bbrktbrk|angmsdad|pointint|bigoplus|angmsdae|Precedes|bigsqcup|varkappa|notindot|supseteq|precneqq|precnsim|profalar|profline|profsurf|leqslant|lesdotor|raemptyv|subplus|notnivb|notnivc|subrarr|zigrarr|vzigzag|submult|subedot|Element|between|cirscir|larrbfs|larrsim|lotimes|lbrksld|lbrkslu|lozenge|ldrdhar|dbkarow|bigcirc|epsilon|simrarr|simplus|ltquest|Epsilon|luruhar|gtquest|maltese|npolint|eqcolon|npreceq|bigodot|ddagger|gtrless|bnequiv|harrcir|ddotseq|equivDD|backsim|demptyv|nsqsube|nsqsupe|Upsilon|nsubset|upsilon|minusdu|nsucceq|swarrow|nsupset|coloneq|searrow|boxplus|napprox|natural|asympeq|alefsym|congdot|nearrow|bigstar|diamond|supplus|tritime|LeftTee|nvinfin|triplus|NewLine|nvltrie|nvrtrie|nwarrow|nexists|Diamond|ruluhar|Implies|supmult|angzarr|suplarr|suphsub|questeq|because|digamma|Because|olcross|bemptyv|omicron|Omicron|rotimes|NoBreak|intprod|angrtvb|orderof|uwangle|suphsol|lesdoto|orslope|DownTee|realine|cudarrl|rdldhar|OverBar|supedot|lessdot|supdsub|topfork|succsim|rbrkslu|rbrksld|pertenk|cudarrr|isindot|planckh|lessgtr|pluscir|gesdoto|plussim|plustwo|lesssim|cularrp|rarrsim|Cayleys|notinva|notinvb|notinvc|UpArrow|Uparrow|uparrow|NotLess|dwangle|precsim|Product|curarrm|Cconint|dotplus|rarrbfs|ccupssm|Cedilla|cemptyv|notniva|quatint|frac35|frac38|frac45|frac56|frac58|frac78|tridot|xoplus|gacute|gammad|Gammad|lfisht|lfloor|bigcup|sqsupe|gbreve|Gbreve|lharul|sqsube|sqcups|Gcedil|apacir|llhard|lmidot|Lmidot|lmoust|andand|sqcaps|approx|Abreve|spades|circeq|tprime|divide|topcir|Assign|topbot|gesdot|divonx|xuplus|timesd|gesles|atilde|solbar|SOFTcy|loplus|timesb|lowast|lowbar|dlcorn|dlcrop|softcy|dollar|lparlt|thksim|lrhard|Atilde|lsaquo|smashp|bigvee|thinsp|wreath|bkarow|lsquor|lstrok|Lstrok|lthree|ltimes|ltlarr|DotDot|simdot|ltrPar|weierp|xsqcup|angmsd|sigmav|sigmaf|zeetrf|Zcaron|zcaron|mapsto|vsupne|thetav|cirmid|marker|mcomma|Zacute|vsubnE|there4|gtlPar|vsubne|bottom|gtrarr|SHCHcy|shchcy|midast|midcir|middot|minusb|minusd|gtrdot|bowtie|sfrown|mnplus|models|colone|seswar|Colone|mstpos|searhk|gtrsim|nacute|Nacute|boxbox|telrec|hairsp|Tcedil|nbumpe|scnsim|ncaron|Ncaron|ncedil|Ncedil|hamilt|Scedil|nearhk|hardcy|HARDcy|tcedil|Tcaron|commat|nequiv|nesear|tcaron|target|hearts|nexist|varrho|scedil|Scaron|scaron|hellip|Sacute|sacute|hercon|swnwar|compfn|rtimes|rthree|rsquor|rsaquo|zacute|wedgeq|homtht|barvee|barwed|Barwed|rpargt|horbar|conint|swarhk|roplus|nltrie|hslash|hstrok|Hstrok|rmoust|Conint|bprime|hybull|hyphen|iacute|Iacute|supsup|supsub|supsim|varphi|coprod|brvbar|agrave|Supset|supset|igrave|Igrave|notinE|Agrave|iiiint|iinfin|copysr|wedbar|Verbar|vangrt|becaus|incare|verbar|inodot|bullet|drcorn|intcal|drcrop|cularr|vellip|Utilde|bumpeq|cupcap|dstrok|Dstrok|CupCap|cupcup|cupdot|eacute|Eacute|supdot|iquest|easter|ecaron|Ecaron|ecolon|isinsv|utilde|itilde|Itilde|curarr|succeq|Bumpeq|cacute|ulcrop|nparsl|Cacute|nprcue|egrave|Egrave|nrarrc|nrarrw|subsup|subsub|nrtrie|jsercy|nsccue|Jsercy|kappav|kcedil|Kcedil|subsim|ulcorn|nsimeq|egsdot|veebar|kgreen|capand|elsdot|Subset|subset|curren|aacute|lacute|Lacute|emptyv|ntilde|Ntilde|lagran|lambda|Lambda|capcap|Ugrave|langle|subdot|emsp13|numero|emsp14|nvdash|nvDash|nVdash|nVDash|ugrave|ufisht|nvHarr|larrfs|nvlArr|larrhk|larrlp|larrpl|nvrArr|Udblac|nwarhk|larrtl|nwnear|oacute|Oacute|latail|lAtail|sstarf|lbrace|odblac|Odblac|lbrack|udblac|odsold|eparsl|lcaron|Lcaron|ograve|Ograve|lcedil|Lcedil|Aacute|ssmile|ssetmn|squarf|ldquor|capcup|ominus|cylcty|rharul|eqcirc|dagger|rfloor|rfisht|Dagger|daleth|equals|origof|capdot|equest|dcaron|Dcaron|rdquor|oslash|Oslash|otilde|Otilde|otimes|Otimes|urcrop|Ubreve|ubreve|Yacute|Uacute|uacute|Rcedil|rcedil|urcorn|parsim|Rcaron|Vdashl|rcaron|Tstrok|percnt|period|permil|Exists|yacute|rbrack|rbrace|phmmat|ccaron|Ccaron|planck|ccedil|plankv|tstrok|female|plusdo|plusdu|ffilig|plusmn|ffllig|Ccedil|rAtail|dfisht|bernou|ratail|Rarrtl|rarrtl|angsph|rarrpl|rarrlp|rarrhk|xwedge|xotime|forall|ForAll|Vvdash|vsupnE|preceq|bigcap|frac12|frac13|frac14|primes|rarrfs|prnsim|frac15|Square|frac16|square|lesdot|frac18|frac23|propto|prurel|rarrap|rangle|puncsp|frac25|Racute|qprime|racute|lesges|frac34|abreve|AElig|eqsim|utdot|setmn|urtri|Equal|Uring|seArr|uring|searr|dashv|Dashv|mumap|nabla|iogon|Iogon|sdote|sdotb|scsim|napid|napos|equiv|natur|Acirc|dblac|erarr|nbump|iprod|erDot|ucirc|awint|esdot|angrt|ncong|isinE|scnap|Scirc|scirc|ndash|isins|Ubrcy|nearr|neArr|isinv|nedot|ubrcy|acute|Ycirc|iukcy|Iukcy|xutri|nesim|caret|jcirc|Jcirc|caron|twixt|ddarr|sccue|exist|jmath|sbquo|ngeqq|angst|ccaps|lceil|ngsim|UpTee|delta|Delta|rtrif|nharr|nhArr|nhpar|rtrie|jukcy|Jukcy|kappa|rsquo|Kappa|nlarr|nlArr|TSHcy|rrarr|aogon|Aogon|fflig|xrarr|tshcy|ccirc|nleqq|filig|upsih|nless|dharl|nlsim|fjlig|ropar|nltri|dharr|robrk|roarr|fllig|fltns|roang|rnmid|subnE|subne|lAarr|trisb|Ccirc|acirc|ccups|blank|VDash|forkv|Vdash|langd|cedil|blk12|blk14|laquo|strns|diams|notin|vDash|larrb|blk34|block|disin|uplus|vdash|vBarv|aelig|starf|Wedge|check|xrArr|lates|lbarr|lBarr|notni|lbbrk|bcong|frasl|lbrke|frown|vrtri|vprop|vnsup|gamma|Gamma|wedge|xodot|bdquo|srarr|doteq|ldquo|boxdl|boxdL|gcirc|Gcirc|boxDl|boxDL|boxdr|boxdR|boxDr|TRADE|trade|rlhar|boxDR|vnsub|npart|vltri|rlarr|boxhd|boxhD|nprec|gescc|nrarr|nrArr|boxHd|boxHD|boxhu|boxhU|nrtri|boxHu|clubs|boxHU|times|colon|Colon|gimel|xlArr|Tilde|nsime|tilde|nsmid|nspar|THORN|thorn|xlarr|nsube|nsubE|thkap|xhArr|comma|nsucc|boxul|boxuL|nsupe|nsupE|gneqq|gnsim|boxUl|boxUL|grave|boxur|boxuR|boxUr|boxUR|lescc|angle|bepsi|boxvh|varpi|boxvH|numsp|Theta|gsime|gsiml|theta|boxVh|boxVH|boxvl|gtcir|gtdot|boxvL|boxVl|boxVL|crarr|cross|Cross|nvsim|boxvr|nwarr|nwArr|sqsup|dtdot|Uogon|lhard|lharu|dtrif|ocirc|Ocirc|lhblk|duarr|odash|sqsub|Hacek|sqcup|llarr|duhar|oelig|OElig|ofcir|boxvR|uogon|lltri|boxVr|csube|uuarr|ohbar|csupe|ctdot|olarr|olcir|harrw|oline|sqcap|omacr|Omacr|omega|Omega|boxVR|aleph|lneqq|lnsim|loang|loarr|rharu|lobrk|hcirc|operp|oplus|rhard|Hcirc|orarr|Union|order|ecirc|Ecirc|cuepr|szlig|cuesc|breve|reals|eDDot|Breve|hoarr|lopar|utrif|rdquo|Umacr|umacr|efDot|swArr|ultri|alpha|rceil|ovbar|swarr|Wcirc|wcirc|smtes|smile|bsemi|lrarr|aring|parsl|lrhar|bsime|uhblk|lrtri|cupor|Aring|uharr|uharl|slarr|rbrke|bsolb|lsime|rbbrk|RBarr|lsimg|phone|rBarr|rbarr|icirc|lsquo|Icirc|emacr|Emacr|ratio|simne|plusb|simlE|simgE|simeq|pluse|ltcir|ltdot|empty|xharr|xdtri|iexcl|Alpha|ltrie|rarrw|pound|ltrif|xcirc|bumpe|prcue|bumpE|asymp|amacr|cuvee|Sigma|sigma|iiint|udhar|iiota|ijlig|IJlig|supnE|imacr|Imacr|prime|Prime|image|prnap|eogon|Eogon|rarrc|mdash|mDDot|cuwed|imath|supne|imped|Amacr|udarr|prsim|micro|rarrb|cwint|raquo|infin|eplus|range|rangd|Ucirc|radic|minus|amalg|veeeq|rAarr|epsiv|ycirc|quest|sharp|quot|zwnj|Qscr|race|qscr|Qopf|qopf|qint|rang|Rang|Zscr|zscr|Zopf|zopf|rarr|rArr|Rarr|Pscr|pscr|prop|prod|prnE|prec|ZHcy|zhcy|prap|Zeta|zeta|Popf|popf|Zdot|plus|zdot|Yuml|yuml|phiv|YUcy|yucy|Yscr|yscr|perp|Yopf|yopf|part|para|YIcy|Ouml|rcub|yicy|YAcy|rdca|ouml|osol|Oscr|rdsh|yacy|real|oscr|xvee|andd|rect|andv|Xscr|oror|ordm|ordf|xscr|ange|aopf|Aopf|rHar|Xopf|opar|Oopf|xopf|xnis|rhov|oopf|omid|xmap|oint|apid|apos|ogon|ascr|Ascr|odot|odiv|xcup|xcap|ocir|oast|nvlt|nvle|nvgt|nvge|nvap|Wscr|wscr|auml|ntlg|ntgl|nsup|nsub|nsim|Nscr|nscr|nsce|Wopf|ring|npre|wopf|npar|Auml|Barv|bbrk|Nopf|nopf|nmid|nLtv|beta|ropf|Ropf|Beta|beth|nles|rpar|nleq|bnot|bNot|nldr|NJcy|rscr|Rscr|Vscr|vscr|rsqb|njcy|bopf|nisd|Bopf|rtri|Vopf|nGtv|ngtr|vopf|boxh|boxH|boxv|nges|ngeq|boxV|bscr|scap|Bscr|bsim|Vert|vert|bsol|bull|bump|caps|cdot|ncup|scnE|ncap|nbsp|napE|Cdot|cent|sdot|Vbar|nang|vBar|chcy|Mscr|mscr|sect|semi|CHcy|Mopf|mopf|sext|circ|cire|mldr|mlcp|cirE|comp|shcy|SHcy|vArr|varr|cong|copf|Copf|copy|COPY|malt|male|macr|lvnE|cscr|ltri|sime|ltcc|simg|Cscr|siml|csub|Uuml|lsqb|lsim|uuml|csup|Lscr|lscr|utri|smid|lpar|cups|smte|lozf|darr|Lopf|Uscr|solb|lopf|sopf|Sopf|lneq|uscr|spar|dArr|lnap|Darr|dash|Sqrt|LJcy|ljcy|lHar|dHar|Upsi|upsi|diam|lesg|djcy|DJcy|leqq|dopf|Dopf|dscr|Dscr|dscy|ldsh|ldca|squf|DScy|sscr|Sscr|dsol|lcub|late|star|Star|Uopf|Larr|lArr|larr|uopf|dtri|dzcy|sube|subE|Lang|lang|Kscr|kscr|Kopf|kopf|KJcy|kjcy|KHcy|khcy|DZcy|ecir|edot|eDot|Jscr|jscr|succ|Jopf|jopf|Edot|uHar|emsp|ensp|Iuml|iuml|eopf|isin|Iscr|iscr|Eopf|epar|sung|epsi|escr|sup1|sup2|sup3|Iota|iota|supe|supE|Iopf|iopf|IOcy|iocy|Escr|esim|Esim|imof|Uarr|QUOT|uArr|uarr|euml|IEcy|iecy|Idot|Euml|euro|excl|Hscr|hscr|Hopf|hopf|TScy|tscy|Tscr|hbar|tscr|flat|tbrk|fnof|hArr|harr|half|fopf|Fopf|tdot|gvnE|fork|trie|gtcc|fscr|Fscr|gdot|gsim|Gscr|gscr|Gopf|gopf|gneq|Gdot|tosa|gnap|Topf|topf|geqq|toea|GJcy|gjcy|tint|gesl|mid|Sfr|ggg|top|ges|gla|glE|glj|geq|gne|gEl|gel|gnE|Gcy|gcy|gap|Tfr|tfr|Tcy|tcy|Hat|Tau|Ffr|tau|Tab|hfr|Hfr|ffr|Fcy|fcy|icy|Icy|iff|ETH|eth|ifr|Ifr|Eta|eta|int|Int|Sup|sup|ucy|Ucy|Sum|sum|jcy|ENG|ufr|Ufr|eng|Jcy|jfr|els|ell|egs|Efr|efr|Jfr|uml|kcy|Kcy|Ecy|ecy|kfr|Kfr|lap|Sub|sub|lat|lcy|Lcy|leg|Dot|dot|lEg|leq|les|squ|div|die|lfr|Lfr|lgE|Dfr|dfr|Del|deg|Dcy|dcy|lne|lnE|sol|loz|smt|Cup|lrm|cup|lsh|Lsh|sim|shy|map|Map|mcy|Mcy|mfr|Mfr|mho|gfr|Gfr|sfr|cir|Chi|chi|nap|Cfr|vcy|Vcy|cfr|Scy|scy|ncy|Ncy|vee|Vee|Cap|cap|nfr|scE|sce|Nfr|nge|ngE|nGg|vfr|Vfr|ngt|bot|nGt|nis|niv|Rsh|rsh|nle|nlE|bne|Bfr|bfr|nLl|nlt|nLt|Bcy|bcy|not|Not|rlm|wfr|Wfr|npr|nsc|num|ocy|ast|Ocy|ofr|xfr|Xfr|Ofr|ogt|ohm|apE|olt|Rho|ape|rho|Rfr|rfr|ord|REG|ang|reg|orv|And|and|AMP|Rcy|amp|Afr|ycy|Ycy|yen|yfr|Yfr|rcy|par|pcy|Pcy|pfr|Pfr|phi|Phi|afr|Acy|acy|zcy|Zcy|piv|acE|acd|zfr|Zfr|pre|prE|psi|Psi|qfr|Qfr|zwj|Or|ge|Gg|gt|gg|el|oS|lt|Lt|LT|Re|lg|gl|eg|ne|Im|it|le|DD|wp|wr|nu|Nu|dd|lE|Sc|sc|pi|Pi|ee|af|ll|Ll|rx|gE|xi|pm|Xi|ic|pr|Pr|in|ni|mp|mu|ac|Mu|or|ap|Gt|GT|ii);|&(Aacute|Agrave|Atilde|Ccedil|Eacute|Egrave|Iacute|Igrave|Ntilde|Oacute|Ograve|Oslash|Otilde|Uacute|Ugrave|Yacute|aacute|agrave|atilde|brvbar|ccedil|curren|divide|eacute|egrave|frac12|frac14|frac34|iacute|igrave|iquest|middot|ntilde|oacute|ograve|oslash|otilde|plusmn|uacute|ugrave|yacute|AElig|Acirc|Aring|Ecirc|Icirc|Ocirc|THORN|Ucirc|acirc|acute|aelig|aring|cedil|ecirc|icirc|iexcl|laquo|micro|ocirc|pound|raquo|szlig|thorn|times|ucirc|Auml|COPY|Euml|Iuml|Ouml|QUOT|Uuml|auml|cent|copy|euml|iuml|macr|nbsp|ordf|ordm|ouml|para|quot|sect|sup1|sup2|sup3|uuml|yuml|AMP|ETH|REG|amp|deg|eth|not|reg|shy|uml|yen|GT|LT|gt|lt)(?!;)([=a-zA-Z0-9]?)|&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+)/g, R = {
+            aacute: "\xe1",
+            Aacute: "\xc1",
+            abreve: "ă",
+            Abreve: "Ă",
+            ac: "∾",
+            acd: "∿",
+            acE: "∾̳",
+            acirc: "\xe2",
+            Acirc: "\xc2",
+            acute: "\xb4",
+            acy: "а",
+            Acy: "А",
+            aelig: "\xe6",
+            AElig: "\xc6",
+            af: "⁡",
+            afr: "\uD835\uDD1E",
+            Afr: "\uD835\uDD04",
+            agrave: "\xe0",
+            Agrave: "\xc0",
+            alefsym: "ℵ",
+            aleph: "ℵ",
+            alpha: "α",
+            Alpha: "Α",
+            amacr: "ā",
+            Amacr: "Ā",
+            amalg: "⨿",
+            amp: "&",
+            AMP: "&",
+            and: "∧",
+            And: "⩓",
+            andand: "⩕",
+            andd: "⩜",
+            andslope: "⩘",
+            andv: "⩚",
+            ang: "∠",
+            ange: "⦤",
+            angle: "∠",
+            angmsd: "∡",
+            angmsdaa: "⦨",
+            angmsdab: "⦩",
+            angmsdac: "⦪",
+            angmsdad: "⦫",
+            angmsdae: "⦬",
+            angmsdaf: "⦭",
+            angmsdag: "⦮",
+            angmsdah: "⦯",
+            angrt: "∟",
+            angrtvb: "⊾",
+            angrtvbd: "⦝",
+            angsph: "∢",
+            angst: "\xc5",
+            angzarr: "⍼",
+            aogon: "ą",
+            Aogon: "Ą",
+            aopf: "\uD835\uDD52",
+            Aopf: "\uD835\uDD38",
+            ap: "≈",
+            apacir: "⩯",
+            ape: "≊",
+            apE: "⩰",
+            apid: "≋",
+            apos: "'",
+            ApplyFunction: "⁡",
+            approx: "≈",
+            approxeq: "≊",
+            aring: "\xe5",
+            Aring: "\xc5",
+            ascr: "\uD835\uDCB6",
+            Ascr: "\uD835\uDC9C",
+            Assign: "≔",
+            ast: "*",
+            asymp: "≈",
+            asympeq: "≍",
+            atilde: "\xe3",
+            Atilde: "\xc3",
+            auml: "\xe4",
+            Auml: "\xc4",
+            awconint: "∳",
+            awint: "⨑",
+            backcong: "≌",
+            backepsilon: "϶",
+            backprime: "‵",
+            backsim: "∽",
+            backsimeq: "⋍",
+            Backslash: "∖",
+            Barv: "⫧",
+            barvee: "⊽",
+            barwed: "⌅",
+            Barwed: "⌆",
+            barwedge: "⌅",
+            bbrk: "⎵",
+            bbrktbrk: "⎶",
+            bcong: "≌",
+            bcy: "б",
+            Bcy: "Б",
+            bdquo: "„",
+            becaus: "∵",
+            because: "∵",
+            Because: "∵",
+            bemptyv: "⦰",
+            bepsi: "϶",
+            bernou: "ℬ",
+            Bernoullis: "ℬ",
+            beta: "β",
+            Beta: "Β",
+            beth: "ℶ",
+            between: "≬",
+            bfr: "\uD835\uDD1F",
+            Bfr: "\uD835\uDD05",
+            bigcap: "⋂",
+            bigcirc: "◯",
+            bigcup: "⋃",
+            bigodot: "⨀",
+            bigoplus: "⨁",
+            bigotimes: "⨂",
+            bigsqcup: "⨆",
+            bigstar: "★",
+            bigtriangledown: "▽",
+            bigtriangleup: "△",
+            biguplus: "⨄",
+            bigvee: "⋁",
+            bigwedge: "⋀",
+            bkarow: "⤍",
+            blacklozenge: "⧫",
+            blacksquare: "▪",
+            blacktriangle: "▴",
+            blacktriangledown: "▾",
+            blacktriangleleft: "◂",
+            blacktriangleright: "▸",
+            blank: "␣",
+            blk12: "▒",
+            blk14: "░",
+            blk34: "▓",
+            block: "█",
+            bne: "=⃥",
+            bnequiv: "≡⃥",
+            bnot: "⌐",
+            bNot: "⫭",
+            bopf: "\uD835\uDD53",
+            Bopf: "\uD835\uDD39",
+            bot: "⊥",
+            bottom: "⊥",
+            bowtie: "⋈",
+            boxbox: "⧉",
+            boxdl: "┐",
+            boxdL: "╕",
+            boxDl: "╖",
+            boxDL: "╗",
+            boxdr: "┌",
+            boxdR: "╒",
+            boxDr: "╓",
+            boxDR: "╔",
+            boxh: "─",
+            boxH: "═",
+            boxhd: "┬",
+            boxhD: "╥",
+            boxHd: "╤",
+            boxHD: "╦",
+            boxhu: "┴",
+            boxhU: "╨",
+            boxHu: "╧",
+            boxHU: "╩",
+            boxminus: "⊟",
+            boxplus: "⊞",
+            boxtimes: "⊠",
+            boxul: "┘",
+            boxuL: "╛",
+            boxUl: "╜",
+            boxUL: "╝",
+            boxur: "└",
+            boxuR: "╘",
+            boxUr: "╙",
+            boxUR: "╚",
+            boxv: "│",
+            boxV: "║",
+            boxvh: "┼",
+            boxvH: "╪",
+            boxVh: "╫",
+            boxVH: "╬",
+            boxvl: "┤",
+            boxvL: "╡",
+            boxVl: "╢",
+            boxVL: "╣",
+            boxvr: "├",
+            boxvR: "╞",
+            boxVr: "╟",
+            boxVR: "╠",
+            bprime: "‵",
+            breve: "˘",
+            Breve: "˘",
+            brvbar: "\xa6",
+            bscr: "\uD835\uDCB7",
+            Bscr: "ℬ",
+            bsemi: "⁏",
+            bsim: "∽",
+            bsime: "⋍",
+            bsol: "\\",
+            bsolb: "⧅",
+            bsolhsub: "⟈",
+            bull: "•",
+            bullet: "•",
+            bump: "≎",
+            bumpe: "≏",
+            bumpE: "⪮",
+            bumpeq: "≏",
+            Bumpeq: "≎",
+            cacute: "ć",
+            Cacute: "Ć",
+            cap: "∩",
+            Cap: "⋒",
+            capand: "⩄",
+            capbrcup: "⩉",
+            capcap: "⩋",
+            capcup: "⩇",
+            capdot: "⩀",
+            CapitalDifferentialD: "ⅅ",
+            caps: "∩︀",
+            caret: "⁁",
+            caron: "ˇ",
+            Cayleys: "ℭ",
+            ccaps: "⩍",
+            ccaron: "č",
+            Ccaron: "Č",
+            ccedil: "\xe7",
+            Ccedil: "\xc7",
+            ccirc: "ĉ",
+            Ccirc: "Ĉ",
+            Cconint: "∰",
+            ccups: "⩌",
+            ccupssm: "⩐",
+            cdot: "ċ",
+            Cdot: "Ċ",
+            cedil: "\xb8",
+            Cedilla: "\xb8",
+            cemptyv: "⦲",
+            cent: "\xa2",
+            centerdot: "\xb7",
+            CenterDot: "\xb7",
+            cfr: "\uD835\uDD20",
+            Cfr: "ℭ",
+            chcy: "ч",
+            CHcy: "Ч",
+            check: "✓",
+            checkmark: "✓",
+            chi: "χ",
+            Chi: "Χ",
+            cir: "○",
+            circ: "ˆ",
+            circeq: "≗",
+            circlearrowleft: "↺",
+            circlearrowright: "↻",
+            circledast: "⊛",
+            circledcirc: "⊚",
+            circleddash: "⊝",
+            CircleDot: "⊙",
+            circledR: "\xae",
+            circledS: "Ⓢ",
+            CircleMinus: "⊖",
+            CirclePlus: "⊕",
+            CircleTimes: "⊗",
+            cire: "≗",
+            cirE: "⧃",
+            cirfnint: "⨐",
+            cirmid: "⫯",
+            cirscir: "⧂",
+            ClockwiseContourIntegral: "∲",
+            CloseCurlyDoubleQuote: "”",
+            CloseCurlyQuote: "’",
+            clubs: "♣",
+            clubsuit: "♣",
+            colon: ":",
+            Colon: "∷",
+            colone: "≔",
+            Colone: "⩴",
+            coloneq: "≔",
+            comma: ",",
+            commat: "@",
+            comp: "∁",
+            compfn: "∘",
+            complement: "∁",
+            complexes: "ℂ",
+            cong: "≅",
+            congdot: "⩭",
+            Congruent: "≡",
+            conint: "∮",
+            Conint: "∯",
+            ContourIntegral: "∮",
+            copf: "\uD835\uDD54",
+            Copf: "ℂ",
+            coprod: "∐",
+            Coproduct: "∐",
+            copy: "\xa9",
+            COPY: "\xa9",
+            copysr: "℗",
+            CounterClockwiseContourIntegral: "∳",
+            crarr: "↵",
+            cross: "✗",
+            Cross: "⨯",
+            cscr: "\uD835\uDCB8",
+            Cscr: "\uD835\uDC9E",
+            csub: "⫏",
+            csube: "⫑",
+            csup: "⫐",
+            csupe: "⫒",
+            ctdot: "⋯",
+            cudarrl: "⤸",
+            cudarrr: "⤵",
+            cuepr: "⋞",
+            cuesc: "⋟",
+            cularr: "↶",
+            cularrp: "⤽",
+            cup: "∪",
+            Cup: "⋓",
+            cupbrcap: "⩈",
+            cupcap: "⩆",
+            CupCap: "≍",
+            cupcup: "⩊",
+            cupdot: "⊍",
+            cupor: "⩅",
+            cups: "∪︀",
+            curarr: "↷",
+            curarrm: "⤼",
+            curlyeqprec: "⋞",
+            curlyeqsucc: "⋟",
+            curlyvee: "⋎",
+            curlywedge: "⋏",
+            curren: "\xa4",
+            curvearrowleft: "↶",
+            curvearrowright: "↷",
+            cuvee: "⋎",
+            cuwed: "⋏",
+            cwconint: "∲",
+            cwint: "∱",
+            cylcty: "⌭",
+            dagger: "†",
+            Dagger: "‡",
+            daleth: "ℸ",
+            darr: "↓",
+            dArr: "⇓",
+            Darr: "↡",
+            dash: "‐",
+            dashv: "⊣",
+            Dashv: "⫤",
+            dbkarow: "⤏",
+            dblac: "˝",
+            dcaron: "ď",
+            Dcaron: "Ď",
+            dcy: "д",
+            Dcy: "Д",
+            dd: "ⅆ",
+            DD: "ⅅ",
+            ddagger: "‡",
+            ddarr: "⇊",
+            DDotrahd: "⤑",
+            ddotseq: "⩷",
+            deg: "\xb0",
+            Del: "∇",
+            delta: "δ",
+            Delta: "Δ",
+            demptyv: "⦱",
+            dfisht: "⥿",
+            dfr: "\uD835\uDD21",
+            Dfr: "\uD835\uDD07",
+            dHar: "⥥",
+            dharl: "⇃",
+            dharr: "⇂",
+            DiacriticalAcute: "\xb4",
+            DiacriticalDot: "˙",
+            DiacriticalDoubleAcute: "˝",
+            DiacriticalGrave: "`",
+            DiacriticalTilde: "˜",
+            diam: "⋄",
+            diamond: "⋄",
+            Diamond: "⋄",
+            diamondsuit: "♦",
+            diams: "♦",
+            die: "\xa8",
+            DifferentialD: "ⅆ",
+            digamma: "ϝ",
+            disin: "⋲",
+            div: "\xf7",
+            divide: "\xf7",
+            divideontimes: "⋇",
+            divonx: "⋇",
+            djcy: "ђ",
+            DJcy: "Ђ",
+            dlcorn: "⌞",
+            dlcrop: "⌍",
+            dollar: "$",
+            dopf: "\uD835\uDD55",
+            Dopf: "\uD835\uDD3B",
+            dot: "˙",
+            Dot: "\xa8",
+            DotDot: "⃜",
+            doteq: "≐",
+            doteqdot: "≑",
+            DotEqual: "≐",
+            dotminus: "∸",
+            dotplus: "∔",
+            dotsquare: "⊡",
+            doublebarwedge: "⌆",
+            DoubleContourIntegral: "∯",
+            DoubleDot: "\xa8",
+            DoubleDownArrow: "⇓",
+            DoubleLeftArrow: "⇐",
+            DoubleLeftRightArrow: "⇔",
+            DoubleLeftTee: "⫤",
+            DoubleLongLeftArrow: "⟸",
+            DoubleLongLeftRightArrow: "⟺",
+            DoubleLongRightArrow: "⟹",
+            DoubleRightArrow: "⇒",
+            DoubleRightTee: "⊨",
+            DoubleUpArrow: "⇑",
+            DoubleUpDownArrow: "⇕",
+            DoubleVerticalBar: "∥",
+            downarrow: "↓",
+            Downarrow: "⇓",
+            DownArrow: "↓",
+            DownArrowBar: "⤓",
+            DownArrowUpArrow: "⇵",
+            DownBreve: "̑",
+            downdownarrows: "⇊",
+            downharpoonleft: "⇃",
+            downharpoonright: "⇂",
+            DownLeftRightVector: "⥐",
+            DownLeftTeeVector: "⥞",
+            DownLeftVector: "↽",
+            DownLeftVectorBar: "⥖",
+            DownRightTeeVector: "⥟",
+            DownRightVector: "⇁",
+            DownRightVectorBar: "⥗",
+            DownTee: "⊤",
+            DownTeeArrow: "↧",
+            drbkarow: "⤐",
+            drcorn: "⌟",
+            drcrop: "⌌",
+            dscr: "\uD835\uDCB9",
+            Dscr: "\uD835\uDC9F",
+            dscy: "ѕ",
+            DScy: "Ѕ",
+            dsol: "⧶",
+            dstrok: "đ",
+            Dstrok: "Đ",
+            dtdot: "⋱",
+            dtri: "▿",
+            dtrif: "▾",
+            duarr: "⇵",
+            duhar: "⥯",
+            dwangle: "⦦",
+            dzcy: "џ",
+            DZcy: "Џ",
+            dzigrarr: "⟿",
+            eacute: "\xe9",
+            Eacute: "\xc9",
+            easter: "⩮",
+            ecaron: "ě",
+            Ecaron: "Ě",
+            ecir: "≖",
+            ecirc: "\xea",
+            Ecirc: "\xca",
+            ecolon: "≕",
+            ecy: "э",
+            Ecy: "Э",
+            eDDot: "⩷",
+            edot: "ė",
+            eDot: "≑",
+            Edot: "Ė",
+            ee: "ⅇ",
+            efDot: "≒",
+            efr: "\uD835\uDD22",
+            Efr: "\uD835\uDD08",
+            eg: "⪚",
+            egrave: "\xe8",
+            Egrave: "\xc8",
+            egs: "⪖",
+            egsdot: "⪘",
+            el: "⪙",
+            Element: "∈",
+            elinters: "⏧",
+            ell: "ℓ",
+            els: "⪕",
+            elsdot: "⪗",
+            emacr: "ē",
+            Emacr: "Ē",
+            empty: "∅",
+            emptyset: "∅",
+            EmptySmallSquare: "◻",
+            emptyv: "∅",
+            EmptyVerySmallSquare: "▫",
+            emsp: " ",
+            emsp13: " ",
+            emsp14: " ",
+            eng: "ŋ",
+            ENG: "Ŋ",
+            ensp: " ",
+            eogon: "ę",
+            Eogon: "Ę",
+            eopf: "\uD835\uDD56",
+            Eopf: "\uD835\uDD3C",
+            epar: "⋕",
+            eparsl: "⧣",
+            eplus: "⩱",
+            epsi: "ε",
+            epsilon: "ε",
+            Epsilon: "Ε",
+            epsiv: "ϵ",
+            eqcirc: "≖",
+            eqcolon: "≕",
+            eqsim: "≂",
+            eqslantgtr: "⪖",
+            eqslantless: "⪕",
+            Equal: "⩵",
+            equals: "=",
+            EqualTilde: "≂",
+            equest: "≟",
+            Equilibrium: "⇌",
+            equiv: "≡",
+            equivDD: "⩸",
+            eqvparsl: "⧥",
+            erarr: "⥱",
+            erDot: "≓",
+            escr: "ℯ",
+            Escr: "ℰ",
+            esdot: "≐",
+            esim: "≂",
+            Esim: "⩳",
+            eta: "η",
+            Eta: "Η",
+            eth: "\xf0",
+            ETH: "\xd0",
+            euml: "\xeb",
+            Euml: "\xcb",
+            euro: "€",
+            excl: "!",
+            exist: "∃",
+            Exists: "∃",
+            expectation: "ℰ",
+            exponentiale: "ⅇ",
+            ExponentialE: "ⅇ",
+            fallingdotseq: "≒",
+            fcy: "ф",
+            Fcy: "Ф",
+            female: "♀",
+            ffilig: "ﬃ",
+            fflig: "ﬀ",
+            ffllig: "ﬄ",
+            ffr: "\uD835\uDD23",
+            Ffr: "\uD835\uDD09",
+            filig: "ﬁ",
+            FilledSmallSquare: "◼",
+            FilledVerySmallSquare: "▪",
+            fjlig: "fj",
+            flat: "♭",
+            fllig: "ﬂ",
+            fltns: "▱",
+            fnof: "ƒ",
+            fopf: "\uD835\uDD57",
+            Fopf: "\uD835\uDD3D",
+            forall: "∀",
+            ForAll: "∀",
+            fork: "⋔",
+            forkv: "⫙",
+            Fouriertrf: "ℱ",
+            fpartint: "⨍",
+            frac12: "\xbd",
+            frac13: "⅓",
+            frac14: "\xbc",
+            frac15: "⅕",
+            frac16: "⅙",
+            frac18: "⅛",
+            frac23: "⅔",
+            frac25: "⅖",
+            frac34: "\xbe",
+            frac35: "⅗",
+            frac38: "⅜",
+            frac45: "⅘",
+            frac56: "⅚",
+            frac58: "⅝",
+            frac78: "⅞",
+            frasl: "⁄",
+            frown: "⌢",
+            fscr: "\uD835\uDCBB",
+            Fscr: "ℱ",
+            gacute: "ǵ",
+            gamma: "γ",
+            Gamma: "Γ",
+            gammad: "ϝ",
+            Gammad: "Ϝ",
+            gap: "⪆",
+            gbreve: "ğ",
+            Gbreve: "Ğ",
+            Gcedil: "Ģ",
+            gcirc: "ĝ",
+            Gcirc: "Ĝ",
+            gcy: "г",
+            Gcy: "Г",
+            gdot: "ġ",
+            Gdot: "Ġ",
+            ge: "≥",
+            gE: "≧",
+            gel: "⋛",
+            gEl: "⪌",
+            geq: "≥",
+            geqq: "≧",
+            geqslant: "⩾",
+            ges: "⩾",
+            gescc: "⪩",
+            gesdot: "⪀",
+            gesdoto: "⪂",
+            gesdotol: "⪄",
+            gesl: "⋛︀",
+            gesles: "⪔",
+            gfr: "\uD835\uDD24",
+            Gfr: "\uD835\uDD0A",
+            gg: "≫",
+            Gg: "⋙",
+            ggg: "⋙",
+            gimel: "ℷ",
+            gjcy: "ѓ",
+            GJcy: "Ѓ",
+            gl: "≷",
+            gla: "⪥",
+            glE: "⪒",
+            glj: "⪤",
+            gnap: "⪊",
+            gnapprox: "⪊",
+            gne: "⪈",
+            gnE: "≩",
+            gneq: "⪈",
+            gneqq: "≩",
+            gnsim: "⋧",
+            gopf: "\uD835\uDD58",
+            Gopf: "\uD835\uDD3E",
+            grave: "`",
+            GreaterEqual: "≥",
+            GreaterEqualLess: "⋛",
+            GreaterFullEqual: "≧",
+            GreaterGreater: "⪢",
+            GreaterLess: "≷",
+            GreaterSlantEqual: "⩾",
+            GreaterTilde: "≳",
+            gscr: "ℊ",
+            Gscr: "\uD835\uDCA2",
+            gsim: "≳",
+            gsime: "⪎",
+            gsiml: "⪐",
+            gt: ">",
+            Gt: "≫",
+            GT: ">",
+            gtcc: "⪧",
+            gtcir: "⩺",
+            gtdot: "⋗",
+            gtlPar: "⦕",
+            gtquest: "⩼",
+            gtrapprox: "⪆",
+            gtrarr: "⥸",
+            gtrdot: "⋗",
+            gtreqless: "⋛",
+            gtreqqless: "⪌",
+            gtrless: "≷",
+            gtrsim: "≳",
+            gvertneqq: "≩︀",
+            gvnE: "≩︀",
+            Hacek: "ˇ",
+            hairsp: " ",
+            half: "\xbd",
+            hamilt: "ℋ",
+            hardcy: "ъ",
+            HARDcy: "Ъ",
+            harr: "↔",
+            hArr: "⇔",
+            harrcir: "⥈",
+            harrw: "↭",
+            Hat: "^",
+            hbar: "ℏ",
+            hcirc: "ĥ",
+            Hcirc: "Ĥ",
+            hearts: "♥",
+            heartsuit: "♥",
+            hellip: "…",
+            hercon: "⊹",
+            hfr: "\uD835\uDD25",
+            Hfr: "ℌ",
+            HilbertSpace: "ℋ",
+            hksearow: "⤥",
+            hkswarow: "⤦",
+            hoarr: "⇿",
+            homtht: "∻",
+            hookleftarrow: "↩",
+            hookrightarrow: "↪",
+            hopf: "\uD835\uDD59",
+            Hopf: "ℍ",
+            horbar: "―",
+            HorizontalLine: "─",
+            hscr: "\uD835\uDCBD",
+            Hscr: "ℋ",
+            hslash: "ℏ",
+            hstrok: "ħ",
+            Hstrok: "Ħ",
+            HumpDownHump: "≎",
+            HumpEqual: "≏",
+            hybull: "⁃",
+            hyphen: "‐",
+            iacute: "\xed",
+            Iacute: "\xcd",
+            ic: "⁣",
+            icirc: "\xee",
+            Icirc: "\xce",
+            icy: "и",
+            Icy: "И",
+            Idot: "İ",
+            iecy: "е",
+            IEcy: "Е",
+            iexcl: "\xa1",
+            iff: "⇔",
+            ifr: "\uD835\uDD26",
+            Ifr: "ℑ",
+            igrave: "\xec",
+            Igrave: "\xcc",
+            ii: "ⅈ",
+            iiiint: "⨌",
+            iiint: "∭",
+            iinfin: "⧜",
+            iiota: "℩",
+            ijlig: "ĳ",
+            IJlig: "Ĳ",
+            Im: "ℑ",
+            imacr: "ī",
+            Imacr: "Ī",
+            image: "ℑ",
+            ImaginaryI: "ⅈ",
+            imagline: "ℐ",
+            imagpart: "ℑ",
+            imath: "ı",
+            imof: "⊷",
+            imped: "Ƶ",
+            Implies: "⇒",
+            in: "∈",
+            incare: "℅",
+            infin: "∞",
+            infintie: "⧝",
+            inodot: "ı",
+            int: "∫",
+            Int: "∬",
+            intcal: "⊺",
+            integers: "ℤ",
+            Integral: "∫",
+            intercal: "⊺",
+            Intersection: "⋂",
+            intlarhk: "⨗",
+            intprod: "⨼",
+            InvisibleComma: "⁣",
+            InvisibleTimes: "⁢",
+            iocy: "ё",
+            IOcy: "Ё",
+            iogon: "į",
+            Iogon: "Į",
+            iopf: "\uD835\uDD5A",
+            Iopf: "\uD835\uDD40",
+            iota: "ι",
+            Iota: "Ι",
+            iprod: "⨼",
+            iquest: "\xbf",
+            iscr: "\uD835\uDCBE",
+            Iscr: "ℐ",
+            isin: "∈",
+            isindot: "⋵",
+            isinE: "⋹",
+            isins: "⋴",
+            isinsv: "⋳",
+            isinv: "∈",
+            it: "⁢",
+            itilde: "ĩ",
+            Itilde: "Ĩ",
+            iukcy: "і",
+            Iukcy: "І",
+            iuml: "\xef",
+            Iuml: "\xcf",
+            jcirc: "ĵ",
+            Jcirc: "Ĵ",
+            jcy: "й",
+            Jcy: "Й",
+            jfr: "\uD835\uDD27",
+            Jfr: "\uD835\uDD0D",
+            jmath: "ȷ",
+            jopf: "\uD835\uDD5B",
+            Jopf: "\uD835\uDD41",
+            jscr: "\uD835\uDCBF",
+            Jscr: "\uD835\uDCA5",
+            jsercy: "ј",
+            Jsercy: "Ј",
+            jukcy: "є",
+            Jukcy: "Є",
+            kappa: "κ",
+            Kappa: "Κ",
+            kappav: "ϰ",
+            kcedil: "ķ",
+            Kcedil: "Ķ",
+            kcy: "к",
+            Kcy: "К",
+            kfr: "\uD835\uDD28",
+            Kfr: "\uD835\uDD0E",
+            kgreen: "ĸ",
+            khcy: "х",
+            KHcy: "Х",
+            kjcy: "ќ",
+            KJcy: "Ќ",
+            kopf: "\uD835\uDD5C",
+            Kopf: "\uD835\uDD42",
+            kscr: "\uD835\uDCC0",
+            Kscr: "\uD835\uDCA6",
+            lAarr: "⇚",
+            lacute: "ĺ",
+            Lacute: "Ĺ",
+            laemptyv: "⦴",
+            lagran: "ℒ",
+            lambda: "λ",
+            Lambda: "Λ",
+            lang: "⟨",
+            Lang: "⟪",
+            langd: "⦑",
+            langle: "⟨",
+            lap: "⪅",
+            Laplacetrf: "ℒ",
+            laquo: "\xab",
+            larr: "←",
+            lArr: "⇐",
+            Larr: "↞",
+            larrb: "⇤",
+            larrbfs: "⤟",
+            larrfs: "⤝",
+            larrhk: "↩",
+            larrlp: "↫",
+            larrpl: "⤹",
+            larrsim: "⥳",
+            larrtl: "↢",
+            lat: "⪫",
+            latail: "⤙",
+            lAtail: "⤛",
+            late: "⪭",
+            lates: "⪭︀",
+            lbarr: "⤌",
+            lBarr: "⤎",
+            lbbrk: "❲",
+            lbrace: "{",
+            lbrack: "[",
+            lbrke: "⦋",
+            lbrksld: "⦏",
+            lbrkslu: "⦍",
+            lcaron: "ľ",
+            Lcaron: "Ľ",
+            lcedil: "ļ",
+            Lcedil: "Ļ",
+            lceil: "⌈",
+            lcub: "{",
+            lcy: "л",
+            Lcy: "Л",
+            ldca: "⤶",
+            ldquo: "“",
+            ldquor: "„",
+            ldrdhar: "⥧",
+            ldrushar: "⥋",
+            ldsh: "↲",
+            le: "≤",
+            lE: "≦",
+            LeftAngleBracket: "⟨",
+            leftarrow: "←",
+            Leftarrow: "⇐",
+            LeftArrow: "←",
+            LeftArrowBar: "⇤",
+            LeftArrowRightArrow: "⇆",
+            leftarrowtail: "↢",
+            LeftCeiling: "⌈",
+            LeftDoubleBracket: "⟦",
+            LeftDownTeeVector: "⥡",
+            LeftDownVector: "⇃",
+            LeftDownVectorBar: "⥙",
+            LeftFloor: "⌊",
+            leftharpoondown: "↽",
+            leftharpoonup: "↼",
+            leftleftarrows: "⇇",
+            leftrightarrow: "↔",
+            Leftrightarrow: "⇔",
+            LeftRightArrow: "↔",
+            leftrightarrows: "⇆",
+            leftrightharpoons: "⇋",
+            leftrightsquigarrow: "↭",
+            LeftRightVector: "⥎",
+            LeftTee: "⊣",
+            LeftTeeArrow: "↤",
+            LeftTeeVector: "⥚",
+            leftthreetimes: "⋋",
+            LeftTriangle: "⊲",
+            LeftTriangleBar: "⧏",
+            LeftTriangleEqual: "⊴",
+            LeftUpDownVector: "⥑",
+            LeftUpTeeVector: "⥠",
+            LeftUpVector: "↿",
+            LeftUpVectorBar: "⥘",
+            LeftVector: "↼",
+            LeftVectorBar: "⥒",
+            leg: "⋚",
+            lEg: "⪋",
+            leq: "≤",
+            leqq: "≦",
+            leqslant: "⩽",
+            les: "⩽",
+            lescc: "⪨",
+            lesdot: "⩿",
+            lesdoto: "⪁",
+            lesdotor: "⪃",
+            lesg: "⋚︀",
+            lesges: "⪓",
+            lessapprox: "⪅",
+            lessdot: "⋖",
+            lesseqgtr: "⋚",
+            lesseqqgtr: "⪋",
+            LessEqualGreater: "⋚",
+            LessFullEqual: "≦",
+            LessGreater: "≶",
+            lessgtr: "≶",
+            LessLess: "⪡",
+            lesssim: "≲",
+            LessSlantEqual: "⩽",
+            LessTilde: "≲",
+            lfisht: "⥼",
+            lfloor: "⌊",
+            lfr: "\uD835\uDD29",
+            Lfr: "\uD835\uDD0F",
+            lg: "≶",
+            lgE: "⪑",
+            lHar: "⥢",
+            lhard: "↽",
+            lharu: "↼",
+            lharul: "⥪",
+            lhblk: "▄",
+            ljcy: "љ",
+            LJcy: "Љ",
+            ll: "≪",
+            Ll: "⋘",
+            llarr: "⇇",
+            llcorner: "⌞",
+            Lleftarrow: "⇚",
+            llhard: "⥫",
+            lltri: "◺",
+            lmidot: "ŀ",
+            Lmidot: "Ŀ",
+            lmoust: "⎰",
+            lmoustache: "⎰",
+            lnap: "⪉",
+            lnapprox: "⪉",
+            lne: "⪇",
+            lnE: "≨",
+            lneq: "⪇",
+            lneqq: "≨",
+            lnsim: "⋦",
+            loang: "⟬",
+            loarr: "⇽",
+            lobrk: "⟦",
+            longleftarrow: "⟵",
+            Longleftarrow: "⟸",
+            LongLeftArrow: "⟵",
+            longleftrightarrow: "⟷",
+            Longleftrightarrow: "⟺",
+            LongLeftRightArrow: "⟷",
+            longmapsto: "⟼",
+            longrightarrow: "⟶",
+            Longrightarrow: "⟹",
+            LongRightArrow: "⟶",
+            looparrowleft: "↫",
+            looparrowright: "↬",
+            lopar: "⦅",
+            lopf: "\uD835\uDD5D",
+            Lopf: "\uD835\uDD43",
+            loplus: "⨭",
+            lotimes: "⨴",
+            lowast: "∗",
+            lowbar: "_",
+            LowerLeftArrow: "↙",
+            LowerRightArrow: "↘",
+            loz: "◊",
+            lozenge: "◊",
+            lozf: "⧫",
+            lpar: "(",
+            lparlt: "⦓",
+            lrarr: "⇆",
+            lrcorner: "⌟",
+            lrhar: "⇋",
+            lrhard: "⥭",
+            lrm: "‎",
+            lrtri: "⊿",
+            lsaquo: "‹",
+            lscr: "\uD835\uDCC1",
+            Lscr: "ℒ",
+            lsh: "↰",
+            Lsh: "↰",
+            lsim: "≲",
+            lsime: "⪍",
+            lsimg: "⪏",
+            lsqb: "[",
+            lsquo: "‘",
+            lsquor: "‚",
+            lstrok: "ł",
+            Lstrok: "Ł",
+            lt: "<",
+            Lt: "≪",
+            LT: "<",
+            ltcc: "⪦",
+            ltcir: "⩹",
+            ltdot: "⋖",
+            lthree: "⋋",
+            ltimes: "⋉",
+            ltlarr: "⥶",
+            ltquest: "⩻",
+            ltri: "◃",
+            ltrie: "⊴",
+            ltrif: "◂",
+            ltrPar: "⦖",
+            lurdshar: "⥊",
+            luruhar: "⥦",
+            lvertneqq: "≨︀",
+            lvnE: "≨︀",
+            macr: "\xaf",
+            male: "♂",
+            malt: "✠",
+            maltese: "✠",
+            map: "↦",
+            Map: "⤅",
+            mapsto: "↦",
+            mapstodown: "↧",
+            mapstoleft: "↤",
+            mapstoup: "↥",
+            marker: "▮",
+            mcomma: "⨩",
+            mcy: "м",
+            Mcy: "М",
+            mdash: "—",
+            mDDot: "∺",
+            measuredangle: "∡",
+            MediumSpace: " ",
+            Mellintrf: "ℳ",
+            mfr: "\uD835\uDD2A",
+            Mfr: "\uD835\uDD10",
+            mho: "℧",
+            micro: "\xb5",
+            mid: "∣",
+            midast: "*",
+            midcir: "⫰",
+            middot: "\xb7",
+            minus: "−",
+            minusb: "⊟",
+            minusd: "∸",
+            minusdu: "⨪",
+            MinusPlus: "∓",
+            mlcp: "⫛",
+            mldr: "…",
+            mnplus: "∓",
+            models: "⊧",
+            mopf: "\uD835\uDD5E",
+            Mopf: "\uD835\uDD44",
+            mp: "∓",
+            mscr: "\uD835\uDCC2",
+            Mscr: "ℳ",
+            mstpos: "∾",
+            mu: "μ",
+            Mu: "Μ",
+            multimap: "⊸",
+            mumap: "⊸",
+            nabla: "∇",
+            nacute: "ń",
+            Nacute: "Ń",
+            nang: "∠⃒",
+            nap: "≉",
+            napE: "⩰̸",
+            napid: "≋̸",
+            napos: "ŉ",
+            napprox: "≉",
+            natur: "♮",
+            natural: "♮",
+            naturals: "ℕ",
+            nbsp: "\xa0",
+            nbump: "≎̸",
+            nbumpe: "≏̸",
+            ncap: "⩃",
+            ncaron: "ň",
+            Ncaron: "Ň",
+            ncedil: "ņ",
+            Ncedil: "Ņ",
+            ncong: "≇",
+            ncongdot: "⩭̸",
+            ncup: "⩂",
+            ncy: "н",
+            Ncy: "Н",
+            ndash: "–",
+            ne: "≠",
+            nearhk: "⤤",
+            nearr: "↗",
+            neArr: "⇗",
+            nearrow: "↗",
+            nedot: "≐̸",
+            NegativeMediumSpace: "​",
+            NegativeThickSpace: "​",
+            NegativeThinSpace: "​",
+            NegativeVeryThinSpace: "​",
+            nequiv: "≢",
+            nesear: "⤨",
+            nesim: "≂̸",
+            NestedGreaterGreater: "≫",
+            NestedLessLess: "≪",
+            NewLine: "\n",
+            nexist: "∄",
+            nexists: "∄",
+            nfr: "\uD835\uDD2B",
+            Nfr: "\uD835\uDD11",
+            nge: "≱",
+            ngE: "≧̸",
+            ngeq: "≱",
+            ngeqq: "≧̸",
+            ngeqslant: "⩾̸",
+            nges: "⩾̸",
+            nGg: "⋙̸",
+            ngsim: "≵",
+            ngt: "≯",
+            nGt: "≫⃒",
+            ngtr: "≯",
+            nGtv: "≫̸",
+            nharr: "↮",
+            nhArr: "⇎",
+            nhpar: "⫲",
+            ni: "∋",
+            nis: "⋼",
+            nisd: "⋺",
+            niv: "∋",
+            njcy: "њ",
+            NJcy: "Њ",
+            nlarr: "↚",
+            nlArr: "⇍",
+            nldr: "‥",
+            nle: "≰",
+            nlE: "≦̸",
+            nleftarrow: "↚",
+            nLeftarrow: "⇍",
+            nleftrightarrow: "↮",
+            nLeftrightarrow: "⇎",
+            nleq: "≰",
+            nleqq: "≦̸",
+            nleqslant: "⩽̸",
+            nles: "⩽̸",
+            nless: "≮",
+            nLl: "⋘̸",
+            nlsim: "≴",
+            nlt: "≮",
+            nLt: "≪⃒",
+            nltri: "⋪",
+            nltrie: "⋬",
+            nLtv: "≪̸",
+            nmid: "∤",
+            NoBreak: "⁠",
+            NonBreakingSpace: "\xa0",
+            nopf: "\uD835\uDD5F",
+            Nopf: "ℕ",
+            not: "\xac",
+            Not: "⫬",
+            NotCongruent: "≢",
+            NotCupCap: "≭",
+            NotDoubleVerticalBar: "∦",
+            NotElement: "∉",
+            NotEqual: "≠",
+            NotEqualTilde: "≂̸",
+            NotExists: "∄",
+            NotGreater: "≯",
+            NotGreaterEqual: "≱",
+            NotGreaterFullEqual: "≧̸",
+            NotGreaterGreater: "≫̸",
+            NotGreaterLess: "≹",
+            NotGreaterSlantEqual: "⩾̸",
+            NotGreaterTilde: "≵",
+            NotHumpDownHump: "≎̸",
+            NotHumpEqual: "≏̸",
+            notin: "∉",
+            notindot: "⋵̸",
+            notinE: "⋹̸",
+            notinva: "∉",
+            notinvb: "⋷",
+            notinvc: "⋶",
+            NotLeftTriangle: "⋪",
+            NotLeftTriangleBar: "⧏̸",
+            NotLeftTriangleEqual: "⋬",
+            NotLess: "≮",
+            NotLessEqual: "≰",
+            NotLessGreater: "≸",
+            NotLessLess: "≪̸",
+            NotLessSlantEqual: "⩽̸",
+            NotLessTilde: "≴",
+            NotNestedGreaterGreater: "⪢̸",
+            NotNestedLessLess: "⪡̸",
+            notni: "∌",
+            notniva: "∌",
+            notnivb: "⋾",
+            notnivc: "⋽",
+            NotPrecedes: "⊀",
+            NotPrecedesEqual: "⪯̸",
+            NotPrecedesSlantEqual: "⋠",
+            NotReverseElement: "∌",
+            NotRightTriangle: "⋫",
+            NotRightTriangleBar: "⧐̸",
+            NotRightTriangleEqual: "⋭",
+            NotSquareSubset: "⊏̸",
+            NotSquareSubsetEqual: "⋢",
+            NotSquareSuperset: "⊐̸",
+            NotSquareSupersetEqual: "⋣",
+            NotSubset: "⊂⃒",
+            NotSubsetEqual: "⊈",
+            NotSucceeds: "⊁",
+            NotSucceedsEqual: "⪰̸",
+            NotSucceedsSlantEqual: "⋡",
+            NotSucceedsTilde: "≿̸",
+            NotSuperset: "⊃⃒",
+            NotSupersetEqual: "⊉",
+            NotTilde: "≁",
+            NotTildeEqual: "≄",
+            NotTildeFullEqual: "≇",
+            NotTildeTilde: "≉",
+            NotVerticalBar: "∤",
+            npar: "∦",
+            nparallel: "∦",
+            nparsl: "⫽⃥",
+            npart: "∂̸",
+            npolint: "⨔",
+            npr: "⊀",
+            nprcue: "⋠",
+            npre: "⪯̸",
+            nprec: "⊀",
+            npreceq: "⪯̸",
+            nrarr: "↛",
+            nrArr: "⇏",
+            nrarrc: "⤳̸",
+            nrarrw: "↝̸",
+            nrightarrow: "↛",
+            nRightarrow: "⇏",
+            nrtri: "⋫",
+            nrtrie: "⋭",
+            nsc: "⊁",
+            nsccue: "⋡",
+            nsce: "⪰̸",
+            nscr: "\uD835\uDCC3",
+            Nscr: "\uD835\uDCA9",
+            nshortmid: "∤",
+            nshortparallel: "∦",
+            nsim: "≁",
+            nsime: "≄",
+            nsimeq: "≄",
+            nsmid: "∤",
+            nspar: "∦",
+            nsqsube: "⋢",
+            nsqsupe: "⋣",
+            nsub: "⊄",
+            nsube: "⊈",
+            nsubE: "⫅̸",
+            nsubset: "⊂⃒",
+            nsubseteq: "⊈",
+            nsubseteqq: "⫅̸",
+            nsucc: "⊁",
+            nsucceq: "⪰̸",
+            nsup: "⊅",
+            nsupe: "⊉",
+            nsupE: "⫆̸",
+            nsupset: "⊃⃒",
+            nsupseteq: "⊉",
+            nsupseteqq: "⫆̸",
+            ntgl: "≹",
+            ntilde: "\xf1",
+            Ntilde: "\xd1",
+            ntlg: "≸",
+            ntriangleleft: "⋪",
+            ntrianglelefteq: "⋬",
+            ntriangleright: "⋫",
+            ntrianglerighteq: "⋭",
+            nu: "ν",
+            Nu: "Ν",
+            num: "#",
+            numero: "№",
+            numsp: " ",
+            nvap: "≍⃒",
+            nvdash: "⊬",
+            nvDash: "⊭",
+            nVdash: "⊮",
+            nVDash: "⊯",
+            nvge: "≥⃒",
+            nvgt: ">⃒",
+            nvHarr: "⤄",
+            nvinfin: "⧞",
+            nvlArr: "⤂",
+            nvle: "≤⃒",
+            nvlt: "<⃒",
+            nvltrie: "⊴⃒",
+            nvrArr: "⤃",
+            nvrtrie: "⊵⃒",
+            nvsim: "∼⃒",
+            nwarhk: "⤣",
+            nwarr: "↖",
+            nwArr: "⇖",
+            nwarrow: "↖",
+            nwnear: "⤧",
+            oacute: "\xf3",
+            Oacute: "\xd3",
+            oast: "⊛",
+            ocir: "⊚",
+            ocirc: "\xf4",
+            Ocirc: "\xd4",
+            ocy: "о",
+            Ocy: "О",
+            odash: "⊝",
+            odblac: "ő",
+            Odblac: "Ő",
+            odiv: "⨸",
+            odot: "⊙",
+            odsold: "⦼",
+            oelig: "œ",
+            OElig: "Œ",
+            ofcir: "⦿",
+            ofr: "\uD835\uDD2C",
+            Ofr: "\uD835\uDD12",
+            ogon: "˛",
+            ograve: "\xf2",
+            Ograve: "\xd2",
+            ogt: "⧁",
+            ohbar: "⦵",
+            ohm: "Ω",
+            oint: "∮",
+            olarr: "↺",
+            olcir: "⦾",
+            olcross: "⦻",
+            oline: "‾",
+            olt: "⧀",
+            omacr: "ō",
+            Omacr: "Ō",
+            omega: "ω",
+            Omega: "Ω",
+            omicron: "ο",
+            Omicron: "Ο",
+            omid: "⦶",
+            ominus: "⊖",
+            oopf: "\uD835\uDD60",
+            Oopf: "\uD835\uDD46",
+            opar: "⦷",
+            OpenCurlyDoubleQuote: "“",
+            OpenCurlyQuote: "‘",
+            operp: "⦹",
+            oplus: "⊕",
+            or: "∨",
+            Or: "⩔",
+            orarr: "↻",
+            ord: "⩝",
+            order: "ℴ",
+            orderof: "ℴ",
+            ordf: "\xaa",
+            ordm: "\xba",
+            origof: "⊶",
+            oror: "⩖",
+            orslope: "⩗",
+            orv: "⩛",
+            oS: "Ⓢ",
+            oscr: "ℴ",
+            Oscr: "\uD835\uDCAA",
+            oslash: "\xf8",
+            Oslash: "\xd8",
+            osol: "⊘",
+            otilde: "\xf5",
+            Otilde: "\xd5",
+            otimes: "⊗",
+            Otimes: "⨷",
+            otimesas: "⨶",
+            ouml: "\xf6",
+            Ouml: "\xd6",
+            ovbar: "⌽",
+            OverBar: "‾",
+            OverBrace: "⏞",
+            OverBracket: "⎴",
+            OverParenthesis: "⏜",
+            par: "∥",
+            para: "\xb6",
+            parallel: "∥",
+            parsim: "⫳",
+            parsl: "⫽",
+            part: "∂",
+            PartialD: "∂",
+            pcy: "п",
+            Pcy: "П",
+            percnt: "%",
+            period: ".",
+            permil: "‰",
+            perp: "⊥",
+            pertenk: "‱",
+            pfr: "\uD835\uDD2D",
+            Pfr: "\uD835\uDD13",
+            phi: "φ",
+            Phi: "Φ",
+            phiv: "ϕ",
+            phmmat: "ℳ",
+            phone: "☎",
+            pi: "π",
+            Pi: "Π",
+            pitchfork: "⋔",
+            piv: "ϖ",
+            planck: "ℏ",
+            planckh: "ℎ",
+            plankv: "ℏ",
+            plus: "+",
+            plusacir: "⨣",
+            plusb: "⊞",
+            pluscir: "⨢",
+            plusdo: "∔",
+            plusdu: "⨥",
+            pluse: "⩲",
+            PlusMinus: "\xb1",
+            plusmn: "\xb1",
+            plussim: "⨦",
+            plustwo: "⨧",
+            pm: "\xb1",
+            Poincareplane: "ℌ",
+            pointint: "⨕",
+            popf: "\uD835\uDD61",
+            Popf: "ℙ",
+            pound: "\xa3",
+            pr: "≺",
+            Pr: "⪻",
+            prap: "⪷",
+            prcue: "≼",
+            pre: "⪯",
+            prE: "⪳",
+            prec: "≺",
+            precapprox: "⪷",
+            preccurlyeq: "≼",
+            Precedes: "≺",
+            PrecedesEqual: "⪯",
+            PrecedesSlantEqual: "≼",
+            PrecedesTilde: "≾",
+            preceq: "⪯",
+            precnapprox: "⪹",
+            precneqq: "⪵",
+            precnsim: "⋨",
+            precsim: "≾",
+            prime: "′",
+            Prime: "″",
+            primes: "ℙ",
+            prnap: "⪹",
+            prnE: "⪵",
+            prnsim: "⋨",
+            prod: "∏",
+            Product: "∏",
+            profalar: "⌮",
+            profline: "⌒",
+            profsurf: "⌓",
+            prop: "∝",
+            Proportion: "∷",
+            Proportional: "∝",
+            propto: "∝",
+            prsim: "≾",
+            prurel: "⊰",
+            pscr: "\uD835\uDCC5",
+            Pscr: "\uD835\uDCAB",
+            psi: "ψ",
+            Psi: "Ψ",
+            puncsp: " ",
+            qfr: "\uD835\uDD2E",
+            Qfr: "\uD835\uDD14",
+            qint: "⨌",
+            qopf: "\uD835\uDD62",
+            Qopf: "ℚ",
+            qprime: "⁗",
+            qscr: "\uD835\uDCC6",
+            Qscr: "\uD835\uDCAC",
+            quaternions: "ℍ",
+            quatint: "⨖",
+            quest: "?",
+            questeq: "≟",
+            quot: '"',
+            QUOT: '"',
+            rAarr: "⇛",
+            race: "∽̱",
+            racute: "ŕ",
+            Racute: "Ŕ",
+            radic: "√",
+            raemptyv: "⦳",
+            rang: "⟩",
+            Rang: "⟫",
+            rangd: "⦒",
+            range: "⦥",
+            rangle: "⟩",
+            raquo: "\xbb",
+            rarr: "→",
+            rArr: "⇒",
+            Rarr: "↠",
+            rarrap: "⥵",
+            rarrb: "⇥",
+            rarrbfs: "⤠",
+            rarrc: "⤳",
+            rarrfs: "⤞",
+            rarrhk: "↪",
+            rarrlp: "↬",
+            rarrpl: "⥅",
+            rarrsim: "⥴",
+            rarrtl: "↣",
+            Rarrtl: "⤖",
+            rarrw: "↝",
+            ratail: "⤚",
+            rAtail: "⤜",
+            ratio: "∶",
+            rationals: "ℚ",
+            rbarr: "⤍",
+            rBarr: "⤏",
+            RBarr: "⤐",
+            rbbrk: "❳",
+            rbrace: "}",
+            rbrack: "]",
+            rbrke: "⦌",
+            rbrksld: "⦎",
+            rbrkslu: "⦐",
+            rcaron: "ř",
+            Rcaron: "Ř",
+            rcedil: "ŗ",
+            Rcedil: "Ŗ",
+            rceil: "⌉",
+            rcub: "}",
+            rcy: "р",
+            Rcy: "Р",
+            rdca: "⤷",
+            rdldhar: "⥩",
+            rdquo: "”",
+            rdquor: "”",
+            rdsh: "↳",
+            Re: "ℜ",
+            real: "ℜ",
+            realine: "ℛ",
+            realpart: "ℜ",
+            reals: "ℝ",
+            rect: "▭",
+            reg: "\xae",
+            REG: "\xae",
+            ReverseElement: "∋",
+            ReverseEquilibrium: "⇋",
+            ReverseUpEquilibrium: "⥯",
+            rfisht: "⥽",
+            rfloor: "⌋",
+            rfr: "\uD835\uDD2F",
+            Rfr: "ℜ",
+            rHar: "⥤",
+            rhard: "⇁",
+            rharu: "⇀",
+            rharul: "⥬",
+            rho: "ρ",
+            Rho: "Ρ",
+            rhov: "ϱ",
+            RightAngleBracket: "⟩",
+            rightarrow: "→",
+            Rightarrow: "⇒",
+            RightArrow: "→",
+            RightArrowBar: "⇥",
+            RightArrowLeftArrow: "⇄",
+            rightarrowtail: "↣",
+            RightCeiling: "⌉",
+            RightDoubleBracket: "⟧",
+            RightDownTeeVector: "⥝",
+            RightDownVector: "⇂",
+            RightDownVectorBar: "⥕",
+            RightFloor: "⌋",
+            rightharpoondown: "⇁",
+            rightharpoonup: "⇀",
+            rightleftarrows: "⇄",
+            rightleftharpoons: "⇌",
+            rightrightarrows: "⇉",
+            rightsquigarrow: "↝",
+            RightTee: "⊢",
+            RightTeeArrow: "↦",
+            RightTeeVector: "⥛",
+            rightthreetimes: "⋌",
+            RightTriangle: "⊳",
+            RightTriangleBar: "⧐",
+            RightTriangleEqual: "⊵",
+            RightUpDownVector: "⥏",
+            RightUpTeeVector: "⥜",
+            RightUpVector: "↾",
+            RightUpVectorBar: "⥔",
+            RightVector: "⇀",
+            RightVectorBar: "⥓",
+            ring: "˚",
+            risingdotseq: "≓",
+            rlarr: "⇄",
+            rlhar: "⇌",
+            rlm: "‏",
+            rmoust: "⎱",
+            rmoustache: "⎱",
+            rnmid: "⫮",
+            roang: "⟭",
+            roarr: "⇾",
+            robrk: "⟧",
+            ropar: "⦆",
+            ropf: "\uD835\uDD63",
+            Ropf: "ℝ",
+            roplus: "⨮",
+            rotimes: "⨵",
+            RoundImplies: "⥰",
+            rpar: ")",
+            rpargt: "⦔",
+            rppolint: "⨒",
+            rrarr: "⇉",
+            Rrightarrow: "⇛",
+            rsaquo: "›",
+            rscr: "\uD835\uDCC7",
+            Rscr: "ℛ",
+            rsh: "↱",
+            Rsh: "↱",
+            rsqb: "]",
+            rsquo: "’",
+            rsquor: "’",
+            rthree: "⋌",
+            rtimes: "⋊",
+            rtri: "▹",
+            rtrie: "⊵",
+            rtrif: "▸",
+            rtriltri: "⧎",
+            RuleDelayed: "⧴",
+            ruluhar: "⥨",
+            rx: "℞",
+            sacute: "ś",
+            Sacute: "Ś",
+            sbquo: "‚",
+            sc: "≻",
+            Sc: "⪼",
+            scap: "⪸",
+            scaron: "š",
+            Scaron: "Š",
+            sccue: "≽",
+            sce: "⪰",
+            scE: "⪴",
+            scedil: "ş",
+            Scedil: "Ş",
+            scirc: "ŝ",
+            Scirc: "Ŝ",
+            scnap: "⪺",
+            scnE: "⪶",
+            scnsim: "⋩",
+            scpolint: "⨓",
+            scsim: "≿",
+            scy: "с",
+            Scy: "С",
+            sdot: "⋅",
+            sdotb: "⊡",
+            sdote: "⩦",
+            searhk: "⤥",
+            searr: "↘",
+            seArr: "⇘",
+            searrow: "↘",
+            sect: "\xa7",
+            semi: ";",
+            seswar: "⤩",
+            setminus: "∖",
+            setmn: "∖",
+            sext: "✶",
+            sfr: "\uD835\uDD30",
+            Sfr: "\uD835\uDD16",
+            sfrown: "⌢",
+            sharp: "♯",
+            shchcy: "щ",
+            SHCHcy: "Щ",
+            shcy: "ш",
+            SHcy: "Ш",
+            ShortDownArrow: "↓",
+            ShortLeftArrow: "←",
+            shortmid: "∣",
+            shortparallel: "∥",
+            ShortRightArrow: "→",
+            ShortUpArrow: "↑",
+            shy: "\xad",
+            sigma: "σ",
+            Sigma: "Σ",
+            sigmaf: "ς",
+            sigmav: "ς",
+            sim: "∼",
+            simdot: "⩪",
+            sime: "≃",
+            simeq: "≃",
+            simg: "⪞",
+            simgE: "⪠",
+            siml: "⪝",
+            simlE: "⪟",
+            simne: "≆",
+            simplus: "⨤",
+            simrarr: "⥲",
+            slarr: "←",
+            SmallCircle: "∘",
+            smallsetminus: "∖",
+            smashp: "⨳",
+            smeparsl: "⧤",
+            smid: "∣",
+            smile: "⌣",
+            smt: "⪪",
+            smte: "⪬",
+            smtes: "⪬︀",
+            softcy: "ь",
+            SOFTcy: "Ь",
+            sol: "/",
+            solb: "⧄",
+            solbar: "⌿",
+            sopf: "\uD835\uDD64",
+            Sopf: "\uD835\uDD4A",
+            spades: "♠",
+            spadesuit: "♠",
+            spar: "∥",
+            sqcap: "⊓",
+            sqcaps: "⊓︀",
+            sqcup: "⊔",
+            sqcups: "⊔︀",
+            Sqrt: "√",
+            sqsub: "⊏",
+            sqsube: "⊑",
+            sqsubset: "⊏",
+            sqsubseteq: "⊑",
+            sqsup: "⊐",
+            sqsupe: "⊒",
+            sqsupset: "⊐",
+            sqsupseteq: "⊒",
+            squ: "□",
+            square: "□",
+            Square: "□",
+            SquareIntersection: "⊓",
+            SquareSubset: "⊏",
+            SquareSubsetEqual: "⊑",
+            SquareSuperset: "⊐",
+            SquareSupersetEqual: "⊒",
+            SquareUnion: "⊔",
+            squarf: "▪",
+            squf: "▪",
+            srarr: "→",
+            sscr: "\uD835\uDCC8",
+            Sscr: "\uD835\uDCAE",
+            ssetmn: "∖",
+            ssmile: "⌣",
+            sstarf: "⋆",
+            star: "☆",
+            Star: "⋆",
+            starf: "★",
+            straightepsilon: "ϵ",
+            straightphi: "ϕ",
+            strns: "\xaf",
+            sub: "⊂",
+            Sub: "⋐",
+            subdot: "⪽",
+            sube: "⊆",
+            subE: "⫅",
+            subedot: "⫃",
+            submult: "⫁",
+            subne: "⊊",
+            subnE: "⫋",
+            subplus: "⪿",
+            subrarr: "⥹",
+            subset: "⊂",
+            Subset: "⋐",
+            subseteq: "⊆",
+            subseteqq: "⫅",
+            SubsetEqual: "⊆",
+            subsetneq: "⊊",
+            subsetneqq: "⫋",
+            subsim: "⫇",
+            subsub: "⫕",
+            subsup: "⫓",
+            succ: "≻",
+            succapprox: "⪸",
+            succcurlyeq: "≽",
+            Succeeds: "≻",
+            SucceedsEqual: "⪰",
+            SucceedsSlantEqual: "≽",
+            SucceedsTilde: "≿",
+            succeq: "⪰",
+            succnapprox: "⪺",
+            succneqq: "⪶",
+            succnsim: "⋩",
+            succsim: "≿",
+            SuchThat: "∋",
+            sum: "∑",
+            Sum: "∑",
+            sung: "♪",
+            sup: "⊃",
+            Sup: "⋑",
+            sup1: "\xb9",
+            sup2: "\xb2",
+            sup3: "\xb3",
+            supdot: "⪾",
+            supdsub: "⫘",
+            supe: "⊇",
+            supE: "⫆",
+            supedot: "⫄",
+            Superset: "⊃",
+            SupersetEqual: "⊇",
+            suphsol: "⟉",
+            suphsub: "⫗",
+            suplarr: "⥻",
+            supmult: "⫂",
+            supne: "⊋",
+            supnE: "⫌",
+            supplus: "⫀",
+            supset: "⊃",
+            Supset: "⋑",
+            supseteq: "⊇",
+            supseteqq: "⫆",
+            supsetneq: "⊋",
+            supsetneqq: "⫌",
+            supsim: "⫈",
+            supsub: "⫔",
+            supsup: "⫖",
+            swarhk: "⤦",
+            swarr: "↙",
+            swArr: "⇙",
+            swarrow: "↙",
+            swnwar: "⤪",
+            szlig: "\xdf",
+            Tab: "	",
+            target: "⌖",
+            tau: "τ",
+            Tau: "Τ",
+            tbrk: "⎴",
+            tcaron: "ť",
+            Tcaron: "Ť",
+            tcedil: "ţ",
+            Tcedil: "Ţ",
+            tcy: "т",
+            Tcy: "Т",
+            tdot: "⃛",
+            telrec: "⌕",
+            tfr: "\uD835\uDD31",
+            Tfr: "\uD835\uDD17",
+            there4: "∴",
+            therefore: "∴",
+            Therefore: "∴",
+            theta: "θ",
+            Theta: "Θ",
+            thetasym: "ϑ",
+            thetav: "ϑ",
+            thickapprox: "≈",
+            thicksim: "∼",
+            ThickSpace: "  ",
+            thinsp: " ",
+            ThinSpace: " ",
+            thkap: "≈",
+            thksim: "∼",
+            thorn: "\xfe",
+            THORN: "\xde",
+            tilde: "˜",
+            Tilde: "∼",
+            TildeEqual: "≃",
+            TildeFullEqual: "≅",
+            TildeTilde: "≈",
+            times: "\xd7",
+            timesb: "⊠",
+            timesbar: "⨱",
+            timesd: "⨰",
+            tint: "∭",
+            toea: "⤨",
+            top: "⊤",
+            topbot: "⌶",
+            topcir: "⫱",
+            topf: "\uD835\uDD65",
+            Topf: "\uD835\uDD4B",
+            topfork: "⫚",
+            tosa: "⤩",
+            tprime: "‴",
+            trade: "™",
+            TRADE: "™",
+            triangle: "▵",
+            triangledown: "▿",
+            triangleleft: "◃",
+            trianglelefteq: "⊴",
+            triangleq: "≜",
+            triangleright: "▹",
+            trianglerighteq: "⊵",
+            tridot: "◬",
+            trie: "≜",
+            triminus: "⨺",
+            TripleDot: "⃛",
+            triplus: "⨹",
+            trisb: "⧍",
+            tritime: "⨻",
+            trpezium: "⏢",
+            tscr: "\uD835\uDCC9",
+            Tscr: "\uD835\uDCAF",
+            tscy: "ц",
+            TScy: "Ц",
+            tshcy: "ћ",
+            TSHcy: "Ћ",
+            tstrok: "ŧ",
+            Tstrok: "Ŧ",
+            twixt: "≬",
+            twoheadleftarrow: "↞",
+            twoheadrightarrow: "↠",
+            uacute: "\xfa",
+            Uacute: "\xda",
+            uarr: "↑",
+            uArr: "⇑",
+            Uarr: "↟",
+            Uarrocir: "⥉",
+            ubrcy: "ў",
+            Ubrcy: "Ў",
+            ubreve: "ŭ",
+            Ubreve: "Ŭ",
+            ucirc: "\xfb",
+            Ucirc: "\xdb",
+            ucy: "у",
+            Ucy: "У",
+            udarr: "⇅",
+            udblac: "ű",
+            Udblac: "Ű",
+            udhar: "⥮",
+            ufisht: "⥾",
+            ufr: "\uD835\uDD32",
+            Ufr: "\uD835\uDD18",
+            ugrave: "\xf9",
+            Ugrave: "\xd9",
+            uHar: "⥣",
+            uharl: "↿",
+            uharr: "↾",
+            uhblk: "▀",
+            ulcorn: "⌜",
+            ulcorner: "⌜",
+            ulcrop: "⌏",
+            ultri: "◸",
+            umacr: "ū",
+            Umacr: "Ū",
+            uml: "\xa8",
+            UnderBar: "_",
+            UnderBrace: "⏟",
+            UnderBracket: "⎵",
+            UnderParenthesis: "⏝",
+            Union: "⋃",
+            UnionPlus: "⊎",
+            uogon: "ų",
+            Uogon: "Ų",
+            uopf: "\uD835\uDD66",
+            Uopf: "\uD835\uDD4C",
+            uparrow: "↑",
+            Uparrow: "⇑",
+            UpArrow: "↑",
+            UpArrowBar: "⤒",
+            UpArrowDownArrow: "⇅",
+            updownarrow: "↕",
+            Updownarrow: "⇕",
+            UpDownArrow: "↕",
+            UpEquilibrium: "⥮",
+            upharpoonleft: "↿",
+            upharpoonright: "↾",
+            uplus: "⊎",
+            UpperLeftArrow: "↖",
+            UpperRightArrow: "↗",
+            upsi: "υ",
+            Upsi: "ϒ",
+            upsih: "ϒ",
+            upsilon: "υ",
+            Upsilon: "Υ",
+            UpTee: "⊥",
+            UpTeeArrow: "↥",
+            upuparrows: "⇈",
+            urcorn: "⌝",
+            urcorner: "⌝",
+            urcrop: "⌎",
+            uring: "ů",
+            Uring: "Ů",
+            urtri: "◹",
+            uscr: "\uD835\uDCCA",
+            Uscr: "\uD835\uDCB0",
+            utdot: "⋰",
+            utilde: "ũ",
+            Utilde: "Ũ",
+            utri: "▵",
+            utrif: "▴",
+            uuarr: "⇈",
+            uuml: "\xfc",
+            Uuml: "\xdc",
+            uwangle: "⦧",
+            vangrt: "⦜",
+            varepsilon: "ϵ",
+            varkappa: "ϰ",
+            varnothing: "∅",
+            varphi: "ϕ",
+            varpi: "ϖ",
+            varpropto: "∝",
+            varr: "↕",
+            vArr: "⇕",
+            varrho: "ϱ",
+            varsigma: "ς",
+            varsubsetneq: "⊊︀",
+            varsubsetneqq: "⫋︀",
+            varsupsetneq: "⊋︀",
+            varsupsetneqq: "⫌︀",
+            vartheta: "ϑ",
+            vartriangleleft: "⊲",
+            vartriangleright: "⊳",
+            vBar: "⫨",
+            Vbar: "⫫",
+            vBarv: "⫩",
+            vcy: "в",
+            Vcy: "В",
+            vdash: "⊢",
+            vDash: "⊨",
+            Vdash: "⊩",
+            VDash: "⊫",
+            Vdashl: "⫦",
+            vee: "∨",
+            Vee: "⋁",
+            veebar: "⊻",
+            veeeq: "≚",
+            vellip: "⋮",
+            verbar: "|",
+            Verbar: "‖",
+            vert: "|",
+            Vert: "‖",
+            VerticalBar: "∣",
+            VerticalLine: "|",
+            VerticalSeparator: "❘",
+            VerticalTilde: "≀",
+            VeryThinSpace: " ",
+            vfr: "\uD835\uDD33",
+            Vfr: "\uD835\uDD19",
+            vltri: "⊲",
+            vnsub: "⊂⃒",
+            vnsup: "⊃⃒",
+            vopf: "\uD835\uDD67",
+            Vopf: "\uD835\uDD4D",
+            vprop: "∝",
+            vrtri: "⊳",
+            vscr: "\uD835\uDCCB",
+            Vscr: "\uD835\uDCB1",
+            vsubne: "⊊︀",
+            vsubnE: "⫋︀",
+            vsupne: "⊋︀",
+            vsupnE: "⫌︀",
+            Vvdash: "⊪",
+            vzigzag: "⦚",
+            wcirc: "ŵ",
+            Wcirc: "Ŵ",
+            wedbar: "⩟",
+            wedge: "∧",
+            Wedge: "⋀",
+            wedgeq: "≙",
+            weierp: "℘",
+            wfr: "\uD835\uDD34",
+            Wfr: "\uD835\uDD1A",
+            wopf: "\uD835\uDD68",
+            Wopf: "\uD835\uDD4E",
+            wp: "℘",
+            wr: "≀",
+            wreath: "≀",
+            wscr: "\uD835\uDCCC",
+            Wscr: "\uD835\uDCB2",
+            xcap: "⋂",
+            xcirc: "◯",
+            xcup: "⋃",
+            xdtri: "▽",
+            xfr: "\uD835\uDD35",
+            Xfr: "\uD835\uDD1B",
+            xharr: "⟷",
+            xhArr: "⟺",
+            xi: "ξ",
+            Xi: "Ξ",
+            xlarr: "⟵",
+            xlArr: "⟸",
+            xmap: "⟼",
+            xnis: "⋻",
+            xodot: "⨀",
+            xopf: "\uD835\uDD69",
+            Xopf: "\uD835\uDD4F",
+            xoplus: "⨁",
+            xotime: "⨂",
+            xrarr: "⟶",
+            xrArr: "⟹",
+            xscr: "\uD835\uDCCD",
+            Xscr: "\uD835\uDCB3",
+            xsqcup: "⨆",
+            xuplus: "⨄",
+            xutri: "△",
+            xvee: "⋁",
+            xwedge: "⋀",
+            yacute: "\xfd",
+            Yacute: "\xdd",
+            yacy: "я",
+            YAcy: "Я",
+            ycirc: "ŷ",
+            Ycirc: "Ŷ",
+            ycy: "ы",
+            Ycy: "Ы",
+            yen: "\xa5",
+            yfr: "\uD835\uDD36",
+            Yfr: "\uD835\uDD1C",
+            yicy: "ї",
+            YIcy: "Ї",
+            yopf: "\uD835\uDD6A",
+            Yopf: "\uD835\uDD50",
+            yscr: "\uD835\uDCCE",
+            Yscr: "\uD835\uDCB4",
+            yucy: "ю",
+            YUcy: "Ю",
+            yuml: "\xff",
+            Yuml: "Ÿ",
+            zacute: "ź",
+            Zacute: "Ź",
+            zcaron: "ž",
+            Zcaron: "Ž",
+            zcy: "з",
+            Zcy: "З",
+            zdot: "ż",
+            Zdot: "Ż",
+            zeetrf: "ℨ",
+            ZeroWidthSpace: "​",
+            zeta: "ζ",
+            Zeta: "Ζ",
+            zfr: "\uD835\uDD37",
+            Zfr: "ℨ",
+            zhcy: "ж",
+            ZHcy: "Ж",
+            zigrarr: "⇝",
+            zopf: "\uD835\uDD6B",
+            Zopf: "ℤ",
+            zscr: "\uD835\uDCCF",
+            Zscr: "\uD835\uDCB5",
+            zwj: "‍",
+            zwnj: "‌"
+        }, w = {
+            aacute: "\xe1",
+            Aacute: "\xc1",
+            acirc: "\xe2",
+            Acirc: "\xc2",
+            acute: "\xb4",
+            aelig: "\xe6",
+            AElig: "\xc6",
+            agrave: "\xe0",
+            Agrave: "\xc0",
+            amp: "&",
+            AMP: "&",
+            aring: "\xe5",
+            Aring: "\xc5",
+            atilde: "\xe3",
+            Atilde: "\xc3",
+            auml: "\xe4",
+            Auml: "\xc4",
+            brvbar: "\xa6",
+            ccedil: "\xe7",
+            Ccedil: "\xc7",
+            cedil: "\xb8",
+            cent: "\xa2",
+            copy: "\xa9",
+            COPY: "\xa9",
+            curren: "\xa4",
+            deg: "\xb0",
+            divide: "\xf7",
+            eacute: "\xe9",
+            Eacute: "\xc9",
+            ecirc: "\xea",
+            Ecirc: "\xca",
+            egrave: "\xe8",
+            Egrave: "\xc8",
+            eth: "\xf0",
+            ETH: "\xd0",
+            euml: "\xeb",
+            Euml: "\xcb",
+            frac12: "\xbd",
+            frac14: "\xbc",
+            frac34: "\xbe",
+            gt: ">",
+            GT: ">",
+            iacute: "\xed",
+            Iacute: "\xcd",
+            icirc: "\xee",
+            Icirc: "\xce",
+            iexcl: "\xa1",
+            igrave: "\xec",
+            Igrave: "\xcc",
+            iquest: "\xbf",
+            iuml: "\xef",
+            Iuml: "\xcf",
+            laquo: "\xab",
+            lt: "<",
+            LT: "<",
+            macr: "\xaf",
+            micro: "\xb5",
+            middot: "\xb7",
+            nbsp: "\xa0",
+            not: "\xac",
+            ntilde: "\xf1",
+            Ntilde: "\xd1",
+            oacute: "\xf3",
+            Oacute: "\xd3",
+            ocirc: "\xf4",
+            Ocirc: "\xd4",
+            ograve: "\xf2",
+            Ograve: "\xd2",
+            ordf: "\xaa",
+            ordm: "\xba",
+            oslash: "\xf8",
+            Oslash: "\xd8",
+            otilde: "\xf5",
+            Otilde: "\xd5",
+            ouml: "\xf6",
+            Ouml: "\xd6",
+            para: "\xb6",
+            plusmn: "\xb1",
+            pound: "\xa3",
+            quot: '"',
+            QUOT: '"',
+            raquo: "\xbb",
+            reg: "\xae",
+            REG: "\xae",
+            sect: "\xa7",
+            shy: "\xad",
+            sup1: "\xb9",
+            sup2: "\xb2",
+            sup3: "\xb3",
+            szlig: "\xdf",
+            thorn: "\xfe",
+            THORN: "\xde",
+            times: "\xd7",
+            uacute: "\xfa",
+            Uacute: "\xda",
+            ucirc: "\xfb",
+            Ucirc: "\xdb",
+            ugrave: "\xf9",
+            Ugrave: "\xd9",
+            uml: "\xa8",
+            uuml: "\xfc",
+            Uuml: "\xdc",
+            yacute: "\xfd",
+            Yacute: "\xdd",
+            yen: "\xa5",
+            yuml: "\xff"
+        }, b = {
+            0: "�",
+            128: "€",
+            130: "‚",
+            131: "ƒ",
+            132: "„",
+            133: "…",
+            134: "†",
+            135: "‡",
+            136: "ˆ",
+            137: "‰",
+            138: "Š",
+            139: "‹",
+            140: "Œ",
+            142: "Ž",
+            145: "‘",
+            146: "’",
+            147: "“",
+            148: "”",
+            149: "•",
+            150: "–",
+            151: "—",
+            152: "˜",
+            153: "™",
+            154: "š",
+            155: "›",
+            156: "œ",
+            158: "ž",
+            159: "Ÿ"
+        }, k = [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            11,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            127,
+            128,
+            129,
+            130,
+            131,
+            132,
+            133,
+            134,
+            135,
+            136,
+            137,
+            138,
+            139,
+            140,
+            141,
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151,
+            152,
+            153,
+            154,
+            155,
+            156,
+            157,
+            158,
+            159,
+            64976,
+            64977,
+            64978,
+            64979,
+            64980,
+            64981,
+            64982,
+            64983,
+            64984,
+            64985,
+            64986,
+            64987,
+            64988,
+            64989,
+            64990,
+            64991,
+            64992,
+            64993,
+            64994,
+            64995,
+            64996,
+            64997,
+            64998,
+            64999,
+            65e3,
+            65001,
+            65002,
+            65003,
+            65004,
+            65005,
+            65006,
+            65007,
+            65534,
+            65535,
+            131070,
+            131071,
+            196606,
+            196607,
+            262142,
+            262143,
+            327678,
+            327679,
+            393214,
+            393215,
+            458750,
+            458751,
+            524286,
+            524287,
+            589822,
+            589823,
+            655358,
+            655359,
+            720894,
+            720895,
+            786430,
+            786431,
+            851966,
+            851967,
+            917502,
+            917503,
+            983038,
+            983039,
+            1048574,
+            1048575,
+            1114110,
+            1114111
+        ], C = String.fromCharCode, u = {}, i = u.hasOwnProperty, n = function n(v, T) {
+            return i.call(v, T);
+        }, o = function o(v, T) {
+            for(var j = -1, P = v.length; ++j < P;)if (v[j] == T) return !0;
+            return !1;
+        }, f = function f(v, T) {
+            if (!v) return T;
+            var j = {}, P;
+            for(P in T)j[P] = n(v, P) ? v[P] : T[P];
+            return j;
+        }, h = function h(v, T) {
+            var j = "";
+            return v >= 55296 && v <= 57343 || v > 1114111 ? (T && B("character reference outside the permissible Unicode range"), "�") : n(b, v) ? (T && B("disallowed character reference"), b[v]) : (T && o(k, v) && B("disallowed character reference"), v > 65535 && (v -= 65536, j += C(v >>> 10 & 1023 | 55296), v = 56320 | v & 1023), j += C(v), j);
+        }, s = function s(v) {
+            return "&#x" + v.toString(16).toUpperCase() + ";";
+        }, g = function g(v) {
+            return "&#" + v + ";";
+        }, B = function B(v) {
+            throw Error("Parse error: " + v);
+        }, S = function S1(v, T) {
+            T = f(T, S.options);
+            var j = T.strict;
+            j && q.test(v) && B("forbidden code point");
+            var P = T.encodeEverything, z = T.useNamedReferences, H = T.allowUnsafeSymbols, U = T.decimal ? g : s, O = function O(I) {
+                return U(I.charCodeAt(0));
+            };
+            return P ? (v = v.replace(p, function(I) {
+                return z && n(D, I) ? "&" + D[I] + ";" : O(I);
+            }), z && (v = v.replace(/&gt;\u20D2/g, "&nvgt;").replace(/&lt;\u20D2/g, "&nvlt;").replace(/&#x66;&#x6A;/g, "&fjlig;")), z && (v = v.replace(m, function(I) {
+                return "&" + D[I] + ";";
+            }))) : z ? (H || (v = v.replace(A, function(I) {
+                return "&" + D[I] + ";";
+            })), v = v.replace(/&gt;\u20D2/g, "&nvgt;").replace(/&lt;\u20D2/g, "&nvlt;"), v = v.replace(m, function(I) {
+                return "&" + D[I] + ";";
+            })) : H || (v = v.replace(A, O)), v.replace(t, function(I) {
+                var G = I.charCodeAt(0), V = I.charCodeAt(1), Q = (G - 55296) * 1024 + V - 56320 + 65536;
+                return U(Q);
+            }).replace(c, O);
         };
-        var regexInvalidEntity = /&#(?:[xX][^a-fA-F0-9]|[^0-9xX])/;
-        var regexInvalidRawCodePoint = /[\0-\x08\x0B\x0E-\x1F\x7F-\x9F\uFDD0-\uFDEF\uFFFE\uFFFF]|[\uD83F\uD87F\uD8BF\uD8FF\uD93F\uD97F\uD9BF\uD9FF\uDA3F\uDA7F\uDABF\uDAFF\uDB3F\uDB7F\uDBBF\uDBFF][\uDFFE\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/;
-        var regexDecode = /&(CounterClockwiseContourIntegral|DoubleLongLeftRightArrow|ClockwiseContourIntegral|NotNestedGreaterGreater|NotSquareSupersetEqual|DiacriticalDoubleAcute|NotRightTriangleEqual|NotSucceedsSlantEqual|NotPrecedesSlantEqual|CloseCurlyDoubleQuote|NegativeVeryThinSpace|DoubleContourIntegral|FilledVerySmallSquare|CapitalDifferentialD|OpenCurlyDoubleQuote|EmptyVerySmallSquare|NestedGreaterGreater|DoubleLongRightArrow|NotLeftTriangleEqual|NotGreaterSlantEqual|ReverseUpEquilibrium|DoubleLeftRightArrow|NotSquareSubsetEqual|NotDoubleVerticalBar|RightArrowLeftArrow|NotGreaterFullEqual|NotRightTriangleBar|SquareSupersetEqual|DownLeftRightVector|DoubleLongLeftArrow|leftrightsquigarrow|LeftArrowRightArrow|NegativeMediumSpace|blacktriangleright|RightDownVectorBar|PrecedesSlantEqual|RightDoubleBracket|SucceedsSlantEqual|NotLeftTriangleBar|RightTriangleEqual|SquareIntersection|RightDownTeeVector|ReverseEquilibrium|NegativeThickSpace|longleftrightarrow|Longleftrightarrow|LongLeftRightArrow|DownRightTeeVector|DownRightVectorBar|GreaterSlantEqual|SquareSubsetEqual|LeftDownVectorBar|LeftDoubleBracket|VerticalSeparator|rightleftharpoons|NotGreaterGreater|NotSquareSuperset|blacktriangleleft|blacktriangledown|NegativeThinSpace|LeftDownTeeVector|NotLessSlantEqual|leftrightharpoons|DoubleUpDownArrow|DoubleVerticalBar|LeftTriangleEqual|FilledSmallSquare|twoheadrightarrow|NotNestedLessLess|DownLeftTeeVector|DownLeftVectorBar|RightAngleBracket|NotTildeFullEqual|NotReverseElement|RightUpDownVector|DiacriticalTilde|NotSucceedsTilde|circlearrowright|NotPrecedesEqual|rightharpoondown|DoubleRightArrow|NotSucceedsEqual|NonBreakingSpace|NotRightTriangle|LessEqualGreater|RightUpTeeVector|LeftAngleBracket|GreaterFullEqual|DownArrowUpArrow|RightUpVectorBar|twoheadleftarrow|GreaterEqualLess|downharpoonright|RightTriangleBar|ntrianglerighteq|NotSupersetEqual|LeftUpDownVector|DiacriticalAcute|rightrightarrows|vartriangleright|UpArrowDownArrow|DiacriticalGrave|UnderParenthesis|EmptySmallSquare|LeftUpVectorBar|leftrightarrows|DownRightVector|downharpoonleft|trianglerighteq|ShortRightArrow|OverParenthesis|DoubleLeftArrow|DoubleDownArrow|NotSquareSubset|bigtriangledown|ntrianglelefteq|UpperRightArrow|curvearrowright|vartriangleleft|NotLeftTriangle|nleftrightarrow|LowerRightArrow|NotHumpDownHump|NotGreaterTilde|rightthreetimes|LeftUpTeeVector|NotGreaterEqual|straightepsilon|LeftTriangleBar|rightsquigarrow|ContourIntegral|rightleftarrows|CloseCurlyQuote|RightDownVector|LeftRightVector|nLeftrightarrow|leftharpoondown|circlearrowleft|SquareSuperset|OpenCurlyQuote|hookrightarrow|HorizontalLine|DiacriticalDot|NotLessGreater|ntriangleright|DoubleRightTee|InvisibleComma|InvisibleTimes|LowerLeftArrow|DownLeftVector|NotSubsetEqual|curvearrowleft|trianglelefteq|NotVerticalBar|TildeFullEqual|downdownarrows|NotGreaterLess|RightTeeVector|ZeroWidthSpace|looparrowright|LongRightArrow|doublebarwedge|ShortLeftArrow|ShortDownArrow|RightVectorBar|GreaterGreater|ReverseElement|rightharpoonup|LessSlantEqual|leftthreetimes|upharpoonright|rightarrowtail|LeftDownVector|Longrightarrow|NestedLessLess|UpperLeftArrow|nshortparallel|leftleftarrows|leftrightarrow|Leftrightarrow|LeftRightArrow|longrightarrow|upharpoonleft|RightArrowBar|ApplyFunction|LeftTeeVector|leftarrowtail|NotEqualTilde|varsubsetneqq|varsupsetneqq|RightTeeArrow|SucceedsEqual|SucceedsTilde|LeftVectorBar|SupersetEqual|hookleftarrow|DifferentialD|VerticalTilde|VeryThinSpace|blacktriangle|bigtriangleup|LessFullEqual|divideontimes|leftharpoonup|UpEquilibrium|ntriangleleft|RightTriangle|measuredangle|shortparallel|longleftarrow|Longleftarrow|LongLeftArrow|DoubleLeftTee|Poincareplane|PrecedesEqual|triangleright|DoubleUpArrow|RightUpVector|fallingdotseq|looparrowleft|PrecedesTilde|NotTildeEqual|NotTildeTilde|smallsetminus|Proportional|triangleleft|triangledown|UnderBracket|NotHumpEqual|exponentiale|ExponentialE|NotLessTilde|HilbertSpace|RightCeiling|blacklozenge|varsupsetneq|HumpDownHump|GreaterEqual|VerticalLine|LeftTeeArrow|NotLessEqual|DownTeeArrow|LeftTriangle|varsubsetneq|Intersection|NotCongruent|DownArrowBar|LeftUpVector|LeftArrowBar|risingdotseq|GreaterTilde|RoundImplies|SquareSubset|ShortUpArrow|NotSuperset|quaternions|precnapprox|backepsilon|preccurlyeq|OverBracket|blacksquare|MediumSpace|VerticalBar|circledcirc|circleddash|CircleMinus|CircleTimes|LessGreater|curlyeqprec|curlyeqsucc|diamondsuit|UpDownArrow|Updownarrow|RuleDelayed|Rrightarrow|updownarrow|RightVector|nRightarrow|nrightarrow|eqslantless|LeftCeiling|Equilibrium|SmallCircle|expectation|NotSucceeds|thickapprox|GreaterLess|SquareUnion|NotPrecedes|NotLessLess|straightphi|succnapprox|succcurlyeq|SubsetEqual|sqsupseteq|Proportion|Laplacetrf|ImaginaryI|supsetneqq|NotGreater|gtreqqless|NotElement|ThickSpace|TildeEqual|TildeTilde|Fouriertrf|rmoustache|EqualTilde|eqslantgtr|UnderBrace|LeftVector|UpArrowBar|nLeftarrow|nsubseteqq|subsetneqq|nsupseteqq|nleftarrow|succapprox|lessapprox|UpTeeArrow|upuparrows|curlywedge|lesseqqgtr|varepsilon|varnothing|RightFloor|complement|CirclePlus|sqsubseteq|Lleftarrow|circledast|RightArrow|Rightarrow|rightarrow|lmoustache|Bernoullis|precapprox|mapstoleft|mapstodown|longmapsto|dotsquare|downarrow|DoubleDot|nsubseteq|supsetneq|leftarrow|nsupseteq|subsetneq|ThinSpace|ngeqslant|subseteqq|HumpEqual|NotSubset|triangleq|NotCupCap|lesseqgtr|heartsuit|TripleDot|Leftarrow|Coproduct|Congruent|varpropto|complexes|gvertneqq|LeftArrow|LessTilde|supseteqq|MinusPlus|CircleDot|nleqslant|NotExists|gtreqless|nparallel|UnionPlus|LeftFloor|checkmark|CenterDot|centerdot|Mellintrf|gtrapprox|bigotimes|OverBrace|spadesuit|therefore|pitchfork|rationals|PlusMinus|Backslash|Therefore|DownBreve|backsimeq|backprime|DownArrow|nshortmid|Downarrow|lvertneqq|eqvparsl|imagline|imagpart|infintie|integers|Integral|intercal|LessLess|Uarrocir|intlarhk|sqsupset|angmsdaf|sqsubset|llcorner|vartheta|cupbrcap|lnapprox|Superset|SuchThat|succnsim|succneqq|angmsdag|biguplus|curlyvee|trpezium|Succeeds|NotTilde|bigwedge|angmsdah|angrtvbd|triminus|cwconint|fpartint|lrcorner|smeparsl|subseteq|urcorner|lurdshar|laemptyv|DDotrahd|approxeq|ldrushar|awconint|mapstoup|backcong|shortmid|triangle|geqslant|gesdotol|timesbar|circledR|circledS|setminus|multimap|naturals|scpolint|ncongdot|RightTee|boxminus|gnapprox|boxtimes|andslope|thicksim|angmsdaa|varsigma|cirfnint|rtriltri|angmsdab|rppolint|angmsdac|barwedge|drbkarow|clubsuit|thetasym|bsolhsub|capbrcup|dzigrarr|doteqdot|DotEqual|dotminus|UnderBar|NotEqual|realpart|otimesas|ulcorner|hksearow|hkswarow|parallel|PartialD|elinters|emptyset|plusacir|bbrktbrk|angmsdad|pointint|bigoplus|angmsdae|Precedes|bigsqcup|varkappa|notindot|supseteq|precneqq|precnsim|profalar|profline|profsurf|leqslant|lesdotor|raemptyv|subplus|notnivb|notnivc|subrarr|zigrarr|vzigzag|submult|subedot|Element|between|cirscir|larrbfs|larrsim|lotimes|lbrksld|lbrkslu|lozenge|ldrdhar|dbkarow|bigcirc|epsilon|simrarr|simplus|ltquest|Epsilon|luruhar|gtquest|maltese|npolint|eqcolon|npreceq|bigodot|ddagger|gtrless|bnequiv|harrcir|ddotseq|equivDD|backsim|demptyv|nsqsube|nsqsupe|Upsilon|nsubset|upsilon|minusdu|nsucceq|swarrow|nsupset|coloneq|searrow|boxplus|napprox|natural|asympeq|alefsym|congdot|nearrow|bigstar|diamond|supplus|tritime|LeftTee|nvinfin|triplus|NewLine|nvltrie|nvrtrie|nwarrow|nexists|Diamond|ruluhar|Implies|supmult|angzarr|suplarr|suphsub|questeq|because|digamma|Because|olcross|bemptyv|omicron|Omicron|rotimes|NoBreak|intprod|angrtvb|orderof|uwangle|suphsol|lesdoto|orslope|DownTee|realine|cudarrl|rdldhar|OverBar|supedot|lessdot|supdsub|topfork|succsim|rbrkslu|rbrksld|pertenk|cudarrr|isindot|planckh|lessgtr|pluscir|gesdoto|plussim|plustwo|lesssim|cularrp|rarrsim|Cayleys|notinva|notinvb|notinvc|UpArrow|Uparrow|uparrow|NotLess|dwangle|precsim|Product|curarrm|Cconint|dotplus|rarrbfs|ccupssm|Cedilla|cemptyv|notniva|quatint|frac35|frac38|frac45|frac56|frac58|frac78|tridot|xoplus|gacute|gammad|Gammad|lfisht|lfloor|bigcup|sqsupe|gbreve|Gbreve|lharul|sqsube|sqcups|Gcedil|apacir|llhard|lmidot|Lmidot|lmoust|andand|sqcaps|approx|Abreve|spades|circeq|tprime|divide|topcir|Assign|topbot|gesdot|divonx|xuplus|timesd|gesles|atilde|solbar|SOFTcy|loplus|timesb|lowast|lowbar|dlcorn|dlcrop|softcy|dollar|lparlt|thksim|lrhard|Atilde|lsaquo|smashp|bigvee|thinsp|wreath|bkarow|lsquor|lstrok|Lstrok|lthree|ltimes|ltlarr|DotDot|simdot|ltrPar|weierp|xsqcup|angmsd|sigmav|sigmaf|zeetrf|Zcaron|zcaron|mapsto|vsupne|thetav|cirmid|marker|mcomma|Zacute|vsubnE|there4|gtlPar|vsubne|bottom|gtrarr|SHCHcy|shchcy|midast|midcir|middot|minusb|minusd|gtrdot|bowtie|sfrown|mnplus|models|colone|seswar|Colone|mstpos|searhk|gtrsim|nacute|Nacute|boxbox|telrec|hairsp|Tcedil|nbumpe|scnsim|ncaron|Ncaron|ncedil|Ncedil|hamilt|Scedil|nearhk|hardcy|HARDcy|tcedil|Tcaron|commat|nequiv|nesear|tcaron|target|hearts|nexist|varrho|scedil|Scaron|scaron|hellip|Sacute|sacute|hercon|swnwar|compfn|rtimes|rthree|rsquor|rsaquo|zacute|wedgeq|homtht|barvee|barwed|Barwed|rpargt|horbar|conint|swarhk|roplus|nltrie|hslash|hstrok|Hstrok|rmoust|Conint|bprime|hybull|hyphen|iacute|Iacute|supsup|supsub|supsim|varphi|coprod|brvbar|agrave|Supset|supset|igrave|Igrave|notinE|Agrave|iiiint|iinfin|copysr|wedbar|Verbar|vangrt|becaus|incare|verbar|inodot|bullet|drcorn|intcal|drcrop|cularr|vellip|Utilde|bumpeq|cupcap|dstrok|Dstrok|CupCap|cupcup|cupdot|eacute|Eacute|supdot|iquest|easter|ecaron|Ecaron|ecolon|isinsv|utilde|itilde|Itilde|curarr|succeq|Bumpeq|cacute|ulcrop|nparsl|Cacute|nprcue|egrave|Egrave|nrarrc|nrarrw|subsup|subsub|nrtrie|jsercy|nsccue|Jsercy|kappav|kcedil|Kcedil|subsim|ulcorn|nsimeq|egsdot|veebar|kgreen|capand|elsdot|Subset|subset|curren|aacute|lacute|Lacute|emptyv|ntilde|Ntilde|lagran|lambda|Lambda|capcap|Ugrave|langle|subdot|emsp13|numero|emsp14|nvdash|nvDash|nVdash|nVDash|ugrave|ufisht|nvHarr|larrfs|nvlArr|larrhk|larrlp|larrpl|nvrArr|Udblac|nwarhk|larrtl|nwnear|oacute|Oacute|latail|lAtail|sstarf|lbrace|odblac|Odblac|lbrack|udblac|odsold|eparsl|lcaron|Lcaron|ograve|Ograve|lcedil|Lcedil|Aacute|ssmile|ssetmn|squarf|ldquor|capcup|ominus|cylcty|rharul|eqcirc|dagger|rfloor|rfisht|Dagger|daleth|equals|origof|capdot|equest|dcaron|Dcaron|rdquor|oslash|Oslash|otilde|Otilde|otimes|Otimes|urcrop|Ubreve|ubreve|Yacute|Uacute|uacute|Rcedil|rcedil|urcorn|parsim|Rcaron|Vdashl|rcaron|Tstrok|percnt|period|permil|Exists|yacute|rbrack|rbrace|phmmat|ccaron|Ccaron|planck|ccedil|plankv|tstrok|female|plusdo|plusdu|ffilig|plusmn|ffllig|Ccedil|rAtail|dfisht|bernou|ratail|Rarrtl|rarrtl|angsph|rarrpl|rarrlp|rarrhk|xwedge|xotime|forall|ForAll|Vvdash|vsupnE|preceq|bigcap|frac12|frac13|frac14|primes|rarrfs|prnsim|frac15|Square|frac16|square|lesdot|frac18|frac23|propto|prurel|rarrap|rangle|puncsp|frac25|Racute|qprime|racute|lesges|frac34|abreve|AElig|eqsim|utdot|setmn|urtri|Equal|Uring|seArr|uring|searr|dashv|Dashv|mumap|nabla|iogon|Iogon|sdote|sdotb|scsim|napid|napos|equiv|natur|Acirc|dblac|erarr|nbump|iprod|erDot|ucirc|awint|esdot|angrt|ncong|isinE|scnap|Scirc|scirc|ndash|isins|Ubrcy|nearr|neArr|isinv|nedot|ubrcy|acute|Ycirc|iukcy|Iukcy|xutri|nesim|caret|jcirc|Jcirc|caron|twixt|ddarr|sccue|exist|jmath|sbquo|ngeqq|angst|ccaps|lceil|ngsim|UpTee|delta|Delta|rtrif|nharr|nhArr|nhpar|rtrie|jukcy|Jukcy|kappa|rsquo|Kappa|nlarr|nlArr|TSHcy|rrarr|aogon|Aogon|fflig|xrarr|tshcy|ccirc|nleqq|filig|upsih|nless|dharl|nlsim|fjlig|ropar|nltri|dharr|robrk|roarr|fllig|fltns|roang|rnmid|subnE|subne|lAarr|trisb|Ccirc|acirc|ccups|blank|VDash|forkv|Vdash|langd|cedil|blk12|blk14|laquo|strns|diams|notin|vDash|larrb|blk34|block|disin|uplus|vdash|vBarv|aelig|starf|Wedge|check|xrArr|lates|lbarr|lBarr|notni|lbbrk|bcong|frasl|lbrke|frown|vrtri|vprop|vnsup|gamma|Gamma|wedge|xodot|bdquo|srarr|doteq|ldquo|boxdl|boxdL|gcirc|Gcirc|boxDl|boxDL|boxdr|boxdR|boxDr|TRADE|trade|rlhar|boxDR|vnsub|npart|vltri|rlarr|boxhd|boxhD|nprec|gescc|nrarr|nrArr|boxHd|boxHD|boxhu|boxhU|nrtri|boxHu|clubs|boxHU|times|colon|Colon|gimel|xlArr|Tilde|nsime|tilde|nsmid|nspar|THORN|thorn|xlarr|nsube|nsubE|thkap|xhArr|comma|nsucc|boxul|boxuL|nsupe|nsupE|gneqq|gnsim|boxUl|boxUL|grave|boxur|boxuR|boxUr|boxUR|lescc|angle|bepsi|boxvh|varpi|boxvH|numsp|Theta|gsime|gsiml|theta|boxVh|boxVH|boxvl|gtcir|gtdot|boxvL|boxVl|boxVL|crarr|cross|Cross|nvsim|boxvr|nwarr|nwArr|sqsup|dtdot|Uogon|lhard|lharu|dtrif|ocirc|Ocirc|lhblk|duarr|odash|sqsub|Hacek|sqcup|llarr|duhar|oelig|OElig|ofcir|boxvR|uogon|lltri|boxVr|csube|uuarr|ohbar|csupe|ctdot|olarr|olcir|harrw|oline|sqcap|omacr|Omacr|omega|Omega|boxVR|aleph|lneqq|lnsim|loang|loarr|rharu|lobrk|hcirc|operp|oplus|rhard|Hcirc|orarr|Union|order|ecirc|Ecirc|cuepr|szlig|cuesc|breve|reals|eDDot|Breve|hoarr|lopar|utrif|rdquo|Umacr|umacr|efDot|swArr|ultri|alpha|rceil|ovbar|swarr|Wcirc|wcirc|smtes|smile|bsemi|lrarr|aring|parsl|lrhar|bsime|uhblk|lrtri|cupor|Aring|uharr|uharl|slarr|rbrke|bsolb|lsime|rbbrk|RBarr|lsimg|phone|rBarr|rbarr|icirc|lsquo|Icirc|emacr|Emacr|ratio|simne|plusb|simlE|simgE|simeq|pluse|ltcir|ltdot|empty|xharr|xdtri|iexcl|Alpha|ltrie|rarrw|pound|ltrif|xcirc|bumpe|prcue|bumpE|asymp|amacr|cuvee|Sigma|sigma|iiint|udhar|iiota|ijlig|IJlig|supnE|imacr|Imacr|prime|Prime|image|prnap|eogon|Eogon|rarrc|mdash|mDDot|cuwed|imath|supne|imped|Amacr|udarr|prsim|micro|rarrb|cwint|raquo|infin|eplus|range|rangd|Ucirc|radic|minus|amalg|veeeq|rAarr|epsiv|ycirc|quest|sharp|quot|zwnj|Qscr|race|qscr|Qopf|qopf|qint|rang|Rang|Zscr|zscr|Zopf|zopf|rarr|rArr|Rarr|Pscr|pscr|prop|prod|prnE|prec|ZHcy|zhcy|prap|Zeta|zeta|Popf|popf|Zdot|plus|zdot|Yuml|yuml|phiv|YUcy|yucy|Yscr|yscr|perp|Yopf|yopf|part|para|YIcy|Ouml|rcub|yicy|YAcy|rdca|ouml|osol|Oscr|rdsh|yacy|real|oscr|xvee|andd|rect|andv|Xscr|oror|ordm|ordf|xscr|ange|aopf|Aopf|rHar|Xopf|opar|Oopf|xopf|xnis|rhov|oopf|omid|xmap|oint|apid|apos|ogon|ascr|Ascr|odot|odiv|xcup|xcap|ocir|oast|nvlt|nvle|nvgt|nvge|nvap|Wscr|wscr|auml|ntlg|ntgl|nsup|nsub|nsim|Nscr|nscr|nsce|Wopf|ring|npre|wopf|npar|Auml|Barv|bbrk|Nopf|nopf|nmid|nLtv|beta|ropf|Ropf|Beta|beth|nles|rpar|nleq|bnot|bNot|nldr|NJcy|rscr|Rscr|Vscr|vscr|rsqb|njcy|bopf|nisd|Bopf|rtri|Vopf|nGtv|ngtr|vopf|boxh|boxH|boxv|nges|ngeq|boxV|bscr|scap|Bscr|bsim|Vert|vert|bsol|bull|bump|caps|cdot|ncup|scnE|ncap|nbsp|napE|Cdot|cent|sdot|Vbar|nang|vBar|chcy|Mscr|mscr|sect|semi|CHcy|Mopf|mopf|sext|circ|cire|mldr|mlcp|cirE|comp|shcy|SHcy|vArr|varr|cong|copf|Copf|copy|COPY|malt|male|macr|lvnE|cscr|ltri|sime|ltcc|simg|Cscr|siml|csub|Uuml|lsqb|lsim|uuml|csup|Lscr|lscr|utri|smid|lpar|cups|smte|lozf|darr|Lopf|Uscr|solb|lopf|sopf|Sopf|lneq|uscr|spar|dArr|lnap|Darr|dash|Sqrt|LJcy|ljcy|lHar|dHar|Upsi|upsi|diam|lesg|djcy|DJcy|leqq|dopf|Dopf|dscr|Dscr|dscy|ldsh|ldca|squf|DScy|sscr|Sscr|dsol|lcub|late|star|Star|Uopf|Larr|lArr|larr|uopf|dtri|dzcy|sube|subE|Lang|lang|Kscr|kscr|Kopf|kopf|KJcy|kjcy|KHcy|khcy|DZcy|ecir|edot|eDot|Jscr|jscr|succ|Jopf|jopf|Edot|uHar|emsp|ensp|Iuml|iuml|eopf|isin|Iscr|iscr|Eopf|epar|sung|epsi|escr|sup1|sup2|sup3|Iota|iota|supe|supE|Iopf|iopf|IOcy|iocy|Escr|esim|Esim|imof|Uarr|QUOT|uArr|uarr|euml|IEcy|iecy|Idot|Euml|euro|excl|Hscr|hscr|Hopf|hopf|TScy|tscy|Tscr|hbar|tscr|flat|tbrk|fnof|hArr|harr|half|fopf|Fopf|tdot|gvnE|fork|trie|gtcc|fscr|Fscr|gdot|gsim|Gscr|gscr|Gopf|gopf|gneq|Gdot|tosa|gnap|Topf|topf|geqq|toea|GJcy|gjcy|tint|gesl|mid|Sfr|ggg|top|ges|gla|glE|glj|geq|gne|gEl|gel|gnE|Gcy|gcy|gap|Tfr|tfr|Tcy|tcy|Hat|Tau|Ffr|tau|Tab|hfr|Hfr|ffr|Fcy|fcy|icy|Icy|iff|ETH|eth|ifr|Ifr|Eta|eta|int|Int|Sup|sup|ucy|Ucy|Sum|sum|jcy|ENG|ufr|Ufr|eng|Jcy|jfr|els|ell|egs|Efr|efr|Jfr|uml|kcy|Kcy|Ecy|ecy|kfr|Kfr|lap|Sub|sub|lat|lcy|Lcy|leg|Dot|dot|lEg|leq|les|squ|div|die|lfr|Lfr|lgE|Dfr|dfr|Del|deg|Dcy|dcy|lne|lnE|sol|loz|smt|Cup|lrm|cup|lsh|Lsh|sim|shy|map|Map|mcy|Mcy|mfr|Mfr|mho|gfr|Gfr|sfr|cir|Chi|chi|nap|Cfr|vcy|Vcy|cfr|Scy|scy|ncy|Ncy|vee|Vee|Cap|cap|nfr|scE|sce|Nfr|nge|ngE|nGg|vfr|Vfr|ngt|bot|nGt|nis|niv|Rsh|rsh|nle|nlE|bne|Bfr|bfr|nLl|nlt|nLt|Bcy|bcy|not|Not|rlm|wfr|Wfr|npr|nsc|num|ocy|ast|Ocy|ofr|xfr|Xfr|Ofr|ogt|ohm|apE|olt|Rho|ape|rho|Rfr|rfr|ord|REG|ang|reg|orv|And|and|AMP|Rcy|amp|Afr|ycy|Ycy|yen|yfr|Yfr|rcy|par|pcy|Pcy|pfr|Pfr|phi|Phi|afr|Acy|acy|zcy|Zcy|piv|acE|acd|zfr|Zfr|pre|prE|psi|Psi|qfr|Qfr|zwj|Or|ge|Gg|gt|gg|el|oS|lt|Lt|LT|Re|lg|gl|eg|ne|Im|it|le|DD|wp|wr|nu|Nu|dd|lE|Sc|sc|pi|Pi|ee|af|ll|Ll|rx|gE|xi|pm|Xi|ic|pr|Pr|in|ni|mp|mu|ac|Mu|or|ap|Gt|GT|ii);|&(Aacute|Agrave|Atilde|Ccedil|Eacute|Egrave|Iacute|Igrave|Ntilde|Oacute|Ograve|Oslash|Otilde|Uacute|Ugrave|Yacute|aacute|agrave|atilde|brvbar|ccedil|curren|divide|eacute|egrave|frac12|frac14|frac34|iacute|igrave|iquest|middot|ntilde|oacute|ograve|oslash|otilde|plusmn|uacute|ugrave|yacute|AElig|Acirc|Aring|Ecirc|Icirc|Ocirc|THORN|Ucirc|acirc|acute|aelig|aring|cedil|ecirc|icirc|iexcl|laquo|micro|ocirc|pound|raquo|szlig|thorn|times|ucirc|Auml|COPY|Euml|Iuml|Ouml|QUOT|Uuml|auml|cent|copy|euml|iuml|macr|nbsp|ordf|ordm|ouml|para|quot|sect|sup1|sup2|sup3|uuml|yuml|AMP|ETH|REG|amp|deg|eth|not|reg|shy|uml|yen|GT|LT|gt|lt)(?!;)([=a-zA-Z0-9]?)|&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+)/g;
-        var decodeMap = { "aacute": "\xE1", "Aacute": "\xC1", "abreve": "\u0103", "Abreve": "\u0102", "ac": "\u223E", "acd": "\u223F", "acE": "\u223E\u0333", "acirc": "\xE2", "Acirc": "\xC2", "acute": "\xB4", "acy": "\u0430", "Acy": "\u0410", "aelig": "\xE6", "AElig": "\xC6", "af": "\u2061", "afr": "\u{1D51E}", "Afr": "\u{1D504}", "agrave": "\xE0", "Agrave": "\xC0", "alefsym": "\u2135", "aleph": "\u2135", "alpha": "\u03B1", "Alpha": "\u0391", "amacr": "\u0101", "Amacr": "\u0100", "amalg": "\u2A3F", "amp": "&", "AMP": "&", "and": "\u2227", "And": "\u2A53", "andand": "\u2A55", "andd": "\u2A5C", "andslope": "\u2A58", "andv": "\u2A5A", "ang": "\u2220", "ange": "\u29A4", "angle": "\u2220", "angmsd": "\u2221", "angmsdaa": "\u29A8", "angmsdab": "\u29A9", "angmsdac": "\u29AA", "angmsdad": "\u29AB", "angmsdae": "\u29AC", "angmsdaf": "\u29AD", "angmsdag": "\u29AE", "angmsdah": "\u29AF", "angrt": "\u221F", "angrtvb": "\u22BE", "angrtvbd": "\u299D", "angsph": "\u2222", "angst": "\xC5", "angzarr": "\u237C", "aogon": "\u0105", "Aogon": "\u0104", "aopf": "\u{1D552}", "Aopf": "\u{1D538}", "ap": "\u2248", "apacir": "\u2A6F", "ape": "\u224A", "apE": "\u2A70", "apid": "\u224B", "apos": "'", "ApplyFunction": "\u2061", "approx": "\u2248", "approxeq": "\u224A", "aring": "\xE5", "Aring": "\xC5", "ascr": "\u{1D4B6}", "Ascr": "\u{1D49C}", "Assign": "\u2254", "ast": "*", "asymp": "\u2248", "asympeq": "\u224D", "atilde": "\xE3", "Atilde": "\xC3", "auml": "\xE4", "Auml": "\xC4", "awconint": "\u2233", "awint": "\u2A11", "backcong": "\u224C", "backepsilon": "\u03F6", "backprime": "\u2035", "backsim": "\u223D", "backsimeq": "\u22CD", "Backslash": "\u2216", "Barv": "\u2AE7", "barvee": "\u22BD", "barwed": "\u2305", "Barwed": "\u2306", "barwedge": "\u2305", "bbrk": "\u23B5", "bbrktbrk": "\u23B6", "bcong": "\u224C", "bcy": "\u0431", "Bcy": "\u0411", "bdquo": "\u201E", "becaus": "\u2235", "because": "\u2235", "Because": "\u2235", "bemptyv": "\u29B0", "bepsi": "\u03F6", "bernou": "\u212C", "Bernoullis": "\u212C", "beta": "\u03B2", "Beta": "\u0392", "beth": "\u2136", "between": "\u226C", "bfr": "\u{1D51F}", "Bfr": "\u{1D505}", "bigcap": "\u22C2", "bigcirc": "\u25EF", "bigcup": "\u22C3", "bigodot": "\u2A00", "bigoplus": "\u2A01", "bigotimes": "\u2A02", "bigsqcup": "\u2A06", "bigstar": "\u2605", "bigtriangledown": "\u25BD", "bigtriangleup": "\u25B3", "biguplus": "\u2A04", "bigvee": "\u22C1", "bigwedge": "\u22C0", "bkarow": "\u290D", "blacklozenge": "\u29EB", "blacksquare": "\u25AA", "blacktriangle": "\u25B4", "blacktriangledown": "\u25BE", "blacktriangleleft": "\u25C2", "blacktriangleright": "\u25B8", "blank": "\u2423", "blk12": "\u2592", "blk14": "\u2591", "blk34": "\u2593", "block": "\u2588", "bne": "=\u20E5", "bnequiv": "\u2261\u20E5", "bnot": "\u2310", "bNot": "\u2AED", "bopf": "\u{1D553}", "Bopf": "\u{1D539}", "bot": "\u22A5", "bottom": "\u22A5", "bowtie": "\u22C8", "boxbox": "\u29C9", "boxdl": "\u2510", "boxdL": "\u2555", "boxDl": "\u2556", "boxDL": "\u2557", "boxdr": "\u250C", "boxdR": "\u2552", "boxDr": "\u2553", "boxDR": "\u2554", "boxh": "\u2500", "boxH": "\u2550", "boxhd": "\u252C", "boxhD": "\u2565", "boxHd": "\u2564", "boxHD": "\u2566", "boxhu": "\u2534", "boxhU": "\u2568", "boxHu": "\u2567", "boxHU": "\u2569", "boxminus": "\u229F", "boxplus": "\u229E", "boxtimes": "\u22A0", "boxul": "\u2518", "boxuL": "\u255B", "boxUl": "\u255C", "boxUL": "\u255D", "boxur": "\u2514", "boxuR": "\u2558", "boxUr": "\u2559", "boxUR": "\u255A", "boxv": "\u2502", "boxV": "\u2551", "boxvh": "\u253C", "boxvH": "\u256A", "boxVh": "\u256B", "boxVH": "\u256C", "boxvl": "\u2524", "boxvL": "\u2561", "boxVl": "\u2562", "boxVL": "\u2563", "boxvr": "\u251C", "boxvR": "\u255E", "boxVr": "\u255F", "boxVR": "\u2560", "bprime": "\u2035", "breve": "\u02D8", "Breve": "\u02D8", "brvbar": "\xA6", "bscr": "\u{1D4B7}", "Bscr": "\u212C", "bsemi": "\u204F", "bsim": "\u223D", "bsime": "\u22CD", "bsol": "\\", "bsolb": "\u29C5", "bsolhsub": "\u27C8", "bull": "\u2022", "bullet": "\u2022", "bump": "\u224E", "bumpe": "\u224F", "bumpE": "\u2AAE", "bumpeq": "\u224F", "Bumpeq": "\u224E", "cacute": "\u0107", "Cacute": "\u0106", "cap": "\u2229", "Cap": "\u22D2", "capand": "\u2A44", "capbrcup": "\u2A49", "capcap": "\u2A4B", "capcup": "\u2A47", "capdot": "\u2A40", "CapitalDifferentialD": "\u2145", "caps": "\u2229\uFE00", "caret": "\u2041", "caron": "\u02C7", "Cayleys": "\u212D", "ccaps": "\u2A4D", "ccaron": "\u010D", "Ccaron": "\u010C", "ccedil": "\xE7", "Ccedil": "\xC7", "ccirc": "\u0109", "Ccirc": "\u0108", "Cconint": "\u2230", "ccups": "\u2A4C", "ccupssm": "\u2A50", "cdot": "\u010B", "Cdot": "\u010A", "cedil": "\xB8", "Cedilla": "\xB8", "cemptyv": "\u29B2", "cent": "\xA2", "centerdot": "\xB7", "CenterDot": "\xB7", "cfr": "\u{1D520}", "Cfr": "\u212D", "chcy": "\u0447", "CHcy": "\u0427", "check": "\u2713", "checkmark": "\u2713", "chi": "\u03C7", "Chi": "\u03A7", "cir": "\u25CB", "circ": "\u02C6", "circeq": "\u2257", "circlearrowleft": "\u21BA", "circlearrowright": "\u21BB", "circledast": "\u229B", "circledcirc": "\u229A", "circleddash": "\u229D", "CircleDot": "\u2299", "circledR": "\xAE", "circledS": "\u24C8", "CircleMinus": "\u2296", "CirclePlus": "\u2295", "CircleTimes": "\u2297", "cire": "\u2257", "cirE": "\u29C3", "cirfnint": "\u2A10", "cirmid": "\u2AEF", "cirscir": "\u29C2", "ClockwiseContourIntegral": "\u2232", "CloseCurlyDoubleQuote": "\u201D", "CloseCurlyQuote": "\u2019", "clubs": "\u2663", "clubsuit": "\u2663", "colon": ":", "Colon": "\u2237", "colone": "\u2254", "Colone": "\u2A74", "coloneq": "\u2254", "comma": ",", "commat": "@", "comp": "\u2201", "compfn": "\u2218", "complement": "\u2201", "complexes": "\u2102", "cong": "\u2245", "congdot": "\u2A6D", "Congruent": "\u2261", "conint": "\u222E", "Conint": "\u222F", "ContourIntegral": "\u222E", "copf": "\u{1D554}", "Copf": "\u2102", "coprod": "\u2210", "Coproduct": "\u2210", "copy": "\xA9", "COPY": "\xA9", "copysr": "\u2117", "CounterClockwiseContourIntegral": "\u2233", "crarr": "\u21B5", "cross": "\u2717", "Cross": "\u2A2F", "cscr": "\u{1D4B8}", "Cscr": "\u{1D49E}", "csub": "\u2ACF", "csube": "\u2AD1", "csup": "\u2AD0", "csupe": "\u2AD2", "ctdot": "\u22EF", "cudarrl": "\u2938", "cudarrr": "\u2935", "cuepr": "\u22DE", "cuesc": "\u22DF", "cularr": "\u21B6", "cularrp": "\u293D", "cup": "\u222A", "Cup": "\u22D3", "cupbrcap": "\u2A48", "cupcap": "\u2A46", "CupCap": "\u224D", "cupcup": "\u2A4A", "cupdot": "\u228D", "cupor": "\u2A45", "cups": "\u222A\uFE00", "curarr": "\u21B7", "curarrm": "\u293C", "curlyeqprec": "\u22DE", "curlyeqsucc": "\u22DF", "curlyvee": "\u22CE", "curlywedge": "\u22CF", "curren": "\xA4", "curvearrowleft": "\u21B6", "curvearrowright": "\u21B7", "cuvee": "\u22CE", "cuwed": "\u22CF", "cwconint": "\u2232", "cwint": "\u2231", "cylcty": "\u232D", "dagger": "\u2020", "Dagger": "\u2021", "daleth": "\u2138", "darr": "\u2193", "dArr": "\u21D3", "Darr": "\u21A1", "dash": "\u2010", "dashv": "\u22A3", "Dashv": "\u2AE4", "dbkarow": "\u290F", "dblac": "\u02DD", "dcaron": "\u010F", "Dcaron": "\u010E", "dcy": "\u0434", "Dcy": "\u0414", "dd": "\u2146", "DD": "\u2145", "ddagger": "\u2021", "ddarr": "\u21CA", "DDotrahd": "\u2911", "ddotseq": "\u2A77", "deg": "\xB0", "Del": "\u2207", "delta": "\u03B4", "Delta": "\u0394", "demptyv": "\u29B1", "dfisht": "\u297F", "dfr": "\u{1D521}", "Dfr": "\u{1D507}", "dHar": "\u2965", "dharl": "\u21C3", "dharr": "\u21C2", "DiacriticalAcute": "\xB4", "DiacriticalDot": "\u02D9", "DiacriticalDoubleAcute": "\u02DD", "DiacriticalGrave": "`", "DiacriticalTilde": "\u02DC", "diam": "\u22C4", "diamond": "\u22C4", "Diamond": "\u22C4", "diamondsuit": "\u2666", "diams": "\u2666", "die": "\xA8", "DifferentialD": "\u2146", "digamma": "\u03DD", "disin": "\u22F2", "div": "\xF7", "divide": "\xF7", "divideontimes": "\u22C7", "divonx": "\u22C7", "djcy": "\u0452", "DJcy": "\u0402", "dlcorn": "\u231E", "dlcrop": "\u230D", "dollar": "$", "dopf": "\u{1D555}", "Dopf": "\u{1D53B}", "dot": "\u02D9", "Dot": "\xA8", "DotDot": "\u20DC", "doteq": "\u2250", "doteqdot": "\u2251", "DotEqual": "\u2250", "dotminus": "\u2238", "dotplus": "\u2214", "dotsquare": "\u22A1", "doublebarwedge": "\u2306", "DoubleContourIntegral": "\u222F", "DoubleDot": "\xA8", "DoubleDownArrow": "\u21D3", "DoubleLeftArrow": "\u21D0", "DoubleLeftRightArrow": "\u21D4", "DoubleLeftTee": "\u2AE4", "DoubleLongLeftArrow": "\u27F8", "DoubleLongLeftRightArrow": "\u27FA", "DoubleLongRightArrow": "\u27F9", "DoubleRightArrow": "\u21D2", "DoubleRightTee": "\u22A8", "DoubleUpArrow": "\u21D1", "DoubleUpDownArrow": "\u21D5", "DoubleVerticalBar": "\u2225", "downarrow": "\u2193", "Downarrow": "\u21D3", "DownArrow": "\u2193", "DownArrowBar": "\u2913", "DownArrowUpArrow": "\u21F5", "DownBreve": "\u0311", "downdownarrows": "\u21CA", "downharpoonleft": "\u21C3", "downharpoonright": "\u21C2", "DownLeftRightVector": "\u2950", "DownLeftTeeVector": "\u295E", "DownLeftVector": "\u21BD", "DownLeftVectorBar": "\u2956", "DownRightTeeVector": "\u295F", "DownRightVector": "\u21C1", "DownRightVectorBar": "\u2957", "DownTee": "\u22A4", "DownTeeArrow": "\u21A7", "drbkarow": "\u2910", "drcorn": "\u231F", "drcrop": "\u230C", "dscr": "\u{1D4B9}", "Dscr": "\u{1D49F}", "dscy": "\u0455", "DScy": "\u0405", "dsol": "\u29F6", "dstrok": "\u0111", "Dstrok": "\u0110", "dtdot": "\u22F1", "dtri": "\u25BF", "dtrif": "\u25BE", "duarr": "\u21F5", "duhar": "\u296F", "dwangle": "\u29A6", "dzcy": "\u045F", "DZcy": "\u040F", "dzigrarr": "\u27FF", "eacute": "\xE9", "Eacute": "\xC9", "easter": "\u2A6E", "ecaron": "\u011B", "Ecaron": "\u011A", "ecir": "\u2256", "ecirc": "\xEA", "Ecirc": "\xCA", "ecolon": "\u2255", "ecy": "\u044D", "Ecy": "\u042D", "eDDot": "\u2A77", "edot": "\u0117", "eDot": "\u2251", "Edot": "\u0116", "ee": "\u2147", "efDot": "\u2252", "efr": "\u{1D522}", "Efr": "\u{1D508}", "eg": "\u2A9A", "egrave": "\xE8", "Egrave": "\xC8", "egs": "\u2A96", "egsdot": "\u2A98", "el": "\u2A99", "Element": "\u2208", "elinters": "\u23E7", "ell": "\u2113", "els": "\u2A95", "elsdot": "\u2A97", "emacr": "\u0113", "Emacr": "\u0112", "empty": "\u2205", "emptyset": "\u2205", "EmptySmallSquare": "\u25FB", "emptyv": "\u2205", "EmptyVerySmallSquare": "\u25AB", "emsp": "\u2003", "emsp13": "\u2004", "emsp14": "\u2005", "eng": "\u014B", "ENG": "\u014A", "ensp": "\u2002", "eogon": "\u0119", "Eogon": "\u0118", "eopf": "\u{1D556}", "Eopf": "\u{1D53C}", "epar": "\u22D5", "eparsl": "\u29E3", "eplus": "\u2A71", "epsi": "\u03B5", "epsilon": "\u03B5", "Epsilon": "\u0395", "epsiv": "\u03F5", "eqcirc": "\u2256", "eqcolon": "\u2255", "eqsim": "\u2242", "eqslantgtr": "\u2A96", "eqslantless": "\u2A95", "Equal": "\u2A75", "equals": "=", "EqualTilde": "\u2242", "equest": "\u225F", "Equilibrium": "\u21CC", "equiv": "\u2261", "equivDD": "\u2A78", "eqvparsl": "\u29E5", "erarr": "\u2971", "erDot": "\u2253", "escr": "\u212F", "Escr": "\u2130", "esdot": "\u2250", "esim": "\u2242", "Esim": "\u2A73", "eta": "\u03B7", "Eta": "\u0397", "eth": "\xF0", "ETH": "\xD0", "euml": "\xEB", "Euml": "\xCB", "euro": "\u20AC", "excl": "!", "exist": "\u2203", "Exists": "\u2203", "expectation": "\u2130", "exponentiale": "\u2147", "ExponentialE": "\u2147", "fallingdotseq": "\u2252", "fcy": "\u0444", "Fcy": "\u0424", "female": "\u2640", "ffilig": "\uFB03", "fflig": "\uFB00", "ffllig": "\uFB04", "ffr": "\u{1D523}", "Ffr": "\u{1D509}", "filig": "\uFB01", "FilledSmallSquare": "\u25FC", "FilledVerySmallSquare": "\u25AA", "fjlig": "fj", "flat": "\u266D", "fllig": "\uFB02", "fltns": "\u25B1", "fnof": "\u0192", "fopf": "\u{1D557}", "Fopf": "\u{1D53D}", "forall": "\u2200", "ForAll": "\u2200", "fork": "\u22D4", "forkv": "\u2AD9", "Fouriertrf": "\u2131", "fpartint": "\u2A0D", "frac12": "\xBD", "frac13": "\u2153", "frac14": "\xBC", "frac15": "\u2155", "frac16": "\u2159", "frac18": "\u215B", "frac23": "\u2154", "frac25": "\u2156", "frac34": "\xBE", "frac35": "\u2157", "frac38": "\u215C", "frac45": "\u2158", "frac56": "\u215A", "frac58": "\u215D", "frac78": "\u215E", "frasl": "\u2044", "frown": "\u2322", "fscr": "\u{1D4BB}", "Fscr": "\u2131", "gacute": "\u01F5", "gamma": "\u03B3", "Gamma": "\u0393", "gammad": "\u03DD", "Gammad": "\u03DC", "gap": "\u2A86", "gbreve": "\u011F", "Gbreve": "\u011E", "Gcedil": "\u0122", "gcirc": "\u011D", "Gcirc": "\u011C", "gcy": "\u0433", "Gcy": "\u0413", "gdot": "\u0121", "Gdot": "\u0120", "ge": "\u2265", "gE": "\u2267", "gel": "\u22DB", "gEl": "\u2A8C", "geq": "\u2265", "geqq": "\u2267", "geqslant": "\u2A7E", "ges": "\u2A7E", "gescc": "\u2AA9", "gesdot": "\u2A80", "gesdoto": "\u2A82", "gesdotol": "\u2A84", "gesl": "\u22DB\uFE00", "gesles": "\u2A94", "gfr": "\u{1D524}", "Gfr": "\u{1D50A}", "gg": "\u226B", "Gg": "\u22D9", "ggg": "\u22D9", "gimel": "\u2137", "gjcy": "\u0453", "GJcy": "\u0403", "gl": "\u2277", "gla": "\u2AA5", "glE": "\u2A92", "glj": "\u2AA4", "gnap": "\u2A8A", "gnapprox": "\u2A8A", "gne": "\u2A88", "gnE": "\u2269", "gneq": "\u2A88", "gneqq": "\u2269", "gnsim": "\u22E7", "gopf": "\u{1D558}", "Gopf": "\u{1D53E}", "grave": "`", "GreaterEqual": "\u2265", "GreaterEqualLess": "\u22DB", "GreaterFullEqual": "\u2267", "GreaterGreater": "\u2AA2", "GreaterLess": "\u2277", "GreaterSlantEqual": "\u2A7E", "GreaterTilde": "\u2273", "gscr": "\u210A", "Gscr": "\u{1D4A2}", "gsim": "\u2273", "gsime": "\u2A8E", "gsiml": "\u2A90", "gt": ">", "Gt": "\u226B", "GT": ">", "gtcc": "\u2AA7", "gtcir": "\u2A7A", "gtdot": "\u22D7", "gtlPar": "\u2995", "gtquest": "\u2A7C", "gtrapprox": "\u2A86", "gtrarr": "\u2978", "gtrdot": "\u22D7", "gtreqless": "\u22DB", "gtreqqless": "\u2A8C", "gtrless": "\u2277", "gtrsim": "\u2273", "gvertneqq": "\u2269\uFE00", "gvnE": "\u2269\uFE00", "Hacek": "\u02C7", "hairsp": "\u200A", "half": "\xBD", "hamilt": "\u210B", "hardcy": "\u044A", "HARDcy": "\u042A", "harr": "\u2194", "hArr": "\u21D4", "harrcir": "\u2948", "harrw": "\u21AD", "Hat": "^", "hbar": "\u210F", "hcirc": "\u0125", "Hcirc": "\u0124", "hearts": "\u2665", "heartsuit": "\u2665", "hellip": "\u2026", "hercon": "\u22B9", "hfr": "\u{1D525}", "Hfr": "\u210C", "HilbertSpace": "\u210B", "hksearow": "\u2925", "hkswarow": "\u2926", "hoarr": "\u21FF", "homtht": "\u223B", "hookleftarrow": "\u21A9", "hookrightarrow": "\u21AA", "hopf": "\u{1D559}", "Hopf": "\u210D", "horbar": "\u2015", "HorizontalLine": "\u2500", "hscr": "\u{1D4BD}", "Hscr": "\u210B", "hslash": "\u210F", "hstrok": "\u0127", "Hstrok": "\u0126", "HumpDownHump": "\u224E", "HumpEqual": "\u224F", "hybull": "\u2043", "hyphen": "\u2010", "iacute": "\xED", "Iacute": "\xCD", "ic": "\u2063", "icirc": "\xEE", "Icirc": "\xCE", "icy": "\u0438", "Icy": "\u0418", "Idot": "\u0130", "iecy": "\u0435", "IEcy": "\u0415", "iexcl": "\xA1", "iff": "\u21D4", "ifr": "\u{1D526}", "Ifr": "\u2111", "igrave": "\xEC", "Igrave": "\xCC", "ii": "\u2148", "iiiint": "\u2A0C", "iiint": "\u222D", "iinfin": "\u29DC", "iiota": "\u2129", "ijlig": "\u0133", "IJlig": "\u0132", "Im": "\u2111", "imacr": "\u012B", "Imacr": "\u012A", "image": "\u2111", "ImaginaryI": "\u2148", "imagline": "\u2110", "imagpart": "\u2111", "imath": "\u0131", "imof": "\u22B7", "imped": "\u01B5", "Implies": "\u21D2", "in": "\u2208", "incare": "\u2105", "infin": "\u221E", "infintie": "\u29DD", "inodot": "\u0131", "int": "\u222B", "Int": "\u222C", "intcal": "\u22BA", "integers": "\u2124", "Integral": "\u222B", "intercal": "\u22BA", "Intersection": "\u22C2", "intlarhk": "\u2A17", "intprod": "\u2A3C", "InvisibleComma": "\u2063", "InvisibleTimes": "\u2062", "iocy": "\u0451", "IOcy": "\u0401", "iogon": "\u012F", "Iogon": "\u012E", "iopf": "\u{1D55A}", "Iopf": "\u{1D540}", "iota": "\u03B9", "Iota": "\u0399", "iprod": "\u2A3C", "iquest": "\xBF", "iscr": "\u{1D4BE}", "Iscr": "\u2110", "isin": "\u2208", "isindot": "\u22F5", "isinE": "\u22F9", "isins": "\u22F4", "isinsv": "\u22F3", "isinv": "\u2208", "it": "\u2062", "itilde": "\u0129", "Itilde": "\u0128", "iukcy": "\u0456", "Iukcy": "\u0406", "iuml": "\xEF", "Iuml": "\xCF", "jcirc": "\u0135", "Jcirc": "\u0134", "jcy": "\u0439", "Jcy": "\u0419", "jfr": "\u{1D527}", "Jfr": "\u{1D50D}", "jmath": "\u0237", "jopf": "\u{1D55B}", "Jopf": "\u{1D541}", "jscr": "\u{1D4BF}", "Jscr": "\u{1D4A5}", "jsercy": "\u0458", "Jsercy": "\u0408", "jukcy": "\u0454", "Jukcy": "\u0404", "kappa": "\u03BA", "Kappa": "\u039A", "kappav": "\u03F0", "kcedil": "\u0137", "Kcedil": "\u0136", "kcy": "\u043A", "Kcy": "\u041A", "kfr": "\u{1D528}", "Kfr": "\u{1D50E}", "kgreen": "\u0138", "khcy": "\u0445", "KHcy": "\u0425", "kjcy": "\u045C", "KJcy": "\u040C", "kopf": "\u{1D55C}", "Kopf": "\u{1D542}", "kscr": "\u{1D4C0}", "Kscr": "\u{1D4A6}", "lAarr": "\u21DA", "lacute": "\u013A", "Lacute": "\u0139", "laemptyv": "\u29B4", "lagran": "\u2112", "lambda": "\u03BB", "Lambda": "\u039B", "lang": "\u27E8", "Lang": "\u27EA", "langd": "\u2991", "langle": "\u27E8", "lap": "\u2A85", "Laplacetrf": "\u2112", "laquo": "\xAB", "larr": "\u2190", "lArr": "\u21D0", "Larr": "\u219E", "larrb": "\u21E4", "larrbfs": "\u291F", "larrfs": "\u291D", "larrhk": "\u21A9", "larrlp": "\u21AB", "larrpl": "\u2939", "larrsim": "\u2973", "larrtl": "\u21A2", "lat": "\u2AAB", "latail": "\u2919", "lAtail": "\u291B", "late": "\u2AAD", "lates": "\u2AAD\uFE00", "lbarr": "\u290C", "lBarr": "\u290E", "lbbrk": "\u2772", "lbrace": "{", "lbrack": "[", "lbrke": "\u298B", "lbrksld": "\u298F", "lbrkslu": "\u298D", "lcaron": "\u013E", "Lcaron": "\u013D", "lcedil": "\u013C", "Lcedil": "\u013B", "lceil": "\u2308", "lcub": "{", "lcy": "\u043B", "Lcy": "\u041B", "ldca": "\u2936", "ldquo": "\u201C", "ldquor": "\u201E", "ldrdhar": "\u2967", "ldrushar": "\u294B", "ldsh": "\u21B2", "le": "\u2264", "lE": "\u2266", "LeftAngleBracket": "\u27E8", "leftarrow": "\u2190", "Leftarrow": "\u21D0", "LeftArrow": "\u2190", "LeftArrowBar": "\u21E4", "LeftArrowRightArrow": "\u21C6", "leftarrowtail": "\u21A2", "LeftCeiling": "\u2308", "LeftDoubleBracket": "\u27E6", "LeftDownTeeVector": "\u2961", "LeftDownVector": "\u21C3", "LeftDownVectorBar": "\u2959", "LeftFloor": "\u230A", "leftharpoondown": "\u21BD", "leftharpoonup": "\u21BC", "leftleftarrows": "\u21C7", "leftrightarrow": "\u2194", "Leftrightarrow": "\u21D4", "LeftRightArrow": "\u2194", "leftrightarrows": "\u21C6", "leftrightharpoons": "\u21CB", "leftrightsquigarrow": "\u21AD", "LeftRightVector": "\u294E", "LeftTee": "\u22A3", "LeftTeeArrow": "\u21A4", "LeftTeeVector": "\u295A", "leftthreetimes": "\u22CB", "LeftTriangle": "\u22B2", "LeftTriangleBar": "\u29CF", "LeftTriangleEqual": "\u22B4", "LeftUpDownVector": "\u2951", "LeftUpTeeVector": "\u2960", "LeftUpVector": "\u21BF", "LeftUpVectorBar": "\u2958", "LeftVector": "\u21BC", "LeftVectorBar": "\u2952", "leg": "\u22DA", "lEg": "\u2A8B", "leq": "\u2264", "leqq": "\u2266", "leqslant": "\u2A7D", "les": "\u2A7D", "lescc": "\u2AA8", "lesdot": "\u2A7F", "lesdoto": "\u2A81", "lesdotor": "\u2A83", "lesg": "\u22DA\uFE00", "lesges": "\u2A93", "lessapprox": "\u2A85", "lessdot": "\u22D6", "lesseqgtr": "\u22DA", "lesseqqgtr": "\u2A8B", "LessEqualGreater": "\u22DA", "LessFullEqual": "\u2266", "LessGreater": "\u2276", "lessgtr": "\u2276", "LessLess": "\u2AA1", "lesssim": "\u2272", "LessSlantEqual": "\u2A7D", "LessTilde": "\u2272", "lfisht": "\u297C", "lfloor": "\u230A", "lfr": "\u{1D529}", "Lfr": "\u{1D50F}", "lg": "\u2276", "lgE": "\u2A91", "lHar": "\u2962", "lhard": "\u21BD", "lharu": "\u21BC", "lharul": "\u296A", "lhblk": "\u2584", "ljcy": "\u0459", "LJcy": "\u0409", "ll": "\u226A", "Ll": "\u22D8", "llarr": "\u21C7", "llcorner": "\u231E", "Lleftarrow": "\u21DA", "llhard": "\u296B", "lltri": "\u25FA", "lmidot": "\u0140", "Lmidot": "\u013F", "lmoust": "\u23B0", "lmoustache": "\u23B0", "lnap": "\u2A89", "lnapprox": "\u2A89", "lne": "\u2A87", "lnE": "\u2268", "lneq": "\u2A87", "lneqq": "\u2268", "lnsim": "\u22E6", "loang": "\u27EC", "loarr": "\u21FD", "lobrk": "\u27E6", "longleftarrow": "\u27F5", "Longleftarrow": "\u27F8", "LongLeftArrow": "\u27F5", "longleftrightarrow": "\u27F7", "Longleftrightarrow": "\u27FA", "LongLeftRightArrow": "\u27F7", "longmapsto": "\u27FC", "longrightarrow": "\u27F6", "Longrightarrow": "\u27F9", "LongRightArrow": "\u27F6", "looparrowleft": "\u21AB", "looparrowright": "\u21AC", "lopar": "\u2985", "lopf": "\u{1D55D}", "Lopf": "\u{1D543}", "loplus": "\u2A2D", "lotimes": "\u2A34", "lowast": "\u2217", "lowbar": "_", "LowerLeftArrow": "\u2199", "LowerRightArrow": "\u2198", "loz": "\u25CA", "lozenge": "\u25CA", "lozf": "\u29EB", "lpar": "(", "lparlt": "\u2993", "lrarr": "\u21C6", "lrcorner": "\u231F", "lrhar": "\u21CB", "lrhard": "\u296D", "lrm": "\u200E", "lrtri": "\u22BF", "lsaquo": "\u2039", "lscr": "\u{1D4C1}", "Lscr": "\u2112", "lsh": "\u21B0", "Lsh": "\u21B0", "lsim": "\u2272", "lsime": "\u2A8D", "lsimg": "\u2A8F", "lsqb": "[", "lsquo": "\u2018", "lsquor": "\u201A", "lstrok": "\u0142", "Lstrok": "\u0141", "lt": "<", "Lt": "\u226A", "LT": "<", "ltcc": "\u2AA6", "ltcir": "\u2A79", "ltdot": "\u22D6", "lthree": "\u22CB", "ltimes": "\u22C9", "ltlarr": "\u2976", "ltquest": "\u2A7B", "ltri": "\u25C3", "ltrie": "\u22B4", "ltrif": "\u25C2", "ltrPar": "\u2996", "lurdshar": "\u294A", "luruhar": "\u2966", "lvertneqq": "\u2268\uFE00", "lvnE": "\u2268\uFE00", "macr": "\xAF", "male": "\u2642", "malt": "\u2720", "maltese": "\u2720", "map": "\u21A6", "Map": "\u2905", "mapsto": "\u21A6", "mapstodown": "\u21A7", "mapstoleft": "\u21A4", "mapstoup": "\u21A5", "marker": "\u25AE", "mcomma": "\u2A29", "mcy": "\u043C", "Mcy": "\u041C", "mdash": "\u2014", "mDDot": "\u223A", "measuredangle": "\u2221", "MediumSpace": "\u205F", "Mellintrf": "\u2133", "mfr": "\u{1D52A}", "Mfr": "\u{1D510}", "mho": "\u2127", "micro": "\xB5", "mid": "\u2223", "midast": "*", "midcir": "\u2AF0", "middot": "\xB7", "minus": "\u2212", "minusb": "\u229F", "minusd": "\u2238", "minusdu": "\u2A2A", "MinusPlus": "\u2213", "mlcp": "\u2ADB", "mldr": "\u2026", "mnplus": "\u2213", "models": "\u22A7", "mopf": "\u{1D55E}", "Mopf": "\u{1D544}", "mp": "\u2213", "mscr": "\u{1D4C2}", "Mscr": "\u2133", "mstpos": "\u223E", "mu": "\u03BC", "Mu": "\u039C", "multimap": "\u22B8", "mumap": "\u22B8", "nabla": "\u2207", "nacute": "\u0144", "Nacute": "\u0143", "nang": "\u2220\u20D2", "nap": "\u2249", "napE": "\u2A70\u0338", "napid": "\u224B\u0338", "napos": "\u0149", "napprox": "\u2249", "natur": "\u266E", "natural": "\u266E", "naturals": "\u2115", "nbsp": "\xA0", "nbump": "\u224E\u0338", "nbumpe": "\u224F\u0338", "ncap": "\u2A43", "ncaron": "\u0148", "Ncaron": "\u0147", "ncedil": "\u0146", "Ncedil": "\u0145", "ncong": "\u2247", "ncongdot": "\u2A6D\u0338", "ncup": "\u2A42", "ncy": "\u043D", "Ncy": "\u041D", "ndash": "\u2013", "ne": "\u2260", "nearhk": "\u2924", "nearr": "\u2197", "neArr": "\u21D7", "nearrow": "\u2197", "nedot": "\u2250\u0338", "NegativeMediumSpace": "\u200B", "NegativeThickSpace": "\u200B", "NegativeThinSpace": "\u200B", "NegativeVeryThinSpace": "\u200B", "nequiv": "\u2262", "nesear": "\u2928", "nesim": "\u2242\u0338", "NestedGreaterGreater": "\u226B", "NestedLessLess": "\u226A", "NewLine": "\n", "nexist": "\u2204", "nexists": "\u2204", "nfr": "\u{1D52B}", "Nfr": "\u{1D511}", "nge": "\u2271", "ngE": "\u2267\u0338", "ngeq": "\u2271", "ngeqq": "\u2267\u0338", "ngeqslant": "\u2A7E\u0338", "nges": "\u2A7E\u0338", "nGg": "\u22D9\u0338", "ngsim": "\u2275", "ngt": "\u226F", "nGt": "\u226B\u20D2", "ngtr": "\u226F", "nGtv": "\u226B\u0338", "nharr": "\u21AE", "nhArr": "\u21CE", "nhpar": "\u2AF2", "ni": "\u220B", "nis": "\u22FC", "nisd": "\u22FA", "niv": "\u220B", "njcy": "\u045A", "NJcy": "\u040A", "nlarr": "\u219A", "nlArr": "\u21CD", "nldr": "\u2025", "nle": "\u2270", "nlE": "\u2266\u0338", "nleftarrow": "\u219A", "nLeftarrow": "\u21CD", "nleftrightarrow": "\u21AE", "nLeftrightarrow": "\u21CE", "nleq": "\u2270", "nleqq": "\u2266\u0338", "nleqslant": "\u2A7D\u0338", "nles": "\u2A7D\u0338", "nless": "\u226E", "nLl": "\u22D8\u0338", "nlsim": "\u2274", "nlt": "\u226E", "nLt": "\u226A\u20D2", "nltri": "\u22EA", "nltrie": "\u22EC", "nLtv": "\u226A\u0338", "nmid": "\u2224", "NoBreak": "\u2060", "NonBreakingSpace": "\xA0", "nopf": "\u{1D55F}", "Nopf": "\u2115", "not": "\xAC", "Not": "\u2AEC", "NotCongruent": "\u2262", "NotCupCap": "\u226D", "NotDoubleVerticalBar": "\u2226", "NotElement": "\u2209", "NotEqual": "\u2260", "NotEqualTilde": "\u2242\u0338", "NotExists": "\u2204", "NotGreater": "\u226F", "NotGreaterEqual": "\u2271", "NotGreaterFullEqual": "\u2267\u0338", "NotGreaterGreater": "\u226B\u0338", "NotGreaterLess": "\u2279", "NotGreaterSlantEqual": "\u2A7E\u0338", "NotGreaterTilde": "\u2275", "NotHumpDownHump": "\u224E\u0338", "NotHumpEqual": "\u224F\u0338", "notin": "\u2209", "notindot": "\u22F5\u0338", "notinE": "\u22F9\u0338", "notinva": "\u2209", "notinvb": "\u22F7", "notinvc": "\u22F6", "NotLeftTriangle": "\u22EA", "NotLeftTriangleBar": "\u29CF\u0338", "NotLeftTriangleEqual": "\u22EC", "NotLess": "\u226E", "NotLessEqual": "\u2270", "NotLessGreater": "\u2278", "NotLessLess": "\u226A\u0338", "NotLessSlantEqual": "\u2A7D\u0338", "NotLessTilde": "\u2274", "NotNestedGreaterGreater": "\u2AA2\u0338", "NotNestedLessLess": "\u2AA1\u0338", "notni": "\u220C", "notniva": "\u220C", "notnivb": "\u22FE", "notnivc": "\u22FD", "NotPrecedes": "\u2280", "NotPrecedesEqual": "\u2AAF\u0338", "NotPrecedesSlantEqual": "\u22E0", "NotReverseElement": "\u220C", "NotRightTriangle": "\u22EB", "NotRightTriangleBar": "\u29D0\u0338", "NotRightTriangleEqual": "\u22ED", "NotSquareSubset": "\u228F\u0338", "NotSquareSubsetEqual": "\u22E2", "NotSquareSuperset": "\u2290\u0338", "NotSquareSupersetEqual": "\u22E3", "NotSubset": "\u2282\u20D2", "NotSubsetEqual": "\u2288", "NotSucceeds": "\u2281", "NotSucceedsEqual": "\u2AB0\u0338", "NotSucceedsSlantEqual": "\u22E1", "NotSucceedsTilde": "\u227F\u0338", "NotSuperset": "\u2283\u20D2", "NotSupersetEqual": "\u2289", "NotTilde": "\u2241", "NotTildeEqual": "\u2244", "NotTildeFullEqual": "\u2247", "NotTildeTilde": "\u2249", "NotVerticalBar": "\u2224", "npar": "\u2226", "nparallel": "\u2226", "nparsl": "\u2AFD\u20E5", "npart": "\u2202\u0338", "npolint": "\u2A14", "npr": "\u2280", "nprcue": "\u22E0", "npre": "\u2AAF\u0338", "nprec": "\u2280", "npreceq": "\u2AAF\u0338", "nrarr": "\u219B", "nrArr": "\u21CF", "nrarrc": "\u2933\u0338", "nrarrw": "\u219D\u0338", "nrightarrow": "\u219B", "nRightarrow": "\u21CF", "nrtri": "\u22EB", "nrtrie": "\u22ED", "nsc": "\u2281", "nsccue": "\u22E1", "nsce": "\u2AB0\u0338", "nscr": "\u{1D4C3}", "Nscr": "\u{1D4A9}", "nshortmid": "\u2224", "nshortparallel": "\u2226", "nsim": "\u2241", "nsime": "\u2244", "nsimeq": "\u2244", "nsmid": "\u2224", "nspar": "\u2226", "nsqsube": "\u22E2", "nsqsupe": "\u22E3", "nsub": "\u2284", "nsube": "\u2288", "nsubE": "\u2AC5\u0338", "nsubset": "\u2282\u20D2", "nsubseteq": "\u2288", "nsubseteqq": "\u2AC5\u0338", "nsucc": "\u2281", "nsucceq": "\u2AB0\u0338", "nsup": "\u2285", "nsupe": "\u2289", "nsupE": "\u2AC6\u0338", "nsupset": "\u2283\u20D2", "nsupseteq": "\u2289", "nsupseteqq": "\u2AC6\u0338", "ntgl": "\u2279", "ntilde": "\xF1", "Ntilde": "\xD1", "ntlg": "\u2278", "ntriangleleft": "\u22EA", "ntrianglelefteq": "\u22EC", "ntriangleright": "\u22EB", "ntrianglerighteq": "\u22ED", "nu": "\u03BD", "Nu": "\u039D", "num": "#", "numero": "\u2116", "numsp": "\u2007", "nvap": "\u224D\u20D2", "nvdash": "\u22AC", "nvDash": "\u22AD", "nVdash": "\u22AE", "nVDash": "\u22AF", "nvge": "\u2265\u20D2", "nvgt": ">\u20D2", "nvHarr": "\u2904", "nvinfin": "\u29DE", "nvlArr": "\u2902", "nvle": "\u2264\u20D2", "nvlt": "<\u20D2", "nvltrie": "\u22B4\u20D2", "nvrArr": "\u2903", "nvrtrie": "\u22B5\u20D2", "nvsim": "\u223C\u20D2", "nwarhk": "\u2923", "nwarr": "\u2196", "nwArr": "\u21D6", "nwarrow": "\u2196", "nwnear": "\u2927", "oacute": "\xF3", "Oacute": "\xD3", "oast": "\u229B", "ocir": "\u229A", "ocirc": "\xF4", "Ocirc": "\xD4", "ocy": "\u043E", "Ocy": "\u041E", "odash": "\u229D", "odblac": "\u0151", "Odblac": "\u0150", "odiv": "\u2A38", "odot": "\u2299", "odsold": "\u29BC", "oelig": "\u0153", "OElig": "\u0152", "ofcir": "\u29BF", "ofr": "\u{1D52C}", "Ofr": "\u{1D512}", "ogon": "\u02DB", "ograve": "\xF2", "Ograve": "\xD2", "ogt": "\u29C1", "ohbar": "\u29B5", "ohm": "\u03A9", "oint": "\u222E", "olarr": "\u21BA", "olcir": "\u29BE", "olcross": "\u29BB", "oline": "\u203E", "olt": "\u29C0", "omacr": "\u014D", "Omacr": "\u014C", "omega": "\u03C9", "Omega": "\u03A9", "omicron": "\u03BF", "Omicron": "\u039F", "omid": "\u29B6", "ominus": "\u2296", "oopf": "\u{1D560}", "Oopf": "\u{1D546}", "opar": "\u29B7", "OpenCurlyDoubleQuote": "\u201C", "OpenCurlyQuote": "\u2018", "operp": "\u29B9", "oplus": "\u2295", "or": "\u2228", "Or": "\u2A54", "orarr": "\u21BB", "ord": "\u2A5D", "order": "\u2134", "orderof": "\u2134", "ordf": "\xAA", "ordm": "\xBA", "origof": "\u22B6", "oror": "\u2A56", "orslope": "\u2A57", "orv": "\u2A5B", "oS": "\u24C8", "oscr": "\u2134", "Oscr": "\u{1D4AA}", "oslash": "\xF8", "Oslash": "\xD8", "osol": "\u2298", "otilde": "\xF5", "Otilde": "\xD5", "otimes": "\u2297", "Otimes": "\u2A37", "otimesas": "\u2A36", "ouml": "\xF6", "Ouml": "\xD6", "ovbar": "\u233D", "OverBar": "\u203E", "OverBrace": "\u23DE", "OverBracket": "\u23B4", "OverParenthesis": "\u23DC", "par": "\u2225", "para": "\xB6", "parallel": "\u2225", "parsim": "\u2AF3", "parsl": "\u2AFD", "part": "\u2202", "PartialD": "\u2202", "pcy": "\u043F", "Pcy": "\u041F", "percnt": "%", "period": ".", "permil": "\u2030", "perp": "\u22A5", "pertenk": "\u2031", "pfr": "\u{1D52D}", "Pfr": "\u{1D513}", "phi": "\u03C6", "Phi": "\u03A6", "phiv": "\u03D5", "phmmat": "\u2133", "phone": "\u260E", "pi": "\u03C0", "Pi": "\u03A0", "pitchfork": "\u22D4", "piv": "\u03D6", "planck": "\u210F", "planckh": "\u210E", "plankv": "\u210F", "plus": "+", "plusacir": "\u2A23", "plusb": "\u229E", "pluscir": "\u2A22", "plusdo": "\u2214", "plusdu": "\u2A25", "pluse": "\u2A72", "PlusMinus": "\xB1", "plusmn": "\xB1", "plussim": "\u2A26", "plustwo": "\u2A27", "pm": "\xB1", "Poincareplane": "\u210C", "pointint": "\u2A15", "popf": "\u{1D561}", "Popf": "\u2119", "pound": "\xA3", "pr": "\u227A", "Pr": "\u2ABB", "prap": "\u2AB7", "prcue": "\u227C", "pre": "\u2AAF", "prE": "\u2AB3", "prec": "\u227A", "precapprox": "\u2AB7", "preccurlyeq": "\u227C", "Precedes": "\u227A", "PrecedesEqual": "\u2AAF", "PrecedesSlantEqual": "\u227C", "PrecedesTilde": "\u227E", "preceq": "\u2AAF", "precnapprox": "\u2AB9", "precneqq": "\u2AB5", "precnsim": "\u22E8", "precsim": "\u227E", "prime": "\u2032", "Prime": "\u2033", "primes": "\u2119", "prnap": "\u2AB9", "prnE": "\u2AB5", "prnsim": "\u22E8", "prod": "\u220F", "Product": "\u220F", "profalar": "\u232E", "profline": "\u2312", "profsurf": "\u2313", "prop": "\u221D", "Proportion": "\u2237", "Proportional": "\u221D", "propto": "\u221D", "prsim": "\u227E", "prurel": "\u22B0", "pscr": "\u{1D4C5}", "Pscr": "\u{1D4AB}", "psi": "\u03C8", "Psi": "\u03A8", "puncsp": "\u2008", "qfr": "\u{1D52E}", "Qfr": "\u{1D514}", "qint": "\u2A0C", "qopf": "\u{1D562}", "Qopf": "\u211A", "qprime": "\u2057", "qscr": "\u{1D4C6}", "Qscr": "\u{1D4AC}", "quaternions": "\u210D", "quatint": "\u2A16", "quest": "?", "questeq": "\u225F", "quot": '"', "QUOT": '"', "rAarr": "\u21DB", "race": "\u223D\u0331", "racute": "\u0155", "Racute": "\u0154", "radic": "\u221A", "raemptyv": "\u29B3", "rang": "\u27E9", "Rang": "\u27EB", "rangd": "\u2992", "range": "\u29A5", "rangle": "\u27E9", "raquo": "\xBB", "rarr": "\u2192", "rArr": "\u21D2", "Rarr": "\u21A0", "rarrap": "\u2975", "rarrb": "\u21E5", "rarrbfs": "\u2920", "rarrc": "\u2933", "rarrfs": "\u291E", "rarrhk": "\u21AA", "rarrlp": "\u21AC", "rarrpl": "\u2945", "rarrsim": "\u2974", "rarrtl": "\u21A3", "Rarrtl": "\u2916", "rarrw": "\u219D", "ratail": "\u291A", "rAtail": "\u291C", "ratio": "\u2236", "rationals": "\u211A", "rbarr": "\u290D", "rBarr": "\u290F", "RBarr": "\u2910", "rbbrk": "\u2773", "rbrace": "}", "rbrack": "]", "rbrke": "\u298C", "rbrksld": "\u298E", "rbrkslu": "\u2990", "rcaron": "\u0159", "Rcaron": "\u0158", "rcedil": "\u0157", "Rcedil": "\u0156", "rceil": "\u2309", "rcub": "}", "rcy": "\u0440", "Rcy": "\u0420", "rdca": "\u2937", "rdldhar": "\u2969", "rdquo": "\u201D", "rdquor": "\u201D", "rdsh": "\u21B3", "Re": "\u211C", "real": "\u211C", "realine": "\u211B", "realpart": "\u211C", "reals": "\u211D", "rect": "\u25AD", "reg": "\xAE", "REG": "\xAE", "ReverseElement": "\u220B", "ReverseEquilibrium": "\u21CB", "ReverseUpEquilibrium": "\u296F", "rfisht": "\u297D", "rfloor": "\u230B", "rfr": "\u{1D52F}", "Rfr": "\u211C", "rHar": "\u2964", "rhard": "\u21C1", "rharu": "\u21C0", "rharul": "\u296C", "rho": "\u03C1", "Rho": "\u03A1", "rhov": "\u03F1", "RightAngleBracket": "\u27E9", "rightarrow": "\u2192", "Rightarrow": "\u21D2", "RightArrow": "\u2192", "RightArrowBar": "\u21E5", "RightArrowLeftArrow": "\u21C4", "rightarrowtail": "\u21A3", "RightCeiling": "\u2309", "RightDoubleBracket": "\u27E7", "RightDownTeeVector": "\u295D", "RightDownVector": "\u21C2", "RightDownVectorBar": "\u2955", "RightFloor": "\u230B", "rightharpoondown": "\u21C1", "rightharpoonup": "\u21C0", "rightleftarrows": "\u21C4", "rightleftharpoons": "\u21CC", "rightrightarrows": "\u21C9", "rightsquigarrow": "\u219D", "RightTee": "\u22A2", "RightTeeArrow": "\u21A6", "RightTeeVector": "\u295B", "rightthreetimes": "\u22CC", "RightTriangle": "\u22B3", "RightTriangleBar": "\u29D0", "RightTriangleEqual": "\u22B5", "RightUpDownVector": "\u294F", "RightUpTeeVector": "\u295C", "RightUpVector": "\u21BE", "RightUpVectorBar": "\u2954", "RightVector": "\u21C0", "RightVectorBar": "\u2953", "ring": "\u02DA", "risingdotseq": "\u2253", "rlarr": "\u21C4", "rlhar": "\u21CC", "rlm": "\u200F", "rmoust": "\u23B1", "rmoustache": "\u23B1", "rnmid": "\u2AEE", "roang": "\u27ED", "roarr": "\u21FE", "robrk": "\u27E7", "ropar": "\u2986", "ropf": "\u{1D563}", "Ropf": "\u211D", "roplus": "\u2A2E", "rotimes": "\u2A35", "RoundImplies": "\u2970", "rpar": ")", "rpargt": "\u2994", "rppolint": "\u2A12", "rrarr": "\u21C9", "Rrightarrow": "\u21DB", "rsaquo": "\u203A", "rscr": "\u{1D4C7}", "Rscr": "\u211B", "rsh": "\u21B1", "Rsh": "\u21B1", "rsqb": "]", "rsquo": "\u2019", "rsquor": "\u2019", "rthree": "\u22CC", "rtimes": "\u22CA", "rtri": "\u25B9", "rtrie": "\u22B5", "rtrif": "\u25B8", "rtriltri": "\u29CE", "RuleDelayed": "\u29F4", "ruluhar": "\u2968", "rx": "\u211E", "sacute": "\u015B", "Sacute": "\u015A", "sbquo": "\u201A", "sc": "\u227B", "Sc": "\u2ABC", "scap": "\u2AB8", "scaron": "\u0161", "Scaron": "\u0160", "sccue": "\u227D", "sce": "\u2AB0", "scE": "\u2AB4", "scedil": "\u015F", "Scedil": "\u015E", "scirc": "\u015D", "Scirc": "\u015C", "scnap": "\u2ABA", "scnE": "\u2AB6", "scnsim": "\u22E9", "scpolint": "\u2A13", "scsim": "\u227F", "scy": "\u0441", "Scy": "\u0421", "sdot": "\u22C5", "sdotb": "\u22A1", "sdote": "\u2A66", "searhk": "\u2925", "searr": "\u2198", "seArr": "\u21D8", "searrow": "\u2198", "sect": "\xA7", "semi": ";", "seswar": "\u2929", "setminus": "\u2216", "setmn": "\u2216", "sext": "\u2736", "sfr": "\u{1D530}", "Sfr": "\u{1D516}", "sfrown": "\u2322", "sharp": "\u266F", "shchcy": "\u0449", "SHCHcy": "\u0429", "shcy": "\u0448", "SHcy": "\u0428", "ShortDownArrow": "\u2193", "ShortLeftArrow": "\u2190", "shortmid": "\u2223", "shortparallel": "\u2225", "ShortRightArrow": "\u2192", "ShortUpArrow": "\u2191", "shy": "\xAD", "sigma": "\u03C3", "Sigma": "\u03A3", "sigmaf": "\u03C2", "sigmav": "\u03C2", "sim": "\u223C", "simdot": "\u2A6A", "sime": "\u2243", "simeq": "\u2243", "simg": "\u2A9E", "simgE": "\u2AA0", "siml": "\u2A9D", "simlE": "\u2A9F", "simne": "\u2246", "simplus": "\u2A24", "simrarr": "\u2972", "slarr": "\u2190", "SmallCircle": "\u2218", "smallsetminus": "\u2216", "smashp": "\u2A33", "smeparsl": "\u29E4", "smid": "\u2223", "smile": "\u2323", "smt": "\u2AAA", "smte": "\u2AAC", "smtes": "\u2AAC\uFE00", "softcy": "\u044C", "SOFTcy": "\u042C", "sol": "/", "solb": "\u29C4", "solbar": "\u233F", "sopf": "\u{1D564}", "Sopf": "\u{1D54A}", "spades": "\u2660", "spadesuit": "\u2660", "spar": "\u2225", "sqcap": "\u2293", "sqcaps": "\u2293\uFE00", "sqcup": "\u2294", "sqcups": "\u2294\uFE00", "Sqrt": "\u221A", "sqsub": "\u228F", "sqsube": "\u2291", "sqsubset": "\u228F", "sqsubseteq": "\u2291", "sqsup": "\u2290", "sqsupe": "\u2292", "sqsupset": "\u2290", "sqsupseteq": "\u2292", "squ": "\u25A1", "square": "\u25A1", "Square": "\u25A1", "SquareIntersection": "\u2293", "SquareSubset": "\u228F", "SquareSubsetEqual": "\u2291", "SquareSuperset": "\u2290", "SquareSupersetEqual": "\u2292", "SquareUnion": "\u2294", "squarf": "\u25AA", "squf": "\u25AA", "srarr": "\u2192", "sscr": "\u{1D4C8}", "Sscr": "\u{1D4AE}", "ssetmn": "\u2216", "ssmile": "\u2323", "sstarf": "\u22C6", "star": "\u2606", "Star": "\u22C6", "starf": "\u2605", "straightepsilon": "\u03F5", "straightphi": "\u03D5", "strns": "\xAF", "sub": "\u2282", "Sub": "\u22D0", "subdot": "\u2ABD", "sube": "\u2286", "subE": "\u2AC5", "subedot": "\u2AC3", "submult": "\u2AC1", "subne": "\u228A", "subnE": "\u2ACB", "subplus": "\u2ABF", "subrarr": "\u2979", "subset": "\u2282", "Subset": "\u22D0", "subseteq": "\u2286", "subseteqq": "\u2AC5", "SubsetEqual": "\u2286", "subsetneq": "\u228A", "subsetneqq": "\u2ACB", "subsim": "\u2AC7", "subsub": "\u2AD5", "subsup": "\u2AD3", "succ": "\u227B", "succapprox": "\u2AB8", "succcurlyeq": "\u227D", "Succeeds": "\u227B", "SucceedsEqual": "\u2AB0", "SucceedsSlantEqual": "\u227D", "SucceedsTilde": "\u227F", "succeq": "\u2AB0", "succnapprox": "\u2ABA", "succneqq": "\u2AB6", "succnsim": "\u22E9", "succsim": "\u227F", "SuchThat": "\u220B", "sum": "\u2211", "Sum": "\u2211", "sung": "\u266A", "sup": "\u2283", "Sup": "\u22D1", "sup1": "\xB9", "sup2": "\xB2", "sup3": "\xB3", "supdot": "\u2ABE", "supdsub": "\u2AD8", "supe": "\u2287", "supE": "\u2AC6", "supedot": "\u2AC4", "Superset": "\u2283", "SupersetEqual": "\u2287", "suphsol": "\u27C9", "suphsub": "\u2AD7", "suplarr": "\u297B", "supmult": "\u2AC2", "supne": "\u228B", "supnE": "\u2ACC", "supplus": "\u2AC0", "supset": "\u2283", "Supset": "\u22D1", "supseteq": "\u2287", "supseteqq": "\u2AC6", "supsetneq": "\u228B", "supsetneqq": "\u2ACC", "supsim": "\u2AC8", "supsub": "\u2AD4", "supsup": "\u2AD6", "swarhk": "\u2926", "swarr": "\u2199", "swArr": "\u21D9", "swarrow": "\u2199", "swnwar": "\u292A", "szlig": "\xDF", "Tab": "	", "target": "\u2316", "tau": "\u03C4", "Tau": "\u03A4", "tbrk": "\u23B4", "tcaron": "\u0165", "Tcaron": "\u0164", "tcedil": "\u0163", "Tcedil": "\u0162", "tcy": "\u0442", "Tcy": "\u0422", "tdot": "\u20DB", "telrec": "\u2315", "tfr": "\u{1D531}", "Tfr": "\u{1D517}", "there4": "\u2234", "therefore": "\u2234", "Therefore": "\u2234", "theta": "\u03B8", "Theta": "\u0398", "thetasym": "\u03D1", "thetav": "\u03D1", "thickapprox": "\u2248", "thicksim": "\u223C", "ThickSpace": "\u205F\u200A", "thinsp": "\u2009", "ThinSpace": "\u2009", "thkap": "\u2248", "thksim": "\u223C", "thorn": "\xFE", "THORN": "\xDE", "tilde": "\u02DC", "Tilde": "\u223C", "TildeEqual": "\u2243", "TildeFullEqual": "\u2245", "TildeTilde": "\u2248", "times": "\xD7", "timesb": "\u22A0", "timesbar": "\u2A31", "timesd": "\u2A30", "tint": "\u222D", "toea": "\u2928", "top": "\u22A4", "topbot": "\u2336", "topcir": "\u2AF1", "topf": "\u{1D565}", "Topf": "\u{1D54B}", "topfork": "\u2ADA", "tosa": "\u2929", "tprime": "\u2034", "trade": "\u2122", "TRADE": "\u2122", "triangle": "\u25B5", "triangledown": "\u25BF", "triangleleft": "\u25C3", "trianglelefteq": "\u22B4", "triangleq": "\u225C", "triangleright": "\u25B9", "trianglerighteq": "\u22B5", "tridot": "\u25EC", "trie": "\u225C", "triminus": "\u2A3A", "TripleDot": "\u20DB", "triplus": "\u2A39", "trisb": "\u29CD", "tritime": "\u2A3B", "trpezium": "\u23E2", "tscr": "\u{1D4C9}", "Tscr": "\u{1D4AF}", "tscy": "\u0446", "TScy": "\u0426", "tshcy": "\u045B", "TSHcy": "\u040B", "tstrok": "\u0167", "Tstrok": "\u0166", "twixt": "\u226C", "twoheadleftarrow": "\u219E", "twoheadrightarrow": "\u21A0", "uacute": "\xFA", "Uacute": "\xDA", "uarr": "\u2191", "uArr": "\u21D1", "Uarr": "\u219F", "Uarrocir": "\u2949", "ubrcy": "\u045E", "Ubrcy": "\u040E", "ubreve": "\u016D", "Ubreve": "\u016C", "ucirc": "\xFB", "Ucirc": "\xDB", "ucy": "\u0443", "Ucy": "\u0423", "udarr": "\u21C5", "udblac": "\u0171", "Udblac": "\u0170", "udhar": "\u296E", "ufisht": "\u297E", "ufr": "\u{1D532}", "Ufr": "\u{1D518}", "ugrave": "\xF9", "Ugrave": "\xD9", "uHar": "\u2963", "uharl": "\u21BF", "uharr": "\u21BE", "uhblk": "\u2580", "ulcorn": "\u231C", "ulcorner": "\u231C", "ulcrop": "\u230F", "ultri": "\u25F8", "umacr": "\u016B", "Umacr": "\u016A", "uml": "\xA8", "UnderBar": "_", "UnderBrace": "\u23DF", "UnderBracket": "\u23B5", "UnderParenthesis": "\u23DD", "Union": "\u22C3", "UnionPlus": "\u228E", "uogon": "\u0173", "Uogon": "\u0172", "uopf": "\u{1D566}", "Uopf": "\u{1D54C}", "uparrow": "\u2191", "Uparrow": "\u21D1", "UpArrow": "\u2191", "UpArrowBar": "\u2912", "UpArrowDownArrow": "\u21C5", "updownarrow": "\u2195", "Updownarrow": "\u21D5", "UpDownArrow": "\u2195", "UpEquilibrium": "\u296E", "upharpoonleft": "\u21BF", "upharpoonright": "\u21BE", "uplus": "\u228E", "UpperLeftArrow": "\u2196", "UpperRightArrow": "\u2197", "upsi": "\u03C5", "Upsi": "\u03D2", "upsih": "\u03D2", "upsilon": "\u03C5", "Upsilon": "\u03A5", "UpTee": "\u22A5", "UpTeeArrow": "\u21A5", "upuparrows": "\u21C8", "urcorn": "\u231D", "urcorner": "\u231D", "urcrop": "\u230E", "uring": "\u016F", "Uring": "\u016E", "urtri": "\u25F9", "uscr": "\u{1D4CA}", "Uscr": "\u{1D4B0}", "utdot": "\u22F0", "utilde": "\u0169", "Utilde": "\u0168", "utri": "\u25B5", "utrif": "\u25B4", "uuarr": "\u21C8", "uuml": "\xFC", "Uuml": "\xDC", "uwangle": "\u29A7", "vangrt": "\u299C", "varepsilon": "\u03F5", "varkappa": "\u03F0", "varnothing": "\u2205", "varphi": "\u03D5", "varpi": "\u03D6", "varpropto": "\u221D", "varr": "\u2195", "vArr": "\u21D5", "varrho": "\u03F1", "varsigma": "\u03C2", "varsubsetneq": "\u228A\uFE00", "varsubsetneqq": "\u2ACB\uFE00", "varsupsetneq": "\u228B\uFE00", "varsupsetneqq": "\u2ACC\uFE00", "vartheta": "\u03D1", "vartriangleleft": "\u22B2", "vartriangleright": "\u22B3", "vBar": "\u2AE8", "Vbar": "\u2AEB", "vBarv": "\u2AE9", "vcy": "\u0432", "Vcy": "\u0412", "vdash": "\u22A2", "vDash": "\u22A8", "Vdash": "\u22A9", "VDash": "\u22AB", "Vdashl": "\u2AE6", "vee": "\u2228", "Vee": "\u22C1", "veebar": "\u22BB", "veeeq": "\u225A", "vellip": "\u22EE", "verbar": "|", "Verbar": "\u2016", "vert": "|", "Vert": "\u2016", "VerticalBar": "\u2223", "VerticalLine": "|", "VerticalSeparator": "\u2758", "VerticalTilde": "\u2240", "VeryThinSpace": "\u200A", "vfr": "\u{1D533}", "Vfr": "\u{1D519}", "vltri": "\u22B2", "vnsub": "\u2282\u20D2", "vnsup": "\u2283\u20D2", "vopf": "\u{1D567}", "Vopf": "\u{1D54D}", "vprop": "\u221D", "vrtri": "\u22B3", "vscr": "\u{1D4CB}", "Vscr": "\u{1D4B1}", "vsubne": "\u228A\uFE00", "vsubnE": "\u2ACB\uFE00", "vsupne": "\u228B\uFE00", "vsupnE": "\u2ACC\uFE00", "Vvdash": "\u22AA", "vzigzag": "\u299A", "wcirc": "\u0175", "Wcirc": "\u0174", "wedbar": "\u2A5F", "wedge": "\u2227", "Wedge": "\u22C0", "wedgeq": "\u2259", "weierp": "\u2118", "wfr": "\u{1D534}", "Wfr": "\u{1D51A}", "wopf": "\u{1D568}", "Wopf": "\u{1D54E}", "wp": "\u2118", "wr": "\u2240", "wreath": "\u2240", "wscr": "\u{1D4CC}", "Wscr": "\u{1D4B2}", "xcap": "\u22C2", "xcirc": "\u25EF", "xcup": "\u22C3", "xdtri": "\u25BD", "xfr": "\u{1D535}", "Xfr": "\u{1D51B}", "xharr": "\u27F7", "xhArr": "\u27FA", "xi": "\u03BE", "Xi": "\u039E", "xlarr": "\u27F5", "xlArr": "\u27F8", "xmap": "\u27FC", "xnis": "\u22FB", "xodot": "\u2A00", "xopf": "\u{1D569}", "Xopf": "\u{1D54F}", "xoplus": "\u2A01", "xotime": "\u2A02", "xrarr": "\u27F6", "xrArr": "\u27F9", "xscr": "\u{1D4CD}", "Xscr": "\u{1D4B3}", "xsqcup": "\u2A06", "xuplus": "\u2A04", "xutri": "\u25B3", "xvee": "\u22C1", "xwedge": "\u22C0", "yacute": "\xFD", "Yacute": "\xDD", "yacy": "\u044F", "YAcy": "\u042F", "ycirc": "\u0177", "Ycirc": "\u0176", "ycy": "\u044B", "Ycy": "\u042B", "yen": "\xA5", "yfr": "\u{1D536}", "Yfr": "\u{1D51C}", "yicy": "\u0457", "YIcy": "\u0407", "yopf": "\u{1D56A}", "Yopf": "\u{1D550}", "yscr": "\u{1D4CE}", "Yscr": "\u{1D4B4}", "yucy": "\u044E", "YUcy": "\u042E", "yuml": "\xFF", "Yuml": "\u0178", "zacute": "\u017A", "Zacute": "\u0179", "zcaron": "\u017E", "Zcaron": "\u017D", "zcy": "\u0437", "Zcy": "\u0417", "zdot": "\u017C", "Zdot": "\u017B", "zeetrf": "\u2128", "ZeroWidthSpace": "\u200B", "zeta": "\u03B6", "Zeta": "\u0396", "zfr": "\u{1D537}", "Zfr": "\u2128", "zhcy": "\u0436", "ZHcy": "\u0416", "zigrarr": "\u21DD", "zopf": "\u{1D56B}", "Zopf": "\u2124", "zscr": "\u{1D4CF}", "Zscr": "\u{1D4B5}", "zwj": "\u200D", "zwnj": "\u200C" };
-        var decodeMapLegacy = { "aacute": "\xE1", "Aacute": "\xC1", "acirc": "\xE2", "Acirc": "\xC2", "acute": "\xB4", "aelig": "\xE6", "AElig": "\xC6", "agrave": "\xE0", "Agrave": "\xC0", "amp": "&", "AMP": "&", "aring": "\xE5", "Aring": "\xC5", "atilde": "\xE3", "Atilde": "\xC3", "auml": "\xE4", "Auml": "\xC4", "brvbar": "\xA6", "ccedil": "\xE7", "Ccedil": "\xC7", "cedil": "\xB8", "cent": "\xA2", "copy": "\xA9", "COPY": "\xA9", "curren": "\xA4", "deg": "\xB0", "divide": "\xF7", "eacute": "\xE9", "Eacute": "\xC9", "ecirc": "\xEA", "Ecirc": "\xCA", "egrave": "\xE8", "Egrave": "\xC8", "eth": "\xF0", "ETH": "\xD0", "euml": "\xEB", "Euml": "\xCB", "frac12": "\xBD", "frac14": "\xBC", "frac34": "\xBE", "gt": ">", "GT": ">", "iacute": "\xED", "Iacute": "\xCD", "icirc": "\xEE", "Icirc": "\xCE", "iexcl": "\xA1", "igrave": "\xEC", "Igrave": "\xCC", "iquest": "\xBF", "iuml": "\xEF", "Iuml": "\xCF", "laquo": "\xAB", "lt": "<", "LT": "<", "macr": "\xAF", "micro": "\xB5", "middot": "\xB7", "nbsp": "\xA0", "not": "\xAC", "ntilde": "\xF1", "Ntilde": "\xD1", "oacute": "\xF3", "Oacute": "\xD3", "ocirc": "\xF4", "Ocirc": "\xD4", "ograve": "\xF2", "Ograve": "\xD2", "ordf": "\xAA", "ordm": "\xBA", "oslash": "\xF8", "Oslash": "\xD8", "otilde": "\xF5", "Otilde": "\xD5", "ouml": "\xF6", "Ouml": "\xD6", "para": "\xB6", "plusmn": "\xB1", "pound": "\xA3", "quot": '"', "QUOT": '"', "raquo": "\xBB", "reg": "\xAE", "REG": "\xAE", "sect": "\xA7", "shy": "\xAD", "sup1": "\xB9", "sup2": "\xB2", "sup3": "\xB3", "szlig": "\xDF", "thorn": "\xFE", "THORN": "\xDE", "times": "\xD7", "uacute": "\xFA", "Uacute": "\xDA", "ucirc": "\xFB", "Ucirc": "\xDB", "ugrave": "\xF9", "Ugrave": "\xD9", "uml": "\xA8", "uuml": "\xFC", "Uuml": "\xDC", "yacute": "\xFD", "Yacute": "\xDD", "yen": "\xA5", "yuml": "\xFF" };
-        var decodeMapNumeric = { "0": "\uFFFD", "128": "\u20AC", "130": "\u201A", "131": "\u0192", "132": "\u201E", "133": "\u2026", "134": "\u2020", "135": "\u2021", "136": "\u02C6", "137": "\u2030", "138": "\u0160", "139": "\u2039", "140": "\u0152", "142": "\u017D", "145": "\u2018", "146": "\u2019", "147": "\u201C", "148": "\u201D", "149": "\u2022", "150": "\u2013", "151": "\u2014", "152": "\u02DC", "153": "\u2122", "154": "\u0161", "155": "\u203A", "156": "\u0153", "158": "\u017E", "159": "\u0178" };
-        var invalidReferenceCodePoints = [1, 2, 3, 4, 5, 6, 7, 8, 11, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 64976, 64977, 64978, 64979, 64980, 64981, 64982, 64983, 64984, 64985, 64986, 64987, 64988, 64989, 64990, 64991, 64992, 64993, 64994, 64995, 64996, 64997, 64998, 64999, 65e3, 65001, 65002, 65003, 65004, 65005, 65006, 65007, 65534, 65535, 131070, 131071, 196606, 196607, 262142, 262143, 327678, 327679, 393214, 393215, 458750, 458751, 524286, 524287, 589822, 589823, 655358, 655359, 720894, 720895, 786430, 786431, 851966, 851967, 917502, 917503, 983038, 983039, 1048574, 1048575, 1114110, 1114111];
-        var stringFromCharCode = String.fromCharCode;
-        var object = {};
-        var hasOwnProperty = object.hasOwnProperty;
-        var has = function(object2, propertyName) {
-          return hasOwnProperty.call(object2, propertyName);
+        S.options = {
+            allowUnsafeSymbols: !1,
+            encodeEverything: !1,
+            strict: !1,
+            useNamedReferences: !1,
+            decimal: !1
         };
-        var contains = function(array, value) {
-          var index = -1;
-          var length = array.length;
-          while (++index < length) {
-            if (array[index] == value) {
-              return true;
-            }
-          }
-          return false;
-        };
-        var merge2 = function(options, defaults) {
-          if (!options) {
-            return defaults;
-          }
-          var result = {};
-          var key2;
-          for (key2 in defaults) {
-            result[key2] = has(options, key2) ? options[key2] : defaults[key2];
-          }
-          return result;
-        };
-        var codePointToSymbol = function(codePoint, strict) {
-          var output = "";
-          if (codePoint >= 55296 && codePoint <= 57343 || codePoint > 1114111) {
-            if (strict) {
-              parseError("character reference outside the permissible Unicode range");
-            }
-            return "\uFFFD";
-          }
-          if (has(decodeMapNumeric, codePoint)) {
-            if (strict) {
-              parseError("disallowed character reference");
-            }
-            return decodeMapNumeric[codePoint];
-          }
-          if (strict && contains(invalidReferenceCodePoints, codePoint)) {
-            parseError("disallowed character reference");
-          }
-          if (codePoint > 65535) {
-            codePoint -= 65536;
-            output += stringFromCharCode(codePoint >>> 10 & 1023 | 55296);
-            codePoint = 56320 | codePoint & 1023;
-          }
-          output += stringFromCharCode(codePoint);
-          return output;
-        };
-        var hexEscape = function(codePoint) {
-          return "&#x" + codePoint.toString(16).toUpperCase() + ";";
-        };
-        var decEscape = function(codePoint) {
-          return "&#" + codePoint + ";";
-        };
-        var parseError = function(message) {
-          throw Error("Parse error: " + message);
-        };
-        var encode = function(string, options) {
-          options = merge2(options, encode.options);
-          var strict = options.strict;
-          if (strict && regexInvalidRawCodePoint.test(string)) {
-            parseError("forbidden code point");
-          }
-          var encodeEverything = options.encodeEverything;
-          var useNamedReferences = options.useNamedReferences;
-          var allowUnsafeSymbols = options.allowUnsafeSymbols;
-          var escapeCodePoint = options.decimal ? decEscape : hexEscape;
-          var escapeBmpSymbol = function(symbol) {
-            return escapeCodePoint(symbol.charCodeAt(0));
-          };
-          if (encodeEverything) {
-            string = string.replace(regexAsciiWhitelist, function(symbol) {
-              if (useNamedReferences && has(encodeMap, symbol)) {
-                return "&" + encodeMap[symbol] + ";";
-              }
-              return escapeBmpSymbol(symbol);
+        var x = function x1(v, T) {
+            T = f(T, x.options);
+            var j = T.strict;
+            return j && _.test(v) && B("malformed character reference"), v.replace(F, function(P, z, H, U, O, I, G, V, Q) {
+                var ee, X, de, he, Ce, ye;
+                return z ? (Ce = z, R[Ce]) : H ? (Ce = H, ye = U, ye && T.isAttributeValue ? (j && ye == "=" && B("`&` did not start a character reference"), P) : (j && B("named character reference was not terminated by a semicolon"), w[Ce] + (ye || ""))) : O ? (de = O, X = I, j && !X && B("character reference was not terminated by a semicolon"), ee = parseInt(de, 10), h(ee, j)) : G ? (he = G, X = V, j && !X && B("character reference was not terminated by a semicolon"), ee = parseInt(he, 16), h(ee, j)) : (j && B("named character reference was not terminated by a semicolon"), P);
             });
-            if (useNamedReferences) {
-              string = string.replace(/&gt;\u20D2/g, "&nvgt;").replace(/&lt;\u20D2/g, "&nvlt;").replace(/&#x66;&#x6A;/g, "&fjlig;");
-            }
-            if (useNamedReferences) {
-              string = string.replace(regexEncodeNonAscii, function(string2) {
-                return "&" + encodeMap[string2] + ";";
-              });
-            }
-          } else if (useNamedReferences) {
-            if (!allowUnsafeSymbols) {
-              string = string.replace(regexEscape, function(string2) {
-                return "&" + encodeMap[string2] + ";";
-              });
-            }
-            string = string.replace(/&gt;\u20D2/g, "&nvgt;").replace(/&lt;\u20D2/g, "&nvlt;");
-            string = string.replace(regexEncodeNonAscii, function(string2) {
-              return "&" + encodeMap[string2] + ";";
+        };
+        x.options = {
+            isAttributeValue: !1,
+            strict: !1
+        };
+        var L = function L(v) {
+            return v.replace(A, function(T) {
+                return y[T];
             });
-          } else if (!allowUnsafeSymbols) {
-            string = string.replace(regexEscape, escapeBmpSymbol);
-          }
-          return string.replace(regexAstralSymbols, function($0) {
-            var high = $0.charCodeAt(0);
-            var low = $0.charCodeAt(1);
-            var codePoint = (high - 55296) * 1024 + low - 56320 + 65536;
-            return escapeCodePoint(codePoint);
-          }).replace(regexBmpWhitelist, escapeBmpSymbol);
+        }, l = {
+            version: "1.2.0",
+            encode: S,
+            decode: x,
+            escape: L,
+            unescape: x
         };
-        encode.options = {
-          "allowUnsafeSymbols": false,
-          "encodeEverything": false,
-          "strict": false,
-          "useNamedReferences": false,
-          "decimal": false
-        };
-        var decode = function(html, options) {
-          options = merge2(options, decode.options);
-          var strict = options.strict;
-          if (strict && regexInvalidEntity.test(html)) {
-            parseError("malformed character reference");
-          }
-          return html.replace(regexDecode, function($0, $1, $2, $3, $4, $5, $6, $7, $8) {
-            var codePoint;
-            var semicolon;
-            var decDigits;
-            var hexDigits;
-            var reference;
-            var next;
-            if ($1) {
-              reference = $1;
-              return decodeMap[reference];
-            }
-            if ($2) {
-              reference = $2;
-              next = $3;
-              if (next && options.isAttributeValue) {
-                if (strict && next == "=") {
-                  parseError("`&` did not start a character reference");
-                }
-                return $0;
-              } else {
-                if (strict) {
-                  parseError(
-                    "named character reference was not terminated by a semicolon"
-                  );
-                }
-                return decodeMapLegacy[reference] + (next || "");
-              }
-            }
-            if ($4) {
-              decDigits = $4;
-              semicolon = $5;
-              if (strict && !semicolon) {
-                parseError("character reference was not terminated by a semicolon");
-              }
-              codePoint = parseInt(decDigits, 10);
-              return codePointToSymbol(codePoint, strict);
-            }
-            if ($6) {
-              hexDigits = $6;
-              semicolon = $7;
-              if (strict && !semicolon) {
-                parseError("character reference was not terminated by a semicolon");
-              }
-              codePoint = parseInt(hexDigits, 16);
-              return codePointToSymbol(codePoint, strict);
-            }
-            if (strict) {
-              parseError(
-                "named character reference was not terminated by a semicolon"
-              );
-            }
-            return $0;
-          });
-        };
-        decode.options = {
-          "isAttributeValue": false,
-          "strict": false
-        };
-        var escape = function(string) {
-          return string.replace(regexEscape, function($0) {
-            return escapeMap[$0];
-          });
-        };
-        var he = {
-          "version": "1.2.0",
-          "encode": encode,
-          "decode": decode,
-          "escape": escape,
-          "unescape": decode
-        };
-        if (typeof define == "function" && typeof define.amd == "object" && define.amd) {
-          define(function() {
-            return he;
-          });
-        } else if (freeExports && !freeExports.nodeType) {
-          if (freeModule) {
-            freeModule.exports = he;
-          } else {
-            for (var key in he) {
-              has(he, key) && (freeExports[key] = he[key]);
-            }
-          }
-        } else {
-          root.he = he;
-        }
-      })(exports);
-    }
-  });
-
-  // src/index.ts
-  var import_showdown4 = __toESM(require_showdown(), 1);
-
-  // node_modules/.pnpm/js-yaml@4.1.0/node_modules/js-yaml/dist/js-yaml.mjs
-  function isNothing(subject) {
-    return typeof subject === "undefined" || subject === null;
-  }
-  function isObject(subject) {
-    return typeof subject === "object" && subject !== null;
-  }
-  function toArray(sequence) {
-    if (Array.isArray(sequence))
-      return sequence;
-    else if (isNothing(sequence))
-      return [];
-    return [sequence];
-  }
-  function extend(target, source) {
-    var index, length, key, sourceKeys;
-    if (source) {
-      sourceKeys = Object.keys(source);
-      for (index = 0, length = sourceKeys.length; index < length; index += 1) {
-        key = sourceKeys[index];
-        target[key] = source[key];
-      }
-    }
-    return target;
-  }
-  function repeat(string, count) {
-    var result = "", cycle;
-    for (cycle = 0; cycle < count; cycle += 1) {
-      result += string;
-    }
-    return result;
-  }
-  function isNegativeZero(number) {
-    return number === 0 && Number.NEGATIVE_INFINITY === 1 / number;
-  }
-  var isNothing_1 = isNothing;
-  var isObject_1 = isObject;
-  var toArray_1 = toArray;
-  var repeat_1 = repeat;
-  var isNegativeZero_1 = isNegativeZero;
-  var extend_1 = extend;
-  var common = {
-    isNothing: isNothing_1,
-    isObject: isObject_1,
-    toArray: toArray_1,
-    repeat: repeat_1,
-    isNegativeZero: isNegativeZero_1,
-    extend: extend_1
-  };
-  function formatError(exception2, compact) {
-    var where = "", message = exception2.reason || "(unknown reason)";
-    if (!exception2.mark)
-      return message;
-    if (exception2.mark.name) {
-      where += 'in "' + exception2.mark.name + '" ';
-    }
-    where += "(" + (exception2.mark.line + 1) + ":" + (exception2.mark.column + 1) + ")";
-    if (!compact && exception2.mark.snippet) {
-      where += "\n\n" + exception2.mark.snippet;
-    }
-    return message + " " + where;
-  }
-  function YAMLException$1(reason, mark) {
-    Error.call(this);
-    this.name = "YAMLException";
-    this.reason = reason;
-    this.mark = mark;
-    this.message = formatError(this, false);
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor);
-    } else {
-      this.stack = new Error().stack || "";
-    }
-  }
-  YAMLException$1.prototype = Object.create(Error.prototype);
-  YAMLException$1.prototype.constructor = YAMLException$1;
-  YAMLException$1.prototype.toString = function toString(compact) {
-    return this.name + ": " + formatError(this, compact);
-  };
-  var exception = YAMLException$1;
-  function getLine(buffer, lineStart, lineEnd, position, maxLineLength) {
-    var head = "";
-    var tail = "";
-    var maxHalfLength = Math.floor(maxLineLength / 2) - 1;
-    if (position - lineStart > maxHalfLength) {
-      head = " ... ";
-      lineStart = position - maxHalfLength + head.length;
-    }
-    if (lineEnd - position > maxHalfLength) {
-      tail = " ...";
-      lineEnd = position + maxHalfLength - tail.length;
-    }
-    return {
-      str: head + buffer.slice(lineStart, lineEnd).replace(/\t/g, "\u2192") + tail,
-      pos: position - lineStart + head.length
-      // relative position
+        if (typeof define == "function" && typeof define.amd == "object" && define.amd) define(function() {
+            return l;
+        });
+        else if (a && !a.nodeType) if (r) r.exports = l;
+        else for(var E in l)n(l, E) && (a[E] = l[E]);
+        else e.he = l;
+    })(Re);
+});
+var sr = ie(me(), 1);
+function Au(e) {
+    return (typeof e === "undefined" ? "undefined" : _type_of(e)) > "u" || e === null;
+}
+function br(e) {
+    return typeof e == "object" && e !== null;
+}
+function wr(e) {
+    return Array.isArray(e) ? e : Au(e) ? [] : [
+        e
+    ];
+}
+function Ar(e, a) {
+    var r, d, t, p;
+    if (a) for(p = Object.keys(a), r = 0, d = p.length; r < d; r += 1)t = p[r], e[t] = a[t];
+    return e;
+}
+function vr(e, a) {
+    var r = "", d;
+    for(d = 0; d < a; d += 1)r += e;
+    return r;
+}
+function Cr(e) {
+    return e === 0 && Number.NEGATIVE_INFINITY === 1 / e;
+}
+var yr = Au, _r = br, Er = wr, kr = vr, xr = Cr, Fr = Ar, Y = {
+    isNothing: yr,
+    isObject: _r,
+    toArray: Er,
+    repeat: kr,
+    isNegativeZero: xr,
+    extend: Fr
+};
+function vu(e, a) {
+    var r = "", d = e.reason || "(unknown reason)";
+    return e.mark ? (e.mark.name && (r += 'in "' + e.mark.name + '" '), r += "(" + (e.mark.line + 1) + ":" + (e.mark.column + 1) + ")", !a && e.mark.snippet && (r += "\n\n" + e.mark.snippet), d + " " + r) : d;
+}
+function De(e, a) {
+    Error.call(this), this.name = "YAMLException", this.reason = e, this.mark = a, this.message = vu(this, !1), Error.captureStackTrace ? Error.captureStackTrace(this, this.constructor) : this.stack = new Error().stack || "";
+}
+De.prototype = Object.create(Error.prototype);
+De.prototype.constructor = De;
+De.prototype.toString = function(a) {
+    return this.name + ": " + vu(this, a);
+};
+var J = De;
+function je(e, a, r, d, t) {
+    var p = "", c = "", m = Math.floor(t / 2) - 1;
+    return d - a > m && (p = " ... ", a = d - m + p.length), r - d > m && (c = " ...", r = d + m - c.length), {
+        str: p + e.slice(a, r).replace(/\t/g, "→") + c,
+        pos: d - a + p.length
     };
-  }
-  function padStart(string, max) {
-    return common.repeat(" ", max - string.length) + string;
-  }
-  function makeSnippet(mark, options) {
-    options = Object.create(options || null);
-    if (!mark.buffer)
-      return null;
-    if (!options.maxLength)
-      options.maxLength = 79;
-    if (typeof options.indent !== "number")
-      options.indent = 1;
-    if (typeof options.linesBefore !== "number")
-      options.linesBefore = 3;
-    if (typeof options.linesAfter !== "number")
-      options.linesAfter = 2;
-    var re = /\r?\n|\r|\0/g;
-    var lineStarts = [0];
-    var lineEnds = [];
-    var match;
-    var foundLineNo = -1;
-    while (match = re.exec(mark.buffer)) {
-      lineEnds.push(match.index);
-      lineStarts.push(match.index + match[0].length);
-      if (mark.position <= match.index && foundLineNo < 0) {
-        foundLineNo = lineStarts.length - 2;
-      }
-    }
-    if (foundLineNo < 0)
-      foundLineNo = lineStarts.length - 1;
-    var result = "", i3, line;
-    var lineNoLength = Math.min(mark.line + options.linesAfter, lineEnds.length).toString().length;
-    var maxLineLength = options.maxLength - (options.indent + lineNoLength + 3);
-    for (i3 = 1; i3 <= options.linesBefore; i3++) {
-      if (foundLineNo - i3 < 0)
-        break;
-      line = getLine(
-        mark.buffer,
-        lineStarts[foundLineNo - i3],
-        lineEnds[foundLineNo - i3],
-        mark.position - (lineStarts[foundLineNo] - lineStarts[foundLineNo - i3]),
-        maxLineLength
-      );
-      result = common.repeat(" ", options.indent) + padStart((mark.line - i3 + 1).toString(), lineNoLength) + " | " + line.str + "\n" + result;
-    }
-    line = getLine(mark.buffer, lineStarts[foundLineNo], lineEnds[foundLineNo], mark.position, maxLineLength);
-    result += common.repeat(" ", options.indent) + padStart((mark.line + 1).toString(), lineNoLength) + " | " + line.str + "\n";
-    result += common.repeat("-", options.indent + lineNoLength + 3 + line.pos) + "^\n";
-    for (i3 = 1; i3 <= options.linesAfter; i3++) {
-      if (foundLineNo + i3 >= lineEnds.length)
-        break;
-      line = getLine(
-        mark.buffer,
-        lineStarts[foundLineNo + i3],
-        lineEnds[foundLineNo + i3],
-        mark.position - (lineStarts[foundLineNo] - lineStarts[foundLineNo + i3]),
-        maxLineLength
-      );
-      result += common.repeat(" ", options.indent) + padStart((mark.line + i3 + 1).toString(), lineNoLength) + " | " + line.str + "\n";
-    }
-    return result.replace(/\n$/, "");
-  }
-  var snippet = makeSnippet;
-  var TYPE_CONSTRUCTOR_OPTIONS = [
+}
+function Ne(e, a) {
+    return Y.repeat(" ", a - e.length) + e;
+}
+function Br(e, a) {
+    if (a = Object.create(a || null), !e.buffer) return null;
+    a.maxLength || (a.maxLength = 79), typeof a.indent != "number" && (a.indent = 1), typeof a.linesBefore != "number" && (a.linesBefore = 3), typeof a.linesAfter != "number" && (a.linesAfter = 2);
+    for(var r = /\r?\n|\r|\0/g, d = [
+        0
+    ], t = [], p, c = -1; p = r.exec(e.buffer);)t.push(p.index), d.push(p.index + p[0].length), e.position <= p.index && c < 0 && (c = d.length - 2);
+    c < 0 && (c = d.length - 1);
+    var m = "", D, A, y = Math.min(e.line + a.linesAfter, t.length).toString().length, _ = a.maxLength - (a.indent + y + 3);
+    for(D = 1; D <= a.linesBefore && !(c - D < 0); D++)A = je(e.buffer, d[c - D], t[c - D], e.position - (d[c] - d[c - D]), _), m = Y.repeat(" ", a.indent) + Ne((e.line - D + 1).toString(), y) + " | " + A.str + "\n" + m;
+    for(A = je(e.buffer, d[c], t[c], e.position, _), m += Y.repeat(" ", a.indent) + Ne((e.line + 1).toString(), y) + " | " + A.str + "\n", m += Y.repeat("-", a.indent + y + 3 + A.pos) + "^\n", D = 1; D <= a.linesAfter && !(c + D >= t.length); D++)A = je(e.buffer, d[c + D], t[c + D], e.position - (d[c] - d[c + D]), _), m += Y.repeat(" ", a.indent) + Ne((e.line + D + 1).toString(), y) + " | " + A.str + "\n";
+    return m.replace(/\n$/, "");
+}
+var Sr = Br, qr = [
     "kind",
     "multi",
     "resolve",
@@ -5700,2189 +9372,1016 @@ var repackMd = (function (exports) {
     "representName",
     "defaultStyle",
     "styleAliases"
-  ];
-  var YAML_NODE_KINDS = [
+], Lr = [
     "scalar",
     "sequence",
     "mapping"
-  ];
-  function compileStyleAliases(map2) {
-    var result = {};
-    if (map2 !== null) {
-      Object.keys(map2).forEach(function(style) {
-        map2[style].forEach(function(alias) {
-          result[String(alias)] = style;
+];
+function Tr(e) {
+    var a = {};
+    return e !== null && Object.keys(e).forEach(function(r) {
+        e[r].forEach(function(d) {
+            a[String(d)] = r;
         });
-      });
-    }
-    return result;
-  }
-  function Type$1(tag, options) {
-    options = options || {};
-    Object.keys(options).forEach(function(name) {
-      if (TYPE_CONSTRUCTOR_OPTIONS.indexOf(name) === -1) {
-        throw new exception('Unknown option "' + name + '" is met in definition of "' + tag + '" YAML type.');
-      }
-    });
-    this.options = options;
-    this.tag = tag;
-    this.kind = options["kind"] || null;
-    this.resolve = options["resolve"] || function() {
-      return true;
-    };
-    this.construct = options["construct"] || function(data) {
-      return data;
-    };
-    this.instanceOf = options["instanceOf"] || null;
-    this.predicate = options["predicate"] || null;
-    this.represent = options["represent"] || null;
-    this.representName = options["representName"] || null;
-    this.defaultStyle = options["defaultStyle"] || null;
-    this.multi = options["multi"] || false;
-    this.styleAliases = compileStyleAliases(options["styleAliases"] || null);
-    if (YAML_NODE_KINDS.indexOf(this.kind) === -1) {
-      throw new exception('Unknown kind "' + this.kind + '" is specified for "' + tag + '" YAML type.');
-    }
-  }
-  var type = Type$1;
-  function compileList(schema2, name) {
-    var result = [];
-    schema2[name].forEach(function(currentType) {
-      var newIndex = result.length;
-      result.forEach(function(previousType, previousIndex) {
-        if (previousType.tag === currentType.tag && previousType.kind === currentType.kind && previousType.multi === currentType.multi) {
-          newIndex = previousIndex;
+    }), a;
+}
+function Rr(e, a) {
+    if (a = a || {}, Object.keys(a).forEach(function(r) {
+        if (qr.indexOf(r) === -1) throw new J('Unknown option "' + r + '" is met in definition of "' + e + '" YAML type.');
+    }), this.options = a, this.tag = e, this.kind = a.kind || null, this.resolve = a.resolve || function() {
+        return !0;
+    }, this.construct = a.construct || function(r) {
+        return r;
+    }, this.instanceOf = a.instanceOf || null, this.predicate = a.predicate || null, this.represent = a.represent || null, this.representName = a.representName || null, this.defaultStyle = a.defaultStyle || null, this.multi = a.multi || !1, this.styleAliases = Tr(a.styleAliases || null), Lr.indexOf(this.kind) === -1) throw new J('Unknown kind "' + this.kind + '" is specified for "' + e + '" YAML type.');
+}
+var W = Rr;
+function iu(e, a) {
+    var r = [];
+    return e[a].forEach(function(d) {
+        var t = r.length;
+        r.forEach(function(p, c) {
+            p.tag === d.tag && p.kind === d.kind && p.multi === d.multi && (t = c);
+        }), r[t] = d;
+    }), r;
+}
+function Pr() {
+    var e = {
+        scalar: {},
+        sequence: {},
+        mapping: {},
+        fallback: {},
+        multi: {
+            scalar: [],
+            sequence: [],
+            mapping: [],
+            fallback: []
         }
-      });
-      result[newIndex] = currentType;
-    });
-    return result;
-  }
-  function compileMap() {
-    var result = {
-      scalar: {},
-      sequence: {},
-      mapping: {},
-      fallback: {},
-      multi: {
-        scalar: [],
-        sequence: [],
-        mapping: [],
-        fallback: []
-      }
-    }, index, length;
-    function collectType(type2) {
-      if (type2.multi) {
-        result.multi[type2.kind].push(type2);
-        result.multi["fallback"].push(type2);
-      } else {
-        result[type2.kind][type2.tag] = result["fallback"][type2.tag] = type2;
-      }
+    }, a, r;
+    function d(t) {
+        t.multi ? (e.multi[t.kind].push(t), e.multi.fallback.push(t)) : e[t.kind][t.tag] = e.fallback[t.tag] = t;
     }
-    for (index = 0, length = arguments.length; index < length; index += 1) {
-      arguments[index].forEach(collectType);
-    }
-    return result;
-  }
-  function Schema$1(definition) {
-    return this.extend(definition);
-  }
-  Schema$1.prototype.extend = function extend2(definition) {
-    var implicit = [];
-    var explicit = [];
-    if (definition instanceof type) {
-      explicit.push(definition);
-    } else if (Array.isArray(definition)) {
-      explicit = explicit.concat(definition);
-    } else if (definition && (Array.isArray(definition.implicit) || Array.isArray(definition.explicit))) {
-      if (definition.implicit)
-        implicit = implicit.concat(definition.implicit);
-      if (definition.explicit)
-        explicit = explicit.concat(definition.explicit);
-    } else {
-      throw new exception("Schema.extend argument should be a Type, [ Type ], or a schema definition ({ implicit: [...], explicit: [...] })");
-    }
-    implicit.forEach(function(type$1) {
-      if (!(type$1 instanceof type)) {
-        throw new exception("Specified list of YAML types (or a single Type object) contains a non-Type object.");
-      }
-      if (type$1.loadKind && type$1.loadKind !== "scalar") {
-        throw new exception("There is a non-scalar type in the implicit list of a schema. Implicit resolving of such types is not supported.");
-      }
-      if (type$1.multi) {
-        throw new exception("There is a multi type in the implicit list of a schema. Multi tags can only be listed as explicit.");
-      }
+    for(a = 0, r = arguments.length; a < r; a += 1)arguments[a].forEach(d);
+    return e;
+}
+function Ie(e) {
+    return this.extend(e);
+}
+Ie.prototype.extend = function(a) {
+    var r = [], d = [];
+    if (_instanceof(a, W)) d.push(a);
+    else if (Array.isArray(a)) d = d.concat(a);
+    else if (a && (Array.isArray(a.implicit) || Array.isArray(a.explicit))) a.implicit && (r = r.concat(a.implicit)), a.explicit && (d = d.concat(a.explicit));
+    else throw new J("Schema.extend argument should be a Type, [ Type ], or a schema definition ({ implicit: [...], explicit: [...] })");
+    r.forEach(function(p) {
+        if (!_instanceof(p, W)) throw new J("Specified list of YAML types (or a single Type object) contains a non-Type object.");
+        if (p.loadKind && p.loadKind !== "scalar") throw new J("There is a non-scalar type in the implicit list of a schema. Implicit resolving of such types is not supported.");
+        if (p.multi) throw new J("There is a multi type in the implicit list of a schema. Multi tags can only be listed as explicit.");
+    }), d.forEach(function(p) {
+        if (!_instanceof(p, W)) throw new J("Specified list of YAML types (or a single Type object) contains a non-Type object.");
     });
-    explicit.forEach(function(type$1) {
-      if (!(type$1 instanceof type)) {
-        throw new exception("Specified list of YAML types (or a single Type object) contains a non-Type object.");
-      }
-    });
-    var result = Object.create(Schema$1.prototype);
-    result.implicit = (this.implicit || []).concat(implicit);
-    result.explicit = (this.explicit || []).concat(explicit);
-    result.compiledImplicit = compileList(result, "implicit");
-    result.compiledExplicit = compileList(result, "explicit");
-    result.compiledTypeMap = compileMap(result.compiledImplicit, result.compiledExplicit);
-    return result;
-  };
-  var schema = Schema$1;
-  var str = new type("tag:yaml.org,2002:str", {
+    var t = Object.create(Ie.prototype);
+    return t.implicit = (this.implicit || []).concat(r), t.explicit = (this.explicit || []).concat(d), t.compiledImplicit = iu(t, "implicit"), t.compiledExplicit = iu(t, "explicit"), t.compiledTypeMap = Pr(t.compiledImplicit, t.compiledExplicit), t;
+};
+var jr = Ie, Nr = new W("tag:yaml.org,2002:str", {
     kind: "scalar",
-    construct: function(data) {
-      return data !== null ? data : "";
+    construct: function construct(e) {
+        return e !== null ? e : "";
     }
-  });
-  var seq = new type("tag:yaml.org,2002:seq", {
+}), Mr = new W("tag:yaml.org,2002:seq", {
     kind: "sequence",
-    construct: function(data) {
-      return data !== null ? data : [];
+    construct: function construct(e) {
+        return e !== null ? e : [];
     }
-  });
-  var map = new type("tag:yaml.org,2002:map", {
+}), Ir = new W("tag:yaml.org,2002:map", {
     kind: "mapping",
-    construct: function(data) {
-      return data !== null ? data : {};
+    construct: function construct(e) {
+        return e !== null ? e : {};
     }
-  });
-  var failsafe = new schema({
+}), zr = new jr({
     explicit: [
-      str,
-      seq,
-      map
+        Nr,
+        Mr,
+        Ir
     ]
-  });
-  function resolveYamlNull(data) {
-    if (data === null)
-      return true;
-    var max = data.length;
-    return max === 1 && data === "~" || max === 4 && (data === "null" || data === "Null" || data === "NULL");
-  }
-  function constructYamlNull() {
+});
+function Or(e) {
+    if (e === null) return !0;
+    var a = e.length;
+    return a === 1 && e === "~" || a === 4 && (e === "null" || e === "Null" || e === "NULL");
+}
+function Hr() {
     return null;
-  }
-  function isNull(object) {
-    return object === null;
-  }
-  var _null = new type("tag:yaml.org,2002:null", {
+}
+function Gr(e) {
+    return e === null;
+}
+var Ur = new W("tag:yaml.org,2002:null", {
     kind: "scalar",
-    resolve: resolveYamlNull,
-    construct: constructYamlNull,
-    predicate: isNull,
+    resolve: Or,
+    construct: Hr,
+    predicate: Gr,
     represent: {
-      canonical: function() {
-        return "~";
-      },
-      lowercase: function() {
-        return "null";
-      },
-      uppercase: function() {
-        return "NULL";
-      },
-      camelcase: function() {
-        return "Null";
-      },
-      empty: function() {
-        return "";
-      }
+        canonical: function canonical() {
+            return "~";
+        },
+        lowercase: function lowercase() {
+            return "null";
+        },
+        uppercase: function uppercase() {
+            return "NULL";
+        },
+        camelcase: function camelcase() {
+            return "Null";
+        },
+        empty: function empty() {
+            return "";
+        }
     },
     defaultStyle: "lowercase"
-  });
-  function resolveYamlBoolean(data) {
-    if (data === null)
-      return false;
-    var max = data.length;
-    return max === 4 && (data === "true" || data === "True" || data === "TRUE") || max === 5 && (data === "false" || data === "False" || data === "FALSE");
-  }
-  function constructYamlBoolean(data) {
-    return data === "true" || data === "True" || data === "TRUE";
-  }
-  function isBoolean(object) {
-    return Object.prototype.toString.call(object) === "[object Boolean]";
-  }
-  var bool = new type("tag:yaml.org,2002:bool", {
+});
+function Vr(e) {
+    if (e === null) return !1;
+    var a = e.length;
+    return a === 4 && (e === "true" || e === "True" || e === "TRUE") || a === 5 && (e === "false" || e === "False" || e === "FALSE");
+}
+function $r(e) {
+    return e === "true" || e === "True" || e === "TRUE";
+}
+function Yr(e) {
+    return Object.prototype.toString.call(e) === "[object Boolean]";
+}
+var Wr = new W("tag:yaml.org,2002:bool", {
     kind: "scalar",
-    resolve: resolveYamlBoolean,
-    construct: constructYamlBoolean,
-    predicate: isBoolean,
+    resolve: Vr,
+    construct: $r,
+    predicate: Yr,
     represent: {
-      lowercase: function(object) {
-        return object ? "true" : "false";
-      },
-      uppercase: function(object) {
-        return object ? "TRUE" : "FALSE";
-      },
-      camelcase: function(object) {
-        return object ? "True" : "False";
-      }
+        lowercase: function lowercase(e) {
+            return e ? "true" : "false";
+        },
+        uppercase: function uppercase(e) {
+            return e ? "TRUE" : "FALSE";
+        },
+        camelcase: function camelcase(e) {
+            return e ? "True" : "False";
+        }
     },
     defaultStyle: "lowercase"
-  });
-  function isHexCode(c2) {
-    return 48 <= c2 && c2 <= 57 || 65 <= c2 && c2 <= 70 || 97 <= c2 && c2 <= 102;
-  }
-  function isOctCode(c2) {
-    return 48 <= c2 && c2 <= 55;
-  }
-  function isDecCode(c2) {
-    return 48 <= c2 && c2 <= 57;
-  }
-  function resolveYamlInteger(data) {
-    if (data === null)
-      return false;
-    var max = data.length, index = 0, hasDigits = false, ch;
-    if (!max)
-      return false;
-    ch = data[index];
-    if (ch === "-" || ch === "+") {
-      ch = data[++index];
-    }
-    if (ch === "0") {
-      if (index + 1 === max)
-        return true;
-      ch = data[++index];
-      if (ch === "b") {
-        index++;
-        for (; index < max; index++) {
-          ch = data[index];
-          if (ch === "_")
-            continue;
-          if (ch !== "0" && ch !== "1")
-            return false;
-          hasDigits = true;
+});
+function Kr(e) {
+    return 48 <= e && e <= 57 || 65 <= e && e <= 70 || 97 <= e && e <= 102;
+}
+function Jr(e) {
+    return 48 <= e && e <= 55;
+}
+function Zr(e) {
+    return 48 <= e && e <= 57;
+}
+function Qr(e) {
+    if (e === null) return !1;
+    var a = e.length, r = 0, d = !1, t;
+    if (!a) return !1;
+    if (t = e[r], (t === "-" || t === "+") && (t = e[++r]), t === "0") {
+        if (r + 1 === a) return !0;
+        if (t = e[++r], t === "b") {
+            for(r++; r < a; r++)if (t = e[r], t !== "_") {
+                if (t !== "0" && t !== "1") return !1;
+                d = !0;
+            }
+            return d && t !== "_";
         }
-        return hasDigits && ch !== "_";
-      }
-      if (ch === "x") {
-        index++;
-        for (; index < max; index++) {
-          ch = data[index];
-          if (ch === "_")
-            continue;
-          if (!isHexCode(data.charCodeAt(index)))
-            return false;
-          hasDigits = true;
+        if (t === "x") {
+            for(r++; r < a; r++)if (t = e[r], t !== "_") {
+                if (!Kr(e.charCodeAt(r))) return !1;
+                d = !0;
+            }
+            return d && t !== "_";
         }
-        return hasDigits && ch !== "_";
-      }
-      if (ch === "o") {
-        index++;
-        for (; index < max; index++) {
-          ch = data[index];
-          if (ch === "_")
-            continue;
-          if (!isOctCode(data.charCodeAt(index)))
-            return false;
-          hasDigits = true;
+        if (t === "o") {
+            for(r++; r < a; r++)if (t = e[r], t !== "_") {
+                if (!Jr(e.charCodeAt(r))) return !1;
+                d = !0;
+            }
+            return d && t !== "_";
         }
-        return hasDigits && ch !== "_";
-      }
     }
-    if (ch === "_")
-      return false;
-    for (; index < max; index++) {
-      ch = data[index];
-      if (ch === "_")
-        continue;
-      if (!isDecCode(data.charCodeAt(index))) {
-        return false;
-      }
-      hasDigits = true;
+    if (t === "_") return !1;
+    for(; r < a; r++)if (t = e[r], t !== "_") {
+        if (!Zr(e.charCodeAt(r))) return !1;
+        d = !0;
     }
-    if (!hasDigits || ch === "_")
-      return false;
-    return true;
-  }
-  function constructYamlInteger(data) {
-    var value = data, sign = 1, ch;
-    if (value.indexOf("_") !== -1) {
-      value = value.replace(/_/g, "");
+    return !(!d || t === "_");
+}
+function Xr(e) {
+    var a = e, r = 1, d;
+    if (a.indexOf("_") !== -1 && (a = a.replace(/_/g, "")), d = a[0], (d === "-" || d === "+") && (d === "-" && (r = -1), a = a.slice(1), d = a[0]), a === "0") return 0;
+    if (d === "0") {
+        if (a[1] === "b") return r * parseInt(a.slice(2), 2);
+        if (a[1] === "x") return r * parseInt(a.slice(2), 16);
+        if (a[1] === "o") return r * parseInt(a.slice(2), 8);
     }
-    ch = value[0];
-    if (ch === "-" || ch === "+") {
-      if (ch === "-")
-        sign = -1;
-      value = value.slice(1);
-      ch = value[0];
-    }
-    if (value === "0")
-      return 0;
-    if (ch === "0") {
-      if (value[1] === "b")
-        return sign * parseInt(value.slice(2), 2);
-      if (value[1] === "x")
-        return sign * parseInt(value.slice(2), 16);
-      if (value[1] === "o")
-        return sign * parseInt(value.slice(2), 8);
-    }
-    return sign * parseInt(value, 10);
-  }
-  function isInteger(object) {
-    return Object.prototype.toString.call(object) === "[object Number]" && (object % 1 === 0 && !common.isNegativeZero(object));
-  }
-  var int = new type("tag:yaml.org,2002:int", {
+    return r * parseInt(a, 10);
+}
+function ea(e) {
+    return Object.prototype.toString.call(e) === "[object Number]" && e % 1 === 0 && !Y.isNegativeZero(e);
+}
+var ua = new W("tag:yaml.org,2002:int", {
     kind: "scalar",
-    resolve: resolveYamlInteger,
-    construct: constructYamlInteger,
-    predicate: isInteger,
+    resolve: Qr,
+    construct: Xr,
+    predicate: ea,
     represent: {
-      binary: function(obj) {
-        return obj >= 0 ? "0b" + obj.toString(2) : "-0b" + obj.toString(2).slice(1);
-      },
-      octal: function(obj) {
-        return obj >= 0 ? "0o" + obj.toString(8) : "-0o" + obj.toString(8).slice(1);
-      },
-      decimal: function(obj) {
-        return obj.toString(10);
-      },
-      /* eslint-disable max-len */
-      hexadecimal: function(obj) {
-        return obj >= 0 ? "0x" + obj.toString(16).toUpperCase() : "-0x" + obj.toString(16).toUpperCase().slice(1);
-      }
+        binary: function binary(e) {
+            return e >= 0 ? "0b" + e.toString(2) : "-0b" + e.toString(2).slice(1);
+        },
+        octal: function octal(e) {
+            return e >= 0 ? "0o" + e.toString(8) : "-0o" + e.toString(8).slice(1);
+        },
+        decimal: function decimal(e) {
+            return e.toString(10);
+        },
+        hexadecimal: function hexadecimal(e) {
+            return e >= 0 ? "0x" + e.toString(16).toUpperCase() : "-0x" + e.toString(16).toUpperCase().slice(1);
+        }
     },
     defaultStyle: "decimal",
     styleAliases: {
-      binary: [2, "bin"],
-      octal: [8, "oct"],
-      decimal: [10, "dec"],
-      hexadecimal: [16, "hex"]
+        binary: [
+            2,
+            "bin"
+        ],
+        octal: [
+            8,
+            "oct"
+        ],
+        decimal: [
+            10,
+            "dec"
+        ],
+        hexadecimal: [
+            16,
+            "hex"
+        ]
     }
-  });
-  var YAML_FLOAT_PATTERN = new RegExp(
-    // 2.5e4, 2.5 and integers
-    "^(?:[-+]?(?:[0-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][-+]?[0-9]+)?|\\.[0-9_]+(?:[eE][-+]?[0-9]+)?|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$"
-  );
-  function resolveYamlFloat(data) {
-    if (data === null)
-      return false;
-    if (!YAML_FLOAT_PATTERN.test(data) || // Quick hack to not allow integers end with `_`
-    // Probably should update regexp & check speed
-    data[data.length - 1] === "_") {
-      return false;
-    }
-    return true;
-  }
-  function constructYamlFloat(data) {
-    var value, sign;
-    value = data.replace(/_/g, "").toLowerCase();
-    sign = value[0] === "-" ? -1 : 1;
-    if ("+-".indexOf(value[0]) >= 0) {
-      value = value.slice(1);
-    }
-    if (value === ".inf") {
-      return sign === 1 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
-    } else if (value === ".nan") {
-      return NaN;
-    }
-    return sign * parseFloat(value, 10);
-  }
-  var SCIENTIFIC_WITHOUT_DOT = /^[-+]?[0-9]+e/;
-  function representYamlFloat(object, style) {
-    var res;
-    if (isNaN(object)) {
-      switch (style) {
+}), ra = new RegExp("^(?:[-+]?(?:[0-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][-+]?[0-9]+)?|\\.[0-9_]+(?:[eE][-+]?[0-9]+)?|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$");
+function aa(e) {
+    return !(e === null || !ra.test(e) || e[e.length - 1] === "_");
+}
+function na(e) {
+    var a, r;
+    return a = e.replace(/_/g, "").toLowerCase(), r = a[0] === "-" ? -1 : 1, "+-".indexOf(a[0]) >= 0 && (a = a.slice(1)), a === ".inf" ? r === 1 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY : a === ".nan" ? NaN : r * parseFloat(a, 10);
+}
+var ia = /^[-+]?[0-9]+e/;
+function ta(e, a) {
+    var r;
+    if (isNaN(e)) switch(a){
         case "lowercase":
-          return ".nan";
+            return ".nan";
         case "uppercase":
-          return ".NAN";
+            return ".NAN";
         case "camelcase":
-          return ".NaN";
-      }
-    } else if (Number.POSITIVE_INFINITY === object) {
-      switch (style) {
-        case "lowercase":
-          return ".inf";
-        case "uppercase":
-          return ".INF";
-        case "camelcase":
-          return ".Inf";
-      }
-    } else if (Number.NEGATIVE_INFINITY === object) {
-      switch (style) {
-        case "lowercase":
-          return "-.inf";
-        case "uppercase":
-          return "-.INF";
-        case "camelcase":
-          return "-.Inf";
-      }
-    } else if (common.isNegativeZero(object)) {
-      return "-0.0";
+            return ".NaN";
     }
-    res = object.toString(10);
-    return SCIENTIFIC_WITHOUT_DOT.test(res) ? res.replace("e", ".e") : res;
-  }
-  function isFloat(object) {
-    return Object.prototype.toString.call(object) === "[object Number]" && (object % 1 !== 0 || common.isNegativeZero(object));
-  }
-  var float = new type("tag:yaml.org,2002:float", {
+    else if (Number.POSITIVE_INFINITY === e) switch(a){
+        case "lowercase":
+            return ".inf";
+        case "uppercase":
+            return ".INF";
+        case "camelcase":
+            return ".Inf";
+    }
+    else if (Number.NEGATIVE_INFINITY === e) switch(a){
+        case "lowercase":
+            return "-.inf";
+        case "uppercase":
+            return "-.INF";
+        case "camelcase":
+            return "-.Inf";
+    }
+    else if (Y.isNegativeZero(e)) return "-0.0";
+    return r = e.toString(10), ia.test(r) ? r.replace("e", ".e") : r;
+}
+function oa(e) {
+    return Object.prototype.toString.call(e) === "[object Number]" && (e % 1 !== 0 || Y.isNegativeZero(e));
+}
+var da = new W("tag:yaml.org,2002:float", {
     kind: "scalar",
-    resolve: resolveYamlFloat,
-    construct: constructYamlFloat,
-    predicate: isFloat,
-    represent: representYamlFloat,
+    resolve: aa,
+    construct: na,
+    predicate: oa,
+    represent: ta,
     defaultStyle: "lowercase"
-  });
-  var json = failsafe.extend({
+}), la = zr.extend({
     implicit: [
-      _null,
-      bool,
-      int,
-      float
+        Ur,
+        Wr,
+        ua,
+        da
     ]
-  });
-  var core = json;
-  var YAML_DATE_REGEXP = new RegExp(
-    "^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$"
-  );
-  var YAML_TIMESTAMP_REGEXP = new RegExp(
-    "^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:[Tt]|[ \\t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \\t]*(Z|([-+])([0-9][0-9]?)(?::([0-9][0-9]))?))?$"
-  );
-  function resolveYamlTimestamp(data) {
-    if (data === null)
-      return false;
-    if (YAML_DATE_REGEXP.exec(data) !== null)
-      return true;
-    if (YAML_TIMESTAMP_REGEXP.exec(data) !== null)
-      return true;
-    return false;
-  }
-  function constructYamlTimestamp(data) {
-    var match, year, month, day, hour, minute, second, fraction = 0, delta = null, tz_hour, tz_minute, date;
-    match = YAML_DATE_REGEXP.exec(data);
-    if (match === null)
-      match = YAML_TIMESTAMP_REGEXP.exec(data);
-    if (match === null)
-      throw new Error("Date resolve error");
-    year = +match[1];
-    month = +match[2] - 1;
-    day = +match[3];
-    if (!match[4]) {
-      return new Date(Date.UTC(year, month, day));
+}), ca = la, Cu = new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$"), yu = new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:[Tt]|[ \\t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \\t]*(Z|([-+])([0-9][0-9]?)(?::([0-9][0-9]))?))?$");
+function sa(e) {
+    return e === null ? !1 : Cu.exec(e) !== null || yu.exec(e) !== null;
+}
+function fa(e) {
+    var a, r, d, t, p, c, m, D = 0, A = null, y, _, q;
+    if (a = Cu.exec(e), a === null && (a = yu.exec(e)), a === null) throw new Error("Date resolve error");
+    if (r = +a[1], d = +a[2] - 1, t = +a[3], !a[4]) return new Date(Date.UTC(r, d, t));
+    if (p = +a[4], c = +a[5], m = +a[6], a[7]) {
+        for(D = a[7].slice(0, 3); D.length < 3;)D += "0";
+        D = +D;
     }
-    hour = +match[4];
-    minute = +match[5];
-    second = +match[6];
-    if (match[7]) {
-      fraction = match[7].slice(0, 3);
-      while (fraction.length < 3) {
-        fraction += "0";
-      }
-      fraction = +fraction;
-    }
-    if (match[9]) {
-      tz_hour = +match[10];
-      tz_minute = +(match[11] || 0);
-      delta = (tz_hour * 60 + tz_minute) * 6e4;
-      if (match[9] === "-")
-        delta = -delta;
-    }
-    date = new Date(Date.UTC(year, month, day, hour, minute, second, fraction));
-    if (delta)
-      date.setTime(date.getTime() - delta);
-    return date;
-  }
-  function representYamlTimestamp(object) {
-    return object.toISOString();
-  }
-  var timestamp = new type("tag:yaml.org,2002:timestamp", {
+    return a[9] && (y = +a[10], _ = +(a[11] || 0), A = (y * 60 + _) * 6e4, a[9] === "-" && (A = -A)), q = new Date(Date.UTC(r, d, t, p, c, m, D)), A && q.setTime(q.getTime() - A), q;
+}
+function pa(e) {
+    return e.toISOString();
+}
+var ha = new W("tag:yaml.org,2002:timestamp", {
     kind: "scalar",
-    resolve: resolveYamlTimestamp,
-    construct: constructYamlTimestamp,
+    resolve: sa,
+    construct: fa,
     instanceOf: Date,
-    represent: representYamlTimestamp
-  });
-  function resolveYamlMerge(data) {
-    return data === "<<" || data === null;
-  }
-  var merge = new type("tag:yaml.org,2002:merge", {
+    represent: pa
+});
+function ma(e) {
+    return e === "<<" || e === null;
+}
+var ga = new W("tag:yaml.org,2002:merge", {
     kind: "scalar",
-    resolve: resolveYamlMerge
-  });
-  var BASE64_MAP = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=\n\r";
-  function resolveYamlBinary(data) {
-    if (data === null)
-      return false;
-    var code, idx, bitlen = 0, max = data.length, map2 = BASE64_MAP;
-    for (idx = 0; idx < max; idx++) {
-      code = map2.indexOf(data.charAt(idx));
-      if (code > 64)
-        continue;
-      if (code < 0)
-        return false;
-      bitlen += 6;
+    resolve: ma
+}), Ue = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=\n\r";
+function Da(e) {
+    if (e === null) return !1;
+    var a, r, d = 0, t = e.length, p = Ue;
+    for(r = 0; r < t; r++)if (a = p.indexOf(e.charAt(r)), !(a > 64)) {
+        if (a < 0) return !1;
+        d += 6;
     }
-    return bitlen % 8 === 0;
-  }
-  function constructYamlBinary(data) {
-    var idx, tailbits, input = data.replace(/[\r\n=]/g, ""), max = input.length, map2 = BASE64_MAP, bits = 0, result = [];
-    for (idx = 0; idx < max; idx++) {
-      if (idx % 4 === 0 && idx) {
-        result.push(bits >> 16 & 255);
-        result.push(bits >> 8 & 255);
-        result.push(bits & 255);
-      }
-      bits = bits << 6 | map2.indexOf(input.charAt(idx));
-    }
-    tailbits = max % 4 * 6;
-    if (tailbits === 0) {
-      result.push(bits >> 16 & 255);
-      result.push(bits >> 8 & 255);
-      result.push(bits & 255);
-    } else if (tailbits === 18) {
-      result.push(bits >> 10 & 255);
-      result.push(bits >> 2 & 255);
-    } else if (tailbits === 12) {
-      result.push(bits >> 4 & 255);
-    }
-    return new Uint8Array(result);
-  }
-  function representYamlBinary(object) {
-    var result = "", bits = 0, idx, tail, max = object.length, map2 = BASE64_MAP;
-    for (idx = 0; idx < max; idx++) {
-      if (idx % 3 === 0 && idx) {
-        result += map2[bits >> 18 & 63];
-        result += map2[bits >> 12 & 63];
-        result += map2[bits >> 6 & 63];
-        result += map2[bits & 63];
-      }
-      bits = (bits << 8) + object[idx];
-    }
-    tail = max % 3;
-    if (tail === 0) {
-      result += map2[bits >> 18 & 63];
-      result += map2[bits >> 12 & 63];
-      result += map2[bits >> 6 & 63];
-      result += map2[bits & 63];
-    } else if (tail === 2) {
-      result += map2[bits >> 10 & 63];
-      result += map2[bits >> 4 & 63];
-      result += map2[bits << 2 & 63];
-      result += map2[64];
-    } else if (tail === 1) {
-      result += map2[bits >> 2 & 63];
-      result += map2[bits << 4 & 63];
-      result += map2[64];
-      result += map2[64];
-    }
-    return result;
-  }
-  function isBinary(obj) {
-    return Object.prototype.toString.call(obj) === "[object Uint8Array]";
-  }
-  var binary = new type("tag:yaml.org,2002:binary", {
+    return d % 8 === 0;
+}
+function ba(e) {
+    var a, r, d = e.replace(/[\r\n=]/g, ""), t = d.length, p = Ue, c = 0, m = [];
+    for(a = 0; a < t; a++)a % 4 === 0 && a && (m.push(c >> 16 & 255), m.push(c >> 8 & 255), m.push(c & 255)), c = c << 6 | p.indexOf(d.charAt(a));
+    return r = t % 4 * 6, r === 0 ? (m.push(c >> 16 & 255), m.push(c >> 8 & 255), m.push(c & 255)) : r === 18 ? (m.push(c >> 10 & 255), m.push(c >> 2 & 255)) : r === 12 && m.push(c >> 4 & 255), new Uint8Array(m);
+}
+function wa(e) {
+    var a = "", r = 0, d, t, p = e.length, c = Ue;
+    for(d = 0; d < p; d++)d % 3 === 0 && d && (a += c[r >> 18 & 63], a += c[r >> 12 & 63], a += c[r >> 6 & 63], a += c[r & 63]), r = (r << 8) + e[d];
+    return t = p % 3, t === 0 ? (a += c[r >> 18 & 63], a += c[r >> 12 & 63], a += c[r >> 6 & 63], a += c[r & 63]) : t === 2 ? (a += c[r >> 10 & 63], a += c[r >> 4 & 63], a += c[r << 2 & 63], a += c[64]) : t === 1 && (a += c[r >> 2 & 63], a += c[r << 4 & 63], a += c[64], a += c[64]), a;
+}
+function Aa(e) {
+    return Object.prototype.toString.call(e) === "[object Uint8Array]";
+}
+var va = new W("tag:yaml.org,2002:binary", {
     kind: "scalar",
-    resolve: resolveYamlBinary,
-    construct: constructYamlBinary,
-    predicate: isBinary,
-    represent: representYamlBinary
-  });
-  var _hasOwnProperty$3 = Object.prototype.hasOwnProperty;
-  var _toString$2 = Object.prototype.toString;
-  function resolveYamlOmap(data) {
-    if (data === null)
-      return true;
-    var objectKeys = [], index, length, pair, pairKey, pairHasKey, object = data;
-    for (index = 0, length = object.length; index < length; index += 1) {
-      pair = object[index];
-      pairHasKey = false;
-      if (_toString$2.call(pair) !== "[object Object]")
-        return false;
-      for (pairKey in pair) {
-        if (_hasOwnProperty$3.call(pair, pairKey)) {
-          if (!pairHasKey)
-            pairHasKey = true;
-          else
-            return false;
-        }
-      }
-      if (!pairHasKey)
-        return false;
-      if (objectKeys.indexOf(pairKey) === -1)
-        objectKeys.push(pairKey);
-      else
-        return false;
+    resolve: Da,
+    construct: ba,
+    predicate: Aa,
+    represent: wa
+}), Ca = Object.prototype.hasOwnProperty, ya = Object.prototype.toString;
+function _a(e) {
+    if (e === null) return !0;
+    var a = [], r, d, t, p, c, m = e;
+    for(r = 0, d = m.length; r < d; r += 1){
+        if (t = m[r], c = !1, ya.call(t) !== "[object Object]") return !1;
+        for(p in t)if (Ca.call(t, p)) if (!c) c = !0;
+        else return !1;
+        if (!c) return !1;
+        if (a.indexOf(p) === -1) a.push(p);
+        else return !1;
     }
-    return true;
-  }
-  function constructYamlOmap(data) {
-    return data !== null ? data : [];
-  }
-  var omap = new type("tag:yaml.org,2002:omap", {
+    return !0;
+}
+function Ea(e) {
+    return e !== null ? e : [];
+}
+var ka = new W("tag:yaml.org,2002:omap", {
     kind: "sequence",
-    resolve: resolveYamlOmap,
-    construct: constructYamlOmap
-  });
-  var _toString$1 = Object.prototype.toString;
-  function resolveYamlPairs(data) {
-    if (data === null)
-      return true;
-    var index, length, pair, keys, result, object = data;
-    result = new Array(object.length);
-    for (index = 0, length = object.length; index < length; index += 1) {
-      pair = object[index];
-      if (_toString$1.call(pair) !== "[object Object]")
-        return false;
-      keys = Object.keys(pair);
-      if (keys.length !== 1)
-        return false;
-      result[index] = [keys[0], pair[keys[0]]];
+    resolve: _a,
+    construct: Ea
+}), xa = Object.prototype.toString;
+function Fa(e) {
+    if (e === null) return !0;
+    var a, r, d, t, p, c = e;
+    for(p = new Array(c.length), a = 0, r = c.length; a < r; a += 1){
+        if (d = c[a], xa.call(d) !== "[object Object]" || (t = Object.keys(d), t.length !== 1)) return !1;
+        p[a] = [
+            t[0],
+            d[t[0]]
+        ];
     }
-    return true;
-  }
-  function constructYamlPairs(data) {
-    if (data === null)
-      return [];
-    var index, length, pair, keys, result, object = data;
-    result = new Array(object.length);
-    for (index = 0, length = object.length; index < length; index += 1) {
-      pair = object[index];
-      keys = Object.keys(pair);
-      result[index] = [keys[0], pair[keys[0]]];
-    }
-    return result;
-  }
-  var pairs = new type("tag:yaml.org,2002:pairs", {
+    return !0;
+}
+function Ba(e) {
+    if (e === null) return [];
+    var a, r, d, t, p, c = e;
+    for(p = new Array(c.length), a = 0, r = c.length; a < r; a += 1)d = c[a], t = Object.keys(d), p[a] = [
+        t[0],
+        d[t[0]]
+    ];
+    return p;
+}
+var Sa = new W("tag:yaml.org,2002:pairs", {
     kind: "sequence",
-    resolve: resolveYamlPairs,
-    construct: constructYamlPairs
-  });
-  var _hasOwnProperty$2 = Object.prototype.hasOwnProperty;
-  function resolveYamlSet(data) {
-    if (data === null)
-      return true;
-    var key, object = data;
-    for (key in object) {
-      if (_hasOwnProperty$2.call(object, key)) {
-        if (object[key] !== null)
-          return false;
-      }
-    }
-    return true;
-  }
-  function constructYamlSet(data) {
-    return data !== null ? data : {};
-  }
-  var set = new type("tag:yaml.org,2002:set", {
+    resolve: Fa,
+    construct: Ba
+}), qa = Object.prototype.hasOwnProperty;
+function La(e) {
+    if (e === null) return !0;
+    var a, r = e;
+    for(a in r)if (qa.call(r, a) && r[a] !== null) return !1;
+    return !0;
+}
+function Ta(e) {
+    return e !== null ? e : {};
+}
+var Ra = new W("tag:yaml.org,2002:set", {
     kind: "mapping",
-    resolve: resolveYamlSet,
-    construct: constructYamlSet
-  });
-  var _default = core.extend({
+    resolve: La,
+    construct: Ta
+}), _u = ca.extend({
     implicit: [
-      timestamp,
-      merge
+        ha,
+        ga
     ],
     explicit: [
-      binary,
-      omap,
-      pairs,
-      set
+        va,
+        ka,
+        Sa,
+        Ra
     ]
-  });
-  var _hasOwnProperty$1 = Object.prototype.hasOwnProperty;
-  var CONTEXT_FLOW_IN = 1;
-  var CONTEXT_FLOW_OUT = 2;
-  var CONTEXT_BLOCK_IN = 3;
-  var CONTEXT_BLOCK_OUT = 4;
-  var CHOMPING_CLIP = 1;
-  var CHOMPING_STRIP = 2;
-  var CHOMPING_KEEP = 3;
-  var PATTERN_NON_PRINTABLE = /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x84\x86-\x9F\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/;
-  var PATTERN_NON_ASCII_LINE_BREAKS = /[\x85\u2028\u2029]/;
-  var PATTERN_FLOW_INDICATORS = /[,\[\]\{\}]/;
-  var PATTERN_TAG_HANDLE = /^(?:!|!!|![a-z\-]+!)$/i;
-  var PATTERN_TAG_URI = /^(?:!|[^,\[\]\{\}])(?:%[0-9a-f]{2}|[0-9a-z\-#;\/\?:@&=\+\$,_\.!~\*'\(\)\[\]])*$/i;
-  function _class(obj) {
-    return Object.prototype.toString.call(obj);
-  }
-  function is_EOL(c2) {
-    return c2 === 10 || c2 === 13;
-  }
-  function is_WHITE_SPACE(c2) {
-    return c2 === 9 || c2 === 32;
-  }
-  function is_WS_OR_EOL(c2) {
-    return c2 === 9 || c2 === 32 || c2 === 10 || c2 === 13;
-  }
-  function is_FLOW_INDICATOR(c2) {
-    return c2 === 44 || c2 === 91 || c2 === 93 || c2 === 123 || c2 === 125;
-  }
-  function fromHexCode(c2) {
-    var lc;
-    if (48 <= c2 && c2 <= 57) {
-      return c2 - 48;
-    }
-    lc = c2 | 32;
-    if (97 <= lc && lc <= 102) {
-      return lc - 97 + 10;
-    }
-    return -1;
-  }
-  function escapedHexLen(c2) {
-    if (c2 === 120) {
-      return 2;
-    }
-    if (c2 === 117) {
-      return 4;
-    }
-    if (c2 === 85) {
-      return 8;
-    }
-    return 0;
-  }
-  function fromDecimalCode(c2) {
-    if (48 <= c2 && c2 <= 57) {
-      return c2 - 48;
-    }
-    return -1;
-  }
-  function simpleEscapeSequence(c2) {
-    return c2 === 48 ? "\0" : c2 === 97 ? "\x07" : c2 === 98 ? "\b" : c2 === 116 ? "	" : c2 === 9 ? "	" : c2 === 110 ? "\n" : c2 === 118 ? "\v" : c2 === 102 ? "\f" : c2 === 114 ? "\r" : c2 === 101 ? "\x1B" : c2 === 32 ? " " : c2 === 34 ? '"' : c2 === 47 ? "/" : c2 === 92 ? "\\" : c2 === 78 ? "\x85" : c2 === 95 ? "\xA0" : c2 === 76 ? "\u2028" : c2 === 80 ? "\u2029" : "";
-  }
-  function charFromCodepoint(c2) {
-    if (c2 <= 65535) {
-      return String.fromCharCode(c2);
-    }
-    return String.fromCharCode(
-      (c2 - 65536 >> 10) + 55296,
-      (c2 - 65536 & 1023) + 56320
-    );
-  }
-  var simpleEscapeCheck = new Array(256);
-  var simpleEscapeMap = new Array(256);
-  for (i3 = 0; i3 < 256; i3++) {
-    simpleEscapeCheck[i3] = simpleEscapeSequence(i3) ? 1 : 0;
-    simpleEscapeMap[i3] = simpleEscapeSequence(i3);
-  }
-  var i3;
-  function State$1(input, options) {
-    this.input = input;
-    this.filename = options["filename"] || null;
-    this.schema = options["schema"] || _default;
-    this.onWarning = options["onWarning"] || null;
-    this.legacy = options["legacy"] || false;
-    this.json = options["json"] || false;
-    this.listener = options["listener"] || null;
-    this.implicitTypes = this.schema.compiledImplicit;
-    this.typeMap = this.schema.compiledTypeMap;
-    this.length = input.length;
-    this.position = 0;
-    this.line = 0;
-    this.lineStart = 0;
-    this.lineIndent = 0;
-    this.firstTabInLine = -1;
-    this.documents = [];
-  }
-  function generateError(state, message) {
-    var mark = {
-      name: state.filename,
-      buffer: state.input.slice(0, -1),
-      // omit trailing \0
-      position: state.position,
-      line: state.line,
-      column: state.position - state.lineStart
+}), ne = Object.prototype.hasOwnProperty, ke = 1, Eu = 2, ku = 3, xe = 4, Me = 1, Pa = 2, tu = 3, ja = /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x84\x86-\x9F\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/, Na = /[\x85\u2028\u2029]/, Ma = /[,\[\]\{\}]/, xu = /^(?:!|!!|![a-z\-]+!)$/i, Fu = /^(?:!|[^,\[\]\{\}])(?:%[0-9a-f]{2}|[0-9a-z\-#;\/\?:@&=\+\$,_\.!~\*'\(\)\[\]])*$/i;
+function ou(e) {
+    return Object.prototype.toString.call(e);
+}
+function ue(e) {
+    return e === 10 || e === 13;
+}
+function oe(e) {
+    return e === 9 || e === 32;
+}
+function Z(e) {
+    return e === 9 || e === 32 || e === 10 || e === 13;
+}
+function se(e) {
+    return e === 44 || e === 91 || e === 93 || e === 123 || e === 125;
+}
+function Ia(e) {
+    var a;
+    return 48 <= e && e <= 57 ? e - 48 : (a = e | 32, 97 <= a && a <= 102 ? a - 97 + 10 : -1);
+}
+function za(e) {
+    return e === 120 ? 2 : e === 117 ? 4 : e === 85 ? 8 : 0;
+}
+function Oa(e) {
+    return 48 <= e && e <= 57 ? e - 48 : -1;
+}
+function du(e) {
+    return e === 48 ? "\x00" : e === 97 ? "\x07" : e === 98 ? "\b" : e === 116 || e === 9 ? "	" : e === 110 ? "\n" : e === 118 ? "\v" : e === 102 ? "\f" : e === 114 ? "\r" : e === 101 ? "\x1b" : e === 32 ? " " : e === 34 ? '"' : e === 47 ? "/" : e === 92 ? "\\" : e === 78 ? "\x85" : e === 95 ? "\xa0" : e === 76 ? "\u2028" : e === 80 ? "\u2029" : "";
+}
+function Ha(e) {
+    return e <= 65535 ? String.fromCharCode(e) : String.fromCharCode((e - 65536 >> 10) + 55296, (e - 65536 & 1023) + 56320);
+}
+var Bu = new Array(256), Su = new Array(256);
+for(te = 0; te < 256; te++)Bu[te] = du(te) ? 1 : 0, Su[te] = du(te);
+var te;
+function Ga(e, a) {
+    this.input = e, this.filename = a.filename || null, this.schema = a.schema || _u, this.onWarning = a.onWarning || null, this.legacy = a.legacy || !1, this.json = a.json || !1, this.listener = a.listener || null, this.implicitTypes = this.schema.compiledImplicit, this.typeMap = this.schema.compiledTypeMap, this.length = e.length, this.position = 0, this.line = 0, this.lineStart = 0, this.lineIndent = 0, this.firstTabInLine = -1, this.documents = [];
+}
+function qu(e, a) {
+    var r = {
+        name: e.filename,
+        buffer: e.input.slice(0, -1),
+        position: e.position,
+        line: e.line,
+        column: e.position - e.lineStart
     };
-    mark.snippet = snippet(mark);
-    return new exception(message, mark);
-  }
-  function throwError(state, message) {
-    throw generateError(state, message);
-  }
-  function throwWarning(state, message) {
-    if (state.onWarning) {
-      state.onWarning.call(null, generateError(state, message));
-    }
-  }
-  var directiveHandlers = {
-    YAML: function handleYamlDirective(state, name, args) {
-      var match, major, minor;
-      if (state.version !== null) {
-        throwError(state, "duplication of %YAML directive");
-      }
-      if (args.length !== 1) {
-        throwError(state, "YAML directive accepts exactly one argument");
-      }
-      match = /^([0-9]+)\.([0-9]+)$/.exec(args[0]);
-      if (match === null) {
-        throwError(state, "ill-formed argument of the YAML directive");
-      }
-      major = parseInt(match[1], 10);
-      minor = parseInt(match[2], 10);
-      if (major !== 1) {
-        throwError(state, "unacceptable YAML version of the document");
-      }
-      state.version = args[0];
-      state.checkLineBreaks = minor < 2;
-      if (minor !== 1 && minor !== 2) {
-        throwWarning(state, "unsupported YAML version of the document");
-      }
+    return r.snippet = Sr(r), new J(a, r);
+}
+function M(e, a) {
+    throw qu(e, a);
+}
+function Fe(e, a) {
+    e.onWarning && e.onWarning.call(null, qu(e, a));
+}
+var lu = {
+    YAML: function YAML(a, r, d) {
+        var t, p, c;
+        a.version !== null && M(a, "duplication of %YAML directive"), d.length !== 1 && M(a, "YAML directive accepts exactly one argument"), t = /^([0-9]+)\.([0-9]+)$/.exec(d[0]), t === null && M(a, "ill-formed argument of the YAML directive"), p = parseInt(t[1], 10), c = parseInt(t[2], 10), p !== 1 && M(a, "unacceptable YAML version of the document"), a.version = d[0], a.checkLineBreaks = c < 2, c !== 1 && c !== 2 && Fe(a, "unsupported YAML version of the document");
     },
-    TAG: function handleTagDirective(state, name, args) {
-      var handle, prefix;
-      if (args.length !== 2) {
-        throwError(state, "TAG directive accepts exactly two arguments");
-      }
-      handle = args[0];
-      prefix = args[1];
-      if (!PATTERN_TAG_HANDLE.test(handle)) {
-        throwError(state, "ill-formed tag handle (first argument) of the TAG directive");
-      }
-      if (_hasOwnProperty$1.call(state.tagMap, handle)) {
-        throwError(state, 'there is a previously declared suffix for "' + handle + '" tag handle');
-      }
-      if (!PATTERN_TAG_URI.test(prefix)) {
-        throwError(state, "ill-formed tag prefix (second argument) of the TAG directive");
-      }
-      try {
-        prefix = decodeURIComponent(prefix);
-      } catch (err) {
-        throwError(state, "tag prefix is malformed: " + prefix);
-      }
-      state.tagMap[handle] = prefix;
-    }
-  };
-  function captureSegment(state, start, end, checkJson) {
-    var _position, _length, _character, _result;
-    if (start < end) {
-      _result = state.input.slice(start, end);
-      if (checkJson) {
-        for (_position = 0, _length = _result.length; _position < _length; _position += 1) {
-          _character = _result.charCodeAt(_position);
-          if (!(_character === 9 || 32 <= _character && _character <= 1114111)) {
-            throwError(state, "expected valid JSON character");
-          }
+    TAG: function TAG(a, r, d) {
+        var t, p;
+        d.length !== 2 && M(a, "TAG directive accepts exactly two arguments"), t = d[0], p = d[1], xu.test(t) || M(a, "ill-formed tag handle (first argument) of the TAG directive"), ne.call(a.tagMap, t) && M(a, 'there is a previously declared suffix for "' + t + '" tag handle'), Fu.test(p) || M(a, "ill-formed tag prefix (second argument) of the TAG directive");
+        try {
+            p = decodeURIComponent(p);
+        } catch (e) {
+            M(a, "tag prefix is malformed: " + p);
         }
-      } else if (PATTERN_NON_PRINTABLE.test(_result)) {
-        throwError(state, "the stream contains non-printable characters");
-      }
-      state.result += _result;
+        a.tagMap[t] = p;
     }
-  }
-  function mergeMappings(state, destination, source, overridableKeys) {
-    var sourceKeys, key, index, quantity;
-    if (!common.isObject(source)) {
-      throwError(state, "cannot merge mappings; the provided source object is unacceptable");
+};
+function ae(e, a, r, d) {
+    var t, p, c, m;
+    if (a < r) {
+        if (m = e.input.slice(a, r), d) for(t = 0, p = m.length; t < p; t += 1)c = m.charCodeAt(t), c === 9 || 32 <= c && c <= 1114111 || M(e, "expected valid JSON character");
+        else ja.test(m) && M(e, "the stream contains non-printable characters");
+        e.result += m;
     }
-    sourceKeys = Object.keys(source);
-    for (index = 0, quantity = sourceKeys.length; index < quantity; index += 1) {
-      key = sourceKeys[index];
-      if (!_hasOwnProperty$1.call(destination, key)) {
-        destination[key] = source[key];
-        overridableKeys[key] = true;
-      }
+}
+function cu(e, a, r, d) {
+    var t, p, c, m;
+    for(Y.isObject(r) || M(e, "cannot merge mappings; the provided source object is unacceptable"), t = Object.keys(r), c = 0, m = t.length; c < m; c += 1)p = t[c], ne.call(a, p) || (a[p] = r[p], d[p] = !0);
+}
+function fe(e, a, r, d, t, p, c, m, D) {
+    var A, y;
+    if (Array.isArray(t)) for(t = Array.prototype.slice.call(t), A = 0, y = t.length; A < y; A += 1)Array.isArray(t[A]) && M(e, "nested arrays are not supported inside keys"), typeof t == "object" && ou(t[A]) === "[object Object]" && (t[A] = "[object Object]");
+    if (typeof t == "object" && ou(t) === "[object Object]" && (t = "[object Object]"), t = String(t), a === null && (a = {}), d === "tag:yaml.org,2002:merge") if (Array.isArray(p)) for(A = 0, y = p.length; A < y; A += 1)cu(e, a, p[A], r);
+    else cu(e, a, p, r);
+    else !e.json && !ne.call(r, t) && ne.call(a, t) && (e.line = c || e.line, e.lineStart = m || e.lineStart, e.position = D || e.position, M(e, "duplicated mapping key")), t === "__proto__" ? Object.defineProperty(a, t, {
+        configurable: !0,
+        enumerable: !0,
+        writable: !0,
+        value: p
+    }) : a[t] = p, delete r[t];
+    return a;
+}
+function Ve(e) {
+    var a;
+    a = e.input.charCodeAt(e.position), a === 10 ? e.position++ : a === 13 ? (e.position++, e.input.charCodeAt(e.position) === 10 && e.position++) : M(e, "a line break is expected"), e.line += 1, e.lineStart = e.position, e.firstTabInLine = -1;
+}
+function $(e, a, r) {
+    for(var d = 0, t = e.input.charCodeAt(e.position); t !== 0;){
+        for(; oe(t);)t === 9 && e.firstTabInLine === -1 && (e.firstTabInLine = e.position), t = e.input.charCodeAt(++e.position);
+        if (a && t === 35) do t = e.input.charCodeAt(++e.position);
+        while (t !== 10 && t !== 13 && t !== 0);
+        if (ue(t)) for(Ve(e), t = e.input.charCodeAt(e.position), d++, e.lineIndent = 0; t === 32;)e.lineIndent++, t = e.input.charCodeAt(++e.position);
+        else break;
     }
-  }
-  function storeMappingPair(state, _result, overridableKeys, keyTag, keyNode, valueNode, startLine, startLineStart, startPos) {
-    var index, quantity;
-    if (Array.isArray(keyNode)) {
-      keyNode = Array.prototype.slice.call(keyNode);
-      for (index = 0, quantity = keyNode.length; index < quantity; index += 1) {
-        if (Array.isArray(keyNode[index])) {
-          throwError(state, "nested arrays are not supported inside keys");
-        }
-        if (typeof keyNode === "object" && _class(keyNode[index]) === "[object Object]") {
-          keyNode[index] = "[object Object]";
-        }
-      }
-    }
-    if (typeof keyNode === "object" && _class(keyNode) === "[object Object]") {
-      keyNode = "[object Object]";
-    }
-    keyNode = String(keyNode);
-    if (_result === null) {
-      _result = {};
-    }
-    if (keyTag === "tag:yaml.org,2002:merge") {
-      if (Array.isArray(valueNode)) {
-        for (index = 0, quantity = valueNode.length; index < quantity; index += 1) {
-          mergeMappings(state, _result, valueNode[index], overridableKeys);
-        }
-      } else {
-        mergeMappings(state, _result, valueNode, overridableKeys);
-      }
-    } else {
-      if (!state.json && !_hasOwnProperty$1.call(overridableKeys, keyNode) && _hasOwnProperty$1.call(_result, keyNode)) {
-        state.line = startLine || state.line;
-        state.lineStart = startLineStart || state.lineStart;
-        state.position = startPos || state.position;
-        throwError(state, "duplicated mapping key");
-      }
-      if (keyNode === "__proto__") {
-        Object.defineProperty(_result, keyNode, {
-          configurable: true,
-          enumerable: true,
-          writable: true,
-          value: valueNode
-        });
-      } else {
-        _result[keyNode] = valueNode;
-      }
-      delete overridableKeys[keyNode];
-    }
-    return _result;
-  }
-  function readLineBreak(state) {
-    var ch;
-    ch = state.input.charCodeAt(state.position);
-    if (ch === 10) {
-      state.position++;
-    } else if (ch === 13) {
-      state.position++;
-      if (state.input.charCodeAt(state.position) === 10) {
-        state.position++;
-      }
-    } else {
-      throwError(state, "a line break is expected");
-    }
-    state.line += 1;
-    state.lineStart = state.position;
-    state.firstTabInLine = -1;
-  }
-  function skipSeparationSpace(state, allowComments, checkIndent) {
-    var lineBreaks = 0, ch = state.input.charCodeAt(state.position);
-    while (ch !== 0) {
-      while (is_WHITE_SPACE(ch)) {
-        if (ch === 9 && state.firstTabInLine === -1) {
-          state.firstTabInLine = state.position;
-        }
-        ch = state.input.charCodeAt(++state.position);
-      }
-      if (allowComments && ch === 35) {
-        do {
-          ch = state.input.charCodeAt(++state.position);
-        } while (ch !== 10 && ch !== 13 && ch !== 0);
-      }
-      if (is_EOL(ch)) {
-        readLineBreak(state);
-        ch = state.input.charCodeAt(state.position);
-        lineBreaks++;
-        state.lineIndent = 0;
-        while (ch === 32) {
-          state.lineIndent++;
-          ch = state.input.charCodeAt(++state.position);
-        }
-      } else {
-        break;
-      }
-    }
-    if (checkIndent !== -1 && lineBreaks !== 0 && state.lineIndent < checkIndent) {
-      throwWarning(state, "deficient indentation");
-    }
-    return lineBreaks;
-  }
-  function testDocumentSeparator(state) {
-    var _position = state.position, ch;
-    ch = state.input.charCodeAt(_position);
-    if ((ch === 45 || ch === 46) && ch === state.input.charCodeAt(_position + 1) && ch === state.input.charCodeAt(_position + 2)) {
-      _position += 3;
-      ch = state.input.charCodeAt(_position);
-      if (ch === 0 || is_WS_OR_EOL(ch)) {
-        return true;
-      }
-    }
-    return false;
-  }
-  function writeFoldedLines(state, count) {
-    if (count === 1) {
-      state.result += " ";
-    } else if (count > 1) {
-      state.result += common.repeat("\n", count - 1);
-    }
-  }
-  function readPlainScalar(state, nodeIndent, withinFlowCollection) {
-    var preceding, following, captureStart, captureEnd, hasPendingContent, _line, _lineStart, _lineIndent, _kind = state.kind, _result = state.result, ch;
-    ch = state.input.charCodeAt(state.position);
-    if (is_WS_OR_EOL(ch) || is_FLOW_INDICATOR(ch) || ch === 35 || ch === 38 || ch === 42 || ch === 33 || ch === 124 || ch === 62 || ch === 39 || ch === 34 || ch === 37 || ch === 64 || ch === 96) {
-      return false;
-    }
-    if (ch === 63 || ch === 45) {
-      following = state.input.charCodeAt(state.position + 1);
-      if (is_WS_OR_EOL(following) || withinFlowCollection && is_FLOW_INDICATOR(following)) {
-        return false;
-      }
-    }
-    state.kind = "scalar";
-    state.result = "";
-    captureStart = captureEnd = state.position;
-    hasPendingContent = false;
-    while (ch !== 0) {
-      if (ch === 58) {
-        following = state.input.charCodeAt(state.position + 1);
-        if (is_WS_OR_EOL(following) || withinFlowCollection && is_FLOW_INDICATOR(following)) {
-          break;
-        }
-      } else if (ch === 35) {
-        preceding = state.input.charCodeAt(state.position - 1);
-        if (is_WS_OR_EOL(preceding)) {
-          break;
-        }
-      } else if (state.position === state.lineStart && testDocumentSeparator(state) || withinFlowCollection && is_FLOW_INDICATOR(ch)) {
-        break;
-      } else if (is_EOL(ch)) {
-        _line = state.line;
-        _lineStart = state.lineStart;
-        _lineIndent = state.lineIndent;
-        skipSeparationSpace(state, false, -1);
-        if (state.lineIndent >= nodeIndent) {
-          hasPendingContent = true;
-          ch = state.input.charCodeAt(state.position);
-          continue;
+    return r !== -1 && d !== 0 && e.lineIndent < r && Fe(e, "deficient indentation"), d;
+}
+function qe(e) {
+    var a = e.position, r;
+    return r = e.input.charCodeAt(a), !!((r === 45 || r === 46) && r === e.input.charCodeAt(a + 1) && r === e.input.charCodeAt(a + 2) && (a += 3, r = e.input.charCodeAt(a), r === 0 || Z(r)));
+}
+function $e(e, a) {
+    a === 1 ? e.result += " " : a > 1 && (e.result += Y.repeat("\n", a - 1));
+}
+function Ua(e, a, r) {
+    var d, t, p, c, m, D, A, y, _ = e.kind, q = e.result, F;
+    if (F = e.input.charCodeAt(e.position), Z(F) || se(F) || F === 35 || F === 38 || F === 42 || F === 33 || F === 124 || F === 62 || F === 39 || F === 34 || F === 37 || F === 64 || F === 96 || (F === 63 || F === 45) && (t = e.input.charCodeAt(e.position + 1), Z(t) || r && se(t))) return !1;
+    for(e.kind = "scalar", e.result = "", p = c = e.position, m = !1; F !== 0;){
+        if (F === 58) {
+            if (t = e.input.charCodeAt(e.position + 1), Z(t) || r && se(t)) break;
+        } else if (F === 35) {
+            if (d = e.input.charCodeAt(e.position - 1), Z(d)) break;
         } else {
-          state.position = captureEnd;
-          state.line = _line;
-          state.lineStart = _lineStart;
-          state.lineIndent = _lineIndent;
-          break;
-        }
-      }
-      if (hasPendingContent) {
-        captureSegment(state, captureStart, captureEnd, false);
-        writeFoldedLines(state, state.line - _line);
-        captureStart = captureEnd = state.position;
-        hasPendingContent = false;
-      }
-      if (!is_WHITE_SPACE(ch)) {
-        captureEnd = state.position + 1;
-      }
-      ch = state.input.charCodeAt(++state.position);
-    }
-    captureSegment(state, captureStart, captureEnd, false);
-    if (state.result) {
-      return true;
-    }
-    state.kind = _kind;
-    state.result = _result;
-    return false;
-  }
-  function readSingleQuotedScalar(state, nodeIndent) {
-    var ch, captureStart, captureEnd;
-    ch = state.input.charCodeAt(state.position);
-    if (ch !== 39) {
-      return false;
-    }
-    state.kind = "scalar";
-    state.result = "";
-    state.position++;
-    captureStart = captureEnd = state.position;
-    while ((ch = state.input.charCodeAt(state.position)) !== 0) {
-      if (ch === 39) {
-        captureSegment(state, captureStart, state.position, true);
-        ch = state.input.charCodeAt(++state.position);
-        if (ch === 39) {
-          captureStart = state.position;
-          state.position++;
-          captureEnd = state.position;
-        } else {
-          return true;
-        }
-      } else if (is_EOL(ch)) {
-        captureSegment(state, captureStart, captureEnd, true);
-        writeFoldedLines(state, skipSeparationSpace(state, false, nodeIndent));
-        captureStart = captureEnd = state.position;
-      } else if (state.position === state.lineStart && testDocumentSeparator(state)) {
-        throwError(state, "unexpected end of the document within a single quoted scalar");
-      } else {
-        state.position++;
-        captureEnd = state.position;
-      }
-    }
-    throwError(state, "unexpected end of the stream within a single quoted scalar");
-  }
-  function readDoubleQuotedScalar(state, nodeIndent) {
-    var captureStart, captureEnd, hexLength, hexResult, tmp, ch;
-    ch = state.input.charCodeAt(state.position);
-    if (ch !== 34) {
-      return false;
-    }
-    state.kind = "scalar";
-    state.result = "";
-    state.position++;
-    captureStart = captureEnd = state.position;
-    while ((ch = state.input.charCodeAt(state.position)) !== 0) {
-      if (ch === 34) {
-        captureSegment(state, captureStart, state.position, true);
-        state.position++;
-        return true;
-      } else if (ch === 92) {
-        captureSegment(state, captureStart, state.position, true);
-        ch = state.input.charCodeAt(++state.position);
-        if (is_EOL(ch)) {
-          skipSeparationSpace(state, false, nodeIndent);
-        } else if (ch < 256 && simpleEscapeCheck[ch]) {
-          state.result += simpleEscapeMap[ch];
-          state.position++;
-        } else if ((tmp = escapedHexLen(ch)) > 0) {
-          hexLength = tmp;
-          hexResult = 0;
-          for (; hexLength > 0; hexLength--) {
-            ch = state.input.charCodeAt(++state.position);
-            if ((tmp = fromHexCode(ch)) >= 0) {
-              hexResult = (hexResult << 4) + tmp;
+            if (e.position === e.lineStart && qe(e) || r && se(F)) break;
+            if (ue(F)) if (D = e.line, A = e.lineStart, y = e.lineIndent, $(e, !1, -1), e.lineIndent >= a) {
+                m = !0, F = e.input.charCodeAt(e.position);
+                continue;
             } else {
-              throwError(state, "expected hexadecimal character");
+                e.position = c, e.line = D, e.lineStart = A, e.lineIndent = y;
+                break;
             }
-          }
-          state.result += charFromCodepoint(hexResult);
-          state.position++;
-        } else {
-          throwError(state, "unknown escape sequence");
         }
-        captureStart = captureEnd = state.position;
-      } else if (is_EOL(ch)) {
-        captureSegment(state, captureStart, captureEnd, true);
-        writeFoldedLines(state, skipSeparationSpace(state, false, nodeIndent));
-        captureStart = captureEnd = state.position;
-      } else if (state.position === state.lineStart && testDocumentSeparator(state)) {
-        throwError(state, "unexpected end of the document within a double quoted scalar");
-      } else {
-        state.position++;
-        captureEnd = state.position;
-      }
+        m && (ae(e, p, c, !1), $e(e, e.line - D), p = c = e.position, m = !1), oe(F) || (c = e.position + 1), F = e.input.charCodeAt(++e.position);
     }
-    throwError(state, "unexpected end of the stream within a double quoted scalar");
-  }
-  function readFlowCollection(state, nodeIndent) {
-    var readNext = true, _line, _lineStart, _pos, _tag = state.tag, _result, _anchor = state.anchor, following, terminator, isPair, isExplicitPair, isMapping, overridableKeys = /* @__PURE__ */ Object.create(null), keyNode, keyTag, valueNode, ch;
-    ch = state.input.charCodeAt(state.position);
-    if (ch === 91) {
-      terminator = 93;
-      isMapping = false;
-      _result = [];
-    } else if (ch === 123) {
-      terminator = 125;
-      isMapping = true;
-      _result = {};
-    } else {
-      return false;
+    return ae(e, p, c, !1), e.result ? !0 : (e.kind = _, e.result = q, !1);
+}
+function Va(e, a) {
+    var r, d, t;
+    if (r = e.input.charCodeAt(e.position), r !== 39) return !1;
+    for(e.kind = "scalar", e.result = "", e.position++, d = t = e.position; (r = e.input.charCodeAt(e.position)) !== 0;)if (r === 39) if (ae(e, d, e.position, !0), r = e.input.charCodeAt(++e.position), r === 39) d = e.position, e.position++, t = e.position;
+    else return !0;
+    else ue(r) ? (ae(e, d, t, !0), $e(e, $(e, !1, a)), d = t = e.position) : e.position === e.lineStart && qe(e) ? M(e, "unexpected end of the document within a single quoted scalar") : (e.position++, t = e.position);
+    M(e, "unexpected end of the stream within a single quoted scalar");
+}
+function $a(e, a) {
+    var r, d, t, p, c, m;
+    if (m = e.input.charCodeAt(e.position), m !== 34) return !1;
+    for(e.kind = "scalar", e.result = "", e.position++, r = d = e.position; (m = e.input.charCodeAt(e.position)) !== 0;){
+        if (m === 34) return ae(e, r, e.position, !0), e.position++, !0;
+        if (m === 92) {
+            if (ae(e, r, e.position, !0), m = e.input.charCodeAt(++e.position), ue(m)) $(e, !1, a);
+            else if (m < 256 && Bu[m]) e.result += Su[m], e.position++;
+            else if ((c = za(m)) > 0) {
+                for(t = c, p = 0; t > 0; t--)m = e.input.charCodeAt(++e.position), (c = Ia(m)) >= 0 ? p = (p << 4) + c : M(e, "expected hexadecimal character");
+                e.result += Ha(p), e.position++;
+            } else M(e, "unknown escape sequence");
+            r = d = e.position;
+        } else ue(m) ? (ae(e, r, d, !0), $e(e, $(e, !1, a)), r = d = e.position) : e.position === e.lineStart && qe(e) ? M(e, "unexpected end of the document within a double quoted scalar") : (e.position++, d = e.position);
     }
-    if (state.anchor !== null) {
-      state.anchorMap[state.anchor] = _result;
+    M(e, "unexpected end of the stream within a double quoted scalar");
+}
+function Ya(e, a) {
+    var r = !0, d, t, p, c = e.tag, m, D = e.anchor, A, y, _, q, F, R = Object.create(null), w, b, k, C;
+    if (C = e.input.charCodeAt(e.position), C === 91) y = 93, F = !1, m = [];
+    else if (C === 123) y = 125, F = !0, m = {};
+    else return !1;
+    for(e.anchor !== null && (e.anchorMap[e.anchor] = m), C = e.input.charCodeAt(++e.position); C !== 0;){
+        if ($(e, !0, a), C = e.input.charCodeAt(e.position), C === y) return e.position++, e.tag = c, e.anchor = D, e.kind = F ? "mapping" : "sequence", e.result = m, !0;
+        r ? C === 44 && M(e, "expected the node content, but found ','") : M(e, "missed comma between flow collection entries"), b = w = k = null, _ = q = !1, C === 63 && (A = e.input.charCodeAt(e.position + 1), Z(A) && (_ = q = !0, e.position++, $(e, !0, a))), d = e.line, t = e.lineStart, p = e.position, pe(e, a, ke, !1, !0), b = e.tag, w = e.result, $(e, !0, a), C = e.input.charCodeAt(e.position), (q || e.line === d) && C === 58 && (_ = !0, C = e.input.charCodeAt(++e.position), $(e, !0, a), pe(e, a, ke, !1, !0), k = e.result), F ? fe(e, m, R, b, w, k, d, t, p) : _ ? m.push(fe(e, null, R, b, w, k, d, t, p)) : m.push(w), $(e, !0, a), C = e.input.charCodeAt(e.position), C === 44 ? (r = !0, C = e.input.charCodeAt(++e.position)) : r = !1;
     }
-    ch = state.input.charCodeAt(++state.position);
-    while (ch !== 0) {
-      skipSeparationSpace(state, true, nodeIndent);
-      ch = state.input.charCodeAt(state.position);
-      if (ch === terminator) {
-        state.position++;
-        state.tag = _tag;
-        state.anchor = _anchor;
-        state.kind = isMapping ? "mapping" : "sequence";
-        state.result = _result;
-        return true;
-      } else if (!readNext) {
-        throwError(state, "missed comma between flow collection entries");
-      } else if (ch === 44) {
-        throwError(state, "expected the node content, but found ','");
-      }
-      keyTag = keyNode = valueNode = null;
-      isPair = isExplicitPair = false;
-      if (ch === 63) {
-        following = state.input.charCodeAt(state.position + 1);
-        if (is_WS_OR_EOL(following)) {
-          isPair = isExplicitPair = true;
-          state.position++;
-          skipSeparationSpace(state, true, nodeIndent);
+    M(e, "unexpected end of the stream within a flow collection");
+}
+function Wa(e, a) {
+    var r, d, t = Me, p = !1, c = !1, m = a, D = 0, A = !1, y, _;
+    if (_ = e.input.charCodeAt(e.position), _ === 124) d = !1;
+    else if (_ === 62) d = !0;
+    else return !1;
+    for(e.kind = "scalar", e.result = ""; _ !== 0;)if (_ = e.input.charCodeAt(++e.position), _ === 43 || _ === 45) Me === t ? t = _ === 43 ? tu : Pa : M(e, "repeat of a chomping mode identifier");
+    else if ((y = Oa(_)) >= 0) y === 0 ? M(e, "bad explicit indentation width of a block scalar; it cannot be less than one") : c ? M(e, "repeat of an indentation width identifier") : (m = a + y - 1, c = !0);
+    else break;
+    if (oe(_)) {
+        do _ = e.input.charCodeAt(++e.position);
+        while (oe(_));
+        if (_ === 35) do _ = e.input.charCodeAt(++e.position);
+        while (!ue(_) && _ !== 0);
+    }
+    for(; _ !== 0;){
+        for(Ve(e), e.lineIndent = 0, _ = e.input.charCodeAt(e.position); (!c || e.lineIndent < m) && _ === 32;)e.lineIndent++, _ = e.input.charCodeAt(++e.position);
+        if (!c && e.lineIndent > m && (m = e.lineIndent), ue(_)) {
+            D++;
+            continue;
         }
-      }
-      _line = state.line;
-      _lineStart = state.lineStart;
-      _pos = state.position;
-      composeNode(state, nodeIndent, CONTEXT_FLOW_IN, false, true);
-      keyTag = state.tag;
-      keyNode = state.result;
-      skipSeparationSpace(state, true, nodeIndent);
-      ch = state.input.charCodeAt(state.position);
-      if ((isExplicitPair || state.line === _line) && ch === 58) {
-        isPair = true;
-        ch = state.input.charCodeAt(++state.position);
-        skipSeparationSpace(state, true, nodeIndent);
-        composeNode(state, nodeIndent, CONTEXT_FLOW_IN, false, true);
-        valueNode = state.result;
-      }
-      if (isMapping) {
-        storeMappingPair(state, _result, overridableKeys, keyTag, keyNode, valueNode, _line, _lineStart, _pos);
-      } else if (isPair) {
-        _result.push(storeMappingPair(state, null, overridableKeys, keyTag, keyNode, valueNode, _line, _lineStart, _pos));
-      } else {
-        _result.push(keyNode);
-      }
-      skipSeparationSpace(state, true, nodeIndent);
-      ch = state.input.charCodeAt(state.position);
-      if (ch === 44) {
-        readNext = true;
-        ch = state.input.charCodeAt(++state.position);
-      } else {
-        readNext = false;
-      }
-    }
-    throwError(state, "unexpected end of the stream within a flow collection");
-  }
-  function readBlockScalar(state, nodeIndent) {
-    var captureStart, folding, chomping = CHOMPING_CLIP, didReadContent = false, detectedIndent = false, textIndent = nodeIndent, emptyLines = 0, atMoreIndented = false, tmp, ch;
-    ch = state.input.charCodeAt(state.position);
-    if (ch === 124) {
-      folding = false;
-    } else if (ch === 62) {
-      folding = true;
-    } else {
-      return false;
-    }
-    state.kind = "scalar";
-    state.result = "";
-    while (ch !== 0) {
-      ch = state.input.charCodeAt(++state.position);
-      if (ch === 43 || ch === 45) {
-        if (CHOMPING_CLIP === chomping) {
-          chomping = ch === 43 ? CHOMPING_KEEP : CHOMPING_STRIP;
-        } else {
-          throwError(state, "repeat of a chomping mode identifier");
-        }
-      } else if ((tmp = fromDecimalCode(ch)) >= 0) {
-        if (tmp === 0) {
-          throwError(state, "bad explicit indentation width of a block scalar; it cannot be less than one");
-        } else if (!detectedIndent) {
-          textIndent = nodeIndent + tmp - 1;
-          detectedIndent = true;
-        } else {
-          throwError(state, "repeat of an indentation width identifier");
-        }
-      } else {
-        break;
-      }
-    }
-    if (is_WHITE_SPACE(ch)) {
-      do {
-        ch = state.input.charCodeAt(++state.position);
-      } while (is_WHITE_SPACE(ch));
-      if (ch === 35) {
-        do {
-          ch = state.input.charCodeAt(++state.position);
-        } while (!is_EOL(ch) && ch !== 0);
-      }
-    }
-    while (ch !== 0) {
-      readLineBreak(state);
-      state.lineIndent = 0;
-      ch = state.input.charCodeAt(state.position);
-      while ((!detectedIndent || state.lineIndent < textIndent) && ch === 32) {
-        state.lineIndent++;
-        ch = state.input.charCodeAt(++state.position);
-      }
-      if (!detectedIndent && state.lineIndent > textIndent) {
-        textIndent = state.lineIndent;
-      }
-      if (is_EOL(ch)) {
-        emptyLines++;
-        continue;
-      }
-      if (state.lineIndent < textIndent) {
-        if (chomping === CHOMPING_KEEP) {
-          state.result += common.repeat("\n", didReadContent ? 1 + emptyLines : emptyLines);
-        } else if (chomping === CHOMPING_CLIP) {
-          if (didReadContent) {
-            state.result += "\n";
-          }
-        }
-        break;
-      }
-      if (folding) {
-        if (is_WHITE_SPACE(ch)) {
-          atMoreIndented = true;
-          state.result += common.repeat("\n", didReadContent ? 1 + emptyLines : emptyLines);
-        } else if (atMoreIndented) {
-          atMoreIndented = false;
-          state.result += common.repeat("\n", emptyLines + 1);
-        } else if (emptyLines === 0) {
-          if (didReadContent) {
-            state.result += " ";
-          }
-        } else {
-          state.result += common.repeat("\n", emptyLines);
-        }
-      } else {
-        state.result += common.repeat("\n", didReadContent ? 1 + emptyLines : emptyLines);
-      }
-      didReadContent = true;
-      detectedIndent = true;
-      emptyLines = 0;
-      captureStart = state.position;
-      while (!is_EOL(ch) && ch !== 0) {
-        ch = state.input.charCodeAt(++state.position);
-      }
-      captureSegment(state, captureStart, state.position, false);
-    }
-    return true;
-  }
-  function readBlockSequence(state, nodeIndent) {
-    var _line, _tag = state.tag, _anchor = state.anchor, _result = [], following, detected = false, ch;
-    if (state.firstTabInLine !== -1)
-      return false;
-    if (state.anchor !== null) {
-      state.anchorMap[state.anchor] = _result;
-    }
-    ch = state.input.charCodeAt(state.position);
-    while (ch !== 0) {
-      if (state.firstTabInLine !== -1) {
-        state.position = state.firstTabInLine;
-        throwError(state, "tab characters must not be used in indentation");
-      }
-      if (ch !== 45) {
-        break;
-      }
-      following = state.input.charCodeAt(state.position + 1);
-      if (!is_WS_OR_EOL(following)) {
-        break;
-      }
-      detected = true;
-      state.position++;
-      if (skipSeparationSpace(state, true, -1)) {
-        if (state.lineIndent <= nodeIndent) {
-          _result.push(null);
-          ch = state.input.charCodeAt(state.position);
-          continue;
-        }
-      }
-      _line = state.line;
-      composeNode(state, nodeIndent, CONTEXT_BLOCK_IN, false, true);
-      _result.push(state.result);
-      skipSeparationSpace(state, true, -1);
-      ch = state.input.charCodeAt(state.position);
-      if ((state.line === _line || state.lineIndent > nodeIndent) && ch !== 0) {
-        throwError(state, "bad indentation of a sequence entry");
-      } else if (state.lineIndent < nodeIndent) {
-        break;
-      }
-    }
-    if (detected) {
-      state.tag = _tag;
-      state.anchor = _anchor;
-      state.kind = "sequence";
-      state.result = _result;
-      return true;
-    }
-    return false;
-  }
-  function readBlockMapping(state, nodeIndent, flowIndent) {
-    var following, allowCompact, _line, _keyLine, _keyLineStart, _keyPos, _tag = state.tag, _anchor = state.anchor, _result = {}, overridableKeys = /* @__PURE__ */ Object.create(null), keyTag = null, keyNode = null, valueNode = null, atExplicitKey = false, detected = false, ch;
-    if (state.firstTabInLine !== -1)
-      return false;
-    if (state.anchor !== null) {
-      state.anchorMap[state.anchor] = _result;
-    }
-    ch = state.input.charCodeAt(state.position);
-    while (ch !== 0) {
-      if (!atExplicitKey && state.firstTabInLine !== -1) {
-        state.position = state.firstTabInLine;
-        throwError(state, "tab characters must not be used in indentation");
-      }
-      following = state.input.charCodeAt(state.position + 1);
-      _line = state.line;
-      if ((ch === 63 || ch === 58) && is_WS_OR_EOL(following)) {
-        if (ch === 63) {
-          if (atExplicitKey) {
-            storeMappingPair(state, _result, overridableKeys, keyTag, keyNode, null, _keyLine, _keyLineStart, _keyPos);
-            keyTag = keyNode = valueNode = null;
-          }
-          detected = true;
-          atExplicitKey = true;
-          allowCompact = true;
-        } else if (atExplicitKey) {
-          atExplicitKey = false;
-          allowCompact = true;
-        } else {
-          throwError(state, "incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line");
-        }
-        state.position += 1;
-        ch = following;
-      } else {
-        _keyLine = state.line;
-        _keyLineStart = state.lineStart;
-        _keyPos = state.position;
-        if (!composeNode(state, flowIndent, CONTEXT_FLOW_OUT, false, true)) {
-          break;
-        }
-        if (state.line === _line) {
-          ch = state.input.charCodeAt(state.position);
-          while (is_WHITE_SPACE(ch)) {
-            ch = state.input.charCodeAt(++state.position);
-          }
-          if (ch === 58) {
-            ch = state.input.charCodeAt(++state.position);
-            if (!is_WS_OR_EOL(ch)) {
-              throwError(state, "a whitespace character is expected after the key-value separator within a block mapping");
-            }
-            if (atExplicitKey) {
-              storeMappingPair(state, _result, overridableKeys, keyTag, keyNode, null, _keyLine, _keyLineStart, _keyPos);
-              keyTag = keyNode = valueNode = null;
-            }
-            detected = true;
-            atExplicitKey = false;
-            allowCompact = false;
-            keyTag = state.tag;
-            keyNode = state.result;
-          } else if (detected) {
-            throwError(state, "can not read an implicit mapping pair; a colon is missed");
-          } else {
-            state.tag = _tag;
-            state.anchor = _anchor;
-            return true;
-          }
-        } else if (detected) {
-          throwError(state, "can not read a block mapping entry; a multiline key may not be an implicit key");
-        } else {
-          state.tag = _tag;
-          state.anchor = _anchor;
-          return true;
-        }
-      }
-      if (state.line === _line || state.lineIndent > nodeIndent) {
-        if (atExplicitKey) {
-          _keyLine = state.line;
-          _keyLineStart = state.lineStart;
-          _keyPos = state.position;
-        }
-        if (composeNode(state, nodeIndent, CONTEXT_BLOCK_OUT, true, allowCompact)) {
-          if (atExplicitKey) {
-            keyNode = state.result;
-          } else {
-            valueNode = state.result;
-          }
-        }
-        if (!atExplicitKey) {
-          storeMappingPair(state, _result, overridableKeys, keyTag, keyNode, valueNode, _keyLine, _keyLineStart, _keyPos);
-          keyTag = keyNode = valueNode = null;
-        }
-        skipSeparationSpace(state, true, -1);
-        ch = state.input.charCodeAt(state.position);
-      }
-      if ((state.line === _line || state.lineIndent > nodeIndent) && ch !== 0) {
-        throwError(state, "bad indentation of a mapping entry");
-      } else if (state.lineIndent < nodeIndent) {
-        break;
-      }
-    }
-    if (atExplicitKey) {
-      storeMappingPair(state, _result, overridableKeys, keyTag, keyNode, null, _keyLine, _keyLineStart, _keyPos);
-    }
-    if (detected) {
-      state.tag = _tag;
-      state.anchor = _anchor;
-      state.kind = "mapping";
-      state.result = _result;
-    }
-    return detected;
-  }
-  function readTagProperty(state) {
-    var _position, isVerbatim = false, isNamed = false, tagHandle, tagName, ch;
-    ch = state.input.charCodeAt(state.position);
-    if (ch !== 33)
-      return false;
-    if (state.tag !== null) {
-      throwError(state, "duplication of a tag property");
-    }
-    ch = state.input.charCodeAt(++state.position);
-    if (ch === 60) {
-      isVerbatim = true;
-      ch = state.input.charCodeAt(++state.position);
-    } else if (ch === 33) {
-      isNamed = true;
-      tagHandle = "!!";
-      ch = state.input.charCodeAt(++state.position);
-    } else {
-      tagHandle = "!";
-    }
-    _position = state.position;
-    if (isVerbatim) {
-      do {
-        ch = state.input.charCodeAt(++state.position);
-      } while (ch !== 0 && ch !== 62);
-      if (state.position < state.length) {
-        tagName = state.input.slice(_position, state.position);
-        ch = state.input.charCodeAt(++state.position);
-      } else {
-        throwError(state, "unexpected end of the stream within a verbatim tag");
-      }
-    } else {
-      while (ch !== 0 && !is_WS_OR_EOL(ch)) {
-        if (ch === 33) {
-          if (!isNamed) {
-            tagHandle = state.input.slice(_position - 1, state.position + 1);
-            if (!PATTERN_TAG_HANDLE.test(tagHandle)) {
-              throwError(state, "named tag handle cannot contain such characters");
-            }
-            isNamed = true;
-            _position = state.position + 1;
-          } else {
-            throwError(state, "tag suffix cannot contain exclamation marks");
-          }
-        }
-        ch = state.input.charCodeAt(++state.position);
-      }
-      tagName = state.input.slice(_position, state.position);
-      if (PATTERN_FLOW_INDICATORS.test(tagName)) {
-        throwError(state, "tag suffix cannot contain flow indicator characters");
-      }
-    }
-    if (tagName && !PATTERN_TAG_URI.test(tagName)) {
-      throwError(state, "tag name cannot contain such characters: " + tagName);
-    }
-    try {
-      tagName = decodeURIComponent(tagName);
-    } catch (err) {
-      throwError(state, "tag name is malformed: " + tagName);
-    }
-    if (isVerbatim) {
-      state.tag = tagName;
-    } else if (_hasOwnProperty$1.call(state.tagMap, tagHandle)) {
-      state.tag = state.tagMap[tagHandle] + tagName;
-    } else if (tagHandle === "!") {
-      state.tag = "!" + tagName;
-    } else if (tagHandle === "!!") {
-      state.tag = "tag:yaml.org,2002:" + tagName;
-    } else {
-      throwError(state, 'undeclared tag handle "' + tagHandle + '"');
-    }
-    return true;
-  }
-  function readAnchorProperty(state) {
-    var _position, ch;
-    ch = state.input.charCodeAt(state.position);
-    if (ch !== 38)
-      return false;
-    if (state.anchor !== null) {
-      throwError(state, "duplication of an anchor property");
-    }
-    ch = state.input.charCodeAt(++state.position);
-    _position = state.position;
-    while (ch !== 0 && !is_WS_OR_EOL(ch) && !is_FLOW_INDICATOR(ch)) {
-      ch = state.input.charCodeAt(++state.position);
-    }
-    if (state.position === _position) {
-      throwError(state, "name of an anchor node must contain at least one character");
-    }
-    state.anchor = state.input.slice(_position, state.position);
-    return true;
-  }
-  function readAlias(state) {
-    var _position, alias, ch;
-    ch = state.input.charCodeAt(state.position);
-    if (ch !== 42)
-      return false;
-    ch = state.input.charCodeAt(++state.position);
-    _position = state.position;
-    while (ch !== 0 && !is_WS_OR_EOL(ch) && !is_FLOW_INDICATOR(ch)) {
-      ch = state.input.charCodeAt(++state.position);
-    }
-    if (state.position === _position) {
-      throwError(state, "name of an alias node must contain at least one character");
-    }
-    alias = state.input.slice(_position, state.position);
-    if (!_hasOwnProperty$1.call(state.anchorMap, alias)) {
-      throwError(state, 'unidentified alias "' + alias + '"');
-    }
-    state.result = state.anchorMap[alias];
-    skipSeparationSpace(state, true, -1);
-    return true;
-  }
-  function composeNode(state, parentIndent, nodeContext, allowToSeek, allowCompact) {
-    var allowBlockStyles, allowBlockScalars, allowBlockCollections, indentStatus = 1, atNewLine = false, hasContent = false, typeIndex, typeQuantity, typeList, type2, flowIndent, blockIndent;
-    if (state.listener !== null) {
-      state.listener("open", state);
-    }
-    state.tag = null;
-    state.anchor = null;
-    state.kind = null;
-    state.result = null;
-    allowBlockStyles = allowBlockScalars = allowBlockCollections = CONTEXT_BLOCK_OUT === nodeContext || CONTEXT_BLOCK_IN === nodeContext;
-    if (allowToSeek) {
-      if (skipSeparationSpace(state, true, -1)) {
-        atNewLine = true;
-        if (state.lineIndent > parentIndent) {
-          indentStatus = 1;
-        } else if (state.lineIndent === parentIndent) {
-          indentStatus = 0;
-        } else if (state.lineIndent < parentIndent) {
-          indentStatus = -1;
-        }
-      }
-    }
-    if (indentStatus === 1) {
-      while (readTagProperty(state) || readAnchorProperty(state)) {
-        if (skipSeparationSpace(state, true, -1)) {
-          atNewLine = true;
-          allowBlockCollections = allowBlockStyles;
-          if (state.lineIndent > parentIndent) {
-            indentStatus = 1;
-          } else if (state.lineIndent === parentIndent) {
-            indentStatus = 0;
-          } else if (state.lineIndent < parentIndent) {
-            indentStatus = -1;
-          }
-        } else {
-          allowBlockCollections = false;
-        }
-      }
-    }
-    if (allowBlockCollections) {
-      allowBlockCollections = atNewLine || allowCompact;
-    }
-    if (indentStatus === 1 || CONTEXT_BLOCK_OUT === nodeContext) {
-      if (CONTEXT_FLOW_IN === nodeContext || CONTEXT_FLOW_OUT === nodeContext) {
-        flowIndent = parentIndent;
-      } else {
-        flowIndent = parentIndent + 1;
-      }
-      blockIndent = state.position - state.lineStart;
-      if (indentStatus === 1) {
-        if (allowBlockCollections && (readBlockSequence(state, blockIndent) || readBlockMapping(state, blockIndent, flowIndent)) || readFlowCollection(state, flowIndent)) {
-          hasContent = true;
-        } else {
-          if (allowBlockScalars && readBlockScalar(state, flowIndent) || readSingleQuotedScalar(state, flowIndent) || readDoubleQuotedScalar(state, flowIndent)) {
-            hasContent = true;
-          } else if (readAlias(state)) {
-            hasContent = true;
-            if (state.tag !== null || state.anchor !== null) {
-              throwError(state, "alias node should not have any properties");
-            }
-          } else if (readPlainScalar(state, flowIndent, CONTEXT_FLOW_IN === nodeContext)) {
-            hasContent = true;
-            if (state.tag === null) {
-              state.tag = "?";
-            }
-          }
-          if (state.anchor !== null) {
-            state.anchorMap[state.anchor] = state.result;
-          }
-        }
-      } else if (indentStatus === 0) {
-        hasContent = allowBlockCollections && readBlockSequence(state, blockIndent);
-      }
-    }
-    if (state.tag === null) {
-      if (state.anchor !== null) {
-        state.anchorMap[state.anchor] = state.result;
-      }
-    } else if (state.tag === "?") {
-      if (state.result !== null && state.kind !== "scalar") {
-        throwError(state, 'unacceptable node kind for !<?> tag; it should be "scalar", not "' + state.kind + '"');
-      }
-      for (typeIndex = 0, typeQuantity = state.implicitTypes.length; typeIndex < typeQuantity; typeIndex += 1) {
-        type2 = state.implicitTypes[typeIndex];
-        if (type2.resolve(state.result)) {
-          state.result = type2.construct(state.result);
-          state.tag = type2.tag;
-          if (state.anchor !== null) {
-            state.anchorMap[state.anchor] = state.result;
-          }
-          break;
-        }
-      }
-    } else if (state.tag !== "!") {
-      if (_hasOwnProperty$1.call(state.typeMap[state.kind || "fallback"], state.tag)) {
-        type2 = state.typeMap[state.kind || "fallback"][state.tag];
-      } else {
-        type2 = null;
-        typeList = state.typeMap.multi[state.kind || "fallback"];
-        for (typeIndex = 0, typeQuantity = typeList.length; typeIndex < typeQuantity; typeIndex += 1) {
-          if (state.tag.slice(0, typeList[typeIndex].tag.length) === typeList[typeIndex].tag) {
-            type2 = typeList[typeIndex];
+        if (e.lineIndent < m) {
+            t === tu ? e.result += Y.repeat("\n", p ? 1 + D : D) : t === Me && p && (e.result += "\n");
             break;
-          }
         }
-      }
-      if (!type2) {
-        throwError(state, "unknown tag !<" + state.tag + ">");
-      }
-      if (state.result !== null && type2.kind !== state.kind) {
-        throwError(state, "unacceptable node kind for !<" + state.tag + '> tag; it should be "' + type2.kind + '", not "' + state.kind + '"');
-      }
-      if (!type2.resolve(state.result, state.tag)) {
-        throwError(state, "cannot resolve a node with !<" + state.tag + "> explicit tag");
-      } else {
-        state.result = type2.construct(state.result, state.tag);
-        if (state.anchor !== null) {
-          state.anchorMap[state.anchor] = state.result;
+        for(d ? oe(_) ? (A = !0, e.result += Y.repeat("\n", p ? 1 + D : D)) : A ? (A = !1, e.result += Y.repeat("\n", D + 1)) : D === 0 ? p && (e.result += " ") : e.result += Y.repeat("\n", D) : e.result += Y.repeat("\n", p ? 1 + D : D), p = !0, c = !0, D = 0, r = e.position; !ue(_) && _ !== 0;)_ = e.input.charCodeAt(++e.position);
+        ae(e, r, e.position, !1);
+    }
+    return !0;
+}
+function su(e, a) {
+    var r, d = e.tag, t = e.anchor, p = [], c, m = !1, D;
+    if (e.firstTabInLine !== -1) return !1;
+    for(e.anchor !== null && (e.anchorMap[e.anchor] = p), D = e.input.charCodeAt(e.position); D !== 0 && (e.firstTabInLine !== -1 && (e.position = e.firstTabInLine, M(e, "tab characters must not be used in indentation")), !(D !== 45 || (c = e.input.charCodeAt(e.position + 1), !Z(c))));){
+        if (m = !0, e.position++, $(e, !0, -1) && e.lineIndent <= a) {
+            p.push(null), D = e.input.charCodeAt(e.position);
+            continue;
         }
-      }
+        if (r = e.line, pe(e, a, ku, !1, !0), p.push(e.result), $(e, !0, -1), D = e.input.charCodeAt(e.position), (e.line === r || e.lineIndent > a) && D !== 0) M(e, "bad indentation of a sequence entry");
+        else if (e.lineIndent < a) break;
     }
-    if (state.listener !== null) {
-      state.listener("close", state);
-    }
-    return state.tag !== null || state.anchor !== null || hasContent;
-  }
-  function readDocument(state) {
-    var documentStart = state.position, _position, directiveName, directiveArgs, hasDirectives = false, ch;
-    state.version = null;
-    state.checkLineBreaks = state.legacy;
-    state.tagMap = /* @__PURE__ */ Object.create(null);
-    state.anchorMap = /* @__PURE__ */ Object.create(null);
-    while ((ch = state.input.charCodeAt(state.position)) !== 0) {
-      skipSeparationSpace(state, true, -1);
-      ch = state.input.charCodeAt(state.position);
-      if (state.lineIndent > 0 || ch !== 37) {
-        break;
-      }
-      hasDirectives = true;
-      ch = state.input.charCodeAt(++state.position);
-      _position = state.position;
-      while (ch !== 0 && !is_WS_OR_EOL(ch)) {
-        ch = state.input.charCodeAt(++state.position);
-      }
-      directiveName = state.input.slice(_position, state.position);
-      directiveArgs = [];
-      if (directiveName.length < 1) {
-        throwError(state, "directive name must not be less than one character in length");
-      }
-      while (ch !== 0) {
-        while (is_WHITE_SPACE(ch)) {
-          ch = state.input.charCodeAt(++state.position);
-        }
-        if (ch === 35) {
-          do {
-            ch = state.input.charCodeAt(++state.position);
-          } while (ch !== 0 && !is_EOL(ch));
-          break;
-        }
-        if (is_EOL(ch))
-          break;
-        _position = state.position;
-        while (ch !== 0 && !is_WS_OR_EOL(ch)) {
-          ch = state.input.charCodeAt(++state.position);
-        }
-        directiveArgs.push(state.input.slice(_position, state.position));
-      }
-      if (ch !== 0)
-        readLineBreak(state);
-      if (_hasOwnProperty$1.call(directiveHandlers, directiveName)) {
-        directiveHandlers[directiveName](state, directiveName, directiveArgs);
-      } else {
-        throwWarning(state, 'unknown document directive "' + directiveName + '"');
-      }
-    }
-    skipSeparationSpace(state, true, -1);
-    if (state.lineIndent === 0 && state.input.charCodeAt(state.position) === 45 && state.input.charCodeAt(state.position + 1) === 45 && state.input.charCodeAt(state.position + 2) === 45) {
-      state.position += 3;
-      skipSeparationSpace(state, true, -1);
-    } else if (hasDirectives) {
-      throwError(state, "directives end mark is expected");
-    }
-    composeNode(state, state.lineIndent - 1, CONTEXT_BLOCK_OUT, false, true);
-    skipSeparationSpace(state, true, -1);
-    if (state.checkLineBreaks && PATTERN_NON_ASCII_LINE_BREAKS.test(state.input.slice(documentStart, state.position))) {
-      throwWarning(state, "non-ASCII line breaks are interpreted as content");
-    }
-    state.documents.push(state.result);
-    if (state.position === state.lineStart && testDocumentSeparator(state)) {
-      if (state.input.charCodeAt(state.position) === 46) {
-        state.position += 3;
-        skipSeparationSpace(state, true, -1);
-      }
-      return;
-    }
-    if (state.position < state.length - 1) {
-      throwError(state, "end of the stream or a document separator is expected");
-    } else {
-      return;
-    }
-  }
-  function loadDocuments(input, options) {
-    input = String(input);
-    options = options || {};
-    if (input.length !== 0) {
-      if (input.charCodeAt(input.length - 1) !== 10 && input.charCodeAt(input.length - 1) !== 13) {
-        input += "\n";
-      }
-      if (input.charCodeAt(0) === 65279) {
-        input = input.slice(1);
-      }
-    }
-    var state = new State$1(input, options);
-    var nullpos = input.indexOf("\0");
-    if (nullpos !== -1) {
-      state.position = nullpos;
-      throwError(state, "null byte is not allowed in input");
-    }
-    state.input += "\0";
-    while (state.input.charCodeAt(state.position) === 32) {
-      state.lineIndent += 1;
-      state.position += 1;
-    }
-    while (state.position < state.length - 1) {
-      readDocument(state);
-    }
-    return state.documents;
-  }
-  function loadAll$1(input, iterator, options) {
-    if (iterator !== null && typeof iterator === "object" && typeof options === "undefined") {
-      options = iterator;
-      iterator = null;
-    }
-    var documents = loadDocuments(input, options);
-    if (typeof iterator !== "function") {
-      return documents;
-    }
-    for (var index = 0, length = documents.length; index < length; index += 1) {
-      iterator(documents[index]);
-    }
-  }
-  function load$1(input, options) {
-    var documents = loadDocuments(input, options);
-    if (documents.length === 0) {
-      return void 0;
-    } else if (documents.length === 1) {
-      return documents[0];
-    }
-    throw new exception("expected a single document in the stream, but found more");
-  }
-  var loadAll_1 = loadAll$1;
-  var load_1 = load$1;
-  var loader = {
-    loadAll: loadAll_1,
-    load: load_1
-  };
-  var load = loader.load;
-
-  // src/frontmatter.ts
-  var findMetaIndices = (mem, item, i3) => {
-    if (/^---/.test(item)) {
-      mem.push(i3);
-    }
-    return mem;
-  };
-  var emptyObject = {};
-  var getData = (linesPros) => {
-    const { lines, metaIndices } = linesPros;
-    if (metaIndices.length > 0) {
-      const data = lines.slice(metaIndices[0] + 1, metaIndices[1]);
-      return load(data.join("\n"));
-    }
-    return emptyObject;
-  };
-  var getContent = (linesPros) => {
-    let { lines, metaIndices } = linesPros;
-    if (metaIndices.length > 0) {
-      lines = lines.slice(metaIndices[1] + 1, lines.length);
-    }
-    return lines.join("\n");
-  };
-
-  // src/template.ts
-  var htmlTemplate = ({
-    postContent,
-    postTitle,
-    postDate,
-    readingTime
-  }) => {
-    const pc = postContent === void 0 ? console.error("Error") : postContent;
-    const tt = postTitle === void 0 ? "" : postTitle;
-    const dat = postDate === void 0 ? "" : postDate;
-    const rt = readingTime === void 0 ? "" : readingTime;
-    const html = (
-      /* html */
-      `
-        <div id="mm-mark">
-            <h2>${tt}</h2>
-            <small>${dat}</small>
-              ${rt}
-            <div>${pc}</div>
-           
-        </div>
-          
-      `
-    );
-    return html;
-  };
-
-  // node_modules/.pnpm/showdown-mathjax@1.0.3/node_modules/showdown-mathjax/dist/index.mjs
-  var import_showdown = __toESM(require_showdown(), 1);
-  function s() {
-    return [{ type: "lang", filter: (e) => e.replace(/\\\((.*?)\\\)/g, (a2, r2) => "<mathxxxjax>" + o("\\(" + n(r2) + "\\)") + "</mathxxxjax>") }, { type: "lang", filter: (e) => e.replace(/\\\[([\s\S]*?)\\\]/g, (a2, r2) => "<mathxxxjax>" + o("\\[" + n(r2) + "\\]") + "</mathxxxjax>") }, { type: "output", filter: (e) => e.replace(/<mathxxxjax>(.*?)<\/mathxxxjax>/g, (a2, r2) => c(r2)) }, { type: "output", filter: (e) => `
-        <script>
-            window.MathJax = {
-              loader: {
-                load: [
-                  '[tex]/color', 
-                  '[tex]/mathtools', 
-                  '[tex]/ams',
-                  '[tex]/html', 
-                  '[tex]/textmacros', 
-                  '[tex]/textcomp' ,
-                  '[mml]/mml3',
-                ]
-              },
-              tex: {
-                packages: {
-                  '[+]': [
-                    'color', 
-                    'mathtools', 
-                    'ams', 
-                    'html',
-                    'textmacros' 
-                  ]
-                },        
-                inlineMath: [  
-                  ['$','$'],    
-                  ['(', ')']
-                ],
-                displayMath: [             
-                  ['$$', '$$'],
-                  ['[', ']']
-                ],
-                color: {
-                  padding: '5px',
-                  borderWidth: '2px'
-                },
-                ams: {
-                  multlineWidth: '100%',
-                  multlineIndent: '1em'
-                },
-                processEscapes: true,      
-                processEnvironments: true, 
-                processRefs: true,         
-                digits: /^(?:[0-9]+(?:{,}[0-9]{3})*(?:.[0-9]*)?|.[0-9]+)/,
-                tags: 'none',              
-                tagSide: 'right',          
-                tagIndent: '0.8em',        
-                useLabelIds: true,         
-                maxMacros: 10000,          
-                maxBuffer: 5 * 1024,       
-                baseURL: (document.getElementsByTagName('base').length === 0) ? '' : String(document.location).replace(/#.*$/, ''),
-                formatError: (jax, err) => jax.formatError(err)
-              },
-              textmacros: {
-                packages: {'[+]': ['textcomp']}
-              }
-            }
-        </script>
-          <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-          <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-        ` + e }];
-  }
-  function n(t2) {
-    return t2.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  }
-  function o(t2) {
-    return typeof Buffer == "function" ? Buffer.from(t2).toString("base64") : btoa(t2);
-  }
-  function c(t2) {
-    return typeof Buffer == "function" ? Buffer.from(t2, "base64").toString() : atob(t2);
-  }
-  import_showdown.default.extension("showdownMathjax", s);
-  var l = s;
-
-  // node_modules/.pnpm/showdown-prism@0.2.0/node_modules/showdown-prism/dist/index.mjs
-  var import_showdown2 = __toESM(require_showdown(), 1);
-  var import_components = __toESM(require_components2(), 1);
-  var import_prismjs = __toESM(require_prism(), 1);
-  var import_he = __toESM(require_he(), 1);
-  var { decode: h } = import_he.default;
-  import_components.default.silent = true;
-  (0, import_components.default)();
-  function i2() {
-    return [{ type: "output", filter: (a2, w, f2) => {
-      let o2 = { left: "<pre><code\\b[^>]*>", right: "</code></pre>", flags: "g" }, g = (c2, d, n2, l2) => {
-        let p = h(d), e = n2.match(/class=\"([^ \"]+)/)?.[1] ?? void 0;
-        return e ? (n2 = `<pre class="language-${e}"><code class="language-${e}">`, n2 + import_prismjs.default.highlight(p, import_prismjs.default.languages[e], e) + l2) : c2;
-      };
-      return import_showdown2.default.helper.replaceRecursiveRegExp(a2, g, o2.left, o2.right, o2.flags);
-    } }];
-  }
-  import_showdown2.default.extension("showdownPrism", i2);
-  var R = i2;
-
-  // node_modules/.pnpm/showmark-toc@0.1.0/node_modules/showmark-toc/dist/mod.js
-  var import_showdown3 = __toESM(require_showdown(), 1);
-  var T = Object.defineProperty;
-  var a = (r2, h2) => T(r2, "name", { value: h2, configurable: true });
-  function u2({ toc: r2, opts: h2 } = {}) {
-    return [{ type: "output", filter(p) {
-      let m = /(<h([1-6]).*?id="([^"]*?)".*?>(.+?)<\/h[1-6]>)|(<p>\[toc\]<\/p>)/g, e = [];
-      p.replace(m, (n2, o2, s3, c2, t2) => {
-        if (n2 === "<p>[toc]</p>")
-          e.push({ type: "toc" });
+    return m ? (e.tag = d, e.anchor = t, e.kind = "sequence", e.result = p, !0) : !1;
+}
+function Ka(e, a, r) {
+    var d, t, p, c, m, D, A = e.tag, y = e.anchor, _ = {}, q = Object.create(null), F = null, R = null, w = null, b = !1, k = !1, C;
+    if (e.firstTabInLine !== -1) return !1;
+    for(e.anchor !== null && (e.anchorMap[e.anchor] = _), C = e.input.charCodeAt(e.position); C !== 0;){
+        if (!b && e.firstTabInLine !== -1 && (e.position = e.firstTabInLine, M(e, "tab characters must not be used in indentation")), d = e.input.charCodeAt(e.position + 1), p = e.line, (C === 63 || C === 58) && Z(d)) C === 63 ? (b && (fe(e, _, q, F, R, null, c, m, D), F = R = w = null), k = !0, b = !0, t = !0) : b ? (b = !1, t = !0) : M(e, "incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line"), e.position += 1, C = d;
         else {
-          t2 = t2.replace(/<[^>]+>/g, "");
-          let l2 = { anchor: c2, level: Number(s3), text: t2 };
-          r2 && r2.push(l2), e.push({ type: "header", ...l2 });
+            if (c = e.line, m = e.lineStart, D = e.position, !pe(e, r, Eu, !1, !0)) break;
+            if (e.line === p) {
+                for(C = e.input.charCodeAt(e.position); oe(C);)C = e.input.charCodeAt(++e.position);
+                if (C === 58) C = e.input.charCodeAt(++e.position), Z(C) || M(e, "a whitespace character is expected after the key-value separator within a block mapping"), b && (fe(e, _, q, F, R, null, c, m, D), F = R = w = null), k = !0, b = !1, t = !1, F = e.tag, R = e.result;
+                else if (k) M(e, "can not read an implicit mapping pair; a colon is missed");
+                else return e.tag = A, e.anchor = y, !0;
+            } else if (k) M(e, "can not read a block mapping entry; a multiline key may not be an implicit key");
+            else return e.tag = A, e.anchor = y, !0;
         }
-        return "";
-      });
-      let i3 = [];
-      return e.forEach(({ type: n2 }, o2) => {
-        if (n2 === "toc")
-          if (e[o2 + 1] && e[o2 + 1].type === "header") {
-            let s3 = [], { level: c2 } = e[o2 + 1];
-            for (let t2 = o2 + 1; t2 < e.length && e[t2].type !== "toc"; t2++) {
-              let { level: l2 } = e[t2];
-              l2 === c2 && s3.push(e[t2]);
+        if ((e.line === p || e.lineIndent > a) && (b && (c = e.line, m = e.lineStart, D = e.position), pe(e, a, xe, !0, t) && (b ? R = e.result : w = e.result), b || (fe(e, _, q, F, R, w, c, m, D), F = R = w = null), $(e, !0, -1), C = e.input.charCodeAt(e.position)), (e.line === p || e.lineIndent > a) && C !== 0) M(e, "bad indentation of a mapping entry");
+        else if (e.lineIndent < a) break;
+    }
+    return b && fe(e, _, q, F, R, null, c, m, D), k && (e.tag = A, e.anchor = y, e.kind = "mapping", e.result = _), k;
+}
+function Ja(e) {
+    var a, r = !1, d = !1, t, p, c;
+    if (c = e.input.charCodeAt(e.position), c !== 33) return !1;
+    if (e.tag !== null && M(e, "duplication of a tag property"), c = e.input.charCodeAt(++e.position), c === 60 ? (r = !0, c = e.input.charCodeAt(++e.position)) : c === 33 ? (d = !0, t = "!!", c = e.input.charCodeAt(++e.position)) : t = "!", a = e.position, r) {
+        do c = e.input.charCodeAt(++e.position);
+        while (c !== 0 && c !== 62);
+        e.position < e.length ? (p = e.input.slice(a, e.position), c = e.input.charCodeAt(++e.position)) : M(e, "unexpected end of the stream within a verbatim tag");
+    } else {
+        for(; c !== 0 && !Z(c);)c === 33 && (d ? M(e, "tag suffix cannot contain exclamation marks") : (t = e.input.slice(a - 1, e.position + 1), xu.test(t) || M(e, "named tag handle cannot contain such characters"), d = !0, a = e.position + 1)), c = e.input.charCodeAt(++e.position);
+        p = e.input.slice(a, e.position), Ma.test(p) && M(e, "tag suffix cannot contain flow indicator characters");
+    }
+    p && !Fu.test(p) && M(e, "tag name cannot contain such characters: " + p);
+    try {
+        p = decodeURIComponent(p);
+    } catch (e1) {
+        M(e, "tag name is malformed: " + p);
+    }
+    return r ? e.tag = p : ne.call(e.tagMap, t) ? e.tag = e.tagMap[t] + p : t === "!" ? e.tag = "!" + p : t === "!!" ? e.tag = "tag:yaml.org,2002:" + p : M(e, 'undeclared tag handle "' + t + '"'), !0;
+}
+function Za(e) {
+    var a, r;
+    if (r = e.input.charCodeAt(e.position), r !== 38) return !1;
+    for(e.anchor !== null && M(e, "duplication of an anchor property"), r = e.input.charCodeAt(++e.position), a = e.position; r !== 0 && !Z(r) && !se(r);)r = e.input.charCodeAt(++e.position);
+    return e.position === a && M(e, "name of an anchor node must contain at least one character"), e.anchor = e.input.slice(a, e.position), !0;
+}
+function Qa(e) {
+    var a, r, d;
+    if (d = e.input.charCodeAt(e.position), d !== 42) return !1;
+    for(d = e.input.charCodeAt(++e.position), a = e.position; d !== 0 && !Z(d) && !se(d);)d = e.input.charCodeAt(++e.position);
+    return e.position === a && M(e, "name of an alias node must contain at least one character"), r = e.input.slice(a, e.position), ne.call(e.anchorMap, r) || M(e, 'unidentified alias "' + r + '"'), e.result = e.anchorMap[r], $(e, !0, -1), !0;
+}
+function pe(e, a, r, d, t) {
+    var p, c, m, D = 1, A = !1, y = !1, _, q, F, R, w, b;
+    if (e.listener !== null && e.listener("open", e), e.tag = null, e.anchor = null, e.kind = null, e.result = null, p = c = m = xe === r || ku === r, d && $(e, !0, -1) && (A = !0, e.lineIndent > a ? D = 1 : e.lineIndent === a ? D = 0 : e.lineIndent < a && (D = -1)), D === 1) for(; Ja(e) || Za(e);)$(e, !0, -1) ? (A = !0, m = p, e.lineIndent > a ? D = 1 : e.lineIndent === a ? D = 0 : e.lineIndent < a && (D = -1)) : m = !1;
+    if (m && (m = A || t), (D === 1 || xe === r) && (ke === r || Eu === r ? w = a : w = a + 1, b = e.position - e.lineStart, D === 1 ? m && (su(e, b) || Ka(e, b, w)) || Ya(e, w) ? y = !0 : (c && Wa(e, w) || Va(e, w) || $a(e, w) ? y = !0 : Qa(e) ? (y = !0, (e.tag !== null || e.anchor !== null) && M(e, "alias node should not have any properties")) : Ua(e, w, ke === r) && (y = !0, e.tag === null && (e.tag = "?")), e.anchor !== null && (e.anchorMap[e.anchor] = e.result)) : D === 0 && (y = m && su(e, b))), e.tag === null) e.anchor !== null && (e.anchorMap[e.anchor] = e.result);
+    else if (e.tag === "?") {
+        for(e.result !== null && e.kind !== "scalar" && M(e, 'unacceptable node kind for !<?> tag; it should be "scalar", not "' + e.kind + '"'), _ = 0, q = e.implicitTypes.length; _ < q; _ += 1)if (R = e.implicitTypes[_], R.resolve(e.result)) {
+            e.result = R.construct(e.result), e.tag = R.tag, e.anchor !== null && (e.anchorMap[e.anchor] = e.result);
+            break;
+        }
+    } else if (e.tag !== "!") {
+        if (ne.call(e.typeMap[e.kind || "fallback"], e.tag)) R = e.typeMap[e.kind || "fallback"][e.tag];
+        else for(R = null, F = e.typeMap.multi[e.kind || "fallback"], _ = 0, q = F.length; _ < q; _ += 1)if (e.tag.slice(0, F[_].tag.length) === F[_].tag) {
+            R = F[_];
+            break;
+        }
+        R || M(e, "unknown tag !<" + e.tag + ">"), e.result !== null && R.kind !== e.kind && M(e, "unacceptable node kind for !<" + e.tag + '> tag; it should be "' + R.kind + '", not "' + e.kind + '"'), R.resolve(e.result, e.tag) ? (e.result = R.construct(e.result, e.tag), e.anchor !== null && (e.anchorMap[e.anchor] = e.result)) : M(e, "cannot resolve a node with !<" + e.tag + "> explicit tag");
+    }
+    return e.listener !== null && e.listener("close", e), e.tag !== null || e.anchor !== null || y;
+}
+function Xa(e) {
+    var a = e.position, r, d, t, p = !1, c;
+    for(e.version = null, e.checkLineBreaks = e.legacy, e.tagMap = Object.create(null), e.anchorMap = Object.create(null); (c = e.input.charCodeAt(e.position)) !== 0 && ($(e, !0, -1), c = e.input.charCodeAt(e.position), !(e.lineIndent > 0 || c !== 37));){
+        for(p = !0, c = e.input.charCodeAt(++e.position), r = e.position; c !== 0 && !Z(c);)c = e.input.charCodeAt(++e.position);
+        for(d = e.input.slice(r, e.position), t = [], d.length < 1 && M(e, "directive name must not be less than one character in length"); c !== 0;){
+            for(; oe(c);)c = e.input.charCodeAt(++e.position);
+            if (c === 35) {
+                do c = e.input.charCodeAt(++e.position);
+                while (c !== 0 && !ue(c));
+                break;
             }
-            i3.push(s3);
-          } else
-            i3.push([]);
-      }), p = p.replace(/<p>\[toc\]<\/p>[\n]*/g, () => {
-        let n2 = i3.shift();
-        if (n2 && n2.length) {
-          let o2 = h2?.listType || "ol";
-          return `<${o2} class="showdown-toc">${n2.map(({ text: c2, anchor: t2 }) => `<li><a href="#${t2}">${c2}</a></li>`).join("")}</${o2}>
-`;
+            if (ue(c)) break;
+            for(r = e.position; c !== 0 && !Z(c);)c = e.input.charCodeAt(++e.position);
+            t.push(e.input.slice(r, e.position));
         }
-        return "";
-      }), p;
-    } }];
-  }
-  a(u2, "showmarkToc");
-  import_showdown3.default.extension("showmarkToc", u2);
-
-  // src/index.ts
-  var Markdown = class {
-    /**
-     * Formats a date string into a localized date format.
-     *
-     * @param date - The date string to be formatted.
-     * @returns The formatted date string.
-     */
-    formatDate(date) {
-      return new Date(date).toLocaleString("en-US", {
-        weekday: "short",
-        day: "numeric",
-        month: "short",
-        year: "numeric"
-      });
+        c !== 0 && Ve(e), ne.call(lu, d) ? lu[d](e, d, t) : Fe(e, 'unknown document directive "' + d + '"');
     }
-    /**
-     * Calculates the estimated reading time for a given text.
-     *
-     * @param text - The text to calculate the reading time for.
-     * @returns The estimated reading time in minutes.
-     */
-    readTime(text) {
-      const wpm = 225;
-      const words = text.trim().split(/\s+/).length;
-      return Math.ceil(words / wpm);
+    if ($(e, !0, -1), e.lineIndent === 0 && e.input.charCodeAt(e.position) === 45 && e.input.charCodeAt(e.position + 1) === 45 && e.input.charCodeAt(e.position + 2) === 45 ? (e.position += 3, $(e, !0, -1)) : p && M(e, "directives end mark is expected"), pe(e, e.lineIndent - 1, xe, !1, !0), $(e, !0, -1), e.checkLineBreaks && Na.test(e.input.slice(a, e.position)) && Fe(e, "non-ASCII line breaks are interpreted as content"), e.documents.push(e.result), e.position === e.lineStart && qe(e)) {
+        e.input.charCodeAt(e.position) === 46 && (e.position += 3, $(e, !0, -1));
+        return;
     }
-    /**
-     * Retrieves the frontmatter data and content from a file.
-     *
-     * @param contents - Markdown contents.
-     * @returns An object containing the frontmatter data and content.
-     *          - data: A record of key-value pairs representing the frontmatter data.
-     *          - content: The content of the file.
-     */
-    frontmatter(contents) {
-      const lines = contents.split("\n");
-      const metaIndices = lines.reduce(findMetaIndices, []);
-      const data = getData({ lines, metaIndices });
-      const content = getContent({ lines, metaIndices });
-      return { data, content };
+    if (e.position < e.length - 1) M(e, "end of the stream or a document separator is expected");
+    else return;
+}
+function Lu(e, a) {
+    e = String(e), a = a || {}, e.length !== 0 && (e.charCodeAt(e.length - 1) !== 10 && e.charCodeAt(e.length - 1) !== 13 && (e += "\n"), e.charCodeAt(0) === 65279 && (e = e.slice(1)));
+    var r = new Ga(e, a), d = e.indexOf("\x00");
+    for(d !== -1 && (r.position = d, M(r, "null byte is not allowed in input")), r.input += "\x00"; r.input.charCodeAt(r.position) === 32;)r.lineIndent += 1, r.position += 1;
+    for(; r.position < r.length - 1;)Xa(r);
+    return r.documents;
+}
+function en(e, a, r) {
+    a !== null && typeof a == "object" && (typeof r === "undefined" ? "undefined" : _type_of(r)) > "u" && (r = a, a = null);
+    var d = Lu(e, r);
+    if (typeof a != "function") return d;
+    for(var t = 0, p = d.length; t < p; t += 1)a(d[t]);
+}
+function un(e, a) {
+    var r = Lu(e, a);
+    if (r.length !== 0) {
+        if (r.length === 1) return r[0];
+        throw new J("expected a single document in the stream, but found more");
     }
-    /**
-     * Creates a new instance of the Showdown converter with the specified options.
-     *
-     * @param options - The options to configure the converter.
-     * @returns A new instance of the Showdown converter.
-     */
-    /**
-     * Creates a new instance of the Showdown converter with the specified options.
-     *
-     * @param options - The options to configure the converter.
-     * @returns A new instance of the Showdown converter.
-     */
-    converter(options) {
-      return new import_showdown4.default.Converter(options);
+}
+var rn = en, an = un, Tu = {
+    loadAll: rn,
+    load: an
+};
+var Vu = Tu.load;
+var $u = function(e, a, r) {
+    return /^---/.test(a) && e.push(r), e;
+}, On = {}, Yu = function(e) {
+    var a = e.lines, r = e.metaIndices;
+    if (r.length > 0) {
+        var d = a.slice(r[0] + 1, r[1]);
+        return Vu(d.join("\n"));
     }
-    /**
-     * Converts a markdown file to HTML and returns various data related to the file.
-     *
-     * @param contents - Markdown Contents.
-     * @returns An object containing the following properties:
-     *          - data: A record of key-value pairs representing the frontmatter data.
-     *          - json: The frontmatter data and content in JSON string format.
-     *          - convertedHtml: The converted HTML content of the markdown file.
-     *          - postHtml: The HTML template for displaying the converted markdown content with additional information such as post title, date, reading time, and last update.
-     *          - pageHtml: The HTML template for displaying the converted markdown content without additional information.
-     */
-    markToHtml(contents) {
-      const con = this.frontmatter(contents);
-      const data = con.data;
-      const content = con.content;
-      const json2 = JSON.stringify(con, null, 2);
-      const convert = this.converter({
-        parseImgDimensions: true,
-        simplifiedAutoLink: true,
-        strikethrough: true,
-        tables: true,
-        tasklists: true,
-        openLinksInNewWindow: true,
-        emoji: true,
-        moreStyling: true,
-        extensions: [l, R, u2]
-      });
-      convert.setFlavor("github");
-      const convertedHtml = convert.makeHtml(content);
-      let postTitle;
-      if (data.title) {
-        postTitle = data.title;
-      } else {
-        postTitle = "";
-      }
-      let postDate;
-      if (data.date) {
-        postDate = this.formatDate(data.date);
-      } else {
-        postDate = "";
-      }
-      const readingTime = (
-        /* html */
-        `<small>Reading Time : ${this.readTime(
-        content
-      )} minutes</small>`
-      );
-      const postHtml = htmlTemplate({
-        postContent: convertedHtml,
-        postTitle,
-        postDate,
-        readingTime
-      });
-      const pageHtml = htmlTemplate({
-        postContent: convertedHtml
-      });
-      return {
-        data,
-        json: json2,
-        convertedHtml,
-        postHtml,
-        pageHtml
-      };
-    }
-  };
-  function mmMark() {
-    return new Markdown();
-  }
-  /*! Bundled license information:
+    return On;
+}, Wu = function(e) {
+    var a = e.lines, r = e.metaIndices;
+    return r.length > 0 && (a = a.slice(r[1] + 1, a.length)), a.join("\n");
+};
+var Ke = function(param) {
+    var e = param.postContent, a = param.postTitle, r = param.postDate, d = param.readingTime;
+    var t = e === void 0 ? console.error("Error") : e;
+    return '\n        <div id="mm-mark">\n            <h2>' + (a === void 0 ? "" : a) + "</h2>\n            <small>" + (r === void 0 ? "" : r) + "</small>\n              " + (d === void 0 ? "" : d) + "\n            <div>" + t + "</div>\n           \n        </div>\n          \n      ";
+};
+var Zu = ie(me(), 1);
+function Qu() {
+    return [
+        {
+            type: "lang",
+            filter: function(e) {
+                return e.replace(/\\\((.*?)\\\)/g, function(a, r) {
+                    return "<mathxxxjax>" + Ju("\\(" + Ku(r) + "\\)") + "</mathxxxjax>";
+                });
+            }
+        },
+        {
+            type: "lang",
+            filter: function(e) {
+                return e.replace(/\\\[([\s\S]*?)\\\]/g, function(a, r) {
+                    return "<mathxxxjax>" + Ju("\\[" + Ku(r) + "\\]") + "</mathxxxjax>";
+                });
+            }
+        },
+        {
+            type: "output",
+            filter: function(e) {
+                return e.replace(/<mathxxxjax>(.*?)<\/mathxxxjax>/g, function(a, r) {
+                    return Hn(r);
+                });
+            }
+        },
+        {
+            type: "output",
+            filter: function(e) {
+                return "\n        <script>\n            window.MathJax = {\n              loader: {\n                load: [\n                  '[tex]/color', \n                  '[tex]/mathtools', \n                  '[tex]/ams',\n                  '[tex]/html', \n                  '[tex]/textmacros', \n                  '[tex]/textcomp' ,\n                  '[mml]/mml3',\n                ]\n              },\n              tex: {\n                packages: {\n                  '[+]': [\n                    'color', \n                    'mathtools', \n                    'ams', \n                    'html',\n                    'textmacros' \n                  ]\n                },        \n                inlineMath: [  \n                  ['$','$'],    \n                  ['(', ')']\n                ],\n                displayMath: [             \n                  ['$$', '$$'],\n                  ['[', ']']\n                ],\n                color: {\n                  padding: '5px',\n                  borderWidth: '2px'\n                },\n                ams: {\n                  multlineWidth: '100%',\n                  multlineIndent: '1em'\n                },\n                processEscapes: true,      \n                processEnvironments: true, \n                processRefs: true,         \n                digits: /^(?:[0-9]+(?:{,}[0-9]{3})*(?:.[0-9]*)?|.[0-9]+)/,\n                tags: 'none',              \n                tagSide: 'right',          \n                tagIndent: '0.8em',        \n                useLabelIds: true,         \n                maxMacros: 10000,          \n                maxBuffer: 5 * 1024,       \n                baseURL: (document.getElementsByTagName('base').length === 0) ? '' : String(document.location).replace(/#.*$/, ''),\n                formatError: (jax, err) => jax.formatError(err)\n              },\n              textmacros: {\n                packages: {'[+]': ['textcomp']}\n              }\n            }\n        </script>\n          <script src=\"https://polyfill.io/v3/polyfill.min.js?features=es6\"></script>\n          <script id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>\n        " + e;
+            }
+        }
+    ];
+}
+function Ku(e) {
+    return e.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function Ju(e) {
+    return typeof Buffer == "function" ? Buffer.from(e).toString("base64") : btoa(e);
+}
+function Hn(e) {
+    return typeof Buffer == "function" ? Buffer.from(e, "base64").toString() : atob(e);
+}
+Zu.default.extension("showdownMathjax", Qu);
+var Xu = Qu;
+var eu = ie(me(), 1), uu = ie(nr(), 1), Xe = ie(ir(), 1), or = ie(tr(), 1), _or_default = or.default, Yn = _or_default.decode;
+uu.default.silent = !0;
+(0, uu.default)();
+function dr() {
+    return [
+        {
+            type: "output",
+            filter: function(e, a, r) {
+                var d = {
+                    left: "<pre><code\\b[^>]*>",
+                    right: "</code></pre>",
+                    flags: "g"
+                }, t = function(p, c, m, D) {
+                    var _m_match;
+                    var _m_match_;
+                    var A = Yn(c), y = (_m_match_ = (_m_match = m.match(/class=\"([^ \"]+)/)) == null ? void 0 : _m_match[1]) != null ? _m_match_ : void 0;
+                    return y ? (m = '<pre class="language-' + y + '"><code class="language-' + y + '">', m + Xe.default.highlight(A, Xe.default.languages[y], y) + D) : p;
+                };
+                return eu.default.helper.replaceRecursiveRegExp(e, t, d.left, d.right, d.flags);
+            }
+        }
+    ];
+}
+eu.default.extension("showdownPrism", dr);
+var lr = dr;
+var cr = ie(me(), 1), Wn = Object.defineProperty, Kn = function(e, a) {
+    return Wn(e, "name", {
+        value: a,
+        configurable: !0
+    });
+};
+function Pe(param) {
+    var _ref = param === void 0 ? {} : param, e = _ref.toc, a = _ref.opts;
+    return [
+        {
+            type: "output",
+            filter: function filter(r) {
+                var d = /(<h([1-6]).*?id="([^"]*?)".*?>(.+?)<\/h[1-6]>)|(<p>\[toc\]<\/p>)/g, t = [];
+                r.replace(d, function(c, m, D, A, y) {
+                    if (c === "<p>[toc]</p>") t.push({
+                        type: "toc"
+                    });
+                    else {
+                        y = y.replace(/<[^>]+>/g, "");
+                        var _ = {
+                            anchor: A,
+                            level: Number(D),
+                            text: y
+                        };
+                        e && e.push(_), t.push(_extends({
+                            type: "header"
+                        }, _));
+                    }
+                    return "";
+                });
+                var p = [];
+                return t.forEach(function(param, m) {
+                    var c = param.type;
+                    if (c === "toc") if (t[m + 1] && t[m + 1].type === "header") {
+                        var D = [], _t_ = t[m + 1], A = _t_.level;
+                        for(var y = m + 1; y < t.length && t[y].type !== "toc"; y++){
+                            var _t_y = t[y], _ = _t_y.level;
+                            _ === A && D.push(t[y]);
+                        }
+                        p.push(D);
+                    } else p.push([]);
+                }), r = r.replace(/<p>\[toc\]<\/p>[\n]*/g, function() {
+                    var c = p.shift();
+                    if (c && c.length) {
+                        var m = (a == null ? void 0 : a.listType) || "ol";
+                        return "<" + m + ' class="showdown-toc">' + c.map(function(param) {
+                            var D = param.text, A = param.anchor;
+                            return '<li><a href="#' + A + '">' + D + "</a></li>";
+                        }).join("") + "</" + m + ">\n";
+                    }
+                    return "";
+                }), r;
+            }
+        }
+    ];
+}
+Kn(Pe, "showmarkToc");
+cr.default.extension("showmarkToc", Pe);
+var ru = function() {
+    function ru() {}
+    var _proto = ru.prototype;
+    _proto.formatDate = function formatDate(a) {
+        return new Date(a).toLocaleString("en-US", {
+            weekday: "short",
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        });
+    };
+    _proto.readTime = function readTime(a) {
+        var d = a.trim().split(/\s+/).length;
+        return Math.ceil(d / 225);
+    };
+    _proto.frontmatter = function frontmatter(a) {
+        var r = a.split("\n"), d = r.reduce($u, []), t = Yu({
+            lines: r,
+            metaIndices: d
+        }), p = Wu({
+            lines: r,
+            metaIndices: d
+        });
+        return {
+            data: t,
+            content: p
+        };
+    };
+    _proto.converter = function converter(a) {
+        return new sr.default.Converter(a);
+    };
+    _proto.markToHtml = function markToHtml(a) {
+        var r = this.frontmatter(a), d = r.data, t = r.content, p = JSON.stringify(r, null, 2), c = this.converter({
+            parseImgDimensions: !0,
+            simplifiedAutoLink: !0,
+            strikethrough: !0,
+            tables: !0,
+            tasklists: !0,
+            openLinksInNewWindow: !0,
+            emoji: !0,
+            moreStyling: !0,
+            extensions: [
+                Xu,
+                lr,
+                Pe
+            ]
+        });
+        c.setFlavor("github");
+        var m = c.makeHtml(t), D;
+        d.title ? D = d.title : D = "";
+        var A;
+        d.date ? A = this.formatDate(d.date) : A = "";
+        var y = "<small>Reading Time : " + this.readTime(t) + " minutes</small>", _ = Ke({
+            postContent: m,
+            postTitle: D,
+            postDate: A,
+            readingTime: y
+        }), q = Ke({
+            postContent: m
+        });
+        return {
+            data: d,
+            json: p,
+            convertedHtml: m,
+            postHtml: _,
+            pageHtml: q
+        };
+    };
+    return ru;
+}();
+function Ai() {
+    return new ru;
+} /*! Bundled license information:
 
-  showdown/dist/showdown.js:
-    (*! showdown v 2.1.0 - 21-04-2022 *)
+showdown/dist/showdown.js:
+  (*! showdown v 2.1.0 - 21-04-2022 *)
 
-  prismjs/prism.js:
-    (**
-     * Prism: Lightweight, robust, elegant syntax highlighting
-     *
-     * @license MIT <https://opensource.org/licenses/MIT>
-     * @author Lea Verou <https://lea.verou.me>
-     * @namespace
-     * @public
-     *)
+prismjs/prism.js:
+  (**
+   * Prism: Lightweight, robust, elegant syntax highlighting
+   *
+   * @license MIT <https://opensource.org/licenses/MIT>
+   * @author Lea Verou <https://lea.verou.me>
+   * @namespace
+   * @public
+   *)
 
-  he/he.js:
-    (*! https://mths.be/he v1.2.0 by @mathias | MIT license *)
+he/he.js:
+  (*! https://mths.be/he v1.2.0 by @mathias | MIT license *)
 
-  js-yaml/dist/js-yaml.mjs:
-    (*! js-yaml 4.1.0 https://github.com/nodeca/js-yaml @license MIT *)
-  */
-
-  exports.mmMark = mmMark;
-
-  return exports;
-
-})({});
+js-yaml/dist/js-yaml.mjs:
+  (*! js-yaml 4.1.0 https://github.com/nodeca/js-yaml @license MIT *)
+*/ 
+exports.mmMark = Ai;
