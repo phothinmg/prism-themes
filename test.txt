@@ -198,6 +198,8 @@ By . [Ayush Saini](https://github.com/AyushSaini00)
 
 ---
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/phothinmg/prism-themes@main/theme-2/atom-dark.min.css">
+
 
 
 
