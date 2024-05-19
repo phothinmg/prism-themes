@@ -1,0 +1,12 @@
+.nav-link{
+  text-decoration: none !important;
+  color: var(--cfg);
+}
+.site-text{
+  font-size: large;
+  color: var(--cfg);
+}
+.nav-link:hover {
+  color: var(--clink);
+  cursor: pointer;
+}
